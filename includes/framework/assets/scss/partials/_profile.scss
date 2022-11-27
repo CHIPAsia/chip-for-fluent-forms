@@ -1,0 +1,67 @@
+/**
+ * 06. Profile
+ */
+.chipfluent-profile-options{
+
+  > h2 > .fa {
+    padding-right: 7px;
+  }
+
+  > .chipfluent-field{
+    max-width: 750px;
+    padding: 15px 0;
+    border-top: none !important;
+
+    > .chipfluent-title{
+      width: 200px;
+
+      h4{
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.3;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+
+    > .chipfluent-fieldset{
+      width: calc(100% - 220px);
+
+      > .chipfluent-help{
+        top: -15px;
+        right: -5px;
+      }
+    }
+  }
+
+  > .chipfluent-field-heading{
+    font-size: 1.1em;
+  }
+
+  > .chipfluent-field-subheading{
+    font-size: 12px;
+  }
+
+  > .chipfluent-field-subheading,
+  > .chipfluent-field-heading{
+    margin: 10px 0;
+    padding: 15px !important;
+    border: 1px solid #ddd;
+  }
+
+  > .chipfluent-field-submessage{
+    margin: 20px 0;
+
+    .chipfluent-submessage{
+      padding: 10px;
+      border-left-width: 1px;
+      border-left-style: solid;
+      border-right-width: 1px;
+      border-right-style: solid;
+    }
+  }
+
+  > .chipfluent-field-notice{
+    background-color: transparent;
+  }
+}

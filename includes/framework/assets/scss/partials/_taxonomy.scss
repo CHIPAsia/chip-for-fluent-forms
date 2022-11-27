@@ -1,0 +1,114 @@
+/**
+ * 06. Taxonomy
+ */
+.chipfluent-taxonomy{
+  max-width: 95%;
+
+  > .chipfluent-field{
+    border-top: none !important;
+  }
+
+  > .chipfluent-field-heading{
+    font-size: 1.1em;
+    padding: 20px !important;
+    border: 1px solid #ddd;
+  }
+
+  > .chipfluent-field-subheading{
+    font-size: 12px;
+    padding: 15px !important;
+    border: 1px solid #ddd;
+  }
+
+  > .chipfluent-field-submessage{
+
+    .chipfluent-submessage{
+      padding: 15px;
+      border-left-width: 1px;
+      border-left-style: solid;
+      border-right-width: 1px;
+      border-right-style: solid;
+    }
+  }
+
+  > .chipfluent-field-notice{
+    background-color: transparent;
+  }
+
+  .chipfluent-section-title{
+    display: block;
+    padding: 15px ;
+    background-color: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+  }
+}
+
+.chipfluent-taxonomy-add-fields{
+
+  > .chipfluent-field{
+    padding: 8px 0;
+
+    > .chipfluent-title{
+      float: none;
+      width: 100%;
+      padding: 2px 2px 4px 0;
+
+      h4{
+        font-size: 12px;
+        font-weight: normal;
+      }
+    }
+
+    > .chipfluent-fieldset{
+      float: none;
+      width: 100%;
+
+      > .chipfluent-help{
+        right: -5px;
+      }
+    }
+  }
+
+  + p.submit{
+    margin-top: 0;
+  }
+}
+
+.chipfluent-taxonomy-edit-fields{
+
+  > .chipfluent-field{
+    padding: 20px 0;
+
+    > .chipfluent-title{
+      width: 200px;
+
+      h4{
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.3;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+
+    > .chipfluent-fieldset{
+      width: calc(100% - 220px);
+
+      > .chipfluent-help{
+        top: -5px;
+        right: -5px;
+      }
+    }
+  }
+
+  > .chipfluent-field-submessage{
+    margin: 20px 0;
+  }
+
+  > .chipfluent-field-subheading,
+  > .chipfluent-field-heading{
+    margin: 20px 0;
+    border: 1px solid #ddd;
+  }
+}

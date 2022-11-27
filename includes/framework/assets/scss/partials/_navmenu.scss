@@ -1,0 +1,58 @@
+/**
+ * 08. Nav Menu
+ */
+.chipfluent-nav-menu-options{
+  clear: both;
+  float: left;
+  width: 100%;
+
+  > .chipfluent-fields{
+    margin: 10px -10px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+
+    > .chipfluent-field{
+      padding: 12px;
+
+      .chipfluent-title{
+        float: none;
+        width: 100%;
+        margin-bottom: 5px;
+      }
+
+      .chipfluent-fieldset{
+        float: none;
+        width: 100%;
+      }
+    }
+  }
+
+  .chipfluent-field-text input{
+    width: 100%;
+  }
+
+  .chipfluent-field-notice .chipfluent-notice{
+    padding: 15px;
+  }
+}
+
+.chipfluent-nav-menu-title{
+  padding: 12px;
+  background-color: #f5f5f5;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+
+  &:first-child{
+    border-top: 0;
+  }
+
+  h4{
+    margin: 0;
+    padding: 0;
+    color: #23282d;
+  }
+}
+
+.chipfluent-nav-menu-icon{
+  margin-right: 5px;
+}

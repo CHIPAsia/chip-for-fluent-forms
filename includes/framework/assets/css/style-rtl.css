@@ -1,0 +1,590 @@
+/**
+ *
+ * ---------------------------------------------------------
+ * CHIPFLUENT FRAMEWORK RTL CSS MAP
+ * ---------------------------------------------------------
+ *
+ * 01. Base
+ *     01. 01. Header
+ *     01. 02. Header Buttons
+ *     01. 03. Navigation
+ *     01. 04. Content
+ *     01. 05. Section
+ *     01. 06. Show All Settings
+ *     01. 07. Search Input
+ *     01. 08. Copyright
+ *     01. 09. Metabox
+ * 02. Fields
+ *     02. 01. Field: typography
+ *     02. 02. Field: checkbox, radio
+ *     02. 03. Field: switcher
+ *     02. 04. Field: upload
+ *     02. 05. Field: group
+ *     02. 06. Field: repeater
+ *     02. 07. Field: help
+ *     02. 08. Field: icon
+ *     02. 09. Field: gallery
+ *     02. 10. Field: sorter
+ *     02. 11. Field: tabbed
+ *     02. 12. Field: media
+ *     02. 13. Field: notice
+ *     02. 14. Field: border, spacing, dimensions
+ *     02. 15. Field: background
+ *     02. 16. Field: spinner
+ *     02. 17. Field: slider
+ *     02. 18. Field: button_set
+ *     02. 19. Field: link_color
+ *     02. 20. Field: color_group
+ *     02. 21. Field: palette
+ *     02. 22. Field: accordion
+ *     02. 23. Field: date
+ *     02. 24. Field: map
+ *     02. 25. Field: sortable
+ *     02. 26. Field: number
+ * 03. Taxonomy
+ * 04. Profile
+ * 05. Nav Menu
+ * 06. Modal
+ * 07. Customizer
+ * 08. Responsive
+ * 09. Others
+ *
+ * ---------------------------------------------------------
+ *
+ */
+/**
+ * 01. Base
+ */
+.chipfluent-options {
+  margin-left: 20px;
+  margin-right: 0;
+}
+
+/**
+ * 01. 01. Header
+ */
+.chipfluent-header h1 {
+  float: right;
+}
+.chipfluent-header fieldset {
+  float: left;
+}
+
+/**
+ * 01. 02. Header Buttons
+ */
+.chipfluent-buttons {
+  float: left;
+  direction: ltr;
+}
+
+.chipfluent-header-left {
+  float: right;
+}
+
+.chipfluent-header-right {
+  float: left;
+}
+
+/**
+ * 01. 03. Navigation
+ */
+.chipfluent-nav {
+  float: right;
+}
+.chipfluent-nav ul {
+  clear: right;
+}
+.chipfluent-nav ul li .chipfluent-active:after {
+  right: auto;
+  left: 0;
+  border-left-color: #fff;
+  border-right-color: transparent;
+}
+.chipfluent-nav ul li .chipfluent-arrow:after {
+  content: "\f053";
+  right: auto;
+  left: 10px;
+}
+.chipfluent-nav ul li.chipfluent-tab-expanded .chipfluent-arrow:after {
+  transform: rotate(-90deg);
+}
+.chipfluent-nav ul ul li a {
+  padding-right: 25px;
+  padding-left: 15px;
+}
+.chipfluent-nav ul ul:before {
+  left: auto;
+  right: 15px;
+}
+.chipfluent-nav .chipfluent-tab-icon {
+  margin-left: 5px;
+  margin-right: 0;
+}
+
+.chipfluent-nav-background {
+  left: auto;
+  right: 0;
+}
+
+/**
+ * 01. 04. Content
+ */
+.chipfluent-content {
+  margin-left: 0;
+  margin-right: 225px;
+}
+
+/**
+ * 01. 05. Section
+ */
+.chipfluent-sections {
+  float: right;
+}
+
+/**
+ * 01. 06. Show all options
+ */
+.chipfluent-show-all .chipfluent-content {
+  margin-right: 0;
+  overflow: hidden;
+}
+
+.chipfluent-expand-all {
+  float: right;
+  right: auto;
+  left: 40px;
+  margin-right: 0;
+  margin-left: 4px;
+}
+
+/**
+ * 01. 07. Search Input
+ */
+.chipfluent-search {
+  float: right;
+}
+.chipfluent-search input {
+  margin: 0 0 0 5px;
+}
+
+/**
+ * 01. 08. Copyright
+ */
+.chipfluent-copyright {
+  float: right;
+}
+
+/**
+ * 01. 09. Metabox
+ */
+.chipfluent-metabox {
+  margin: -6px -12px -12px -12px;
+}
+.chipfluent-metabox .chipfluent-section-title {
+  padding: 20px;
+}
+
+.chipfluent-section-title .chipfluent-section-icon {
+  margin-left: 5px;
+  margin-right: 0;
+}
+
+/**
+ * 02. Fields
+ */
+.chipfluent-field .chipfluent-title {
+  float: right;
+}
+.chipfluent-field .chipfluent-fieldset {
+  float: left;
+}
+
+.chipfluent-pseudo-field {
+  padding: 0 0 0 5px !important;
+}
+
+/**
+ * 02. 01. Field: typography
+ */
+.chipfluent-field-typography select {
+  margin: 0;
+  width: 100%;
+}
+.chipfluent-field-typography .chipfluent--blocks-inputs .chipfluent--blocks {
+  flex-direction: row-reverse;
+}
+.chipfluent-field-typography .chipfluent--unit {
+  left: 4px;
+  right: auto;
+}
+
+/**
+ * 02. 02. Field: checkbox, radio
+ */
+.chipfluent-field-checkbox ul ul li,
+.chipfluent-field-radio ul ul li {
+  margin-left: 0;
+  margin-right: 8px;
+}
+.chipfluent-field-checkbox ul ul li:first-child,
+.chipfluent-field-radio ul ul li:first-child {
+  margin-right: 0;
+}
+.chipfluent-field-checkbox .chipfluent--inline-list li,
+.chipfluent-field-radio .chipfluent--inline-list li {
+  margin-right: 0;
+  margin-left: 15px;
+}
+.chipfluent-field-checkbox .chipfluent--text,
+.chipfluent-field-radio .chipfluent--text {
+  margin-left: 0;
+  margin-right: 5px;
+}
+
+/**
+ * 02. 03. Field: switcher
+ */
+.chipfluent-field-switcher .chipfluent--switcher {
+  float: right;
+}
+.chipfluent-field-switcher .chipfluent--label {
+  float: right;
+  margin-left: 0;
+  margin-right: 5px;
+}
+
+/**
+ * 02. 04. Field: upload
+ */
+.chipfluent-field-upload .chipfluent--remove,
+.chipfluent-field-upload .chipfluent--button {
+  margin-left: 0;
+  margin-right: 5px;
+}
+
+/**
+ * 02. 05. Field: group
+ */
+.chipfluent-field-group .chipfluent-cloneable-title {
+  padding: 15px 10px 15px 65px;
+}
+.chipfluent-field-group .chipfluent-cloneable-helper {
+  right: auto;
+  left: 10px;
+}
+
+/**
+ * 02. 06. Field: repeater
+ */
+.chipfluent-field-repeater .chipfluent-repeater-helper {
+  border-left: 0;
+  border-right: 1px solid #eee;
+}
+
+/**
+ * 02. 07. Field: help
+ */
+.chipfluent-help {
+  right: auto;
+  left: 5px;
+}
+
+/**
+ * 02. 08. Field: icon
+ */
+.chipfluent-field-icon .button {
+  margin-right: 0;
+  margin-left: 5px;
+}
+.chipfluent-field-icon .chipfluent-icon-preview i {
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+/**
+ * 02. 09. Field: gallery
+ */
+.chipfluent-field-gallery ul li {
+  margin-right: 0;
+  margin-left: 5px;
+}
+.chipfluent-field-gallery .button {
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+/**
+ * 02. 11. Field: tabbed
+ */
+.chipfluent-field-tabbed .chipfluent-tabbed-nav .chipfluent--icon {
+  padding-right: 0;
+  padding-left: 5px;
+}
+.chipfluent-field-tabbed .chipfluent-tabbed-nav a {
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+/**
+ * 02. 12. Field: media
+ */
+.chipfluent-field-media .button {
+  margin-left: 0;
+  margin-right: 7px;
+}
+.chipfluent-field-media .hidden + .button {
+  margin-right: 0;
+}
+
+/**
+ * 02. 13. Field: notice
+ */
+.chipfluent-notice {
+  border-left: none;
+  border-right-style: solid;
+  border-right-width: 4px;
+}
+
+/**
+ * 02. 14. Field: border, spacing, dimensions
+ */
+.chipfluent-field-dimensions .chipfluent--input,
+.chipfluent-field-dimensions .chipfluent-fieldset,
+.chipfluent-field-spacing .chipfluent--input,
+.chipfluent-field-spacing .chipfluent-fieldset,
+.chipfluent-field-border .chipfluent--input,
+.chipfluent-field-border .chipfluent-fieldset {
+  direction: ltr;
+}
+.chipfluent-field-dimensions .chipfluent--inputs,
+.chipfluent-field-dimensions .chipfluent--color,
+.chipfluent-field-spacing .chipfluent--inputs,
+.chipfluent-field-spacing .chipfluent--color,
+.chipfluent-field-border .chipfluent--inputs,
+.chipfluent-field-border .chipfluent--color {
+  float: right;
+}
+.chipfluent-field-dimensions .chipfluent--color,
+.chipfluent-field-spacing .chipfluent--color,
+.chipfluent-field-border .chipfluent--color {
+  margin-right: 4px;
+  direction: rtl;
+}
+
+/**
+ * 02. 15. Field: background
+ */
+.chipfluent-field-background .chipfluent--block {
+  float: right;
+}
+.chipfluent-field-background .chipfluent--select,
+.chipfluent-field-background .chipfluent--media {
+  padding-right: 0;
+}
+.chipfluent-field-background .chipfluent--title {
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+/**
+ * 02. 16. Field: spinner
+ */
+.chipfluent-field-spinner .chipfluent--spin {
+  float: right;
+  direction: ltr;
+}
+
+/**
+ * 02. 17. Field: slider
+ */
+.chipfluent-field-slider .chipfluent-slider-ui {
+  direction: ltr;
+  margin-right: 0;
+  margin-left: 15px;
+}
+.chipfluent-field-slider .chipfluent--input {
+  direction: ltr;
+}
+
+/**
+ * 02. 18. Field: button_set
+ */
+.chipfluent-field-button_set .chipfluent--button-group {
+  float: right;
+}
+
+/**
+ * 02. 19. Field: link_color
+ */
+.chipfluent-field-link_color .chipfluent--left {
+  float: right;
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+/**
+ * 02. 20. Field: color_group
+ */
+.chipfluent-field-color_group .chipfluent--left {
+  float: right;
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+/**
+ * 02. 21. Field: palette
+ */
+.chipfluent-field-palette .chipfluent--palette {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
+/**
+ * 02. 22. Field: accordion
+ */
+.chipfluent-field-accordion .chipfluent--icon {
+  margin-right: 0;
+  margin-left: 2px;
+}
+
+/**
+ * 02. 23. Field: date
+ */
+.chipfluent-field-date .chipfluent--to {
+  margin-left: 0;
+  margin-right: 7px;
+}
+
+/**
+ * 02. 24. Field: map
+ */
+.chipfluent-field-map .chipfluent--map-input:last-child {
+  padding-left: 0;
+  padding-right: 10px;
+}
+
+/**
+ * 02. 25. Field: sortable
+ */
+.chipfluent-field-sortable .chipfluent-sortable-helper {
+  border-left: none;
+  border-right: 1px solid #eee;
+}
+
+/**
+ * 02. 26. Field: number
+ */
+.chipfluent-field-number .chipfluent--wrap {
+  float: right;
+}
+.chipfluent-field-number .chipfluent--unit {
+  left: 4px;
+  right: auto;
+}
+
+/**
+ * 03. Taxonomy
+ */
+.chipfluent-taxonomy-add-fields {
+  margin-right: 0;
+  margin-left: 30px;
+}
+.chipfluent-taxonomy-add-fields .chipfluent-field > .chipfluent-fieldset > .chipfluent-help {
+  left: -5px;
+  right: auto;
+}
+
+.chipfluent-taxonomy-edit-fields {
+  margin-right: 0;
+  margin-left: 35px;
+}
+.chipfluent-taxonomy-edit-fields .chipfluent-field > .chipfluent-fieldset > .chipfluent-help {
+  right: auto;
+  left: -5px;
+}
+
+/**
+ * 04. Profile
+ */
+.chipfluent-profile-options > h2 > .fa {
+  padding-right: 0;
+  padding-left: 7px;
+}
+.chipfluent-profile-options > .chipfluent-field > .chipfluent-fieldset > .chipfluent-help {
+  left: -5px;
+  right: auto;
+}
+
+/**
+ * 05. Nav Menu
+ */
+.chipfluent-nav-menu-options > .chipfluent-fields {
+  margin-left: 0;
+  margin-right: -10px;
+}
+
+.chipfluent-nav-menu-title {
+  padding-left: 14px;
+  padding-right: 12px;
+}
+
+.chipfluent-nav-menu-icon {
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+/**
+ * 06. Modal
+ */
+.chipfluent-modal-content .chipfluent-field {
+  padding: 15px 15px 15px 30px;
+}
+
+.chipfluent-modal-title {
+  padding: 0 16px 0 36px;
+}
+
+.chipfluent-modal-close {
+  right: auto;
+  left: 0;
+}
+
+/**
+ * 07. Customizer
+ */
+.control-section .chipfluent-field .chipfluent-fieldset {
+  margin-right: 0;
+}
+
+/**
+ * 08. Responsive
+ */
+@media only screen and (max-width: 1200px) {
+  .chipfluent-metabox .chipfluent-field .chipfluent-fieldset {
+    margin-left: 0;
+  }
+}
+@media only screen and (max-width: 782px) {
+  .chipfluent .chipfluent-fieldset,
+  .chipfluent .chipfluent-content {
+    margin-right: 0;
+  }
+}
+/**
+ * 09. Others
+ */
+.chipfluent-field .chipfluent--transparent-slider {
+  margin-left: 0;
+  margin-right: 2px;
+}
+.chipfluent-field .chipfluent--transparent-slider .ui-slider-handle {
+  margin: 0 -11px;
+}
+.chipfluent-field .chipfluent--transparent-offset {
+  background-position: center right;
+}
+.chipfluent-field .chipfluent--transparent-text {
+  right: auto;
+  left: 10px;
+}

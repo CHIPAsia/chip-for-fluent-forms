@@ -1,0 +1,185 @@
+/**
+ * 05. Widget
+ */
+.control-section{
+
+  .chipfluent-field{
+    padding: 0;
+
+    .chipfluent-title{
+      float: none;
+      width: 100%;
+      margin-bottom: 6px;
+
+      h4{
+        display: block;
+        font-size: 13px;
+        line-height: 1;
+        font-weight: 600;
+        color: inherit;
+      }
+    }
+
+    .chipfluent-fieldset{
+      float: none;
+      width: 100%;
+    }
+  }
+
+  .chipfluent-help{
+    top: -5px;
+    right: -5px;
+  }
+
+  .chipfluent-field-select select{
+    width: 100%;
+  }
+
+  .chipfluent-field-heading{
+    color: inherit;
+    font-size: 14px;
+    line-height: 1em;
+    margin-right: -15px;
+    margin-left: -15px;
+    padding: 15px;
+  }
+
+  .chipfluent-field-subheading{
+    color: inherit;
+    font-size: 11px;
+    margin-right: -15px;
+    margin-left: -15px;
+    padding: 10px 15px;
+  }
+
+  .chipfluent-subtitle-text{
+    margin-top: 4px;
+    font-size: 12px;
+  }
+
+  .chipfluent-field-submessage .chipfluent-submessage{
+    margin-right: -15px;
+    margin-left: -15px;
+    padding: 15px;
+  }
+
+  .chipfluent-fieldset{
+
+    .chipfluent-field-submessage .chipfluent-submessage,
+    .chipfluent-field-heading,
+    .chipfluent-field-subheading{
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  .chipfluent-field-date,
+  .chipfluent-field-datetime{
+
+    label{
+      display: block;
+    }
+
+    .chipfluent--to{
+      margin-top: 4px;
+      margin-left: 0;
+    }
+  }
+
+  .chipfluent-field-sorter{
+
+    ul li{
+      padding: 5px;
+    }
+
+    .chipfluent-modules{
+      float: none;
+      width: 100%;
+    }
+
+    .chipfluent-modules:first-child{
+      padding-right: 0;
+      padding-bottom: 15px;
+    }
+  }
+
+  .chipfluent-field-background{
+
+    .chipfluent--background-attributes{
+      flex-direction: column;
+    }
+  }
+
+  .chipfluent-field-spacing{
+    input{
+      width: 90px;
+    }
+  }
+
+  .chipfluent-field-border{
+
+    .chipfluent--input{
+      flex: 1 50%;
+    }
+
+    input,
+    select{
+      width: 100%;
+    }
+  }
+
+  .chipfluent-field-spinner{
+    input{
+      width: 50px;
+    }
+  }
+
+  .chipfluent-field-number{
+
+    .chipfluent--wrap{
+      width: 100%;
+    }
+  }
+
+  .chipfluent-field-backup{
+
+    .chipfluent-export-data{
+      display: none;
+    }
+  }
+
+  .chipfluent-field-fieldset{
+
+    .chipfluent-fieldset-content{
+      border-color: #e5e5e5;
+    }
+  }
+
+  .chipfluent-tabbed-content,
+  .chipfluent-sortable-content,
+  .chipfluent-repeater-content,
+  .chipfluent-fieldset-content,
+  .chipfluent-cloneable-content,
+  .chipfluent-accordion-content{
+
+    > .chipfluent-field{
+      padding: 10px;
+
+      .chipfluent-title{
+        margin-bottom: 5px;
+      }
+
+      h4{
+        font-size: 12px;
+      }
+    }
+  }
+
+  .chipfluent-depend-hidden.chipfluent-depend-on{
+    display: none !important;
+  }
+
+  .chipfluent-depend-visible.chipfluent-depend-on{
+    border-top: 0 !important;
+  }
+}
