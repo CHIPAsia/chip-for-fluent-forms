@@ -158,11 +158,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     }
 
     return array(
-      'secret_key' => $options['secret-key' . $postfix],
-      'brand_id'   => $options['brand-id' . $postfix],
-      'send_rcpt'  => empty( $options['send-receipt' . $postfix] ) ? false : $options['send-receipt' . $postfix],
-      'due_strict' => empty( $options['due-strict' . $postfix] ) ? false : $options['due-strict' . $postfix],
-      'due_time'   => $options['due-strict-timing' . $postfix],
+      'secret_key' => $options['secret-key-' . $postfix],
+      'brand_id'   => $options['brand-id-' . $postfix],
+      'send_rcpt'  => empty( $options['send-receipt-' . $postfix] ) ? false : $options['send-receipt-' . $postfix],
+      'due_strict' => empty( $options['due-strict-' . $postfix] ) ? false : $options['due-strict-' . $postfix],
+      'due_time'   => $options['due-strict-timing-' . $postfix],
     );
   }
 
