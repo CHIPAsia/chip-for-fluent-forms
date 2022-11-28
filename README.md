@@ -8,7 +8,7 @@ This module adds CHIP payment method option to your Fluent Forms.
 
 ## Installation
 
-* [Download zip file of Give plugin.](https://github.com/CHIPAsia/chip-for-fluent-forms/archive/refs/heads/main.zip)
+* [Download zip file of Fluent Forms plugin.](https://github.com/CHIPAsia/chip-for-fluent-forms/archive/refs/heads/main.zip)
 * Log in to your WordPress admin panel and go: **Plugins** -> **Add New**
 * Select **Upload Plugin**, choose zip file you downloaded in step 1 and press **Install Now**
 * Activate plugin
