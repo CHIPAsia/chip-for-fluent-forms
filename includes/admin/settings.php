@@ -1,6 +1,6 @@
 <?php
 
-$slug = 'fluent_form_chip';
+$slug = FF_CHIP_FSLUG;
 
 CHIPFLUENT_Setup::createOptions( $slug, array(
   'framework_title' => 'CHIP <small>Cash, Card & Coin Handling Integrated Platform</small>',
@@ -31,11 +31,11 @@ $credentials_global_fields = array(
 
 $miscellaneous_global_fields = array(
   array(
-    'id'          => 'payment_name',
+    'id'          => 'payment_title',
     'type'        => 'text',
-    'title'       => __( 'Payment Name', 'chip-for-fluent-forms' ),
-    'desc'        => __( 'Enter your Payment Name. Default is <strong>CHIP</strong>', 'chip-for-fluent-forms' ),
-    'help'        => __( 'This allows you to customize the payment name.', 'chip-for-fluent-forms' ),
+    'title'       => __( 'Payment Title', 'chip-for-fluent-forms' ),
+    'desc'        => __( 'Enter your Payment Title. Default is <strong>CHIP</strong>', 'chip-for-fluent-forms' ),
+    'help'        => __( 'This allows you to customize the payment title.', 'chip-for-fluent-forms' ),
     'placeholder' => 'CHIP',
     'default'     => 'CHIP',
   ),
@@ -114,27 +114,33 @@ foreach($all_forms_query as $form) {
     'help'  => sprintf( __( 'This to enable customization per form-basis for form: #%s', 'chip-for-fluent-forms' ), $form->id ),
   ));
 
+  $local_gfields = $global_fields;
+
   for( $i=0; $i < sizeof($global_fields); $i++ ) {
-    $local_gfields = $global_fields;
+
+    if ( $local_gfields[$i]['id'] == 'payment_title' ) {
+      continue;
+    }
 
     $dependency_array = [];
     if ( isset( $local_gfields[$i]['dependency'] ) ) {
       $local_gfields[$i]['dependency'][0][0] .= '-' . $form->id;
+
       $dependency_array = $local_gfields[$i]['dependency'];
     }
     $dependency_array[] = ['form-customize-' . $form->id, '==', 'true'];
 
-    $local_gfields[$i]['id'] .= '-' . $form->id;
+    $local_gfields[$i]['id']        .= '-' . $form->id;
     $local_gfields[$i]['dependency'] = $dependency_array;
 
     $form_fields[] = $local_gfields[$i];
   }
 
   CHIPFLUENT_Setup::createSection( $slug, array(
-    'parent'     => 'form-configuration',
-    'id' => 'form-id-' . $form->id,
-    'title'  => sprintf( __( 'Form #%s - %s', 'chip-for-fluent-forms' ), $form->id, substr( $form->title, 0, 15 ) ),
+    'parent'      => 'form-configuration',
+    'id'          => 'form-id-' . $form->id,
+    'title'       => sprintf( __( 'Form #%s - %s', 'chip-for-fluent-forms' ), $form->id, substr( $form->title, 0, 15 ) ),
     'description' => sprintf( __( 'Configuration for Form #%s - %s', 'chip-for-fluent-forms' ), $form->id, $form->title ),
-    'fields' => $form_fields,
+    'fields'      => $form_fields,
   ));
 }

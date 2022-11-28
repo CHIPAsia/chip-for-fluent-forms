@@ -40,6 +40,7 @@ class Chip_Fluent_Forms {
   public function define() {
     define( 'FF_CHIP_FILE', __FILE__ );
     define( 'FF_CHIP_BASENAME', plugin_basename(FF_CHIP_FILE));
+    define( 'FF_CHIP_FSLUG', 'fluent_form_chip');
   }
 
   public function includes() {
@@ -50,6 +51,10 @@ class Chip_Fluent_Forms {
     if ( is_admin() ){
       include $includes_dir . 'admin/settings.php';
     }
+
+    include $includes_dir . 'class-register.php';
+    include $includes_dir . 'class-purchase.php';
+    include $includes_dir . 'class-listener.php';
   }
 
   public function add_filters() {
