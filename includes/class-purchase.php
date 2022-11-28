@@ -180,6 +180,10 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $submission_id    = absint($data['fluentform_payment']);
     $transaction_hash = sanitize_text_field($data['transaction_hash']);
 
+    if ( $data['payment_method'] != 'chip' ) {
+      return;
+    }
+
     $this->setSubmissionId( $submission_id );
 
     $submission = $this->getSubmission();
@@ -208,7 +212,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     }
 
     $GLOBALS['wpdb']->get_results(
-      "SELECT RELEASE_LOCK('gff_chip_payment_$submission_id');"
+      "SELECT RELEASE_LOCK('ff_chip_payment_$submission_id');"
     );
     
 
@@ -260,7 +264,43 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
   // }
 
   public function callback() {
-    //here does have php://input, $_GET
+
+    $submission_id = absint($_GET['submission_id']);
+
+    if ( $_GET['payment_method'] != 'chip' ) {
+      return;
+    }
+
+    $this->setSubmissionId( $submission_id );
+
+    $submission = $this->getSubmission();
+    $option     = $this->get_settings( $submission->form_id );
+    $payment_id = $this->getMetaData( '_chip_purchase_id' );
+
+    $chip    = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], '' );
+    $payment = $chip->get_payment( $payment_id );
+
+    $GLOBALS['wpdb']->get_results(
+      "SELECT GET_LOCK('ff_chip_payment_$submission_id', 15);"
+    );
+
+    $transaction = $this->getTransaction( $submission_id, 'submission_id');
+
+    if ( $transaction->id != $payment['reference'] ) {
+      return;
+    }
+
+    if ( $transaction->status != 'paid' && $payment['status'] == 'paid') {
+      $this->handlePaid( $submission, $transaction, $payment );
+    }
+
+    if ( $transaction->status != 'failed' && $payment['status'] != 'paid') {
+      $this->handleFailed( $submission, $transaction, $payment );
+    }
+
+    $GLOBALS['wpdb']->get_results(
+      "SELECT RELEASE_LOCK('gff_chip_payment_$submission_id');"
+    );
   }
 }
 
