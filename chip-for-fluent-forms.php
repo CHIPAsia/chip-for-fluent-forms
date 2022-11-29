@@ -49,7 +49,9 @@ class Chip_Fluent_Forms {
     include $includes_dir . 'framework/classes/setup.class.php';
 
     if ( is_admin() ){
-      include $includes_dir . 'admin/settings.php';
+      include $includes_dir . 'admin/global-settings.php';
+      include $includes_dir . 'admin/form-settings.php';
+      include $includes_dir . 'admin/backup-settings.php';
     }
 
     include $includes_dir . 'class-register.php';

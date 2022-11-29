@@ -58,7 +58,7 @@ $miscellaneous_global_fields = array(
     'id'          => 'due-strict-timing',
     'type'        => 'number',
     'after'       => 'minutes',
-    'title'       => __( 'Due Strict', 'chip-for-fluent-forms' ),
+    'title'       => __( 'Due Strict Timing', 'chip-for-fluent-forms' ),
     'help'        => __( 'Set due time to enforce due timing for purchases. 60 for 60 minutes. If due_strict is set while due strict timing unset, it will default to 1 hour.', 'chip-for-fluent-forms' ),
     'desc'        => __( 'Default 60 for 1 hour.', 'chip-for-fluent-forms' ),
     'default'     => '60',
@@ -89,58 +89,3 @@ CHIPFLUENT_Setup::createSection( $slug, array(
   'description' => __( 'Miscellaneous settings.', 'chip-for-fluent-forms' ),
   'fields'      => $miscellaneous_global_fields,
 ) );
-
-CHIPFLUENT_Setup::createSection( $slug, array(
-  'id'    => 'form-configuration',
-  'title' => __( 'Form Configuration', 'chip-for-fluent-forms' ),
-  'icon'  => 'fa fa-gear'
-));
-
-$global_fields = array_merge( $credentials_global_fields, $miscellaneous_global_fields );
-
-$all_forms_query = wpFluent()->table('fluentform_forms')
-  ->select(['id', 'title'])
-  ->orderBy('id')
-  ->limit(500)
-  ->get();
-
-foreach($all_forms_query as $form) {
-  $form_fields = array(
-    array(
-    'id'    => 'form-customize-' . $form->id,
-    'type'  => 'switcher',
-    'title' => sprintf( __( 'Customization', 'chip-for-fluent-forms' ) ),
-    'desc'  => sprintf( __( 'Form ID: <strong>#%s</strong>. Form Title: <strong>%s</strong>', 'chip-for-fluent-forms' ), $form->id, $form->title),
-    'help'  => sprintf( __( 'This to enable customization per form-basis for form: #%s', 'chip-for-fluent-forms' ), $form->id ),
-  ));
-
-  $local_gfields = $global_fields;
-
-  for( $i=0; $i < sizeof($global_fields); $i++ ) {
-
-    if ( $local_gfields[$i]['id'] == 'payment_title' ) {
-      continue;
-    }
-
-    $dependency_array = [];
-    if ( isset( $local_gfields[$i]['dependency'] ) ) {
-      $local_gfields[$i]['dependency'][0][0] .= '-' . $form->id;
-
-      $dependency_array = $local_gfields[$i]['dependency'];
-    }
-    $dependency_array[] = ['form-customize-' . $form->id, '==', 'true'];
-
-    $local_gfields[$i]['id']        .= '-' . $form->id;
-    $local_gfields[$i]['dependency'] = $dependency_array;
-
-    $form_fields[] = $local_gfields[$i];
-  }
-
-  CHIPFLUENT_Setup::createSection( $slug, array(
-    'parent'      => 'form-configuration',
-    'id'          => 'form-id-' . $form->id,
-    'title'       => sprintf( __( 'Form #%s - %s', 'chip-for-fluent-forms' ), $form->id, substr( $form->title, 0, 15 ) ),
-    'description' => sprintf( __( 'Configuration for Form #%s - %s', 'chip-for-fluent-forms' ), $form->id, $form->title ),
-    'fields'      => $form_fields,
-  ));
-}
