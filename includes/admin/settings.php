@@ -3,13 +3,13 @@
 $slug = FF_CHIP_FSLUG;
 
 CHIPFLUENT_Setup::createOptions( $slug, array(
-  'framework_title' => 'CHIP <small>Cash, Card & Coin Handling Integrated Platform</small>',
+  'framework_title' => sprintf( __( 'CHIP %sCash, Card & Coin Handling Integrated Platform%s', 'chip-for-fluent-forms' ), '<small>', '</small>' ),
 
-  'menu_title'  => 'CHIP',
+  'menu_title'  => __( 'CHIP Settings', 'chip-for-fluent-forms' ),
   'menu_slug'   => 'chip',
   'menu_type'   => 'submenu',
   'menu_parent' => 'fluent_forms',
-  'footer_text' => 'CHIP for Fluent Forms ' . FF_CHIP_MODULE_VERSION,
+  'footer_text' => sprintf( __( 'CHIP for Fluent Forms %s', 'chip-for-fluent-forms' ) , FF_CHIP_MODULE_VERSION ),
   'theme'       => 'light',
 ) );
 
