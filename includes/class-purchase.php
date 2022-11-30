@@ -422,7 +422,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     }
 
     $payment    = json_decode( $content, true );
-    $payment_id = $payment['related_to']['id'];
+    $payment_id = sanitize_text_field( $payment['related_to']['id'] );
 
     if ( $payment['event_type'] != 'payment.refunded' ) {
       return;
