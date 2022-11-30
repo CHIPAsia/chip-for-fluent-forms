@@ -22,6 +22,14 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
   }
 
   public function __construct() {
+    $this->add_filter();
+    $this->add_action();
+  }
+
+  public function add_filter() {
+  }
+
+  public function add_action() {
     add_action( 'fluentform_process_payment_chip', array( $this, 'handlePaymentAction' ), 10, 6 );
     
     // this is redirect
@@ -31,7 +39,10 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     add_action( 'fluentform_ipn_endpoint_chip', array( $this, 'callback' ) );
   }
 
-  public function handlePaymentAction($submissionId, $submissionData, $form, $methodSettings, $hasSubscriptions, $totalPayable) {
+  public function handlePaymentAction( $submissionId, $submissionData, $form, $methodSettings, $hasSubscriptions, $totalPayable ) {
+    
+    $this->validate_if_subscription( $hasSubscriptions );
+
     $this->setSubmissionId( $submissionId );
     $this->form = $form;
     $submission = $this->getSubmission();
@@ -45,7 +56,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       'payment_method' => 'chip',
     ]);
 
-    $transaction = $this->getTransaction($transactionId);
+    $transaction = $this->getTransaction( $transactionId );
     $this->create_purchase( $transaction, $submission, $form, $methodSettings );
   }
 
@@ -234,6 +245,41 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     );
 
     $this->handleSessionRedirectBack($data);
+  }
+
+  // copy pasted from BaseProcessor for minor tweak
+  public function handleSessionRedirectBack($data)
+  {
+      $submissionId = intval($data['fluentform_payment']);
+      $this->setSubmissionId($submissionId);
+
+      $submission = $this->getSubmission();
+
+      $transactionHash = sanitize_text_field($data['transaction_hash']);
+      $transaction = $this->getTransaction($transactionHash, 'transaction_hash');
+
+      if (!$transaction || !$submission) {
+          return;
+      }
+
+      $type = $transaction->status;
+      $this->getForm();
+
+      if ($type == 'paid') {
+          $returnData = $this->getReturnData();
+      } else {
+          $returnData = [
+              'insert_id' => $submission->id,
+              'title'     => __('Payment Cancelled', 'chip-for-fluent-forms'),
+              'result'    => false,
+              'error'     => __('Looks like you have cancelled the payment', 'chip-for-fluent-forms')
+          ];
+      }
+
+      $returnData['type'] = 'success';
+      $returnData['is_new'] = false;
+
+      $this->showPaymentView($returnData);
   }
 
   public function handlePaid( $submission, $transaction, $vendorTransaction ) {
@@ -430,7 +476,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     );
   }
 
-  public function handleRefund( $refund_amount, $transaction_id, $submission_id, $refund_id ){
+  public function handleRefund( $refund_amount, $transaction_id, $submission_id, $refund_id ) {
     $this->setSubmissionId( $submission_id );
     $transaction = $this->getTransaction( $transaction_id );
 
@@ -439,6 +485,15 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     }
 
     $this->refund( $refund_amount, $transaction, $this->getSubmission(), 'chip', $refund_id, 'Refunded from CHIP. ID: ' . $refund_id );
+  }
+
+  private function validate_if_subscription( $has_subscription )
+  {
+    if ( $has_subscription ) {
+      wp_send_json([
+        'errors' => __( 'Error: CHIP does not support subscriptions right now.', 'chip-for-fluent-forms' )
+      ], 423);
+    }
   }
 }
 
