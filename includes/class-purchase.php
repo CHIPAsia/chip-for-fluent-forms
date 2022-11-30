@@ -109,7 +109,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
         'component'        => 'Payment',
         'status'           => 'error',
         'title'            => __( 'Failure to create purchase', 'chip-for-fluent-forms' ),
-        'description'      => sprintf( __( 'User is not redirected to CHIP since failure to create purchase: %s' ), print_r( $payment, true ) ),
+        'description'      => sprintf( __( 'User is not redirected to CHIP since failure to create purchase: %s', 'chip-for-fluent-forms' ), print_r( $payment, true ) ),
       ]);
       
       wp_send_json_success([
@@ -131,8 +131,20 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       'component'        => 'Payment',
       'status'           => 'info',
       'title'            => __( 'Redirect to CHIP', 'chip-for-fluent-forms' ),
-      'description'      => sprintf( __( 'User redirect to CHIP for completing the payment: %s' ), $payment['checkout_url'] ),
+      'description'      => sprintf( __( 'User redirect to CHIP for completing the payment: %s', 'chip-for-fluent-forms' ), $payment['checkout_url'] ),
     ]);
+
+    if ( $payment['is_test'] == true ) {
+      do_action('ff_log_data', [
+        'parent_source_id' => $form->id,
+        'source_type'      => 'submission_item',
+        'source_id'        => $submission->id,
+        'component'        => 'Payment',
+        'status'           => 'info',
+        'title'            => __( 'Test mode', 'chip-for-fluent-forms' ),
+        'description'      => __( 'This is test environment where payment status is simulated.', 'chip-for-fluent-forms' ),
+      ]);
+    }
 
     wp_send_json_success([
       'nextAction'   => 'payment',
@@ -220,7 +232,6 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $GLOBALS['wpdb']->get_results(
       "SELECT RELEASE_LOCK('ff_chip_payment_$submission_id');"
     );
-    
 
     $this->handleSessionRedirectBack($data);
   }
@@ -371,6 +382,10 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $payment    = json_decode( $content, true );
     $payment_id = $payment['related_to']['id'];
 
+    if ( $payment['event_type'] != 'payment.refunded' ) {
+      return;
+    }
+
     if ( is_null( $transaction   = $this->getTransaction( $payment_id, 'charge_id') ) ) {
       return;
     }
@@ -389,7 +404,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
         'component'        => 'Payment',
         'status'           => 'info',
         'title'            => __( 'Refund', 'chip-for-fluent-forms' ),
-        'description'      => __( 'Refund unable to process due to verification failure' ),
+        'description'      => __( 'Refund unable to process due to verification failure', 'chip-for-fluent-forms' ),
       ]);
 
       return;
