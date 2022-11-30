@@ -1,8 +1,13 @@
 <?php
 
 $slug = FF_CHIP_FSLUG;
-
 function ff_chip_form_fields( $form ){
+
+  $callback = add_query_arg(array(
+    'fluentform_payment_api_notify' => 1,
+    'payment_method'                => 'chip',
+  ), site_url('index.php'));
+
   $form_fields = array(
     array(
       'id'    => 'form-customize-' . $form->id,
@@ -69,6 +74,24 @@ function ff_chip_form_fields( $form ){
       'placeholder' => '60',
       'dependency'  => array( ['due-strict-' . $form->id, '==', 'true'], ['form-customize-' . $form->id, '==', 'true'] ),
       'validate'    => 'chipfluent_validate_numeric',
+    ),
+    array(
+      'type'    => 'subheading',
+      'content' => __( 'Refund Synchronization', 'chip-for-fluent-forms' ),
+      'dependency'  => array( ['form-customize-' . $form->id, '==', 'true'] ),
+    ),
+    array(
+      'type'    => 'submessage',
+      'style'   => 'info',
+      'content' => sprintf( __( 'You need to set Callback URL: <strong>%s</strong> to receive callback notification. Tick payment refunded event.', 'chip-for-fluent-forms' ), $callback),
+      'dependency'  => array( ['form-customize-' . $form->id, '==', 'true'] ),
+    ),
+    array(
+      'id'    => 'public-key-' . $form->id,
+      'type'  => 'textarea',
+      'title' => __( 'Public Key', 'chip-for-fluent-forms' ),
+      'desc'  => __( 'This public key needs to be created from your CHIP dashboard.', 'chip-for-fluent-forms' ),
+      'dependency'  => array( ['form-customize-' . $form->id, '==', 'true'] ),
     ),
   );
 

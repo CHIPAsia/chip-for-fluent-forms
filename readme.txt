@@ -2,7 +2,7 @@
 Contributors: chipasia, wanzulnet
 Tags: chip, cash, card, coin
 Requires at least: 4.7
-Tested up to: 6.2
+Tested up to: 6.1
 Stable tag: 1.0.0
 Requires PHP: 7.1
 License: GPLv3
@@ -66,23 +66,12 @@ You can visit our [API documentation](https://developer.chip-in.asia/) for your 
 
 = What CHIP API services used in this plugin? =
 
-This plugin rely on CHIP AP ([WC_CHIP_ROOT_URL](https://gate.chip-in.asia)) as follows:
+This plugin rely on CHIP API ([FLUENT_FORMS_CHIP_ROOT_URL](https://gate.chip-in.asia)) as follows:
 
   - **/purchases/**
     - This is for accepting payment
   - **/purchases/<id\>**
     - This is for getting payment status from CHIP
-
-= Does refund initiated through WordPress Dashboard instant? =
-
-Refund made through WordPress Dashboard is still subject to CHIP refund policy. Having refund successful message in dashboard only indicates that CHIP API has been called for the refund process.
-
-= How to disable refund feature? =
-
-You need to paste the code below in your wp-config.php to disable refund.
-```
-define( 'FF_CHIP_DISABLE_REFUND_PAYMENT', true);
-```
 
 == Links ==
 

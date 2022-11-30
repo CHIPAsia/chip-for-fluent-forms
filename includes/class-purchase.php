@@ -158,15 +158,16 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $postfix = '';
 
     if ( $options['form-customize-' . $form_id] ) {
-      $postfix = $form_id;
+      $postfix = "-$form_id";
     }
 
     return array(
-      'secret_key' => $options['secret-key-' . $postfix],
-      'brand_id'   => $options['brand-id-' . $postfix],
-      'send_rcpt'  => empty( $options['send-receipt-' . $postfix] ) ? false : $options['send-receipt-' . $postfix],
-      'due_strict' => empty( $options['due-strict-' . $postfix] ) ? false : $options['due-strict-' . $postfix],
-      'due_time'   => $options['due-strict-timing-' . $postfix],
+      'secret_key' => $options['secret-key' . $postfix],
+      'brand_id'   => $options['brand-id' . $postfix],
+      'send_rcpt'  => empty( $options['send-receipt' . $postfix] ) ? false : $options['send-receipt' . $postfix],
+      'due_strict' => empty( $options['due-strict' . $postfix] ) ? false : $options['due-strict' . $postfix],
+      'due_time'   => $options['due-strict-timing' . $postfix],
+      'public_key' => $options['public-key' . $postfix]
     );
   }
 
@@ -309,20 +310,22 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $this->changeTransactionStatus($transaction->id, $status);
   }
 
-
-  // public function handleRefund($refundAmount, $submission, $vendorTransaction){
-  //   $this->setSubmissionId($submission->id);
-  //   $transaction = $this->getLastTransaction($submission->id);
-  //   $this->updateRefund($refundAmount, $transaction, $submission, $this->method);
-  // }
-
   public function callback() {
 
-    $submission_id = absint($_GET['submission_id']);
-
-    if ( $_GET['payment_method'] != 'chip' ) {
+    if ( !isset($_GET['payment_method']) OR $_GET['payment_method'] != 'chip' ) {
       return;
     }
+
+    if ( isset( $_GET['submission_id'] ) ){
+
+      $this->success_callback( absint( $_GET['submission_id'] ) );
+    } else {
+
+      $this->refund_callback();
+    }
+  }
+
+  private function success_callback( $submission_id ) {
 
     $this->setSubmissionId( $submission_id );
 
@@ -352,8 +355,66 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     }
 
     $GLOBALS['wpdb']->get_results(
-      "SELECT RELEASE_LOCK('gff_chip_payment_$submission_id');"
+      "SELECT RELEASE_LOCK('ff_chip_payment_$submission_id');"
     );
+  }
+
+  private function refund_callback() {
+    $content     = file_get_contents( 'php://input' );
+    $x_signature = $_SERVER['HTTP_X_SIGNATURE'];
+
+    if ( empty( $content ) OR !isset( $x_signature ) ) {
+      return;
+    }
+
+    $payment    = json_decode( $content, true );
+    $payment_id = $payment['id'];
+
+    $transaction   = $this->getTransaction( $payment_id, 'charge_id');
+    $form_id       = $transaction->form_id;
+    $submission_id = $transaction->submission_id;
+
+    $option = $this->get_settings( $form_id );
+    $public_key = $option['public-key'];
+
+    if ( openssl_verify( $content,  base64_decode( $x_signature ), $public_key, 'sha256WithRSAEncryption' ) != 1) {
+      do_action('ff_log_data', [
+        'parent_source_id' => $form_id,
+        'source_type'      => 'submission_item',
+        'source_id'        => $submission_id,
+        'component'        => 'Payment',
+        'status'           => 'info',
+        'title'            => __( 'Refund', 'chip-for-fluent-forms' ),
+        'description'      => __( 'Refund unable to process due to verification failure' ),
+      ]);
+
+      return;
+    }
+
+    $GLOBALS['wpdb']->get_results(
+      "SELECT GET_LOCK('ff_chip_payment_$submission_id', 15);"
+    );
+
+    // get transaction once for thread safe
+    $transaction = $this->getTransaction( $submission_id, 'submission_id');
+
+    if ( $transaction->id != $payment['reference'] ) {
+      return;
+    }
+
+    if ( !in_array($transaction->status, array( 'refunded', 'partially-refunded' ) ) && $payment['status'] == 'refunded') {
+      $this->handleRefund( absint( $payment['amount'] ), $submission_id, sanitize_text_field( $payment['id'] ) );
+    }
+
+    $GLOBALS['wpdb']->get_results(
+      "SELECT RELEASE_LOCK('ff_chip_payment_$submission_id');"
+    );
+  }
+
+  public function handleRefund( $refund_amount, $submission_id, $refund_id ){
+    $this->setSubmissionId( $submission_id );
+    $transaction = $this->getLastTransaction( $submission_id );
+    $this->updateRefund( $refund_amount, $transaction, $this->getSubmission(), 'chip', $refund_id );
   }
 }
 

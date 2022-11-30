@@ -56,7 +56,6 @@ class Chip_Fluent_Forms {
 
     include $includes_dir . 'class-register.php';
     include $includes_dir . 'class-purchase.php';
-    include $includes_dir . 'class-listener.php';
   }
 
   public function add_filters() {

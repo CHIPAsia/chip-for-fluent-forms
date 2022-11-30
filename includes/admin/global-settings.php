@@ -2,6 +2,13 @@
 
 $slug = FF_CHIP_FSLUG;
 
+$ff_module_settings = get_option( '__fluentform_payment_module_settings' );
+
+$callback = add_query_arg(array(
+  'fluentform_payment_api_notify' => 1,
+  'payment_method'                => 'chip',
+), site_url('index.php'));
+
 CHIPFLUENT_Setup::createOptions( $slug, array(
   'framework_title' => sprintf( __( 'CHIP %sCash, Card & Coin Handling Integrated Platform%s', 'chip-for-fluent-forms' ), '<small>', '</small>' ),
 
@@ -14,6 +21,16 @@ CHIPFLUENT_Setup::createOptions( $slug, array(
 ) );
 
 $credentials_global_fields = array(
+  array(
+    'type' => 'notice',
+    'style' => 'danger',
+    'content' => sprintf( __( 'The default currency is set to non compatible currencies! %sClick here%s to update currency configuration.', 'chip-for-fluent-forms' ), '<a target=_blank href=' . admin_url('admin.php?page=fluent_forms_settings&component=payment_settings#/') . ' >', '</a>' ),
+    'class' => $ff_module_settings['currency'] == 'MYR' ? 'hidden' : '',
+  ),
+  array(
+    'type'    => 'subheading',
+    'content' => 'Credentials',
+  ),
   array(
     'id'    => 'secret-key',
     'type'  => 'text',
@@ -30,6 +47,10 @@ $credentials_global_fields = array(
   ) );
 
 $miscellaneous_global_fields = array(
+  array(
+    'type'    => 'subheading',
+    'content' => 'Miscellaneous',
+  ),
   array(
     'id'          => 'payment_title',
     'type'        => 'text',
@@ -68,6 +89,24 @@ $miscellaneous_global_fields = array(
   ),
 );
 
+$refund_global_fields = array(
+  array(
+    'type'    => 'subheading',
+    'content' => __( 'Refund Synchronization', 'chip-for-fluent-forms' ),
+  ),
+  array(
+    'type'    => 'submessage',
+    'style'   => 'info',
+    'content' => sprintf( __( 'You need to set Callback URL: <strong>%s</strong> to receive callback notification. Tick payment refunded event.', 'chip-for-fluent-forms' ), $callback),
+  ),
+  array(
+    'id'    => 'public-key',
+    'type'  => 'textarea',
+    'title' => __( 'Public Key', 'chip-for-fluent-forms' ),
+    'desc'  => __( 'This public key needs to be created from your CHIP dashboard.', 'chip-for-fluent-forms' )
+  ),
+);
+
 CHIPFLUENT_Setup::createSection( $slug, array(
   'id'    => 'global-configuration',
   'title' => __( 'Global Configuration', 'chip-for-fluent-forms' ),
@@ -88,4 +127,12 @@ CHIPFLUENT_Setup::createSection( $slug, array(
   'title'       => __( 'Miscellaneous', 'chip-for-fluent-forms' ),
   'description' => __( 'Miscellaneous settings.', 'chip-for-fluent-forms' ),
   'fields'      => $miscellaneous_global_fields,
+) );
+
+CHIPFLUENT_Setup::createSection( $slug, array(
+  'parent'      => 'global-configuration',
+  'id'          => 'refund',
+  'title'       => __( 'Refund Synchronization', 'chip-for-fluent-forms' ),
+  'description' => __( 'Configure public key to allow synchronization of refund status.', 'chip-for-fluent-forms' ),
+  'fields'      => $refund_global_fields,
 ) );
