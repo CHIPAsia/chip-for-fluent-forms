@@ -368,14 +368,17 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     }
 
     $payment    = json_decode( $content, true );
-    $payment_id = $payment['id'];
+    $payment_id = $payment['related_to']['id'];
 
-    $transaction   = $this->getTransaction( $payment_id, 'charge_id');
+    if ( is_null( $transaction   = $this->getTransaction( $payment_id, 'charge_id') ) ) {
+      return;
+    }
+
     $form_id       = $transaction->form_id;
     $submission_id = $transaction->submission_id;
 
-    $option = $this->get_settings( $form_id );
-    $public_key = $option['public-key'];
+    $option     = $this->get_settings( $form_id );
+    $public_key = $option['public_key'];
 
     if ( openssl_verify( $content,  base64_decode( $x_signature ), $public_key, 'sha256WithRSAEncryption' ) != 1) {
       do_action('ff_log_data', [
@@ -398,12 +401,12 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     // get transaction once for thread safe
     $transaction = $this->getTransaction( $submission_id, 'submission_id');
 
-    if ( $transaction->id != $payment['reference'] ) {
+    if ( $transaction->id != $payment['related_to']['reference'] ) {
       return;
     }
 
-    if ( !in_array($transaction->status, array( 'refunded', 'partially-refunded' ) ) && $payment['status'] == 'refunded') {
-      $this->handleRefund( absint( $payment['amount'] ), $submission_id, sanitize_text_field( $payment['id'] ) );
+    if ( $transaction->status != 'refunded' && $payment['status'] == 'success' && $payment['payment']['payment_type'] == 'refund' ) {
+      $this->handleRefund( absint( $payment['payment']['amount'] ), $transaction->id, $submission_id, sanitize_text_field( $payment['id'] ) );
     }
 
     $GLOBALS['wpdb']->get_results(
@@ -411,10 +414,15 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     );
   }
 
-  public function handleRefund( $refund_amount, $submission_id, $refund_id ){
+  public function handleRefund( $refund_amount, $transaction_id, $submission_id, $refund_id ){
     $this->setSubmissionId( $submission_id );
-    $transaction = $this->getLastTransaction( $submission_id );
-    $this->updateRefund( $refund_amount, $transaction, $this->getSubmission(), 'chip', $refund_id );
+    $transaction = $this->getTransaction( $transaction_id );
+
+    if ( $this->getRefund( $refund_id, 'charge_id' ) ) {
+      return;
+    }
+
+    $this->refund( $refund_amount, $transaction, $this->getSubmission(), 'chip', $refund_id, 'Refunded from CHIP. ID: ' . $refund_id );
   }
 }
 
