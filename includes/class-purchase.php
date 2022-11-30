@@ -22,11 +22,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
   }
 
   public function __construct() {
-    $this->add_filter();
     $this->add_action();
-  }
-
-  public function add_filter() {
   }
 
   public function add_action() {
@@ -112,7 +108,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $chip = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], $option['brand_id'] );
     $payment = $chip->create_payment($params);
 
-    if (!array_key_exists('id', $payment)) {
+    if ( !array_key_exists( 'id', $payment ) ) {
       do_action('ff_log_data', [
         'parent_source_id' => $form->id,
         'source_type'      => 'submission_item',
@@ -142,7 +138,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       'component'        => 'Payment',
       'status'           => 'info',
       'title'            => __( 'Redirect to CHIP', 'chip-for-fluent-forms' ),
-      'description'      => sprintf( __( 'User redirect to CHIP for completing the payment: %s', 'chip-for-fluent-forms' ), $payment['checkout_url'] ),
+      'description'      => sprintf( __( 'User redirect to CHIP for completing the payment: %s', 'chip-for-fluent-forms' ), esc_url( $payment['checkout_url'] ) ),
     ]);
 
     if ( $payment['is_test'] == true ) {
@@ -160,7 +156,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     wp_send_json_success([
       'nextAction'   => 'payment',
       'actionName'   => 'normalRedirect',
-      'redirect_url' => $payment['checkout_url'],
+      'redirect_url' => esc_url( $payment['checkout_url'] ),
       'message'      => __('You are redirecting to chip-in.asia to complete the purchase. Please wait while you are redirecting....', 'chip-for-fluent-forms'),
       'result'       => [
         'insert_id' => $submission->id
@@ -226,7 +222,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       "SELECT GET_LOCK('ff_chip_payment_$submission_id', 15);"
     );
 
-    $transaction = $this->getTransaction($transaction_hash, 'transaction_hash');
+    $transaction = $this->getTransaction( $transaction_hash, 'transaction_hash' );
 
     if ( $transaction->id != $payment['reference'] ) {
       return;
@@ -276,7 +272,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
           ];
       }
 
-      $returnData['type'] = 'success';
+      $returnData['type']   = 'success';
       $returnData['is_new'] = false;
 
       $this->showPaymentView($returnData);
@@ -284,13 +280,13 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
   public function handlePaid( $submission, $transaction, $vendorTransaction ) {
 
-    $this->setSubmissionId($submission->id);
+    $this->setSubmissionId( $submission->id );
 
-    if ($this->getMetaData('is_form_action_fired') == 'yes') {
-      return $this->completePaymentSubmission(false);
+    if ( $this->getMetaData( 'is_form_action_fired' ) == 'yes' ) {
+      return $this->completePaymentSubmission( false );
     }
 
-    $status = $vendorTransaction['status'];
+    $status = sanitize_text_field( $vendorTransaction['status'] );
 
     $updateData = [
       'payment_note'  => maybe_serialize($vendorTransaction),

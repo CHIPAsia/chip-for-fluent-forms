@@ -25,7 +25,7 @@ CHIP allows you to securely sell your products and get paid with Cash, Card and 
 
 == Changelog ==
 
-= 1.0.0 - 2022-12-06 =
+= 1.0.0 - 2022-12-02 =
 * New - Intial Release
 
 == Installation ==
