@@ -11,6 +11,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
   private static $_instance;
 
   private $supported_currencies = ['MYR'];
+  protected $method = 'chip'; // used by BaseProcessor->insertRefund($data)
 
   public static function get_instance() {
     if ( self::$_instance == null ) {
