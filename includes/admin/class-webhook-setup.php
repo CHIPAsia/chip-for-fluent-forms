@@ -74,7 +74,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
 
     $wp_option['public-key'] = $public_key;
 
-    update_option( 'fluent_form_chip_public_key', $wp_option);
+    update_option( 'fluent_form_chip_public_key', $wp_option, false );
   }
 
   private function form_public_key( $data, $admin_option ) {
@@ -85,19 +85,19 @@ class Chip_Fluent_Forms_Webhook_Setup {
       ->limit(500)
       ->get();
 
-    foreach( $form_ids as $form_id ) {
-      if ( $data['form-customize-' . $form_id] ) {
+    foreach( $form_ids as $form ) {
+      if ( $data['form-customize-' . $form->id] ) {
 
-        if ( empty( $data['refund-' . $form_id] ) ) {
+        if ( empty( $data['refund-' . $form->id] ) ) {
           continue;
         }
 
-        if ( $data['refund-' . $form_id] == false ) {
+        if ( $data['refund-' . $form->id] == false ) {
           continue;
         }
 
-        if (array_key_exists( $data[ 'secret-key-' . $form_id ], $this->results ) ) {
-          $webhooks = $this->results[ $data[ 'secret-key-' . $form_id ] ];
+        if (array_key_exists( $data[ 'secret-key-' . $form->id ], $this->results ) ) {
+          $webhooks = $this->results[ $data[ 'secret-key-' . $form->id ] ];
         } else {
           $chip     = Chip_Fluent_Forms_API::get_instance( $data['secret-key'], '' );
           $webhooks = $chip->get_webhooks();
@@ -108,7 +108,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
         }
 
         $this->results = array(
-          $data[ 'secret-key-' . $form_id ] => $webhooks,
+          $data[ 'secret-key-' . $form->id ] => $webhooks,
         );
 
         $public_key    = '';
@@ -139,9 +139,9 @@ class Chip_Fluent_Forms_Webhook_Setup {
     
         $wp_option = get_option( 'fluent_form_chip_public_key', array() );
     
-        $wp_option['public-key-' . $form_id] = $public_key;
+        $wp_option['public-key-' . $form->id] = $public_key;
     
-        update_option( 'fluent_form_chip_public_key', $wp_option);
+        update_option( 'fluent_form_chip_public_key', $wp_option, false );
       }
     }
   }

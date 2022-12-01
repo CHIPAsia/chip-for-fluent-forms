@@ -187,7 +187,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       'send_rcpt'  => empty( $options['send-receipt' . $postfix] ) ? false : $options['send-receipt' . $postfix],
       'due_strict' => empty( $options['due-strict' . $postfix] ) ? false : $options['due-strict' . $postfix],
       'due_time'   => $options['due-strict-timing' . $postfix],
-      'public_key' => $options['public-key' . $postfix]
+      'refund'     => empty( $options['refund' . $postfix] ) ? false : $options['refund' . $postfix],
     );
   }
 
@@ -435,8 +435,15 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $form_id       = $transaction->form_id;
     $submission_id = $transaction->submission_id;
 
-    $option     = $this->get_settings( $form_id );
-    $public_key = $option['public_key'];
+    $options = get_option( FF_CHIP_FSLUG );
+    $postfix = '';
+
+    if ( $options['form-customize-' . $form_id] ) {
+      $postfix = "-$form_id";
+    }
+ 
+    $option     = get_option( 'fluent_form_chip_public_key', array() );
+    $public_key = $option['public-key' . $postfix];
 
     if ( openssl_verify( $content,  base64_decode( $x_signature ), $public_key, 'sha256WithRSAEncryption' ) != 1) {
       do_action('ff_log_data', [
