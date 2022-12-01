@@ -64,20 +64,20 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       'payment_method'     => 'chip',
       'transaction_hash'   => $transaction->transaction_hash,
       'type'               => 'success'
-    ), site_url('/'));
+    ), site_url('index.php'));
 
     $failure_redirect = add_query_arg(array(
       'fluentform_payment' => $submission->id,
       'payment_method'     => 'chip',
       'transaction_hash'   => $transaction->transaction_hash,
       'type'               => 'failed'
-    ), site_url('/'));
+    ), site_url('index.php'));
 
     $success_callback = add_query_arg(array(
       'fluentform_payment_api_notify' => 1,
       'payment_method'                => 'chip',
       'submission_id'                 => $submission->id
-    ), site_url('/'));
+    ), site_url('index.php'));
 
     $params = array(
       'success_callback' => $success_callback,

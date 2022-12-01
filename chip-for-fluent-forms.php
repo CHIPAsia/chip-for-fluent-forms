@@ -52,6 +52,7 @@ class Chip_Fluent_Forms {
       include $includes_dir . 'admin/global-settings.php';
       include $includes_dir . 'admin/form-settings.php';
       include $includes_dir . 'admin/backup-settings.php';
+      include $includes_dir . 'admin/class-webhook-setup.php';
     }
 
     include $includes_dir . 'class-register.php';

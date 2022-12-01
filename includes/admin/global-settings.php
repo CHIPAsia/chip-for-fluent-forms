@@ -95,15 +95,11 @@ $refund_global_fields = array(
     'content' => __( 'Refund Synchronization', 'chip-for-fluent-forms' ),
   ),
   array(
-    'type'    => 'submessage',
-    'style'   => 'info',
-    'content' => sprintf( __( 'You need to set Callback URL: <strong>%s</strong> to receive callback notification. Tick payment refunded event.', 'chip-for-fluent-forms' ), $callback),
-  ),
-  array(
-    'id'    => 'public-key',
-    'type'  => 'textarea',
-    'title' => __( 'Public Key', 'chip-for-fluent-forms' ),
-    'desc'  => __( 'This public key needs to be created from your CHIP dashboard.', 'chip-for-fluent-forms' )
+    'id'      => 'refund',
+    'type'    => 'switcher',
+    'title'   => __( 'Synchronize Refund', 'chip-for-fluent-forms' ),
+    'desc'    => __( 'Turn this on to synchronize refund status.', 'chip-for-fluent-forms' ),
+    'help'    => __( 'Enabling this option will ensure status is updated on Fluent Forms in the event of refund triggered on CHIP dashboard.', 'chip-for-fluent-forms' ),
   ),
 );
 

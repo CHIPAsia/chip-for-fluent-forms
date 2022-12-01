@@ -31,6 +31,12 @@ class Chip_Fluent_Forms_API
     return $this->call('POST', '/purchases/?time=' . time(), $params);
   }
 
+  public function create_webhook($params)
+  {
+    // time() is to force fresh instead cache
+    return $this->call('POST', '/webhooks/?time=' . time(), $params);
+  }
+
   public function payment_methods($currency, $language)
   {
     return $this->call(
@@ -55,6 +61,11 @@ class Chip_Fluent_Forms_API
   public function get_public_key()
   {
     return $this->call('GET', '/public_key/');
+  }
+
+  public function get_webhooks()
+  {
+    return $this->call('GET', '/webhooks/');
   }
 
   public function refund_payment($payment_id, $params = [])
