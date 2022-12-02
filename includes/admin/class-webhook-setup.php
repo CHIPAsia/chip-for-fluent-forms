@@ -57,7 +57,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
 
     if ( !$found_webhook ) {
       $webhook = $chip->create_webhook( array(
-        'title'      => 'CHIP for GiveWP',
+        'title'      => 'CHIP for Fluent Forms',
         'all_events' => false,
         'events'     => [ 'payment.refunded' ],
         'callback'   => $this->get_callback_url(),
