@@ -48,7 +48,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
     $found_webhook = false;
 
     foreach( $webhooks['results'] as $webhook ) {
-      if ( $webhook['title'] == 'CHIP for GiveWP' ) {
+      if ( $webhook['title'] == 'CHIP for Fluent Forms' ) {
         $public_key    = str_replace( '\n',"\n", $webhook['public_key'] );
         $found_webhook = true;
         break;
