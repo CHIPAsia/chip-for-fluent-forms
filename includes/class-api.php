@@ -106,7 +106,7 @@ class Chip_Fluent_Forms_API
   {
     $wp_request = wp_remote_request( $url, array(
       'method' => $method,
-      'sslverify' => apply_filters( 'gwp_chip_sslverify', true),
+      'sslverify' => apply_filters( 'ff_chip_sslverify', true),
       'headers' => $headers,
       'body' => $params,
     ));
