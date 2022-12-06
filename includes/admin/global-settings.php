@@ -47,7 +47,7 @@ $miscellaneous_global_fields = array(
     'content' => 'Miscellaneous',
   ),
   array(
-    'id'          => 'payment_title',
+    'id'          => 'payment-title',
     'type'        => 'text',
     'title'       => __( 'Payment Title', 'chip-for-fluent-forms' ),
     'desc'        => __( 'Enter your Payment Title. Default is <strong>CHIP</strong>', 'chip-for-fluent-forms' ),

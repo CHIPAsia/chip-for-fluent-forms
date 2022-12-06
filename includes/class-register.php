@@ -19,7 +19,7 @@ class Chip_Fluent_Forms_Register {
 
   public function push( $methods ) {
     $options       = get_option( FF_CHIP_FSLUG ); 
-    $payment_title = ArrayHelper::get($options, 'payment_title', 'CHIP');
+    $payment_title = ArrayHelper::get($options, 'payment-title', 'CHIP');
 
     $methods['chip'] = [
       'title'        => $payment_title,
