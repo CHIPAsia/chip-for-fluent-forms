@@ -3,11 +3,6 @@
 $slug = FF_CHIP_FSLUG;
 function ff_chip_form_fields( $form ){
 
-  $callback = add_query_arg(array(
-    'fluentform_payment_api_notify' => 1,
-    'payment_method'                => 'chip',
-  ), site_url('index.php'));
-
   $form_fields = array(
     array(
       'id'    => 'form-customize-' . $form->id,
