@@ -5,7 +5,7 @@ $slug = FF_CHIP_FSLUG;
 $ff_module_settings = get_option( '__fluentform_payment_module_settings' );
 
 CHIPFLUENT_Setup::createOptions( $slug, array(
-  'framework_title' => sprintf( __( 'CHIP for Fluent Forms %sCash, Card & Coin Handling Integrated Platform%s', 'chip-for-fluent-forms' ), '<small>', '</small>' ),
+  'framework_title' => sprintf( __( 'CHIP for Fluent Forms %1$s%3$s%2$s', 'chip-for-fluent-forms' ), '<small>', '</small>', FF_CHIP_MODULE_VERSION ),
 
   'menu_title'  => __( 'CHIP Settings', 'chip-for-fluent-forms' ),
   'menu_slug'   => 'chip',
