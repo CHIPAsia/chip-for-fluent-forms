@@ -4,11 +4,6 @@ $slug = FF_CHIP_FSLUG;
 
 $ff_module_settings = get_option( '__fluentform_payment_module_settings' );
 
-$callback = add_query_arg(array(
-  'fluentform_payment_api_notify' => 1,
-  'payment_method'                => 'chip',
-), site_url('index.php'));
-
 CHIPFLUENT_Setup::createOptions( $slug, array(
   'framework_title' => sprintf( __( 'CHIP %sCash, Card & Coin Handling Integrated Platform%s', 'chip-for-fluent-forms' ), '<small>', '</small>' ),
 
