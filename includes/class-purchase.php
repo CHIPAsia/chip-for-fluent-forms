@@ -443,7 +443,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     }
  
     $option     = get_option( 'fluent_form_chip_public_key', array() );
-    $public_key = $option['public-key' . $postfix];
+    $public_key = $option['public-key' . $postfix] ?? '';
 
     if ( openssl_verify( $content,  base64_decode( $x_signature ), $public_key, 'sha256WithRSAEncryption' ) != 1) {
       do_action('ff_log_data', [
