@@ -8,7 +8,7 @@ CHIPFLUENT_Setup::createOptions( $slug, array(
   'framework_title' => __( 'CHIP for Fluent Forms', 'chip-for-fluent-forms' ),
 
   'menu_title'  => __( 'CHIP Settings', 'chip-for-fluent-forms' ),
-  'menu_slug'   => 'chip',
+  'menu_slug'   => 'chip-for-fluent-forms',
   'menu_type'   => 'submenu',
   'menu_parent' => 'fluent_forms',
   'footer_text' => sprintf( __( 'CHIP for Fluent Forms %s', 'chip-for-fluent-forms' ) , FF_CHIP_MODULE_VERSION ),
