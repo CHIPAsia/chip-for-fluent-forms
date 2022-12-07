@@ -415,7 +415,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
   private function refund_callback() {
     $content     = file_get_contents( 'php://input' );
-    $x_signature = $_SERVER['HTTP_X_SIGNATURE'];
+    $x_signature = sanitize_text_field( $_SERVER['HTTP_X_SIGNATURE'] );
 
     if ( empty( $content ) OR !isset( $x_signature ) ) {
       return;

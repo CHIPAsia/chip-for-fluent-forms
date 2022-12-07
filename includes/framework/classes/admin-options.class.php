@@ -205,7 +205,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
 
       // XSS ok.
       // No worries, This "POST" requests is sanitizing in the below foreach. see #L337 - #L341
-      $response  = ( $ajax && ! empty( $_POST['data'] ) ) ? json_decode( wp_unslash( trim( $_POST['data'] ) ), true ) : $_POST;
+      $response  = ( $ajax && ! empty( $_POST['data'] ) ) ? json_decode( wp_unslash( trim( wp_kses_post( $_POST['data'] ) ) ), true ) : $_POST;
 
       // Set variables.
       $data      = array();
@@ -496,7 +496,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
         echo '<div class="chipfluent-header-inner">';
 
           echo '<div class="chipfluent-header-left">';
-          echo '<h1>'. $this->args['framework_title'] .'</h1>';
+          echo '<h1>'. esc_html( $this->args['framework_title'] ) .'</h1>';
           echo '</div>';
 
           echo '<div class="chipfluent-header-right">';
@@ -504,7 +504,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
             $notice_class = ( ! empty( $this->notice ) ) ? 'chipfluent-form-show' : '';
             $notice_text  = ( ! empty( $this->notice ) ) ? $this->notice : '';
 
-            echo '<div class="chipfluent-form-result chipfluent-form-success '. esc_attr( $notice_class ) .'">'. $notice_text .'</div>';
+            echo '<div class="chipfluent-form-result chipfluent-form-success '. esc_attr( $notice_class ) .'">'. esc_html( $notice_text ) .'</div>';
 
             echo ( $this->args['show_form_warning'] ) ? '<div class="chipfluent-form-result chipfluent-form-warning">'. esc_html__( 'You have unsaved changes, save your changes!', 'chipfluent' ) .'</div>' : '';
 
@@ -588,7 +588,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
               $section_slug   = ( ! empty( $section['title'] ) ) ? sanitize_title( $section_title ) : '';
 
               echo '<div class="chipfluent-section hidden'. esc_attr( $section_onload . $section_class ) .'" data-section-id="'. esc_attr( $section_parent . $section_slug ) .'">';
-              echo ( $has_nav ) ? '<div class="chipfluent-section-title"><h3>'. $section_icon . $section_title .'</h3></div>' : '';
+              echo ( $has_nav ) ? '<div class="chipfluent-section-title"><h3>'. esc_html( $section_icon . $section_title ) .'</h3></div>' : '';
               echo ( ! empty( $section['description'] ) ) ? '<div class="chipfluent-field chipfluent-section-description">'. $section['description'] .'</div>' : '';
 
               if ( ! empty( $section['fields'] ) ) {

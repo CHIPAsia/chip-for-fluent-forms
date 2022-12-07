@@ -232,7 +232,7 @@ if ( ! class_exists( 'CHIPFLUENT_Comment_Metabox' ) ) {
 
       // XSS ok.
       // No worries, This "POST" requests is sanitizing in the below foreach.
-      $request = ( ! empty( $_POST[ $this->unique ] ) ) ? $_POST[ $this->unique ] : array();
+      $request = ( ! empty( $_POST[ $this->unique ] ) ) ? wp_kses_post( $_POST[ $this->unique ] ) : array();
 
       if ( ! empty( $request ) ) {
 
