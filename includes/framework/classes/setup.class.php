@@ -7,7 +7,6 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Setup' ) ) {
   class CHIPFLUENT_Setup {
 
     // Default constants
@@ -108,146 +107,6 @@ if ( ! class_exists( 'CHIPFLUENT_Setup' ) ) {
           }
         }
       }
-
-      // Setup customize option framework
-      $params = array();
-      if ( class_exists( 'CHIPFLUENT_Customize_Options' ) && ! empty( self::$args['customize_options'] ) ) {
-        foreach ( self::$args['customize_options'] as $key => $value ) {
-          if ( ! empty( self::$args['sections'][$key] ) && ! isset( self::$inited[$key] ) ) {
-
-            $params['args']     = $value;
-            $params['sections'] = self::$args['sections'][$key];
-            self::$inited[$key] = true;
-
-            CHIPFLUENT_Customize_Options::instance( $key, $params );
-
-          }
-        }
-      }
-
-      // Setup metabox option framework
-      $params = array();
-      if ( class_exists( 'CHIPFLUENT_Metabox' ) && ! empty( self::$args['metabox_options'] ) ) {
-        foreach ( self::$args['metabox_options'] as $key => $value ) {
-          if ( ! empty( self::$args['sections'][$key] ) && ! isset( self::$inited[$key] ) ) {
-
-            $params['args']     = $value;
-            $params['sections'] = self::$args['sections'][$key];
-            self::$inited[$key] = true;
-
-            CHIPFLUENT_Metabox::instance( $key, $params );
-
-          }
-        }
-      }
-
-      // Setup nav menu option framework
-      $params = array();
-      if ( class_exists( 'CHIPFLUENT_Nav_Menu_Options' ) && ! empty( self::$args['nav_menu_options'] ) ) {
-        foreach ( self::$args['nav_menu_options'] as $key => $value ) {
-          if ( ! empty( self::$args['sections'][$key] ) && ! isset( self::$inited[$key] ) ) {
-
-            $params['args']     = $value;
-            $params['sections'] = self::$args['sections'][$key];
-            self::$inited[$key] = true;
-
-            CHIPFLUENT_Nav_Menu_Options::instance( $key, $params );
-
-          }
-        }
-      }
-
-      // Setup profile option framework
-      $params = array();
-      if ( class_exists( 'CHIPFLUENT_Profile_Options' ) && ! empty( self::$args['profile_options'] ) ) {
-        foreach ( self::$args['profile_options'] as $key => $value ) {
-          if ( ! empty( self::$args['sections'][$key] ) && ! isset( self::$inited[$key] ) ) {
-
-            $params['args']     = $value;
-            $params['sections'] = self::$args['sections'][$key];
-            self::$inited[$key] = true;
-
-            CHIPFLUENT_Profile_Options::instance( $key, $params );
-
-          }
-        }
-      }
-
-      // Setup taxonomy option framework
-      $params = array();
-      if ( class_exists( 'CHIPFLUENT_Taxonomy_Options' ) && ! empty( self::$args['taxonomy_options'] ) ) {
-        $taxonomy = ( isset( $_GET['taxonomy'] ) ) ? sanitize_text_field( wp_unslash( $_GET['taxonomy'] ) ) : '';
-        foreach ( self::$args['taxonomy_options'] as $key => $value ) {
-          if ( ! empty( self::$args['sections'][$key] ) && ! isset( self::$inited[$key] ) ) {
-
-            $params['args']     = $value;
-            $params['sections'] = self::$args['sections'][$key];
-            self::$inited[$key] = true;
-
-            CHIPFLUENT_Taxonomy_Options::instance( $key, $params );
-
-          }
-        }
-      }
-
-      // Setup widget option framework
-      if ( class_exists( 'CHIPFLUENT_Widget' ) && class_exists( 'WP_Widget_Factory' ) && ! empty( self::$args['widget_options'] ) ) {
-        $wp_widget_factory = new WP_Widget_Factory();
-        global $wp_widget_factory;
-        foreach ( self::$args['widget_options'] as $key => $value ) {
-          if ( ! isset( self::$inited[$key] ) ) {
-
-            self::$inited[$key] = true;
-            $wp_widget_factory->register( CHIPFLUENT_Widget::instance( $key, $value ) );
-
-          }
-        }
-      }
-
-      // Setup comment option framework
-      $params = array();
-      if ( class_exists( 'CHIPFLUENT_Comment_Metabox' ) && ! empty( self::$args['comment_options'] ) ) {
-        foreach ( self::$args['comment_options'] as $key => $value ) {
-          if ( ! empty( self::$args['sections'][$key] ) && ! isset( self::$inited[$key] ) ) {
-
-            $params['args']     = $value;
-            $params['sections'] = self::$args['sections'][$key];
-            self::$inited[$key] = true;
-
-            CHIPFLUENT_Comment_Metabox::instance( $key, $params );
-
-          }
-        }
-      }
-
-      // Setup shortcode option framework
-      $params = array();
-      if ( class_exists( 'CHIPFLUENT_Shortcoder' ) && ! empty( self::$args['shortcode_options'] ) ) {
-        foreach ( self::$args['shortcode_options'] as $key => $value ) {
-          if ( ! empty( self::$args['sections'][$key] ) && ! isset( self::$inited[$key] ) ) {
-
-            $params['args']     = $value;
-            $params['sections'] = self::$args['sections'][$key];
-            self::$inited[$key] = true;
-
-            CHIPFLUENT_Shortcoder::instance( $key, $params );
-
-          }
-        }
-
-        // Once editor setup for gutenberg and media buttons
-        if ( class_exists( 'CHIPFLUENT_Shortcoder' ) && ! empty( self::$shortcode_instances ) ) {
-          foreach ( self::$shortcode_instances as $instance ) {
-            if ( ! empty( $instance['show_in_editor'] ) ) {
-              CHIPFLUENT_Shortcoder::once_editor_setup();
-              break;
-            }
-          }
-        }
-
-      }
-
-      do_action( 'chipfluent_loaded' );
 
     }
 
@@ -790,18 +649,5 @@ if ( ! class_exists( 'CHIPFLUENT_Setup' ) ) {
 
   }
 
-}
-
 CHIPFLUENT_Setup::init( __FILE__, true );
-
-/**
- *
- * Extended Setup Class for Shortland
- *
- * @since 1.0.0
- * @version 1.0.0
- *
- */
-if ( ! class_exists( 'CHIPFLUENT' ) ) {
-  class CHIPFLUENT extends CHIPFLUENT_Setup{}
-}
+class CHIPFLUENT extends CHIPFLUENT_Setup{}
