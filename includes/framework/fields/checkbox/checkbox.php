@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_checkbox' ) ) {
-  class CHIPFLUENT_Field_checkbox extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_checkbox' ) ) {
+  class CSF_Field_checkbox extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -23,7 +23,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_checkbox' ) ) {
         'check_all_text' => esc_html__( 'Check/Uncheck All' ),
       ) );
 
-      $inline_class = ( $args['inline'] ) ? ' class="chipfluent--inline-list"' : '';
+      $inline_class = ( $args['inline'] ) ? ' class="csf--inline-list"' : '';
 
       echo $this->field_before();
 
@@ -49,7 +49,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_checkbox' ) ) {
                     echo '<li>';
                     echo '<label>';
                     echo '<input type="checkbox" name="'. esc_attr( $this->field_name( '[]' ) ) .'" value="'. esc_attr( $sub_key ) .'"'. $this->field_attributes() . esc_attr( $checked ) .'/>';
-                    echo '<span class="chipfluent--text">'. esc_attr( $sub_value ) .'</span>';
+                    echo '<span class="csf--text">'. esc_attr( $sub_value ) .'</span>';
                     echo '</label>';
                     echo '</li>';
                   }
@@ -63,7 +63,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_checkbox' ) ) {
               echo '<li>';
               echo '<label>';
               echo '<input type="checkbox" name="'. esc_attr( $this->field_name( '[]' ) ) .'" value="'. esc_attr( $option_key ) .'"'. $this->field_attributes() . esc_attr( $checked ) .'/>';
-              echo '<span class="chipfluent--text">'. esc_attr( $option_value ) .'</span>';
+              echo '<span class="csf--text">'. esc_attr( $option_value ) .'</span>';
               echo '</label>';
               echo '</li>';
 
@@ -74,21 +74,21 @@ if ( ! class_exists( 'CHIPFLUENT_Field_checkbox' ) ) {
           echo '</ul>';
 
           if ( $args['check_all'] ) {
-            echo '<div class="chipfluent-checkbox-all">'. esc_html( $args['check_all_text'] ) .'</div>';
+            echo '<div class="csf-checkbox-all">'. esc_html( $args['check_all_text'] ) .'</div>';
           }
 
         } else {
 
-          echo ( ! empty( $this->field['empty_message'] ) ) ? esc_attr( $this->field['empty_message'] ) : esc_html__( 'No data available.', 'chipfluent' );
+          echo ( ! empty( $this->field['empty_message'] ) ) ? esc_attr( $this->field['empty_message'] ) : esc_html__( 'No data available.', 'csf' );
 
         }
 
       } else {
 
-        echo '<label class="chipfluent-checkbox">';
-        echo '<input type="hidden" name="'. esc_attr( $this->field_name() ) .'" value="'. $this->value .'" class="chipfluent--input"'. $this->field_attributes() .'/>';
-        echo '<input type="checkbox" name="_pseudo" class="chipfluent--checkbox"'. esc_attr( checked( $this->value, 1, false ) ) . $this->field_attributes() .'/>';
-        echo ( ! empty( $this->field['label'] ) ) ? '<span class="chipfluent--text">'. esc_attr( $this->field['label'] ) .'</span>' : '';
+        echo '<label class="csf-checkbox">';
+        echo '<input type="hidden" name="'. esc_attr( $this->field_name() ) .'" value="'. $this->value .'" class="csf--input"'. $this->field_attributes() .'/>';
+        echo '<input type="checkbox" name="_pseudo" class="csf--checkbox"'. esc_attr( checked( $this->value, 1, false ) ) . $this->field_attributes() .'/>';
+        echo ( ! empty( $this->field['label'] ) ) ? '<span class="csf--text">'. esc_attr( $this->field['label'] ) .'</span>' : '';
         echo '</label>';
 
       }

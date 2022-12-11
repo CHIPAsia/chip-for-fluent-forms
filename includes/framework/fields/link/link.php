@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_link' ) ) {
-  class CHIPFLUENT_Field_link extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_link' ) ) {
+  class CSF_Field_link extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -17,9 +17,9 @@ if ( ! class_exists( 'CHIPFLUENT_Field_link' ) ) {
     public function render() {
 
       $args = wp_parse_args( $this->field, array(
-        'add_title'    => esc_html__( 'Add Link', 'chipfluent' ),
-        'edit_title'   => esc_html__( 'Edit Link', 'chipfluent' ),
-        'remove_title' => esc_html__( 'Remove Link', 'chipfluent' ),
+        'add_title'    => esc_html__( 'Add Link', 'csf' ),
+        'edit_title'   => esc_html__( 'Edit Link', 'csf' ),
+        'remove_title' => esc_html__( 'Remove Link', 'csf' ),
       ) );
 
       $default_values = array(
@@ -36,17 +36,17 @@ if ( ! class_exists( 'CHIPFLUENT_Field_link' ) ) {
 
       echo $this->field_before();
 
-      echo '<textarea readonly="readonly" class="chipfluent--link hidden"></textarea>';
+      echo '<textarea readonly="readonly" class="csf--link hidden"></textarea>';
 
-      echo '<div class="'. esc_attr( $maybe_hidden ) .'"><div class="chipfluent--result">'. sprintf( '{url:"%s", text:"%s", target:"%s"}', $value['url'], $value['text'], $value['target'] ) .'</div></div>';
+      echo '<div class="'. esc_attr( $maybe_hidden ) .'"><div class="csf--result">'. sprintf( '{url:"%s", text:"%s", target:"%s"}', $value['url'], $value['text'], $value['target'] ) .'</div></div>';
 
-      echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[url]' ) ) .'" value="'. esc_attr( $value['url'] ) .'"'. $this->field_attributes( array( 'class' => 'chipfluent--url' ) ) .' />';
-      echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[text]' ) ) .'" value="'. esc_attr( $value['text'] ) .'" class="chipfluent--text" />';
-      echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[target]' ) ) .'" value="'. esc_attr( $value['target'] ) .'" class="chipfluent--target" />';
+      echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[url]' ) ) .'" value="'. esc_attr( $value['url'] ) .'"'. $this->field_attributes( array( 'class' => 'csf--url' ) ) .' />';
+      echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[text]' ) ) .'" value="'. esc_attr( $value['text'] ) .'" class="csf--text" />';
+      echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[target]' ) ) .'" value="'. esc_attr( $value['target'] ) .'" class="csf--target" />';
 
-      echo '<a href="#" class="button button-primary chipfluent--add'. esc_attr( $hidden ) .'">'. $args['add_title'] .'</a> ';
-      echo '<a href="#" class="button chipfluent--edit'. esc_attr( $maybe_hidden ) .'">'. $args['edit_title'] .'</a> ';
-      echo '<a href="#" class="button chipfluent-warning-primary chipfluent--remove'. esc_attr( $maybe_hidden ) .'">'. $args['remove_title'] .'</a>';
+      echo '<a href="#" class="button button-primary csf--add'. esc_attr( $hidden ) .'">'. $args['add_title'] .'</a> ';
+      echo '<a href="#" class="button csf--edit'. esc_attr( $maybe_hidden ) .'">'. $args['edit_title'] .'</a> ';
+      echo '<a href="#" class="button csf-warning-primary csf--remove'. esc_attr( $maybe_hidden ) .'">'. $args['remove_title'] .'</a>';
 
       echo $this->field_after();
 

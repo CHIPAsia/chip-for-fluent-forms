@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
-  class CHIPFLUENT_Field_background extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_background' ) ) {
+  class CSF_Field_background extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -33,7 +33,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
         'background_auto_attributes'    => false,
         'compact'                       => false,
         'background_image_library'      => 'image',
-        'background_image_placeholder'  => esc_html__( 'Not selected', 'chipfluent' ),
+        'background_image_placeholder'  => esc_html__( 'Not selected', 'csf' ),
       ) );
 
       if ( $args['compact'] ) {
@@ -61,17 +61,17 @@ if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
 
       echo $this->field_before();
 
-      echo '<div class="chipfluent--background-colors">';
+      echo '<div class="csf--background-colors">';
 
       //
       // Background Color
       if ( ! empty( $args['background_color'] ) ) {
 
-        echo '<div class="chipfluent--color">';
+        echo '<div class="csf--color">';
 
-        echo ( ! empty( $args['background_gradient'] ) ) ? '<div class="chipfluent--title">'. esc_html__( 'From', 'chipfluent' ) .'</div>' : '';
+        echo ( ! empty( $args['background_gradient'] ) ) ? '<div class="csf--title">'. esc_html__( 'From', 'csf' ) .'</div>' : '';
 
-        CHIPFLUENT::field( array(
+        CSF::field( array(
           'id'      => 'background-color',
           'type'    => 'color',
           'default' => $default_value['background-color'],
@@ -85,11 +85,11 @@ if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
       // Background Gradient Color
       if ( ! empty( $args['background_gradient_color'] ) && ! empty( $args['background_gradient'] ) ) {
 
-        echo '<div class="chipfluent--color">';
+        echo '<div class="csf--color">';
 
-        echo ( ! empty( $args['background_gradient'] ) ) ? '<div class="chipfluent--title">'. esc_html__( 'To', 'chipfluent' ) .'</div>' : '';
+        echo ( ! empty( $args['background_gradient'] ) ) ? '<div class="csf--title">'. esc_html__( 'To', 'csf' ) .'</div>' : '';
 
-        CHIPFLUENT::field( array(
+        CSF::field( array(
           'id'      => 'background-gradient-color',
           'type'    => 'color',
           'default' => $default_value['background-gradient-color'],
@@ -103,19 +103,19 @@ if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
       // Background Gradient Direction
       if ( ! empty( $args['background_gradient_direction'] ) && ! empty( $args['background_gradient'] ) ) {
 
-        echo '<div class="chipfluent--color">';
+        echo '<div class="csf--color">';
 
-        echo ( ! empty( $args['background_gradient'] ) ) ? '<div class="chipfluent---title">'. esc_html__( 'Direction', 'chipfluent' ) .'</div>' : '';
+        echo ( ! empty( $args['background_gradient'] ) ) ? '<div class="csf---title">'. esc_html__( 'Direction', 'csf' ) .'</div>' : '';
 
-        CHIPFLUENT::field( array(
+        CSF::field( array(
           'id'          => 'background-gradient-direction',
           'type'        => 'select',
           'options'     => array(
-            ''          => esc_html__( 'Gradient Direction', 'chipfluent' ),
-            'to bottom' => esc_html__( '&#8659; top to bottom', 'chipfluent' ),
-            'to right'  => esc_html__( '&#8658; left to right', 'chipfluent' ),
-            '135deg'    => esc_html__( '&#8664; corner top to right', 'chipfluent' ),
-            '-135deg'   => esc_html__( '&#8665; corner top to left', 'chipfluent' ),
+            ''          => esc_html__( 'Gradient Direction', 'csf' ),
+            'to bottom' => esc_html__( '&#8659; top to bottom', 'csf' ),
+            'to right'  => esc_html__( '&#8658; left to right', 'csf' ),
+            '135deg'    => esc_html__( '&#8664; corner top to right', 'csf' ),
+            '-135deg'   => esc_html__( '&#8665; corner top to left', 'csf' ),
           ),
         ), $this->value['background-gradient-direction'], $this->field_name(), 'field/background' );
 
@@ -129,12 +129,12 @@ if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
       // Background Image
       if ( ! empty( $args['background_image'] ) ) {
 
-        echo '<div class="chipfluent--background-image">';
+        echo '<div class="csf--background-image">';
 
-        CHIPFLUENT::field( array(
+        CSF::field( array(
           'id'          => 'background-image',
           'type'        => 'media',
-          'class'       => 'chipfluent-assign-field-background',
+          'class'       => 'csf-assign-field-background',
           'library'     => $args['background_image_library'],
           'preview'     => $args['background_image_preview'],
           'placeholder' => $args['background_image_placeholder'],
@@ -145,29 +145,29 @@ if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
 
       }
 
-      $auto_class   = ( ! empty( $args['background_auto_attributes'] ) ) ? ' chipfluent--auto-attributes' : '';
-      $hidden_class = ( ! empty( $args['background_auto_attributes'] ) && empty( $this->value['background-image']['url'] ) ) ? ' chipfluent--attributes-hidden' : '';
+      $auto_class   = ( ! empty( $args['background_auto_attributes'] ) ) ? ' csf--auto-attributes' : '';
+      $hidden_class = ( ! empty( $args['background_auto_attributes'] ) && empty( $this->value['background-image']['url'] ) ) ? ' csf--attributes-hidden' : '';
 
-      echo '<div class="chipfluent--background-attributes'. esc_attr( $auto_class . $hidden_class ) .'">';
+      echo '<div class="csf--background-attributes'. esc_attr( $auto_class . $hidden_class ) .'">';
 
       //
       // Background Position
       if ( ! empty( $args['background_position'] ) ) {
 
-        CHIPFLUENT::field( array(
+        CSF::field( array(
           'id'              => 'background-position',
           'type'            => 'select',
           'options'         => array(
-            ''              => esc_html__( 'Background Position', 'chipfluent' ),
-            'left top'      => esc_html__( 'Left Top', 'chipfluent' ),
-            'left center'   => esc_html__( 'Left Center', 'chipfluent' ),
-            'left bottom'   => esc_html__( 'Left Bottom', 'chipfluent' ),
-            'center top'    => esc_html__( 'Center Top', 'chipfluent' ),
-            'center center' => esc_html__( 'Center Center', 'chipfluent' ),
-            'center bottom' => esc_html__( 'Center Bottom', 'chipfluent' ),
-            'right top'     => esc_html__( 'Right Top', 'chipfluent' ),
-            'right center'  => esc_html__( 'Right Center', 'chipfluent' ),
-            'right bottom'  => esc_html__( 'Right Bottom', 'chipfluent' ),
+            ''              => esc_html__( 'Background Position', 'csf' ),
+            'left top'      => esc_html__( 'Left Top', 'csf' ),
+            'left center'   => esc_html__( 'Left Center', 'csf' ),
+            'left bottom'   => esc_html__( 'Left Bottom', 'csf' ),
+            'center top'    => esc_html__( 'Center Top', 'csf' ),
+            'center center' => esc_html__( 'Center Center', 'csf' ),
+            'center bottom' => esc_html__( 'Center Bottom', 'csf' ),
+            'right top'     => esc_html__( 'Right Top', 'csf' ),
+            'right center'  => esc_html__( 'Right Center', 'csf' ),
+            'right bottom'  => esc_html__( 'Right Bottom', 'csf' ),
           ),
         ), $this->value['background-position'], $this->field_name(), 'field/background' );
 
@@ -177,15 +177,15 @@ if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
       // Background Repeat
       if ( ! empty( $args['background_repeat'] ) ) {
 
-        CHIPFLUENT::field( array(
+        CSF::field( array(
           'id'          => 'background-repeat',
           'type'        => 'select',
           'options'     => array(
-            ''          => esc_html__( 'Background Repeat', 'chipfluent' ),
-            'repeat'    => esc_html__( 'Repeat', 'chipfluent' ),
-            'no-repeat' => esc_html__( 'No Repeat', 'chipfluent' ),
-            'repeat-x'  => esc_html__( 'Repeat Horizontally', 'chipfluent' ),
-            'repeat-y'  => esc_html__( 'Repeat Vertically', 'chipfluent' ),
+            ''          => esc_html__( 'Background Repeat', 'csf' ),
+            'repeat'    => esc_html__( 'Repeat', 'csf' ),
+            'no-repeat' => esc_html__( 'No Repeat', 'csf' ),
+            'repeat-x'  => esc_html__( 'Repeat Horizontally', 'csf' ),
+            'repeat-y'  => esc_html__( 'Repeat Vertically', 'csf' ),
           ),
         ), $this->value['background-repeat'], $this->field_name(), 'field/background' );
 
@@ -195,13 +195,13 @@ if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
       // Background Attachment
       if ( ! empty( $args['background_attachment'] ) ) {
 
-        CHIPFLUENT::field( array(
+        CSF::field( array(
           'id'       => 'background-attachment',
           'type'     => 'select',
           'options'  => array(
-            ''       => esc_html__( 'Background Attachment', 'chipfluent' ),
-            'scroll' => esc_html__( 'Scroll', 'chipfluent' ),
-            'fixed'  => esc_html__( 'Fixed', 'chipfluent' ),
+            ''       => esc_html__( 'Background Attachment', 'csf' ),
+            'scroll' => esc_html__( 'Scroll', 'csf' ),
+            'fixed'  => esc_html__( 'Fixed', 'csf' ),
           ),
         ), $this->value['background-attachment'], $this->field_name(), 'field/background' );
 
@@ -211,14 +211,14 @@ if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
       // Background Size
       if ( ! empty( $args['background_size'] ) ) {
 
-        CHIPFLUENT::field( array(
+        CSF::field( array(
           'id'        => 'background-size',
           'type'      => 'select',
           'options'   => array(
-            ''        => esc_html__( 'Background Size', 'chipfluent' ),
-            'cover'   => esc_html__( 'Cover', 'chipfluent' ),
-            'contain' => esc_html__( 'Contain', 'chipfluent' ),
-            'auto'    => esc_html__( 'Auto', 'chipfluent' ),
+            ''        => esc_html__( 'Background Size', 'csf' ),
+            'cover'   => esc_html__( 'Cover', 'csf' ),
+            'contain' => esc_html__( 'Contain', 'csf' ),
+            'auto'    => esc_html__( 'Auto', 'csf' ),
           ),
         ), $this->value['background-size'], $this->field_name(), 'field/background' );
 
@@ -228,14 +228,14 @@ if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
       // Background Origin
       if ( ! empty( $args['background_origin'] ) ) {
 
-        CHIPFLUENT::field( array(
+        CSF::field( array(
           'id'            => 'background-origin',
           'type'          => 'select',
           'options'       => array(
-            ''            => esc_html__( 'Background Origin', 'chipfluent' ),
-            'padding-box' => esc_html__( 'Padding Box', 'chipfluent' ),
-            'border-box'  => esc_html__( 'Border Box', 'chipfluent' ),
-            'content-box' => esc_html__( 'Content Box', 'chipfluent' ),
+            ''            => esc_html__( 'Background Origin', 'csf' ),
+            'padding-box' => esc_html__( 'Padding Box', 'csf' ),
+            'border-box'  => esc_html__( 'Border Box', 'csf' ),
+            'content-box' => esc_html__( 'Content Box', 'csf' ),
           ),
         ), $this->value['background-origin'], $this->field_name(), 'field/background' );
 
@@ -245,14 +245,14 @@ if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
       // Background Clip
       if ( ! empty( $args['background_clip'] ) ) {
 
-        CHIPFLUENT::field( array(
+        CSF::field( array(
           'id'            => 'background-clip',
           'type'          => 'select',
           'options'       => array(
-            ''            => esc_html__( 'Background Clip', 'chipfluent' ),
-            'border-box'  => esc_html__( 'Border Box', 'chipfluent' ),
-            'padding-box' => esc_html__( 'Padding Box', 'chipfluent' ),
-            'content-box' => esc_html__( 'Content Box', 'chipfluent' ),
+            ''            => esc_html__( 'Background Clip', 'csf' ),
+            'border-box'  => esc_html__( 'Border Box', 'csf' ),
+            'padding-box' => esc_html__( 'Padding Box', 'csf' ),
+            'content-box' => esc_html__( 'Content Box', 'csf' ),
           ),
         ), $this->value['background-clip'], $this->field_name(), 'field/background' );
 
@@ -262,21 +262,21 @@ if ( ! class_exists( 'CHIPFLUENT_Field_background' ) ) {
       // Background Blend Mode
       if ( ! empty( $args['background_blend_mode'] ) ) {
 
-        CHIPFLUENT::field( array(
+        CSF::field( array(
           'id'            => 'background-blend-mode',
           'type'          => 'select',
           'options'       => array(
-            ''            => esc_html__( 'Background Blend Mode', 'chipfluent' ),
-            'normal'      => esc_html__( 'Normal', 'chipfluent' ),
-            'multiply'    => esc_html__( 'Multiply', 'chipfluent' ),
-            'screen'      => esc_html__( 'Screen', 'chipfluent' ),
-            'overlay'     => esc_html__( 'Overlay', 'chipfluent' ),
-            'darken'      => esc_html__( 'Darken', 'chipfluent' ),
-            'lighten'     => esc_html__( 'Lighten', 'chipfluent' ),
-            'color-dodge' => esc_html__( 'Color Dodge', 'chipfluent' ),
-            'saturation'  => esc_html__( 'Saturation', 'chipfluent' ),
-            'color'       => esc_html__( 'Color', 'chipfluent' ),
-            'luminosity'  => esc_html__( 'Luminosity', 'chipfluent' ),
+            ''            => esc_html__( 'Background Blend Mode', 'csf' ),
+            'normal'      => esc_html__( 'Normal', 'csf' ),
+            'multiply'    => esc_html__( 'Multiply', 'csf' ),
+            'screen'      => esc_html__( 'Screen', 'csf' ),
+            'overlay'     => esc_html__( 'Overlay', 'csf' ),
+            'darken'      => esc_html__( 'Darken', 'csf' ),
+            'lighten'     => esc_html__( 'Lighten', 'csf' ),
+            'color-dodge' => esc_html__( 'Color Dodge', 'csf' ),
+            'saturation'  => esc_html__( 'Saturation', 'csf' ),
+            'color'       => esc_html__( 'Color', 'csf' ),
+            'luminosity'  => esc_html__( 'Luminosity', 'csf' ),
           ),
         ), $this->value['background-blend-mode'], $this->field_name(), 'field/background' );
 

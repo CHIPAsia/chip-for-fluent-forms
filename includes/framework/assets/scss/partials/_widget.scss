@@ -1,41 +1,41 @@
 /**
  * 04. Widget
  */
-.chipfluent-widgets{
+.csf-widgets{
 
-  > .chipfluent-field{
+  > .csf-field{
     position: relative;
     top: -1px;
     margin-left: -15px;
     margin-right: -15px;
     padding: 12px 15px;
 
-    .chipfluent-title{
+    .csf-title{
       float: none;
       width: 100%;
       margin-bottom: 5px;
     }
 
-    .chipfluent-fieldset{
+    .csf-fieldset{
       float: none;
       width: 100%;
     }
   }
 
-  .chipfluent-field-text input{
+  .csf-field-text input{
     width: 100%;
   }
 
-  .chipfluent-field-notice .chipfluent-notice{
+  .csf-field-notice .csf-notice{
     padding: 15px;
   }
 }
 
 .control-section{
 
-  .chipfluent-widgets{
+  .csf-widgets{
 
-    > .chipfluent-field{
+    > .csf-field{
       margin-left: -10px;
       margin-right: -10px;
       padding: 10px 12px;
@@ -45,10 +45,10 @@
 
 .wp-block{
 
-  .chipfluent-widgets{
+  .csf-widgets{
     font-size: 13px;
 
-    > .chipfluent-field{
+    > .csf-field{
       margin-left: -10px;
       margin-right: -10px;
 
@@ -56,7 +56,7 @@
         color: #fff;
       }
 
-      > .chipfluent-title{
+      > .csf-title{
 
         > h4{
           font-size: 13px;

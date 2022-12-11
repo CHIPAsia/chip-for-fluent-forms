@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_switcher' ) ) {
-  class CHIPFLUENT_Field_switcher extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_switcher' ) ) {
+  class CSF_Field_switcher extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -16,21 +16,21 @@ if ( ! class_exists( 'CHIPFLUENT_Field_switcher' ) ) {
 
     public function render() {
 
-      $active     = ( ! empty( $this->value ) ) ? ' chipfluent--active' : '';
-      $text_on    = ( ! empty( $this->field['text_on'] ) ) ? $this->field['text_on'] : esc_html__( 'On', 'chipfluent' );
-      $text_off   = ( ! empty( $this->field['text_off'] ) ) ? $this->field['text_off'] : esc_html__( 'Off', 'chipfluent' );
+      $active     = ( ! empty( $this->value ) ) ? ' csf--active' : '';
+      $text_on    = ( ! empty( $this->field['text_on'] ) ) ? $this->field['text_on'] : esc_html__( 'On', 'csf' );
+      $text_off   = ( ! empty( $this->field['text_off'] ) ) ? $this->field['text_off'] : esc_html__( 'Off', 'csf' );
       $text_width = ( ! empty( $this->field['text_width'] ) ) ? ' style="width: '. esc_attr( $this->field['text_width'] ) .'px;"': '';
 
       echo $this->field_before();
 
-      echo '<div class="chipfluent--switcher'. esc_attr( $active ) .'"'. $text_width .'>';
-      echo '<span class="chipfluent--on">'. esc_attr( $text_on ) .'</span>';
-      echo '<span class="chipfluent--off">'. esc_attr( $text_off ) .'</span>';
-      echo '<span class="chipfluent--ball"></span>';
+      echo '<div class="csf--switcher'. esc_attr( $active ) .'"'. $text_width .'>';
+      echo '<span class="csf--on">'. esc_attr( $text_on ) .'</span>';
+      echo '<span class="csf--off">'. esc_attr( $text_off ) .'</span>';
+      echo '<span class="csf--ball"></span>';
       echo '<input type="hidden" name="'. esc_attr( $this->field_name() ) .'" value="'. esc_attr( $this->value ) .'"'. $this->field_attributes() .' />';
       echo '</div>';
 
-      echo ( ! empty( $this->field['label'] ) ) ? '<span class="chipfluent--label">'. esc_attr( $this->field['label'] ) . '</span>' : '';
+      echo ( ! empty( $this->field['label'] ) ) ? '<span class="csf--label">'. esc_attr( $this->field['label'] ) . '</span>' : '';
 
       echo $this->field_after();
 

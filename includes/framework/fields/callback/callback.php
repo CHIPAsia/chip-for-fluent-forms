@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_callback' ) ) {
-  class CHIPFLUENT_Field_callback extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_callback' ) ) {
+  class CSF_Field_callback extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );

@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_fieldset' ) ) {
-  class CHIPFLUENT_Field_fieldset extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_fieldset' ) ) {
+  class CSF_Field_fieldset extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -18,7 +18,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_fieldset' ) ) {
 
       echo $this->field_before();
 
-      echo '<div class="chipfluent-fieldset-content" data-depend-id="'. esc_attr( $this->field['id'] ) .'">';
+      echo '<div class="csf-fieldset-content" data-depend-id="'. esc_attr( $this->field['id'] ) .'">';
 
       foreach ( $this->field['fields'] as $field ) {
 
@@ -27,7 +27,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_fieldset' ) ) {
         $field_value   = ( isset( $this->value[$field_id] ) ) ? $this->value[$field_id] : $field_default;
         $unique_id     = ( ! empty( $this->unique ) ) ? $this->unique .'['. $this->field['id'] .']' : $this->field['id'];
 
-        CHIPFLUENT::field( $field, $field_value, $unique_id, 'field/fieldset' );
+        CSF::field( $field, $field_value, $unique_id, 'field/fieldset' );
 
       }
 

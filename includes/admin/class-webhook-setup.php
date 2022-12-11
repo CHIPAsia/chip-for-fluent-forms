@@ -14,7 +14,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
   }
 
   public function __construct() {
-    add_action( 'chipfluent_fluent_form_chip_save_before', array( $this, 'setup_public_key' ), 10, 2 );
+    add_action( 'csf_fluent_form_chip_save_before', array( $this, 'setup_public_key' ), 10, 2 );
   }
 
   public function setup_public_key( $data, $admin_option ) {

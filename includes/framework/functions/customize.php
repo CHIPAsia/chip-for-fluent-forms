@@ -7,9 +7,9 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'WP_Customize_Panel_CHIPFLUENT' ) && class_exists( 'WP_Customize_Panel' ) ) {
-  class WP_Customize_Panel_CHIPFLUENT extends WP_Customize_Panel {
-    public $type = 'chipfluent';
+if ( ! class_exists( 'WP_Customize_Panel_CSF' ) && class_exists( 'WP_Customize_Panel' ) ) {
+  class WP_Customize_Panel_CSF extends WP_Customize_Panel {
+    public $type = 'csf';
   }
 }
 
@@ -21,9 +21,9 @@ if ( ! class_exists( 'WP_Customize_Panel_CHIPFLUENT' ) && class_exists( 'WP_Cust
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'WP_Customize_Section_CHIPFLUENT' ) && class_exists( 'WP_Customize_Section' ) ) {
-  class WP_Customize_Section_CHIPFLUENT extends WP_Customize_Section {
-    public $type = 'chipfluent';
+if ( ! class_exists( 'WP_Customize_Section_CSF' ) && class_exists( 'WP_Customize_Section' ) ) {
+  class WP_Customize_Section_CSF extends WP_Customize_Section {
+    public $type = 'csf';
   }
 }
 
@@ -35,10 +35,10 @@ if ( ! class_exists( 'WP_Customize_Section_CHIPFLUENT' ) && class_exists( 'WP_Cu
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'WP_Customize_Control_CHIPFLUENT' ) && class_exists( 'WP_Customize_Control' ) ) {
-  class WP_Customize_Control_CHIPFLUENT extends WP_Customize_Control {
+if ( ! class_exists( 'WP_Customize_Control_CSF' ) && class_exists( 'WP_Customize_Control' ) ) {
+  class WP_Customize_Control_CSF extends WP_Customize_Control {
 
-    public $type   = 'chipfluent';
+    public $type   = 'csf';
     public $field  = '';
     public $unique = '';
 
@@ -75,8 +75,8 @@ if ( ! class_exists( 'WP_Customize_Control_CHIPFLUENT' ) && class_exists( 'WP_Cu
         $depend .= ' data-value="'. esc_attr( $data_value ) .'"';
         $depend .= ( ! empty( $data_global ) ) ? ' data-depend-global="true"' : '';
 
-        $visible  = ' chipfluent-dependency-control';
-        $visible .= ( ! empty( $depend_visible ) ) ? ' chipfluent-depend-visible' : ' chipfluent-depend-hidden';
+        $visible  = ' csf-dependency-control';
+        $visible .= ( ! empty( $depend_visible ) ) ? ' csf-depend-visible' : ' csf-depend-hidden';
 
       }
 
@@ -91,7 +91,7 @@ if ( ! class_exists( 'WP_Customize_Control_CHIPFLUENT' ) && class_exists( 'WP_Cu
 
     public function render_field_content() {
 
-      $complex = apply_filters( 'chipfluent_customize_complex_fields', array(
+      $complex = apply_filters( 'csf_customize_complex_fields', array(
         'accordion',
         'background',
         'border',
@@ -119,7 +119,7 @@ if ( ! class_exists( 'WP_Customize_Control_CHIPFLUENT' ) && class_exists( 'WP_Cu
       $field_id   = ( ! empty( $this->field['id'] ) ) ? $this->field['id'] : '';
       $custom     = ( ! empty( $this->field['customizer'] ) ) ? true : false;
       $is_complex = ( in_array( $this->field['type'], $complex ) ) ? true : false;
-      $class      = ( $is_complex || $custom ) ? ' chipfluent-customize-complex' : '';
+      $class      = ( $is_complex || $custom ) ? ' csf-customize-complex' : '';
       $atts       = ( $is_complex || $custom ) ? ' data-unique-id="'. esc_attr( $this->unique ) .'" data-option-id="'. esc_attr( $field_id ) .'"' : '';
 
       if ( ! $is_complex && ! $custom ) {
@@ -130,9 +130,9 @@ if ( ! class_exists( 'WP_Customize_Control_CHIPFLUENT' ) && class_exists( 'WP_Cu
 
       $this->field['dependency'] = array();
 
-      echo '<div class="chipfluent-customize-field'. esc_attr( $class ) .'"'. $atts .'>';
+      echo '<div class="csf-customize-field'. esc_attr( $class ) .'"'. $atts .'>';
 
-      CHIPFLUENT::field( $this->field, $this->value(), $this->unique, 'customize' );
+      CSF::field( $this->field, $this->value(), $this->unique, 'customize' );
 
       echo '</div>';
 

@@ -1,7 +1,7 @@
 /**
  *
  * ---------------------------------------------------------
- * CHIPFLUENT FRAMEWORK CSS MAP
+ * CODESTAR FRAMEWORK CSS MAP
  * ---------------------------------------------------------
  *
  * 01. Base
@@ -84,24 +84,24 @@
 /**
  * 01. Base
  */
-.chipfluent {
+.csf {
   position: relative;
 }
-.chipfluent label {
+.csf label {
   padding: 0;
   margin: 0;
   display: inline-block;
 }
 
-.chipfluent-ab-icon {
+.csf-ab-icon {
   top: 2px;
 }
 
-#screen-meta-links + .chipfluent-options {
+#screen-meta-links + .csf-options {
   margin-top: 40px;
 }
 
-.chipfluent-options {
+.csf-options {
   margin-top: 20px;
   margin-right: 20px;
 }
@@ -109,22 +109,22 @@
 /**
  * 01. 01. Header
  */
-.chipfluent-header {
+.csf-header {
   position: relative;
 }
 
-.chipfluent-header-inner {
+.csf-header-inner {
   padding: 25px;
   transition: box-shadow 0.3s ease;
 }
-.chipfluent-header-inner h1 {
+.csf-header-inner h1 {
   float: left;
   font-size: 1.5em;
   line-height: 26px;
   font-weight: 400;
   margin: 0;
 }
-.chipfluent-header-inner h1 small {
+.csf-header-inner h1 small {
   font-size: 11px;
   font-weight: 500;
 }
@@ -132,7 +132,7 @@
 /**
  * 01. 02. Sticky
  */
-.chipfluent-sticky .chipfluent-header-inner {
+.csf-sticky .csf-header-inner {
   position: fixed;
   z-index: 99;
   top: 32px;
@@ -142,47 +142,47 @@
 /**
  * 01. 03. Header Buttons
  */
-.chipfluent-buttons {
+.csf-buttons {
   float: right;
 }
-.chipfluent-buttons .button {
+.csf-buttons .button {
   margin: 0 2px;
   line-height: 26px;
 }
-.chipfluent-buttons .button:focus {
+.csf-buttons .button:focus {
   outline: none !important;
   box-shadow: none !important;
 }
-.chipfluent-buttons .chipfluent-save {
+.csf-buttons .csf-save {
   min-width: 72px;
 }
 
-.chipfluent-header-left {
+.csf-header-left {
   float: left;
 }
 
-.chipfluent-header-right {
+.csf-header-right {
   float: right;
 }
 
 /**
  * 01. 04. Navigation
  */
-.chipfluent-nav {
+.csf-nav {
   display: block;
   position: relative;
   z-index: 10;
   float: left;
 }
-.chipfluent-nav ul {
+.csf-nav ul {
   clear: left;
   margin: 0;
   list-style-type: none;
 }
-.chipfluent-nav ul li {
+.csf-nav ul li {
   margin-bottom: 0;
 }
-.chipfluent-nav ul li a {
+.csf-nav ul li a {
   font-size: 13px;
   position: relative;
   display: block;
@@ -192,11 +192,11 @@
   transition-duration: 0.2s;
   transition-timing-function: ease;
 }
-.chipfluent-nav ul li a:focus {
+.csf-nav ul li a:focus {
   outline: none;
   box-shadow: none;
 }
-.chipfluent-nav ul li .chipfluent-arrow:after {
+.csf-nav ul li .csf-arrow:after {
   content: "\f054";
   display: inline-block;
   font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
@@ -208,47 +208,47 @@
   top: 50%;
   margin-top: -4px;
 }
-.chipfluent-nav ul li.chipfluent-tab-expanded .chipfluent-arrow:after {
+.csf-nav ul li.csf-tab-expanded .csf-arrow:after {
   transform: rotate(90deg);
 }
-.chipfluent-nav ul li.chipfluent-tab-expanded ul {
+.csf-nav ul li.csf-tab-expanded ul {
   display: block;
 }
-.chipfluent-nav ul ul {
+.csf-nav ul ul {
   display: none;
   position: relative;
 }
-.chipfluent-nav ul ul li a {
+.csf-nav ul ul li a {
   font-size: 12px;
   padding: 12px 14px 12px 24px;
 }
-.chipfluent-nav .chipfluent-tab-icon {
+.csf-nav .csf-tab-icon {
   width: 20px;
   margin-right: 5px;
   font-size: 13px;
   text-align: center;
 }
-.chipfluent-nav .chipfluent-label-error {
+.csf-nav .csf-label-error {
   margin-left: 4px;
   vertical-align: top;
 }
 
-.chipfluent-nav-normal {
+.csf-nav-normal {
   width: 225px;
 }
-.chipfluent-nav-normal + .chipfluent-content {
+.csf-nav-normal + .csf-content {
   margin-left: 225px;
 }
 
-.chipfluent-nav-inline {
+.csf-nav-inline {
   width: 100%;
 }
-.chipfluent-nav-inline ul li {
+.csf-nav-inline ul li {
   display: inline-block;
   vertical-align: top;
 }
 
-.chipfluent-nav-background {
+.csf-nav-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -260,14 +260,14 @@
 /**
  * 01. 05. Wrapper
  */
-.chipfluent-wrapper {
+.csf-wrapper {
   position: relative;
 }
 
 /**
  * 01. 06. Content
  */
-.chipfluent-content {
+.csf-content {
   position: relative;
   background-color: #fff;
 }
@@ -275,33 +275,33 @@
 /**
  * 01. 07. Section
  */
-.chipfluent-sections {
+.csf-sections {
   float: left;
   width: 100%;
 }
 
-.chipfluent-section-title {
+.csf-section-title {
   display: none;
   padding: 20px 30px;
   background-color: #f5f5f5;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
-.chipfluent-section-title h3 {
+.csf-section-title h3 {
   margin: 0;
   padding: 0;
   font-size: 13px;
   font-weight: bold;
   text-transform: uppercase;
 }
-.chipfluent-section-title .chipfluent-section-icon {
+.csf-section-title .csf-section-icon {
   margin-right: 5px;
 }
 
 /**
  * 01. 08. Footer
  */
-.chipfluent-footer {
+.csf-footer {
   padding: 20px;
   font-size: 11px;
 }
@@ -309,7 +309,7 @@
 /**
  * 01. 09. Copyright
  */
-.chipfluent-copyright {
+.csf-copyright {
   float: left;
   margin-top: 5px;
 }
@@ -317,28 +317,28 @@
 /**
  * 01. 10. Show All Settings
  */
-.chipfluent-search-all .chipfluent-nav-background,
-.chipfluent-search-all .chipfluent-nav,
-.chipfluent-show-all .chipfluent-nav-background,
-.chipfluent-show-all .chipfluent-nav {
+.csf-search-all .csf-nav-background,
+.csf-search-all .csf-nav,
+.csf-show-all .csf-nav-background,
+.csf-show-all .csf-nav {
   display: none;
 }
-.chipfluent-search-all .chipfluent-content,
-.chipfluent-show-all .chipfluent-content {
+.csf-search-all .csf-content,
+.csf-show-all .csf-content {
   margin-left: 0;
 }
-.chipfluent-search-all .chipfluent-section-title,
-.chipfluent-search-all .chipfluent-section,
-.chipfluent-show-all .chipfluent-section-title,
-.chipfluent-show-all .chipfluent-section {
+.csf-search-all .csf-section-title,
+.csf-search-all .csf-section,
+.csf-show-all .csf-section-title,
+.csf-show-all .csf-section {
   display: block !important;
 }
 
-.chipfluent-search-all .chipfluent-section-title {
+.csf-search-all .csf-section-title {
   display: none !important;
 }
 
-.chipfluent-expand-all {
+.csf-expand-all {
   float: left;
   padding: 0 8px;
   margin-right: 4px;
@@ -350,7 +350,7 @@
   border-radius: 2px;
   transition: all 0.2s;
 }
-.chipfluent-expand-all span {
+.csf-expand-all span {
   font-size: 11px;
   vertical-align: middle;
 }
@@ -358,10 +358,10 @@
 /**
  * 01. 11. Search Input
  */
-.chipfluent-search {
+.csf-search {
   float: left;
 }
-.chipfluent-search input {
+.csf-search input {
   margin: 0 2px 0 0;
   border: none;
   font-size: 12px;
@@ -372,12 +372,12 @@
   border-radius: 2px;
   box-shadow: none;
 }
-.chipfluent-search input:focus {
+.csf-search input:focus {
   box-shadow: none;
 }
 
-.chipfluent-saving .chipfluent-buttons,
-.chipfluent-saving .chipfluent-content {
+.csf-saving .csf-buttons,
+.csf-saving .csf-content {
   cursor: default;
   pointer-events: none;
   opacity: 0.5;
@@ -386,88 +386,88 @@
 /**
  * 01. 12. Metabox
  */
-.chipfluent-metabox {
+.csf-metabox {
   margin: -6px -12px -12px -12px;
 }
-.chipfluent-metabox .chipfluent-field {
+.csf-metabox .csf-field {
   padding: 20px;
 }
-.chipfluent-metabox .chipfluent-section-title {
+.csf-metabox .csf-section-title {
   padding: 20px;
 }
 
-.block-editor-page .chipfluent-metabox {
+.block-editor-page .csf-metabox {
   margin: -6px -14px -14px -14px;
 }
 
-.block-editor-editor-skeleton__content .chipfluent-metabox {
+.block-editor-editor-skeleton__content .csf-metabox {
   border-left: 1px solid #e2e4e7;
   border-right: 1px solid #e2e4e7;
 }
 
-.chipfluent-sections-reset {
+.csf-sections-reset {
   float: left;
   width: 100%;
   text-align: right;
   border-top: 1px solid #eee;
 }
-.chipfluent-sections-reset .chipfluent-button-cancel,
-.chipfluent-sections-reset input {
+.csf-sections-reset .csf-button-cancel,
+.csf-sections-reset input {
   display: none;
 }
-.chipfluent-sections-reset label {
+.csf-sections-reset label {
   padding: 10px;
 }
-.chipfluent-sections-reset span {
+.csf-sections-reset span {
   -webkit-user-select: none;
   user-select: none;
 }
-.chipfluent-sections-reset input:checked ~ .chipfluent-button-reset {
+.csf-sections-reset input:checked ~ .csf-button-reset {
   display: none;
 }
-.chipfluent-sections-reset input:checked ~ .chipfluent-button-cancel {
+.csf-sections-reset input:checked ~ .csf-button-cancel {
   display: inline-block;
 }
 
-#side-sortables .chipfluent-section-title {
+#side-sortables .csf-section-title {
   padding: 12px;
 }
-#side-sortables .chipfluent-field {
+#side-sortables .csf-field {
   padding: 10px 15px;
 }
-#side-sortables .chipfluent-field .chipfluent-title {
+#side-sortables .csf-field .csf-title {
   float: none;
   width: 100%;
   margin-bottom: 6px;
 }
-#side-sortables .chipfluent-field .chipfluent-fieldset {
+#side-sortables .csf-field .csf-fieldset {
   float: none;
   width: 100%;
 }
-#side-sortables .chipfluent-field-text input {
+#side-sortables .csf-field-text input {
   width: 100%;
 }
-#side-sortables .chipfluent-notice {
+#side-sortables .csf-notice {
   padding: 10px 15px;
 }
 
 /**
  * 01. 13. Comment Metabox
  */
-.chipfluent-comment-metabox {
+.csf-comment-metabox {
   margin: -6px -12px -12px -12px;
 }
-.chipfluent-comment-metabox .chipfluent-field {
+.csf-comment-metabox .csf-field {
   padding: 20px;
 }
-.chipfluent-comment-metabox .chipfluent-section-title {
+.csf-comment-metabox .csf-section-title {
   padding: 20px;
 }
 
 /**
  * 01. 14. Help Tooltip
  */
-.chipfluent-tooltip {
+.csf-tooltip {
   position: absolute;
   z-index: 5000001;
   font-size: 12px;
@@ -488,63 +488,63 @@
 /**
  * 02. 01. Theme Dark
  */
-.chipfluent-theme-dark .chipfluent-header-inner {
+.csf-theme-dark .csf-header-inner {
   background-color: #050505;
 }
-.chipfluent-theme-dark .chipfluent-header-inner h1 {
+.csf-theme-dark .csf-header-inner h1 {
   color: #fff;
 }
-.chipfluent-theme-dark .chipfluent-header-inner h1 small {
+.csf-theme-dark .csf-header-inner h1 small {
   color: #555;
 }
-.chipfluent-theme-dark .chipfluent-expand-all {
+.csf-theme-dark .csf-expand-all {
   color: #999;
   background-color: #222;
 }
-.chipfluent-theme-dark .chipfluent-expand-all:hover {
+.csf-theme-dark .csf-expand-all:hover {
   color: #fff;
   background-color: #333;
 }
-.chipfluent-theme-dark .chipfluent-search input {
+.csf-theme-dark .csf-search input {
   color: #fff;
   background-color: #222;
 }
-.chipfluent-theme-dark .chipfluent-search:focus {
+.csf-theme-dark .csf-search:focus {
   background-color: #444;
 }
-.chipfluent-theme-dark .chipfluent-search::-webkit-input-placeholder {
+.csf-theme-dark .csf-search::-webkit-input-placeholder {
   color: #666;
 }
-.chipfluent-theme-dark .chipfluent-nav ul li a {
+.csf-theme-dark .csf-nav ul li a {
   color: #999;
   border-color: #2f2f2f;
   background-color: #222;
 }
-.chipfluent-theme-dark .chipfluent-nav ul li a:hover {
+.csf-theme-dark .csf-nav ul li a:hover {
   color: #fff;
 }
-.chipfluent-theme-dark .chipfluent-nav ul li .chipfluent-active {
+.csf-theme-dark .csf-nav ul li .csf-active {
   color: #fff;
   background-color: #111;
 }
-.chipfluent-theme-dark .chipfluent-nav ul ul li a {
+.csf-theme-dark .csf-nav ul ul li a {
   border-color: #2f2f2f;
   background-color: #191919;
 }
-.chipfluent-theme-dark .chipfluent-nav ul ul li .chipfluent-active {
+.csf-theme-dark .csf-nav ul ul li .csf-active {
   background-color: #101010;
 }
-.chipfluent-theme-dark .chipfluent-nav ul ul:before {
+.csf-theme-dark .csf-nav ul ul:before {
   background-color: rgba(34, 34, 34, 0.75);
 }
-.chipfluent-theme-dark .chipfluent-nav > ul > li:last-child > a {
+.csf-theme-dark .csf-nav > ul > li:last-child > a {
   border: none;
 }
-.chipfluent-theme-dark .chipfluent-nav-normal ul li a {
+.csf-theme-dark .csf-nav-normal ul li a {
   border-bottom-width: 1px;
   border-bottom-style: solid;
 }
-.chipfluent-theme-dark .chipfluent-nav-normal ul li .chipfluent-active:after {
+.csf-theme-dark .csf-nav-normal ul li .csf-active:after {
   content: " ";
   position: absolute;
   right: 0;
@@ -557,15 +557,15 @@
   border-width: 4px;
   margin-top: -4px;
 }
-.chipfluent-theme-dark .chipfluent-nav-inline {
+.csf-theme-dark .csf-nav-inline {
   background-color: #222;
 }
-.chipfluent-theme-dark .chipfluent-nav-inline ul li a {
+.csf-theme-dark .csf-nav-inline ul li a {
   text-align: center;
   border-right-width: 1px;
   border-right-style: solid;
 }
-.chipfluent-theme-dark .chipfluent-nav-inline ul li .chipfluent-active:after {
+.csf-theme-dark .csf-nav-inline ul li .csf-active:after {
   content: " ";
   position: absolute;
   left: 50%;
@@ -578,10 +578,10 @@
   border-width: 4px;
   margin-left: -4px;
 }
-.chipfluent-theme-dark .chipfluent-nav-background {
+.csf-theme-dark .csf-nav-background {
   background-color: #222;
 }
-.chipfluent-theme-dark .chipfluent-footer {
+.csf-theme-dark .csf-footer {
   color: #555;
   background-color: #050505;
 }
@@ -589,85 +589,85 @@
 /**
  * 02. 02. Theme Light
  */
-.chipfluent-theme-light .chipfluent-container {
+.csf-theme-light .csf-container {
   border: 1px solid #ccd0d4;
   box-shadow: 0 0 15 rgba(0, 0, 0, 0.04);
 }
-.chipfluent-theme-light .chipfluent-header-inner {
+.csf-theme-light .csf-header-inner {
   border-bottom: 1px solid #ccd0d4;
   background-color: #f5f5f5;
   background: linear-gradient(#fefefe, #f5f5f5);
 }
-.chipfluent-theme-light .chipfluent-header-inner h1 small {
+.csf-theme-light .csf-header-inner h1 small {
   color: #999;
 }
-.chipfluent-theme-light .chipfluent-expand-all {
+.csf-theme-light .csf-expand-all {
   color: #999;
   background-color: #eee;
 }
-.chipfluent-theme-light .chipfluent-expand-all:hover {
+.csf-theme-light .csf-expand-all:hover {
   color: #555;
 }
-.chipfluent-theme-light .chipfluent-search input {
+.csf-theme-light .csf-search input {
   color: #555;
   background-color: #eee;
 }
-.chipfluent-theme-light .chipfluent-search input::-webkit-input-placeholder {
+.csf-theme-light .csf-search input::-webkit-input-placeholder {
   color: #999;
 }
-.chipfluent-theme-light .chipfluent-nav ul li a {
+.csf-theme-light .csf-nav ul li a {
   font-weight: 500;
   color: #444;
   background-color: #f5f5f5;
 }
-.chipfluent-theme-light .chipfluent-nav ul li a:hover {
+.csf-theme-light .csf-nav ul li a:hover {
   color: #111;
   background-color: #fff;
 }
-.chipfluent-theme-light .chipfluent-nav ul li .chipfluent-active {
+.csf-theme-light .csf-nav ul li .csf-active {
   color: #111;
   background-color: #fff;
 }
-.chipfluent-theme-light .chipfluent-nav ul ul li a {
+.csf-theme-light .csf-nav ul ul li a {
   background-color: #eee;
 }
-.chipfluent-theme-light .chipfluent-nav-normal > ul {
+.csf-theme-light .csf-nav-normal > ul {
   margin-right: -1px;
   margin-bottom: -1px;
 }
-.chipfluent-theme-light .chipfluent-nav-normal > ul li a {
+.csf-theme-light .csf-nav-normal > ul li a {
   border-bottom: 1px solid #ccd0d4;
   border-right: 1px solid #ccd0d4;
 }
-.chipfluent-theme-light .chipfluent-nav-normal > ul li .chipfluent-active {
+.csf-theme-light .csf-nav-normal > ul li .csf-active {
   border-right-color: #fff;
 }
-.chipfluent-theme-light .chipfluent-nav-inline {
+.csf-theme-light .csf-nav-inline {
   background-color: #f5f5f5;
   border-bottom: 1px solid #ccd0d4;
 }
-.chipfluent-theme-light .chipfluent-nav-inline > ul {
+.csf-theme-light .csf-nav-inline > ul {
   margin-bottom: -1px;
 }
-.chipfluent-theme-light .chipfluent-nav-inline > ul li a {
+.csf-theme-light .csf-nav-inline > ul li a {
   text-align: center;
   border-right: 1px solid #ccd0d4;
   border-bottom: 1px solid #ccd0d4;
 }
-.chipfluent-theme-light .chipfluent-nav-inline > ul li .chipfluent-active {
+.csf-theme-light .csf-nav-inline > ul li .csf-active {
   border-bottom-color: #fff;
 }
-.chipfluent-theme-light .chipfluent-nav-inline > ul ul {
+.csf-theme-light .csf-nav-inline > ul ul {
   display: none !important;
 }
-.chipfluent-theme-light .chipfluent-nav-inline .chipfluent-arrow:after {
+.csf-theme-light .csf-nav-inline .csf-arrow:after {
   display: none;
 }
-.chipfluent-theme-light .chipfluent-nav-background {
+.csf-theme-light .csf-nav-background {
   background-color: #f5f5f5;
   border-right: 1px solid #ccd0d4;
 }
-.chipfluent-theme-light .chipfluent-footer {
+.csf-theme-light .csf-footer {
   color: #555;
   border-top: 1px solid #ccd0d4;
   background-color: #f5f5f5;
@@ -677,68 +677,68 @@
 /**
  * 03. Fields
  */
-.chipfluent-field {
+.csf-field {
   position: relative;
   padding: 30px;
 }
-.chipfluent-field + .chipfluent-field {
+.csf-field + .csf-field {
   border-top: 1px solid #eee;
 }
-.chipfluent-field p:first-child {
+.csf-field p:first-child {
   margin-top: 0;
 }
-.chipfluent-field p:last-child {
+.csf-field p:last-child {
   margin-bottom: 0;
 }
-.chipfluent-field:after, .chipfluent-field:before {
+.csf-field:after, .csf-field:before {
   content: " ";
   display: table;
 }
-.chipfluent-field:after {
+.csf-field:after {
   clear: both;
 }
-.chipfluent-field h4 {
+.csf-field h4 {
   margin-top: 0;
 }
-.chipfluent-field .chipfluent-title {
+.csf-field .csf-title {
   position: relative;
   width: 20%;
   float: left;
 }
-.chipfluent-field .chipfluent-title h4 {
+.csf-field .csf-title h4 {
   margin: 0;
   color: #23282d;
 }
-.chipfluent-field .chipfluent-fieldset {
+.csf-field .csf-fieldset {
   float: right;
   width: calc(80% - 20px);
 }
 
-.chipfluent-pseudo-field {
+.csf-pseudo-field {
   padding: 0 5px 0 0 !important;
   display: inline-block;
 }
-.chipfluent-pseudo-field + .chipfluent-pseudo-field {
+.csf-pseudo-field + .csf-pseudo-field {
   border: 0;
 }
-.chipfluent-pseudo-field pre {
+.csf-pseudo-field pre {
   display: none;
 }
 
 /**
  * 03. 02. Field: accordion
  */
-.chipfluent-field-accordion .chipfluent-accordion-item {
+.csf-field-accordion .csf-accordion-item {
   position: relative;
   margin-bottom: 5px;
 }
-.chipfluent-field-accordion .chipfluent-accordion-item:last-child {
+.csf-field-accordion .csf-accordion-item:last-child {
   margin-bottom: 0;
 }
-.chipfluent-field-accordion .chipfluent-accordion-item h4 {
+.csf-field-accordion .csf-accordion-item h4 {
   font-size: 1em;
 }
-.chipfluent-field-accordion .chipfluent-accordion-title {
+.csf-field-accordion .csf-accordion-title {
   display: block;
   cursor: pointer;
   position: relative;
@@ -752,20 +752,20 @@
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
   transition: border-color 0.15s;
 }
-.chipfluent-field-accordion .chipfluent-accordion-title:active, .chipfluent-field-accordion .chipfluent-accordion-title:hover, .chipfluent-field-accordion .chipfluent-accordion-title:focus {
+.csf-field-accordion .csf-accordion-title:active, .csf-field-accordion .csf-accordion-title:hover, .csf-field-accordion .csf-accordion-title:focus {
   outline: none;
   border-color: #999;
 }
-.chipfluent-field-accordion .chipfluent-accordion-title .chipfluent--icon {
+.csf-field-accordion .csf-accordion-title .csf--icon {
   width: 20px;
   text-align: center;
   margin-right: 2px;
 }
-.chipfluent-field-accordion .chipfluent-accordion-icon {
+.csf-field-accordion .csf-accordion-icon {
   width: 16px;
   text-align: center;
 }
-.chipfluent-field-accordion .chipfluent-accordion-content {
+.csf-field-accordion .csf-accordion-content {
   display: none;
   padding: 0;
   border: 1px solid #ccd0d4;
@@ -773,58 +773,58 @@
   background-color: #fff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
-.chipfluent-field-accordion .chipfluent-accordion-content > .chipfluent-field {
+.csf-field-accordion .csf-accordion-content > .csf-field {
   padding: 15px;
 }
-.chipfluent-field-accordion .chipfluent-accordion-open {
+.csf-field-accordion .csf-accordion-open {
   display: block;
 }
 
 /**
  * 03. 03. Field: background
  */
-.chipfluent-field-background .chipfluent-field {
+.csf-field-background .csf-field {
   border: 0 !important;
   padding: 0;
   margin-bottom: 6px;
   margin-right: 6px;
 }
-.chipfluent-field-background .chipfluent--title {
+.csf-field-background .csf--title {
   color: #777;
   font-size: 12px;
 }
-.chipfluent-field-background .chipfluent--background-colors {
+.csf-field-background .csf--background-colors {
   display: flex;
   flex-wrap: wrap;
 }
-.chipfluent-field-background .chipfluent--background-attributes {
+.csf-field-background .csf--background-attributes {
   display: flex;
   flex-wrap: wrap;
 }
-.chipfluent-field-background .chipfluent--background-attributes select {
+.csf-field-background .csf--background-attributes select {
   min-width: 100%;
   margin: 0;
 }
-.chipfluent-field-background .chipfluent--background-attributes .chipfluent-field {
+.csf-field-background .csf--background-attributes .csf-field {
   flex: 1;
 }
-.chipfluent-field-background .chipfluent--attributes-hidden {
+.csf-field-background .csf--attributes-hidden {
   display: none;
 }
 
 /**
  * 03. 04. Field: backup
  */
-.chipfluent-field-backup textarea {
+.csf-field-backup textarea {
   width: 100%;
   min-height: 200px;
   margin-bottom: 5px;
 }
-.chipfluent-field-backup small {
+.csf-field-backup small {
   display: inline-block;
   margin: 5px;
 }
-.chipfluent-field-backup hr {
+.csf-field-backup hr {
   margin: 20px 0;
   border: none;
   border-bottom: 1px solid #e5e5e5;
@@ -833,29 +833,29 @@
 /**
  * 03. 05. Field: border, spacing, dimensions
  */
-.chipfluent-field-border .chipfluent--inputs,
-.chipfluent-field-spacing .chipfluent--inputs,
-.chipfluent-field-dimensions .chipfluent--inputs {
+.csf-field-border .csf--inputs,
+.csf-field-spacing .csf--inputs,
+.csf-field-dimensions .csf--inputs {
   float: left;
   display: flex;
   flex-wrap: wrap;
 }
-.chipfluent-field-border .chipfluent--input,
-.chipfluent-field-spacing .chipfluent--input,
-.chipfluent-field-dimensions .chipfluent--input {
+.csf-field-border .csf--input,
+.csf-field-spacing .csf--input,
+.csf-field-dimensions .csf--input {
   display: flex;
   padding-right: 6px;
   padding-bottom: 4px;
   box-sizing: border-box;
 }
-.chipfluent-field-border .chipfluent--input select,
-.chipfluent-field-spacing .chipfluent--input select,
-.chipfluent-field-dimensions .chipfluent--input select {
+.csf-field-border .csf--input select,
+.csf-field-spacing .csf--input select,
+.csf-field-dimensions .csf--input select {
   margin: 0;
 }
-.chipfluent-field-border .chipfluent--input input,
-.chipfluent-field-spacing .chipfluent--input input,
-.chipfluent-field-dimensions .chipfluent--input input {
+.csf-field-border .csf--input input,
+.csf-field-spacing .csf--input input,
+.csf-field-dimensions .csf--input input {
   position: relative;
   z-index: 1;
   margin: 0;
@@ -863,14 +863,14 @@
   max-width: 100%;
   text-align: center;
 }
-.chipfluent-field-border .chipfluent--color,
-.chipfluent-field-spacing .chipfluent--color,
-.chipfluent-field-dimensions .chipfluent--color {
+.csf-field-border .csf--color,
+.csf-field-spacing .csf--color,
+.csf-field-dimensions .csf--color {
   float: left;
 }
-.chipfluent-field-border .chipfluent--label,
-.chipfluent-field-spacing .chipfluent--label,
-.chipfluent-field-dimensions .chipfluent--label {
+.csf-field-border .csf--label,
+.csf-field-spacing .csf--label,
+.csf-field-dimensions .csf--label {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -884,27 +884,27 @@
   border: 1px solid #7B776C;
   background-color: #f5f5f5;
 }
-.chipfluent-field-border .chipfluent--icon,
-.chipfluent-field-spacing .chipfluent--icon,
-.chipfluent-field-dimensions .chipfluent--icon {
+.csf-field-border .csf--icon,
+.csf-field-spacing .csf--icon,
+.csf-field-dimensions .csf--icon {
   border-right: 0;
   border-radius: 4px 0 0 4px;
 }
-.chipfluent-field-border .chipfluent--icon + input,
-.chipfluent-field-spacing .chipfluent--icon + input,
-.chipfluent-field-dimensions .chipfluent--icon + input {
+.csf-field-border .csf--icon + input,
+.csf-field-spacing .csf--icon + input,
+.csf-field-dimensions .csf--icon + input {
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
 }
-.chipfluent-field-border .chipfluent--unit,
-.chipfluent-field-spacing .chipfluent--unit,
-.chipfluent-field-dimensions .chipfluent--unit {
+.csf-field-border .csf--unit,
+.csf-field-spacing .csf--unit,
+.csf-field-dimensions .csf--unit {
   border-left: 0;
   border-radius: 0 4px 4px 0;
 }
-.chipfluent-field-border .chipfluent--is-unit,
-.chipfluent-field-spacing .chipfluent--is-unit,
-.chipfluent-field-dimensions .chipfluent--is-unit {
+.csf-field-border .csf--is-unit,
+.csf-field-spacing .csf--is-unit,
+.csf-field-dimensions .csf--is-unit {
   border-top-right-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
@@ -912,10 +912,10 @@
 /**
  * 03. 06. Field: button_set
  */
-.chipfluent-field-button_set .chipfluent--buttons {
+.csf-field-button_set .csf--buttons {
   display: inline-block;
 }
-.chipfluent-field-button_set .chipfluent--button {
+.csf-field-button_set .csf--button {
   position: relative;
   z-index: 1;
   float: left;
@@ -929,76 +929,76 @@
   user-select: none;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
 }
-.chipfluent-field-button_set .chipfluent--button:first-child {
+.csf-field-button_set .csf--button:first-child {
   border-radius: 4px 0 0 4px;
 }
-.chipfluent-field-button_set .chipfluent--button:last-child {
+.csf-field-button_set .csf--button:last-child {
   border-radius: 0 4px 4px 0;
 }
-.chipfluent-field-button_set .chipfluent--button:not(:first-child) {
+.csf-field-button_set .csf--button:not(:first-child) {
   margin-left: -1px;
 }
-.chipfluent-field-button_set .chipfluent--button:hover {
+.csf-field-button_set .csf--button:hover {
   background-color: #eee;
 }
-.chipfluent-field-button_set .chipfluent--active:hover,
-.chipfluent-field-button_set .chipfluent--active {
+.csf-field-button_set .csf--active:hover,
+.csf-field-button_set .csf--active {
   z-index: 2;
   color: #fff;
   border-color: #006799;
   background-color: #0085ba;
 }
-.chipfluent-field-button_set input {
+.csf-field-button_set input {
   display: none;
 }
 
 /**
  * 03. 07. Field: checkbox, radio
  */
-.chipfluent-field-checkbox ul,
-.chipfluent-field-radio ul {
+.csf-field-checkbox ul,
+.csf-field-radio ul {
   margin: 0;
   padding: 0;
   list-style-type: none;
   overflow-y: auto;
   max-height: 305px;
 }
-.chipfluent-field-checkbox ul li,
-.chipfluent-field-radio ul li {
+.csf-field-checkbox ul li,
+.csf-field-radio ul li {
   margin-bottom: 6px;
 }
-.chipfluent-field-checkbox ul ul,
-.chipfluent-field-radio ul ul {
+.csf-field-checkbox ul ul,
+.csf-field-radio ul ul {
   max-height: none;
 }
-.chipfluent-field-checkbox ul ul li,
-.chipfluent-field-radio ul ul li {
+.csf-field-checkbox ul ul li,
+.csf-field-radio ul ul li {
   margin-left: 8px;
 }
-.chipfluent-field-checkbox ul ul li:first-child,
-.chipfluent-field-radio ul ul li:first-child {
+.csf-field-checkbox ul ul li:first-child,
+.csf-field-radio ul ul li:first-child {
   margin-left: 0;
 }
-.chipfluent-field-checkbox input,
-.chipfluent-field-radio input {
+.csf-field-checkbox input,
+.csf-field-radio input {
   margin: 0 1px;
 }
-.chipfluent-field-checkbox .chipfluent--inline-list li,
-.chipfluent-field-radio .chipfluent--inline-list li {
+.csf-field-checkbox .csf--inline-list li,
+.csf-field-radio .csf--inline-list li {
   display: inline-block;
   margin-right: 15px;
 }
-.chipfluent-field-checkbox .chipfluent--text,
-.chipfluent-field-radio .chipfluent--text {
+.csf-field-checkbox .csf--text,
+.csf-field-radio .csf--text {
   margin-left: 5px;
   vertical-align: middle;
 }
-.chipfluent-field-checkbox .chipfluent-checker,
-.chipfluent-field-radio .chipfluent-checker {
+.csf-field-checkbox .csf-checker,
+.csf-field-radio .csf-checker {
   cursor: pointer;
 }
-.chipfluent-field-checkbox .chipfluent-checkbox-all,
-.chipfluent-field-radio .chipfluent-checkbox-all {
+.csf-field-checkbox .csf-checkbox-all,
+.csf-field-radio .csf-checkbox-all {
   user-select: none;
   cursor: pointer;
   margin-top: 5px;
@@ -1009,14 +1009,14 @@
 /**
  * 03. 08. Field: code_editor
  */
-.chipfluent-field-code_editor .CodeMirror {
+.csf-field-code_editor .CodeMirror {
   width: 100%;
   height: 400px;
 }
-.chipfluent-field-code_editor .cm-s-default {
+.csf-field-code_editor .cm-s-default {
   border: 1px solid #ccd0d4;
 }
-.chipfluent-field-code_editor textarea {
+.csf-field-code_editor textarea {
   width: 100%;
   height: 400px;
 }
@@ -1024,12 +1024,12 @@
 /**
  * 03. 09. Field: color
  */
-.chipfluent-field-color > input {
+.csf-field-color > input {
   opacity: 0.75;
   width: 115px;
   max-width: 100%;
 }
-.chipfluent-field-color .button.wp-picker-clear {
+.csf-field-color .button.wp-picker-clear {
   padding: 0 8px;
   margin-left: 6px;
   line-height: 2.54545455;
@@ -1039,12 +1039,12 @@
 /**
  * 03. 10. Field: color_group
  */
-.chipfluent-field-color_group .chipfluent--left {
+.csf-field-color_group .csf--left {
   float: left;
   margin-right: 10px;
   margin-bottom: 5px;
 }
-.chipfluent-field-color_group .chipfluent--title {
+.csf-field-color_group .csf--title {
   color: #999;
   margin-bottom: 5px;
 }
@@ -1052,36 +1052,36 @@
 /**
  * 03. 11. Field: fieldset
  */
-.chipfluent-field-fieldset .chipfluent-fieldset-content {
+.csf-field-fieldset .csf-fieldset-content {
   border: 1px solid #ccd0d4;
   background-color: #fff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
-.chipfluent-field-fieldset .chipfluent-fieldset-content > .chipfluent-field {
+.csf-field-fieldset .csf-fieldset-content > .csf-field {
   padding: 15px;
 }
-.chipfluent-field-fieldset .chipfluent-field-subheading {
+.csf-field-fieldset .csf-field-subheading {
   font-size: 13px;
 }
 
 /**
  * 03. 12. Field: date
  */
-.chipfluent-field-date input {
+.csf-field-date input {
   margin: 0;
 }
-.chipfluent-field-date .chipfluent--to {
+.csf-field-date .csf--to {
   margin-left: 7px;
 }
 
-.chipfluent-datepicker-wrapper {
+.csf-datepicker-wrapper {
   margin-top: 5px;
   width: auto;
   background-color: #fff;
   z-index: 9999999 !important;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
 }
-.chipfluent-datepicker-wrapper * {
+.csf-datepicker-wrapper * {
   float: none;
   margin: 0;
   padding: 0;
@@ -1093,21 +1093,21 @@
   border-radius: 0;
   box-shadow: none;
 }
-.chipfluent-datepicker-wrapper .ui-widget-header,
-.chipfluent-datepicker-wrapper .ui-datepicker-header {
+.csf-datepicker-wrapper .ui-widget-header,
+.csf-datepicker-wrapper .ui-datepicker-header {
   color: #fff;
   background: #00a0d2;
 }
-.chipfluent-datepicker-wrapper .ui-datepicker-header .ui-state-hover {
+.csf-datepicker-wrapper .ui-datepicker-header .ui-state-hover {
   cursor: pointer;
 }
-.chipfluent-datepicker-wrapper .ui-datepicker-title {
+.csf-datepicker-wrapper .ui-datepicker-title {
   font-size: 14px;
   line-height: 40px;
   text-align: center;
 }
-.chipfluent-datepicker-wrapper .ui-datepicker-prev,
-.chipfluent-datepicker-wrapper .ui-datepicker-next {
+.csf-datepicker-wrapper .ui-datepicker-prev,
+.csf-datepicker-wrapper .ui-datepicker-next {
   position: static;
   top: auto;
   left: auto;
@@ -1125,114 +1125,114 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.chipfluent-datepicker-wrapper .ui-datepicker-next span,
-.chipfluent-datepicker-wrapper .ui-datepicker-prev span {
+.csf-datepicker-wrapper .ui-datepicker-next span,
+.csf-datepicker-wrapper .ui-datepicker-prev span {
   display: none;
 }
-.chipfluent-datepicker-wrapper .ui-datepicker-prev {
+.csf-datepicker-wrapper .ui-datepicker-prev {
   float: left;
 }
-.chipfluent-datepicker-wrapper .ui-datepicker-next {
+.csf-datepicker-wrapper .ui-datepicker-next {
   float: right;
 }
-.chipfluent-datepicker-wrapper .ui-datepicker-prev:before {
+.csf-datepicker-wrapper .ui-datepicker-prev:before {
   content: "\f053";
 }
-.chipfluent-datepicker-wrapper .ui-datepicker-next:before {
+.csf-datepicker-wrapper .ui-datepicker-next:before {
   content: "\f054";
 }
-.chipfluent-datepicker-wrapper .ui-datepicker-prev-hover,
-.chipfluent-datepicker-wrapper .ui-datepicker-next-hover {
+.csf-datepicker-wrapper .ui-datepicker-prev-hover,
+.csf-datepicker-wrapper .ui-datepicker-next-hover {
   opacity: 0.75;
 }
-.chipfluent-datepicker-wrapper tbody .ui-datepicker-week-col {
+.csf-datepicker-wrapper tbody .ui-datepicker-week-col {
   background-color: #f7f7f7;
 }
-.chipfluent-datepicker-wrapper .ui-datepicker-buttonpane {
+.csf-datepicker-wrapper .ui-datepicker-buttonpane {
   padding: 10px;
   text-align: center;
   background-color: #f7f7f7;
 }
-.chipfluent-datepicker-wrapper .ui-datepicker-buttonpane button {
+.csf-datepicker-wrapper .ui-datepicker-buttonpane button {
   cursor: pointer;
   margin: 0 5px;
   padding: 7px 14px;
   border: 1px solid #eee;
   background-color: #fff;
 }
-.chipfluent-datepicker-wrapper select {
+.csf-datepicker-wrapper select {
   margin: 0 4px;
 }
-.chipfluent-datepicker-wrapper select option {
+.csf-datepicker-wrapper select option {
   color: #555;
 }
-.chipfluent-datepicker-wrapper table {
+.csf-datepicker-wrapper table {
   font-size: 13px;
   border-collapse: collapse;
   width: 100%;
 }
-.chipfluent-datepicker-wrapper thead {
+.csf-datepicker-wrapper thead {
   color: #fff;
   background: #32373c;
 }
-.chipfluent-datepicker-wrapper th {
+.csf-datepicker-wrapper th {
   text-align: center;
   padding: 7px;
   border: 1px solid #444;
 }
-.chipfluent-datepicker-wrapper td {
+.csf-datepicker-wrapper td {
   text-align: center;
   border: 1px solid #f4f4f4;
 }
-.chipfluent-datepicker-wrapper td.ui-datepicker-other-month {
+.csf-datepicker-wrapper td.ui-datepicker-other-month {
   border: transparent;
 }
-.chipfluent-datepicker-wrapper td .ui-state-default {
+.csf-datepicker-wrapper td .ui-state-default {
   color: #555;
   width: auto;
   display: block;
   padding: 6px 12px;
 }
-.chipfluent-datepicker-wrapper td .ui-state-active,
-.chipfluent-datepicker-wrapper td .ui-state-hover {
+.csf-datepicker-wrapper td .ui-state-active,
+.csf-datepicker-wrapper td .ui-state-hover {
   color: #fff;
   background-color: #0073aa;
 }
-.chipfluent-datepicker-wrapper td.ui-state-disabled .ui-state-default {
+.csf-datepicker-wrapper td.ui-state-disabled .ui-state-default {
   opacity: 0.5;
 }
 
 /**
  * 03. 13. Field: datetime
  */
-.chipfluent-field-datetime input {
+.csf-field-datetime input {
   margin: 0;
 }
-.chipfluent-field-datetime .chipfluent--to {
+.csf-field-datetime .csf--to {
   margin-left: 7px;
 }
 
-.chipfluent-flatpickr select,
-.chipfluent-flatpickr input {
+.csf-flatpickr select,
+.csf-flatpickr input {
   min-height: auto;
 }
-.chipfluent-flatpickr select:focus,
-.chipfluent-flatpickr input:focus {
+.csf-flatpickr select:focus,
+.csf-flatpickr input:focus {
   box-shadow: none;
 }
-.chipfluent-flatpickr.open {
+.csf-flatpickr.open {
   z-index: 9999999 !important;
 }
 
 /**
  * 03. 14. Field: gallery
  */
-.chipfluent-field-gallery ul {
+.csf-field-gallery ul {
   margin: 0;
   padding: 0;
   list-style-type: none;
 }
-.chipfluent-field-gallery ul li {
+.csf-field-gallery ul li {
   display: inline-block;
   position: relative;
   padding: 4px;
@@ -1242,12 +1242,12 @@
   border-radius: 2px;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
 }
-.chipfluent-field-gallery ul li img {
+.csf-field-gallery ul li img {
   max-height: 60px;
   display: inline-block;
   vertical-align: middle;
 }
-.chipfluent-field-gallery .button {
+.csf-field-gallery .button {
   margin-right: 5px;
   margin-bottom: 5px;
 }
@@ -1255,32 +1255,32 @@
 /**
  * 03. 15. Field: group
  */
-.chipfluent-field-group .chipfluent-cloneable-hidden {
+.csf-field-group .csf-cloneable-hidden {
   display: none !important;
 }
-.chipfluent-field-group .chipfluent-cloneable-wrapper {
+.csf-field-group .csf-cloneable-wrapper {
   position: relative;
 }
-.chipfluent-field-group .chipfluent-cloneable-item {
+.csf-field-group .csf-cloneable-item {
   display: none;
   position: relative;
   margin-bottom: 5px;
 }
-.chipfluent-field-group .chipfluent-cloneable-item h4 {
+.csf-field-group .csf-cloneable-item h4 {
   font-size: 1em;
 }
-.chipfluent-field-group .ui-accordion .chipfluent-cloneable-item {
+.csf-field-group .ui-accordion .csf-cloneable-item {
   display: block;
 }
-.chipfluent-field-group .chipfluent-cloneable-content {
+.csf-field-group .csf-cloneable-content {
   border: 1px solid #ccd0d4;
   background-color: #fff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
-.chipfluent-field-group .chipfluent-cloneable-content > .chipfluent-field {
+.csf-field-group .csf-cloneable-content > .csf-field {
   padding: 15px;
 }
-.chipfluent-field-group .chipfluent-cloneable-title {
+.csf-field-group .csf-cloneable-title {
   display: block;
   cursor: pointer;
   position: relative;
@@ -1294,11 +1294,11 @@
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
   transition: border-color 0.15s;
 }
-.chipfluent-field-group .chipfluent-cloneable-title:active, .chipfluent-field-group .chipfluent-cloneable-title:hover, .chipfluent-field-group .chipfluent-cloneable-title:focus {
+.csf-field-group .csf-cloneable-title:active, .csf-field-group .csf-cloneable-title:hover, .csf-field-group .csf-cloneable-title:focus {
   border-color: #999;
   outline: none;
 }
-.chipfluent-field-group .chipfluent-cloneable-helper {
+.csf-field-group .csf-cloneable-helper {
   position: absolute;
   top: 12px;
   right: 10px;
@@ -1306,24 +1306,24 @@
   font-size: 14px;
   line-height: 1em;
 }
-.chipfluent-field-group .chipfluent-cloneable-helper i {
+.csf-field-group .csf-cloneable-helper i {
   display: inline-block;
   cursor: pointer;
   padding: 5px;
   color: #999;
 }
-.chipfluent-field-group .chipfluent-cloneable-helper i:hover {
+.csf-field-group .csf-cloneable-helper i:hover {
   color: #555;
 }
-.chipfluent-field-group .chipfluent-cloneable-content {
+.csf-field-group .csf-cloneable-content {
   padding: 0;
   border-top: 0;
 }
-.chipfluent-field-group .chipfluent-cloneable-title-prefix,
-.chipfluent-field-group .chipfluent-cloneable-title-number {
+.csf-field-group .csf-cloneable-title-prefix,
+.csf-field-group .csf-cloneable-title-number {
   margin-right: 5px;
 }
-.chipfluent-field-group .chipfluent-cloneable-alert {
+.csf-field-group .csf-cloneable-alert {
   display: none;
   margin-bottom: 5px;
   padding: 10px 20px;
@@ -1331,12 +1331,12 @@
   border: 1px solid #ebccd1;
   background-color: #f2dede;
 }
-.chipfluent-field-group .widget-placeholder {
+.csf-field-group .widget-placeholder {
   margin-bottom: 10px;
   border: 1px dashed #f1c40f;
   background-color: #fffae4;
 }
-.chipfluent-field-group .chipfluent-cloneable-header-icon {
+.csf-field-group .csf-cloneable-header-icon {
   display: inline-block;
   text-align: center;
   font-size: 14px;
@@ -1344,7 +1344,7 @@
   text-indent: 0;
   vertical-align: text-top;
 }
-.chipfluent-field-group .chipfluent-cloneable-placeholder {
+.csf-field-group .csf-cloneable-placeholder {
   background-color: #ddd;
   margin-top: 4px;
   width: 100px;
@@ -1359,14 +1359,14 @@
 /**
  * 03. 16. Field: icon
  */
-.chipfluent-field-icon .chipfluent-icon-select {
+.csf-field-icon .csf-icon-select {
   display: flex;
   grid-gap: 5px;
 }
-.chipfluent-field-icon .chipfluent-icon-preview:not(.hidden) {
+.csf-field-icon .csf-icon-preview:not(.hidden) {
   display: flex;
 }
-.chipfluent-field-icon .chipfluent-icon-preview i {
+.csf-field-icon .csf-icon-preview i {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1384,14 +1384,14 @@
 /**
  * 03. 17. Field: image_select
  */
-.chipfluent-field-image_select .chipfluent--image {
+.csf-field-image_select .csf--image {
   display: inline-block;
   margin: 0 5px 5px 0;
 }
-.chipfluent-field-image_select .chipfluent--inline-list .chipfluent--image {
+.csf-field-image_select .csf--inline-list .csf--image {
   display: block;
 }
-.chipfluent-field-image_select figure {
+.csf-field-image_select figure {
   cursor: pointer;
   position: relative;
   display: inline-block;
@@ -1403,7 +1403,7 @@
   user-select: none;
   transition: all 0.2s;
 }
-.chipfluent-field-image_select figure:before {
+.csf-field-image_select figure:before {
   position: absolute;
   top: 0;
   left: 0;
@@ -1420,31 +1420,31 @@
   background-color: #222;
   transition: opacity 0.2s;
 }
-.chipfluent-field-image_select .chipfluent--active figure {
+.csf-field-image_select .csf--active figure {
   border-color: #222;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
-.chipfluent-field-image_select .chipfluent--active figure:before {
+.csf-field-image_select .csf--active figure:before {
   opacity: 1;
 }
-.chipfluent-field-image_select img {
+.csf-field-image_select img {
   max-width: 100%;
   height: auto;
   vertical-align: top;
 }
-.chipfluent-field-image_select input {
+.csf-field-image_select input {
   display: none;
 }
 
 /**
  * 03. 18. Field: link_color
  */
-.chipfluent-field-link_color .chipfluent--left {
+.csf-field-link_color .csf--left {
   float: left;
   margin-right: 10px;
   margin-bottom: 5px;
 }
-.chipfluent-field-link_color .chipfluent--title {
+.csf-field-link_color .csf--title {
   color: #777;
   margin-bottom: 5px;
 }
@@ -1452,46 +1452,46 @@
 /**
  * 03. 19. Field: map
  */
-.chipfluent-field-map input {
+.csf-field-map input {
   width: 100%;
 }
-.chipfluent-field-map input[type=text].ui-autocomplete-loading {
+.csf-field-map input[type=text].ui-autocomplete-loading {
   background-position-x: calc(100% - 5px);
 }
-.chipfluent-field-map .chipfluent--map-search + .chipfluent--map-osm-wrap {
+.csf-field-map .csf--map-search + .csf--map-osm-wrap {
   margin-top: 10px;
 }
-.chipfluent-field-map .chipfluent--map-osm-wrap {
+.csf-field-map .csf--map-osm-wrap {
   position: relative;
   padding: 5px;
   border: 1px solid #eee;
   background-color: #fff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
-.chipfluent-field-map .chipfluent--map-osm {
+.csf-field-map .csf--map-osm {
   position: relative;
   z-index: 1;
   min-height: 250px;
 }
-.chipfluent-field-map .chipfluent--map-inputs {
+.csf-field-map .csf--map-inputs {
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
 }
-.chipfluent-field-map .chipfluent--map-input {
+.csf-field-map .csf--map-input {
   flex: 1;
 }
-.chipfluent-field-map .chipfluent--map-input:last-child {
+.csf-field-map .csf--map-input:last-child {
   padding-left: 10px;
 }
-.chipfluent-field-map label {
+.csf-field-map label {
   display: block;
   color: #777;
   font-size: 12px;
   margin: 0 0 2px 0;
 }
 
-.chipfluent-map-ui-autocomplate {
+.csf-map-ui-autocomplate {
   z-index: 999999;
   border-radius: 4px;
   overflow: hidden;
@@ -1500,28 +1500,28 @@
 /**
  * 03. 20. Field: media
  */
-.chipfluent-field-media .chipfluent--placeholder {
+.csf-field-media .csf--placeholder {
   display: flex;
   align-items: flex-start;
 }
-.chipfluent-field-media .chipfluent--placeholder input {
+.csf-field-media .csf--placeholder input {
   width: 100%;
   margin: 0;
 }
-.chipfluent-field-media .button {
+.csf-field-media .button {
   margin-left: 5px;
 }
-.chipfluent-field-media .hidden + .button {
+.csf-field-media .hidden + .button {
   margin-left: 0;
 }
-.chipfluent-field-media .chipfluent--preview {
+.csf-field-media .csf--preview {
   position: relative;
 }
 
 /**
  * 03. 21. Field: palette
  */
-.chipfluent-field-palette .chipfluent--palette {
+.csf-field-palette .csf--palette {
   position: relative;
   display: inline-block;
   cursor: pointer;
@@ -1532,7 +1532,7 @@
   -webkit-user-select: none;
   transition: all 0.2s;
 }
-.chipfluent-field-palette .chipfluent--palette span {
+.csf-field-palette .csf--palette span {
   vertical-align: middle;
   display: inline-block;
   width: 22px;
@@ -1541,7 +1541,7 @@
   overflow: hidden;
   text-indent: -999px;
 }
-.chipfluent-field-palette .chipfluent--palette:before {
+.csf-field-palette .csf--palette:before {
   position: absolute;
   top: 0;
   left: 0;
@@ -1558,45 +1558,45 @@
   background-color: #222;
   transition: opacity 0.2s;
 }
-.chipfluent-field-palette .chipfluent--active {
+.csf-field-palette .csf--active {
   border-color: #222;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
-.chipfluent-field-palette .chipfluent--active:before {
+.csf-field-palette .csf--active:before {
   opacity: 1;
 }
-.chipfluent-field-palette input {
+.csf-field-palette input {
   display: none;
 }
 
 /**
  * 03. 22. Field: repeater
  */
-.chipfluent-field-repeater .chipfluent-field-text input {
+.csf-field-repeater .csf-field-text input {
   width: 100%;
 }
-.chipfluent-field-repeater .chipfluent-repeater-hidden {
+.csf-field-repeater .csf-repeater-hidden {
   display: none !important;
 }
-.chipfluent-field-repeater .chipfluent-repeater-wrapper .chipfluent-repeater-item {
+.csf-field-repeater .csf-repeater-wrapper .csf-repeater-item {
   display: table;
   width: 100%;
   margin-bottom: 5px;
   border: 1px solid #eee;
 }
-.chipfluent-field-repeater .chipfluent-repeater-wrapper .chipfluent-repeater-item h4 {
+.csf-field-repeater .csf-repeater-wrapper .csf-repeater-item h4 {
   font-size: 1em;
 }
-.chipfluent-field-repeater .chipfluent-repeater-content {
+.csf-field-repeater .csf-repeater-content {
   width: 100%;
   display: table-cell;
   vertical-align: middle;
   background-color: #fff;
 }
-.chipfluent-field-repeater .chipfluent-repeater-content > .chipfluent-field {
+.csf-field-repeater .csf-repeater-content > .csf-field {
   padding: 15px;
 }
-.chipfluent-field-repeater .chipfluent-repeater-helper {
+.csf-field-repeater .csf-repeater-helper {
   width: 100%;
   display: table-cell;
   vertical-align: middle;
@@ -1606,19 +1606,19 @@
   border-left: 1px solid #eee;
   background-color: #f7f7f7;
 }
-.chipfluent-field-repeater .chipfluent-repeater-helper i {
+.csf-field-repeater .csf-repeater-helper i {
   display: inline-block;
   cursor: pointer;
   color: #999;
   padding: 5px;
 }
-.chipfluent-field-repeater .chipfluent-repeater-helper i:hover {
+.csf-field-repeater .csf-repeater-helper i:hover {
   color: #555;
 }
-.chipfluent-field-repeater .chipfluent-repeater-helper-inner {
+.csf-field-repeater .csf-repeater-helper-inner {
   width: 75px;
 }
-.chipfluent-field-repeater .chipfluent-repeater-alert {
+.csf-field-repeater .csf-repeater-alert {
   display: none;
   margin-bottom: 5px;
   padding: 10px 20px;
@@ -1626,52 +1626,52 @@
   border: 1px solid #ebccd1;
   background-color: #f2dede;
 }
-.chipfluent-field-repeater .widget-placeholder {
+.csf-field-repeater .widget-placeholder {
   height: 50px;
   margin-bottom: 3px;
   border: 1px dashed #f1c40f;
   background-color: #fffae4;
 }
-.chipfluent-field-repeater .ui-sortable-helper {
+.csf-field-repeater .ui-sortable-helper {
   height: 50px !important;
   overflow: hidden !important;
   border-color: #ccc !important;
   background-color: #eee !important;
   opacity: 0.5;
 }
-.chipfluent-field-repeater .ui-sortable-helper .chipfluent-repeater-helper,
-.chipfluent-field-repeater .ui-sortable-helper .chipfluent-repeater-content {
+.csf-field-repeater .ui-sortable-helper .csf-repeater-helper,
+.csf-field-repeater .ui-sortable-helper .csf-repeater-content {
   display: none;
 }
 
 /**
  * 03. 23. Field: select
  */
-.chipfluent-field-select .chipfluent-fieldset {
+.csf-field-select .csf-fieldset {
   min-height: 30px;
 }
-.chipfluent-field-select .chipfluent-chosen {
+.csf-field-select .csf-chosen {
   display: none;
 }
-.chipfluent-field-select select {
+.csf-field-select select {
   max-width: 100%;
   margin: 0;
 }
-.chipfluent-field-select .chipfluent-hide-select {
+.csf-field-select .csf-hide-select {
   display: none !important;
 }
 
 /**
  * 03. 24. Field: slider
  */
-.chipfluent-field-slider .chipfluent--wrap {
+.csf-field-slider .csf--wrap {
   display: flex;
   align-items: center;
 }
-.chipfluent-field-slider .chipfluent--input {
+.csf-field-slider .csf--input {
   display: flex;
 }
-.chipfluent-field-slider .chipfluent--unit {
+.csf-field-slider .csf--unit {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -1685,21 +1685,21 @@
   border-left: 0;
   background-color: #f5f5f5;
 }
-.chipfluent-field-slider .chipfluent-slider-ui {
+.csf-field-slider .csf-slider-ui {
   margin-right: 15px;
 }
-.chipfluent-field-slider input[type=number] {
+.csf-field-slider input[type=number] {
   position: relative;
   z-index: 1;
   margin: 0;
   width: 50px;
   text-align: center;
 }
-.chipfluent-field-slider .chipfluent--is-unit {
+.csf-field-slider .csf--is-unit {
   border-top-right-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
-.chipfluent-field-slider .ui-slider {
+.csf-field-slider .ui-slider {
   position: relative;
   width: 100%;
   height: 3px;
@@ -1707,13 +1707,13 @@
   background: #ddd;
   border-radius: 2px;
 }
-.chipfluent-field-slider .ui-slider-range {
+.csf-field-slider .ui-slider-range {
   height: 3px;
   border: none;
   background: #333;
   border-radius: 2px;
 }
-.chipfluent-field-slider .ui-slider-handle {
+.csf-field-slider .ui-slider-handle {
   position: absolute;
   width: 16px;
   height: 16px;
@@ -1723,8 +1723,8 @@
   background: #333;
   border-radius: 2px;
 }
-.chipfluent-field-slider .ui-state-active,
-.chipfluent-field-slider .ui-slider-handle:hover {
+.csf-field-slider .ui-state-active,
+.csf-field-slider .ui-slider-handle:hover {
   cursor: pointer;
   background: #111;
 }
@@ -1732,29 +1732,29 @@
 /**
  * 03. 25. Field: sortable
  */
-.chipfluent-field-sortable .chipfluent-field-text input {
+.csf-field-sortable .csf-field-text input {
   width: 100%;
   max-width: 100%;
 }
-.chipfluent-field-sortable .chipfluent-sortable .chipfluent-sortable-item {
+.csf-field-sortable .csf-sortable .csf-sortable-item {
   display: table;
   width: 100%;
   margin-bottom: 5px;
   border: 1px solid #eee;
 }
-.chipfluent-field-sortable .chipfluent-sortable .chipfluent-sortable-item h4 {
+.csf-field-sortable .csf-sortable .csf-sortable-item h4 {
   font-size: 1em;
 }
-.chipfluent-field-sortable .chipfluent-sortable-content {
+.csf-field-sortable .csf-sortable-content {
   width: 100%;
   display: table-cell;
   vertical-align: middle;
   background-color: #fff;
 }
-.chipfluent-field-sortable .chipfluent-sortable-content > .chipfluent-field {
+.csf-field-sortable .csf-sortable-content > .csf-field {
   padding: 15px;
 }
-.chipfluent-field-sortable .chipfluent-sortable-helper {
+.csf-field-sortable .csf-sortable-helper {
   width: 100%;
   display: table-cell;
   vertical-align: middle;
@@ -1764,66 +1764,66 @@
   border-left: 1px solid #eee;
   background-color: #f7f7f7;
 }
-.chipfluent-field-sortable .chipfluent-sortable-helper i {
+.csf-field-sortable .csf-sortable-helper i {
   display: inline-block;
   cursor: pointer;
   width: 50px;
   color: #555;
 }
-.chipfluent-field-sortable .chipfluent-sortable-helper i:hover {
+.csf-field-sortable .csf-sortable-helper i:hover {
   opacity: 0.5;
 }
-.chipfluent-field-sortable .widget-placeholder {
+.csf-field-sortable .widget-placeholder {
   height: 50px;
   margin-bottom: 3px;
   border: 1px dashed #f1c40f;
   background-color: #fffae4;
 }
-.chipfluent-field-sortable .ui-sortable-helper {
+.csf-field-sortable .ui-sortable-helper {
   height: 50px !important;
   overflow: hidden !important;
   border-color: #ccc !important;
   background-color: #eee !important;
   opacity: 0.5;
 }
-.chipfluent-field-sortable .ui-sortable-helper .chipfluent-sortable-helper,
-.chipfluent-field-sortable .ui-sortable-helper .chipfluent-sortable-content {
+.csf-field-sortable .ui-sortable-helper .csf-sortable-helper,
+.csf-field-sortable .ui-sortable-helper .csf-sortable-content {
   display: none;
 }
 
 /**
  * 03. 26. Field: sorter
  */
-.chipfluent-field-sorter .ui-sortable-placeholder {
+.csf-field-sorter .ui-sortable-placeholder {
   height: 20px;
   border: 1px dashed #f1c40f;
   background-color: #fffae4;
 }
-.chipfluent-field-sorter .chipfluent-modules {
+.csf-field-sorter .csf-modules {
   float: left;
   width: 50%;
   box-sizing: border-box;
 }
-.chipfluent-field-sorter .chipfluent-modules:first-child {
+.csf-field-sorter .csf-modules:first-child {
   padding-right: 15px;
 }
-.chipfluent-field-sorter .chipfluent-modules:last-child {
+.csf-field-sorter .csf-modules:last-child {
   padding-left: 15px;
 }
-.chipfluent-field-sorter .chipfluent-disabled,
-.chipfluent-field-sorter .chipfluent-enabled {
+.csf-field-sorter .csf-disabled,
+.csf-field-sorter .csf-enabled {
   padding: 5px 15px;
   border: 1px dashed #ddd;
   background-color: #fff;
 }
-.chipfluent-field-sorter .chipfluent-disabled li {
+.csf-field-sorter .csf-disabled li {
   opacity: 0.5;
   transition: opacity 0.15s;
 }
-.chipfluent-field-sorter .chipfluent-disabled .ui-sortable-helper {
+.csf-field-sorter .csf-disabled .ui-sortable-helper {
   opacity: 1;
 }
-.chipfluent-field-sorter .chipfluent-sorter-title {
+.csf-field-sorter .csf-sorter-title {
   font-size: 13px;
   font-weight: 600;
   padding: 10px;
@@ -1833,13 +1833,13 @@
   background-color: #f8f8f8;
   text-transform: uppercase;
 }
-.chipfluent-field-sorter ul {
+.csf-field-sorter ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   min-height: 62px;
 }
-.chipfluent-field-sorter ul li {
+.csf-field-sorter ul li {
   margin: 10px 0;
   padding: 10px 15px;
   cursor: move;
@@ -1849,20 +1849,20 @@
   background-color: #fafafa;
   transition: border-color 0.15s;
 }
-.chipfluent-field-sorter ul li:hover {
+.csf-field-sorter ul li:hover {
   border-color: #bbb;
 }
 
 /**
  * 03. 27. Field: spinner
  */
-.chipfluent-field-spinner .chipfluent--spin {
+.csf-field-spinner .csf--spin {
   display: flex;
 }
-.chipfluent-field-spinner .ui-widget {
+.csf-field-spinner .ui-widget {
   font-family: inherit;
 }
-.chipfluent-field-spinner .ui-spinner {
+.csf-field-spinner .ui-spinner {
   display: flex;
   align-items: stretch;
   overflow: unset;
@@ -1870,7 +1870,7 @@
   background: none;
   border-radius: 0;
 }
-.chipfluent-field-spinner .ui-spinner .ui-button {
+.csf-field-spinner .ui-spinner .ui-button {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1882,47 +1882,47 @@
   background-color: #f5f5f5;
   border: 1px solid #7e8993;
 }
-.chipfluent-field-spinner .ui-spinner .ui-spinner-button {
+.csf-field-spinner .ui-spinner .ui-spinner-button {
   position: relative;
   cursor: pointer;
   height: auto;
 }
-.chipfluent-field-spinner .ui-spinner .ui-spinner-button:hover {
+.csf-field-spinner .ui-spinner .ui-spinner-button:hover {
   background-color: #e7e7e7;
 }
-.chipfluent-field-spinner .ui-spinner .ui-spinner-button:active {
+.csf-field-spinner .ui-spinner .ui-spinner-button:active {
   background-color: #ddd;
 }
-.chipfluent-field-spinner .ui-spinner .ui-spinner-button:before {
+.csf-field-spinner .ui-spinner .ui-spinner-button:before {
   font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
   font-weight: 900;
   font-size: 14px;
   line-height: 14px;
 }
-.chipfluent-field-spinner .ui-spinner .ui-spinner-down {
+.csf-field-spinner .ui-spinner .ui-spinner-down {
   border-right: 0;
   border-radius: 4px 0 0 4px;
 }
-.chipfluent-field-spinner .ui-spinner .ui-spinner-down:before {
+.csf-field-spinner .ui-spinner .ui-spinner-down:before {
   content: "\f0d9";
 }
-.chipfluent-field-spinner .ui-spinner .ui-spinner-up {
+.csf-field-spinner .ui-spinner .ui-spinner-up {
   border-left: 0;
   border-radius: 0 4px 4px 0;
 }
-.chipfluent-field-spinner .ui-spinner .ui-spinner-up:before {
+.csf-field-spinner .ui-spinner .ui-spinner-up:before {
   content: "\f0da";
 }
-.chipfluent-field-spinner .ui-spinner .chipfluent--unit {
+.csf-field-spinner .ui-spinner .csf--unit {
   border-left: 0;
   user-select: none;
 }
-.chipfluent-field-spinner .ui-spinner .ui-button-text,
-.chipfluent-field-spinner .ui-spinner .ui-button-icon,
-.chipfluent-field-spinner .ui-spinner .ui-button-icon-space {
+.csf-field-spinner .ui-spinner .ui-button-text,
+.csf-field-spinner .ui-spinner .ui-button-icon,
+.csf-field-spinner .ui-spinner .ui-button-icon-space {
   display: none;
 }
-.chipfluent-field-spinner .ui-spinner input {
+.csf-field-spinner .ui-spinner input {
   font-family: inherit;
   font-size: inherit;
   position: relative;
@@ -1933,23 +1933,23 @@
   padding: 0 8px;
   border-radius: 0;
 }
-.chipfluent-field-spinner .ui-spinner-down {
+.csf-field-spinner .ui-spinner-down {
   order: 1;
 }
-.chipfluent-field-spinner .ui-spinner-input {
+.csf-field-spinner .ui-spinner-input {
   order: 2;
 }
-.chipfluent-field-spinner .chipfluent--unit {
+.csf-field-spinner .csf--unit {
   order: 3;
 }
-.chipfluent-field-spinner .ui-spinner-up {
+.csf-field-spinner .ui-spinner-up {
   order: 4;
 }
 
 /**
  * 03. 28. Field: switcher
  */
-.chipfluent-field-switcher .chipfluent--switcher {
+.csf-field-switcher .csf--switcher {
   float: left;
   cursor: pointer;
   position: relative;
@@ -1963,7 +1963,7 @@
   user-select: none;
   -webkit-user-select: none;
 }
-.chipfluent-field-switcher .chipfluent--ball {
+.csf-field-switcher .csf--ball {
   position: absolute;
   top: 4px;
   left: 4px;
@@ -1974,8 +1974,8 @@
   transition: all 0.1s;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
 }
-.chipfluent-field-switcher .chipfluent--on,
-.chipfluent-field-switcher .chipfluent--off {
+.csf-field-switcher .csf--on,
+.csf-field-switcher .csf--off {
   position: absolute;
   top: 0;
   left: 0;
@@ -1991,25 +1991,25 @@
   opacity: 0;
   transition: all 0.1s;
 }
-.chipfluent-field-switcher .chipfluent--off {
+.csf-field-switcher .csf--off {
   padding-right: 0;
   padding-left: 28px;
   opacity: 1;
 }
-.chipfluent-field-switcher .chipfluent--active {
+.csf-field-switcher .csf--active {
   background: #4fb845;
 }
-.chipfluent-field-switcher .chipfluent--active .chipfluent--on {
+.csf-field-switcher .csf--active .csf--on {
   opacity: 1;
 }
-.chipfluent-field-switcher .chipfluent--active .chipfluent--off {
+.csf-field-switcher .csf--active .csf--off {
   opacity: 0;
 }
-.chipfluent-field-switcher .chipfluent--active .chipfluent--ball {
+.csf-field-switcher .csf--active .csf--ball {
   left: 100%;
   margin-left: -28px;
 }
-.chipfluent-field-switcher .chipfluent--label {
+.csf-field-switcher .csf--label {
   float: left;
   margin-top: 4px;
   margin-left: 8px;
@@ -2020,18 +2020,18 @@
 /**
  * 03. 29. Field: tabbed
  */
-.chipfluent-field-tabbed .chipfluent-tabbed-content {
+.csf-field-tabbed .csf-tabbed-content {
   border: 1px solid #ccd0d4;
   background-color: #fff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
-.chipfluent-field-tabbed .chipfluent-tabbed-content > .chipfluent-field {
+.csf-field-tabbed .csf-tabbed-content > .csf-field {
   padding: 15px;
 }
-.chipfluent-field-tabbed .chipfluent-tabbed-nav .chipfluent--icon {
+.csf-field-tabbed .csf-tabbed-nav .csf--icon {
   padding-right: 5px;
 }
-.chipfluent-field-tabbed .chipfluent-tabbed-nav a {
+.csf-field-tabbed .csf-tabbed-nav a {
   display: inline-block;
   padding: 12px 15px;
   margin-top: 1px;
@@ -2045,14 +2045,14 @@
   background-color: #f3f3f3;
   transition: all 0.2s;
 }
-.chipfluent-field-tabbed .chipfluent-tabbed-nav a:hover {
+.csf-field-tabbed .csf-tabbed-nav a:hover {
   background-color: #f9f9f9;
 }
-.chipfluent-field-tabbed .chipfluent-tabbed-nav a.chipfluent-tabbed-active {
+.csf-field-tabbed .csf-tabbed-nav a.csf-tabbed-active {
   background-color: #fff;
   border-bottom-color: #fff;
 }
-.chipfluent-field-tabbed .chipfluent-tabbed-nav a:focus {
+.csf-field-tabbed .csf-tabbed-nav a:focus {
   outline: none;
   box-shadow: none;
 }
@@ -2060,7 +2060,7 @@
 /**
  * 03. 30. Field: text
  */
-.chipfluent-field-text input {
+.csf-field-text input {
   width: 50%;
   max-width: 100%;
   margin: 0;
@@ -2069,12 +2069,12 @@
 /**
  * 03. 31. Field: textarea
  */
-.chipfluent-field-textarea textarea {
+.csf-field-textarea textarea {
   width: 100%;
   max-width: 100%;
   min-height: 125px;
 }
-.chipfluent-field-textarea .chipfluent-shortcode-button {
+.csf-field-textarea .csf-shortcode-button {
   margin-bottom: 10px;
   margin-right: 5px;
 }
@@ -2082,38 +2082,38 @@
 /**
  * 03. 32. Field: typography
  */
-.chipfluent-field-typography textarea,
-.chipfluent-field-typography select {
+.csf-field-typography textarea,
+.csf-field-typography select {
   margin: 0;
   min-width: 100%;
   max-width: 100%;
 }
-.chipfluent-field-typography .chipfluent--title {
+.csf-field-typography .csf--title {
   color: #777;
   margin: 0 0 2px 0;
   font-size: 12px;
 }
-.chipfluent-field-typography .chipfluent--title small {
+.csf-field-typography .csf--title small {
   vertical-align: top;
 }
-.chipfluent-field-typography .chipfluent--blocks {
+.csf-field-typography .csf--blocks {
   display: flex;
   flex-wrap: wrap;
 }
-.chipfluent-field-typography .chipfluent--block {
+.csf-field-typography .csf--block {
   flex: 1;
   max-width: 100%;
   padding-right: 6px;
   padding-bottom: 6px;
 }
-.chipfluent-field-typography .chipfluent--input {
+.csf-field-typography .csf--input {
   margin: 0;
   min-width: 100%;
 }
-.chipfluent-field-typography .chipfluent--input-wrap {
+.csf-field-typography .csf--input-wrap {
   position: relative;
 }
-.chipfluent-field-typography .chipfluent--unit {
+.csf-field-typography .csf--unit {
   position: absolute;
   z-index: 1;
   right: 4px;
@@ -2130,7 +2130,7 @@
   justify-content: center;
   flex-direction: column;
 }
-.chipfluent-field-typography .chipfluent--preview {
+.csf-field-typography .csf--preview {
   font-size: 16px;
   line-height: 20px;
   padding: 20px;
@@ -2142,81 +2142,81 @@
   -webkit-user-select: none;
   transition: background-color 0.2s, border-color 0.2s;
 }
-.chipfluent-field-typography .chipfluent--block-preview {
+.csf-field-typography .csf--block-preview {
   cursor: pointer;
   position: relative;
   overflow: hidden;
   margin-top: 10px;
   max-width: 100%;
 }
-.chipfluent-field-typography .chipfluent--black-background {
+.csf-field-typography .csf--black-background {
   border-color: #000;
   background-color: #000;
 }
-.chipfluent-field-typography .chipfluent--toggle {
+.csf-field-typography .csf--toggle {
   position: absolute;
   top: 5px;
   right: 10px;
   color: #999;
 }
-.chipfluent-field-typography .chipfluent--block-extra-styles {
+.csf-field-typography .csf--block-extra-styles {
   margin-top: 5px;
 }
 
 /**
  * 03. 33. Field: upload
  */
-.chipfluent-field-upload input {
+.csf-field-upload input {
   width: 100%;
   margin: 0;
 }
-.chipfluent-field-upload .chipfluent--wrap {
+.csf-field-upload .csf--wrap {
   display: flex;
   align-items: flex-start;
 }
-.chipfluent-field-upload .button {
+.csf-field-upload .button {
   margin-left: 5px;
 }
-.chipfluent-field-upload .chipfluent--preview {
+.csf-field-upload .csf--preview {
   position: relative;
 }
 
 /**
  * 03. 34. Field: wp_editor
  */
-.chipfluent-field-wp_editor .chipfluent-wp-editor {
+.csf-field-wp_editor .csf-wp-editor {
   float: left;
   width: 100%;
 }
-.chipfluent-field-wp_editor .mce-toolbar-grp {
+.csf-field-wp_editor .mce-toolbar-grp {
   border: none;
 }
-.chipfluent-field-wp_editor .mce-btn.mce-active button,
-.chipfluent-field-wp_editor .mce-btn.mce-active:hover button,
-.chipfluent-field-wp_editor .mce-btn.mce-active i,
-.chipfluent-field-wp_editor .mce-btn.mce-active:hover i {
+.csf-field-wp_editor .mce-btn.mce-active button,
+.csf-field-wp_editor .mce-btn.mce-active:hover button,
+.csf-field-wp_editor .mce-btn.mce-active i,
+.csf-field-wp_editor .mce-btn.mce-active:hover i {
   color: #23282d;
 }
-.chipfluent-field-wp_editor .wp-media-buttons {
+.csf-field-wp_editor .wp-media-buttons {
   position: relative;
   z-index: 2;
 }
-.chipfluent-field-wp_editor .wp-editor-tabs {
+.csf-field-wp_editor .wp-editor-tabs {
   position: relative;
   z-index: 1;
 }
-.chipfluent-field-wp_editor .chipfluent-no-tinymce {
+.csf-field-wp_editor .csf-no-tinymce {
   border: 1px solid #e5e5e5;
 }
-.chipfluent-field-wp_editor .chipfluent-no-quicktags .wp-media-buttons {
+.csf-field-wp_editor .csf-no-quicktags .wp-media-buttons {
   float: none;
   display: block;
 }
-.chipfluent-field-wp_editor .chipfluent-no-quicktags .mce-tinymce {
+.csf-field-wp_editor .csf-no-quicktags .mce-tinymce {
   box-shadow: none;
   border: 1px solid #e5e5e5;
 }
-.chipfluent-field-wp_editor textarea {
+.csf-field-wp_editor textarea {
   width: 100%;
   max-width: 100%;
   margin: 0;
@@ -2226,7 +2226,7 @@
 /**
  * 03. 35. Field: heading
  */
-.chipfluent-field-heading {
+.csf-field-heading {
   font-size: 1.5em;
   font-weight: bold;
   color: #23282d;
@@ -2236,7 +2236,7 @@
 /**
  * 03. 36. Field: subheading
  */
-.chipfluent-field-subheading {
+.csf-field-subheading {
   font-size: 14px;
   font-weight: bold;
   padding-top: 17px;
@@ -2248,46 +2248,46 @@
 /**
  * 03. 37. Field: submessage
  */
-.chipfluent-field-submessage {
+.csf-field-submessage {
   padding: 0 !important;
   border: 0 !important;
 }
-.chipfluent-field-submessage + .chipfluent-field {
+.csf-field-submessage + .csf-field {
   border-top: 0 !important;
 }
 
-.chipfluent-submessage {
+.csf-submessage {
   font-size: 12px;
   padding: 17px 30px;
   border-top: 1px solid transparent;
   border-bottom: 1px solid transparent;
 }
 
-.chipfluent-submessage-success {
+.csf-submessage-success {
   color: #3c763d;
   border-color: #d6e9c6;
   background-color: #dff0d8;
 }
 
-.chipfluent-submessage-info {
+.csf-submessage-info {
   color: #31708f;
   border-color: #bce8f1;
   background-color: #d9edf7;
 }
 
-.chipfluent-submessage-warning {
+.csf-submessage-warning {
   color: #8a6d3b;
   border-color: #faebcc;
   background-color: #fcf8e3;
 }
 
-.chipfluent-submessage-danger {
+.csf-submessage-danger {
   color: #a94442;
   border-color: #ebccd1;
   background-color: #f2dede;
 }
 
-.chipfluent-submessage-normal {
+.csf-submessage-normal {
   color: #23282d;
   border-color: #eee;
   background-color: #f7f7f7;
@@ -2296,11 +2296,11 @@
 /**
  * 03. 38. Field: notice
  */
-.chipfluent-field-notice {
+.csf-field-notice {
   background-color: #f7f7f7;
 }
 
-.chipfluent-notice {
+.csf-notice {
   padding: 12px;
   background-color: #fff;
   border-left-style: solid;
@@ -2308,39 +2308,39 @@
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-.chipfluent-notice-success {
+.csf-notice-success {
   border-color: #46b450;
 }
 
-.chipfluent-notice-info {
+.csf-notice-info {
   border-color: #339fd4;
 }
 
-.chipfluent-notice-warning {
+.csf-notice-warning {
   border-color: #ffbc00;
 }
 
-.chipfluent-notice-danger {
+.csf-notice-danger {
   border-color: #dc3232;
 }
 
-.chipfluent-notice-normal {
+.csf-notice-normal {
   border-color: #222;
 }
 
 /**
  * 03. 39. Field: number
  */
-.chipfluent-field-number input {
+.csf-field-number input {
   width: 100%;
   margin: 0;
 }
-.chipfluent-field-number .chipfluent--wrap {
+.csf-field-number .csf--wrap {
   position: relative;
   float: left;
   width: 100px;
 }
-.chipfluent-field-number .chipfluent--unit {
+.csf-field-number .csf--unit {
   position: absolute;
   z-index: 1;
   right: 4px;
@@ -2361,7 +2361,7 @@
 /**
  * 03. 40. Field: link
  */
-.chipfluent-field-link .chipfluent--result {
+.csf-field-link .csf--result {
   display: inline-block;
   font-size: 12px;
   line-height: 16px;
@@ -2373,12 +2373,12 @@
   border-radius: 2px;
   world-break: break-word;
 }
-.chipfluent-field-link .chipfluent--wrap {
+.csf-field-link .csf--wrap {
   position: relative;
   float: left;
   width: 100px;
 }
-.chipfluent-field-link .chipfluent--unit {
+.csf-field-link .csf--unit {
   position: absolute;
   z-index: 1;
   right: 4px;
@@ -2399,7 +2399,7 @@
 /**
  * 03. 41. others
  */
-.chipfluent-help {
+.csf-help {
   cursor: help;
   position: absolute;
   top: 0;
@@ -2408,15 +2408,15 @@
   font-size: 13px;
   color: #aaa;
 }
-.chipfluent-help .chipfluent-help-text {
+.csf-help .csf-help-text {
   display: none;
 }
 
-.chipfluent--preview {
+.csf--preview {
   max-width: 100%;
 }
 
-.chipfluent-image-preview {
+.csf-image-preview {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2434,7 +2434,7 @@
   background-color: #f9f9f9;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
 }
-.chipfluent-image-preview i {
+.csf-image-preview i {
   cursor: pointer;
   position: absolute;
   z-index: 1;
@@ -2452,34 +2452,34 @@
   border-radius: 2px;
   transition: all 0.2s;
 }
-.chipfluent-image-preview i:hover {
+.csf-image-preview i:hover {
   opacity: 1;
 }
-.chipfluent-image-preview i:focus {
+.csf-image-preview i:focus {
   box-shadow: none;
 }
-.chipfluent-image-preview span {
+.csf-image-preview span {
   position: relative;
   overflow: hidden;
   display: flex;
   height: 100%;
   width: 100%;
 }
-.chipfluent-image-preview img {
+.csf-image-preview img {
   max-width: 100%;
   height: auto;
   object-fit: contain;
 }
 
-.chipfluent-field-custom .chipfluent-field {
+.csf-field-custom .csf-field {
   padding: 0;
 }
 
-.chipfluent-field .chosen-container-single .chosen-single {
+.csf-field .chosen-container-single .chosen-single {
   height: 28px;
   line-height: 26px;
 }
-.chipfluent-field .chosen-container-single .chosen-single abbr {
+.csf-field .chosen-container-single .chosen-single abbr {
   top: 0;
   right: 20px;
   font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
@@ -2491,13 +2491,13 @@
   text-align: center;
   background: none;
 }
-.chipfluent-field .chosen-container-single .chosen-single abbr:before {
+.csf-field .chosen-container-single .chosen-single abbr:before {
   content: "\f00d";
 }
-.chipfluent-field .chosen-container-single .chosen-single abbr:hover {
+.csf-field .chosen-container-single .chosen-single abbr:hover {
   color: #555;
 }
-.chipfluent-field .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
+.csf-field .chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
   font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
   font-weight: 900;
   font-size: 12px;
@@ -2507,44 +2507,44 @@
   text-align: center;
   background: none;
 }
-.chipfluent-field .chosen-container-multi .chosen-choices li.search-choice .search-choice-close:before {
+.csf-field .chosen-container-multi .chosen-choices li.search-choice .search-choice-close:before {
   content: "\f00d";
   display: inline-block;
   padding-top: 3px;
 }
-.chipfluent-field .chosen-container-multi .chosen-choices li.search-choice .search-choice-close:hover {
+.csf-field .chosen-container-multi .chosen-choices li.search-choice .search-choice-close:hover {
   color: #555;
 }
-.chipfluent-field .chosen-container-single .chosen-single div b {
+.csf-field .chosen-container-single .chosen-single div b {
   font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
   font-weight: 900;
   font-size: 14px;
   color: #aaa;
   background: none;
 }
-.chipfluent-field .chosen-container-single .chosen-single div b:before {
+.csf-field .chosen-container-single .chosen-single div b:before {
   content: "\f107";
 }
-.chipfluent-field .chosen-container-single .chosen-single div b:hover {
+.csf-field .chosen-container-single .chosen-single div b:hover {
   color: #555;
 }
-.chipfluent-field .chosen-container-multi .chosen-choices li.search-choice-placeholder {
+.csf-field .chosen-container-multi .chosen-choices li.search-choice-placeholder {
   border: 1px dashed #aaa;
   margin: 3px 5px 3px 0;
 }
-.chipfluent-field .chosen-container-multi .ui-sortable li.search-choice span {
+.csf-field .chosen-container-multi .ui-sortable li.search-choice span {
   cursor: move;
 }
-.chipfluent-field .chosen-container-active.chosen-with-drop .chosen-single div b:before {
+.csf-field .chosen-container-active.chosen-with-drop .chosen-single div b:before {
   content: "\f106";
 }
-.chipfluent-field .chosen-container-single .chosen-single-with-deselect span {
+.csf-field .chosen-container-single .chosen-single-with-deselect span {
   margin-right: 40px;
 }
-.chipfluent-field .chosen-container-single .chosen-search input[type=text] {
+.csf-field .chosen-container-single .chosen-search input[type=text] {
   background: none;
 }
-.chipfluent-field .chosen-container-single .chosen-search:before {
+.csf-field .chosen-container-single .chosen-search:before {
   font-family: "Font Awesome 5 Pro", "Font Awesome 5 Free", "FontAwesome";
   font-weight: 900;
   font-size: 11px;
@@ -2554,13 +2554,13 @@
   top: 10px;
   color: #aaa;
 }
-.chipfluent-field .wp-picker-container {
+.csf-field .wp-picker-container {
   display: inline-block;
 }
-.chipfluent-field .wp-picker-container .wp-color-result.button {
+.csf-field .wp-picker-container .wp-color-result.button {
   margin-bottom: 0;
 }
-.chipfluent-field .chipfluent--transparent-wrap {
+.csf-field .csf--transparent-wrap {
   display: none;
   position: relative;
   top: -1px;
@@ -2570,16 +2570,16 @@
   border-top: none;
   background-color: #fff;
 }
-.chipfluent-field .wp-picker-active .chipfluent--transparent-wrap {
+.csf-field .wp-picker-active .csf--transparent-wrap {
   display: block;
 }
-.chipfluent-field .chipfluent--transparent-slider {
+.csf-field .csf--transparent-slider {
   position: absolute;
   width: 190px;
   margin-left: 2px;
   height: 18px;
 }
-.chipfluent-field .chipfluent--transparent-slider .ui-slider-handle {
+.csf-field .csf--transparent-slider .ui-slider-handle {
   position: absolute;
   top: -3px;
   bottom: -3px;
@@ -2596,7 +2596,7 @@
   border-radius: 4px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
-.chipfluent-field .chipfluent--transparent-slider .ui-slider-handle:before {
+.csf-field .csf--transparent-slider .ui-slider-handle:before {
   content: " ";
   position: absolute;
   left: -2px;
@@ -2606,14 +2606,14 @@
   border: 2px solid #fff;
   border-radius: 3px;
 }
-.chipfluent-field .chipfluent--transparent-offset {
+.csf-field .csf--transparent-offset {
   height: 18px;
   width: 200px;
   background: url(../images/checkerboard.png) repeat-y center left scroll #fff;
   border-radius: 2px;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
 }
-.chipfluent-field .chipfluent--transparent-text {
+.csf-field .csf--transparent-text {
   position: absolute;
   top: 12px;
   right: 10px;
@@ -2623,7 +2623,7 @@
   text-align: center;
   color: #999;
 }
-.chipfluent-field .chipfluent--transparent-button {
+.csf-field .csf--transparent-button {
   cursor: pointer;
   user-select: none;
   margin-top: 10px;
@@ -2638,97 +2638,97 @@
   background-color: #f7f7f7;
   transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
-.chipfluent-field .chipfluent--transparent-active .wp-color-result {
+.csf-field .csf--transparent-active .wp-color-result {
   background-image: url(../images/checkerboard.png);
   background-size: 135px;
   background-position: center left;
   background-color: transparent !important;
 }
-.chipfluent-field .chipfluent--transparent-active .chipfluent--transparent-button {
+.csf-field .csf--transparent-active .csf--transparent-button {
   color: #fff;
   border-color: #3ea032;
   background-color: #4fb845;
 }
-.chipfluent-field .chipfluent--transparent-active .fa:before {
+.csf-field .csf--transparent-active .fa:before {
   content: "\f205";
 }
 
 /**
  * 04. Widget
  */
-.chipfluent-widgets > .chipfluent-field {
+.csf-widgets > .csf-field {
   position: relative;
   top: -1px;
   margin-left: -15px;
   margin-right: -15px;
   padding: 12px 15px;
 }
-.chipfluent-widgets > .chipfluent-field .chipfluent-title {
+.csf-widgets > .csf-field .csf-title {
   float: none;
   width: 100%;
   margin-bottom: 5px;
 }
-.chipfluent-widgets > .chipfluent-field .chipfluent-fieldset {
+.csf-widgets > .csf-field .csf-fieldset {
   float: none;
   width: 100%;
 }
-.chipfluent-widgets .chipfluent-field-text input {
+.csf-widgets .csf-field-text input {
   width: 100%;
 }
-.chipfluent-widgets .chipfluent-field-notice .chipfluent-notice {
+.csf-widgets .csf-field-notice .csf-notice {
   padding: 15px;
 }
 
-.control-section .chipfluent-widgets > .chipfluent-field {
+.control-section .csf-widgets > .csf-field {
   margin-left: -10px;
   margin-right: -10px;
   padding: 10px 12px;
 }
 
-.wp-block .chipfluent-widgets {
+.wp-block .csf-widgets {
   font-size: 13px;
 }
-.wp-block .chipfluent-widgets > .chipfluent-field {
+.wp-block .csf-widgets > .csf-field {
   margin-left: -10px;
   margin-right: -10px;
 }
-.wp-block .chipfluent-widgets > .chipfluent-field .button-primary {
+.wp-block .csf-widgets > .csf-field .button-primary {
   color: #fff;
 }
-.wp-block .chipfluent-widgets > .chipfluent-field > .chipfluent-title > h4 {
+.wp-block .csf-widgets > .csf-field > .csf-title > h4 {
   font-size: 13px;
 }
 
 /**
  * 05. Widget
  */
-.control-section .chipfluent-field {
+.control-section .csf-field {
   padding: 0;
 }
-.control-section .chipfluent-field .chipfluent-title {
+.control-section .csf-field .csf-title {
   float: none;
   width: 100%;
   margin-bottom: 6px;
 }
-.control-section .chipfluent-field .chipfluent-title h4 {
+.control-section .csf-field .csf-title h4 {
   display: block;
   font-size: 13px;
   line-height: 1;
   font-weight: 600;
   color: inherit;
 }
-.control-section .chipfluent-field .chipfluent-fieldset {
+.control-section .csf-field .csf-fieldset {
   float: none;
   width: 100%;
 }
-.control-section .chipfluent-help {
+.control-section .csf-help {
   top: -5px;
   right: -5px;
 }
-.control-section .chipfluent-field-select select {
+.control-section .csf-field-select select {
   width: 100%;
 }
-.control-section .chipfluent-field-heading {
+.control-section .csf-field-heading {
   color: inherit;
   font-size: 14px;
   line-height: 1em;
@@ -2736,134 +2736,134 @@
   margin-left: -15px;
   padding: 15px;
 }
-.control-section .chipfluent-field-subheading {
+.control-section .csf-field-subheading {
   color: inherit;
   font-size: 11px;
   margin-right: -15px;
   margin-left: -15px;
   padding: 10px 15px;
 }
-.control-section .chipfluent-subtitle-text {
+.control-section .csf-subtitle-text {
   margin-top: 4px;
   font-size: 12px;
 }
-.control-section .chipfluent-field-submessage .chipfluent-submessage {
+.control-section .csf-field-submessage .csf-submessage {
   margin-right: -15px;
   margin-left: -15px;
   padding: 15px;
 }
-.control-section .chipfluent-fieldset .chipfluent-field-submessage .chipfluent-submessage,
-.control-section .chipfluent-fieldset .chipfluent-field-heading,
-.control-section .chipfluent-fieldset .chipfluent-field-subheading {
+.control-section .csf-fieldset .csf-field-submessage .csf-submessage,
+.control-section .csf-fieldset .csf-field-heading,
+.control-section .csf-fieldset .csf-field-subheading {
   margin-left: 0;
   margin-right: 0;
 }
-.control-section .chipfluent-field-date label,
-.control-section .chipfluent-field-datetime label {
+.control-section .csf-field-date label,
+.control-section .csf-field-datetime label {
   display: block;
 }
-.control-section .chipfluent-field-date .chipfluent--to,
-.control-section .chipfluent-field-datetime .chipfluent--to {
+.control-section .csf-field-date .csf--to,
+.control-section .csf-field-datetime .csf--to {
   margin-top: 4px;
   margin-left: 0;
 }
-.control-section .chipfluent-field-sorter ul li {
+.control-section .csf-field-sorter ul li {
   padding: 5px;
 }
-.control-section .chipfluent-field-sorter .chipfluent-modules {
+.control-section .csf-field-sorter .csf-modules {
   float: none;
   width: 100%;
 }
-.control-section .chipfluent-field-sorter .chipfluent-modules:first-child {
+.control-section .csf-field-sorter .csf-modules:first-child {
   padding-right: 0;
   padding-bottom: 15px;
 }
-.control-section .chipfluent-field-background .chipfluent--background-attributes {
+.control-section .csf-field-background .csf--background-attributes {
   flex-direction: column;
 }
-.control-section .chipfluent-field-spacing input {
+.control-section .csf-field-spacing input {
   width: 90px;
 }
-.control-section .chipfluent-field-border .chipfluent--input {
+.control-section .csf-field-border .csf--input {
   flex: 1 50%;
 }
-.control-section .chipfluent-field-border input,
-.control-section .chipfluent-field-border select {
+.control-section .csf-field-border input,
+.control-section .csf-field-border select {
   width: 100%;
 }
-.control-section .chipfluent-field-spinner input {
+.control-section .csf-field-spinner input {
   width: 50px;
 }
-.control-section .chipfluent-field-number .chipfluent--wrap {
+.control-section .csf-field-number .csf--wrap {
   width: 100%;
 }
-.control-section .chipfluent-field-backup .chipfluent-export-data {
+.control-section .csf-field-backup .csf-export-data {
   display: none;
 }
-.control-section .chipfluent-field-fieldset .chipfluent-fieldset-content {
+.control-section .csf-field-fieldset .csf-fieldset-content {
   border-color: #e5e5e5;
 }
-.control-section .chipfluent-tabbed-content > .chipfluent-field,
-.control-section .chipfluent-sortable-content > .chipfluent-field,
-.control-section .chipfluent-repeater-content > .chipfluent-field,
-.control-section .chipfluent-fieldset-content > .chipfluent-field,
-.control-section .chipfluent-cloneable-content > .chipfluent-field,
-.control-section .chipfluent-accordion-content > .chipfluent-field {
+.control-section .csf-tabbed-content > .csf-field,
+.control-section .csf-sortable-content > .csf-field,
+.control-section .csf-repeater-content > .csf-field,
+.control-section .csf-fieldset-content > .csf-field,
+.control-section .csf-cloneable-content > .csf-field,
+.control-section .csf-accordion-content > .csf-field {
   padding: 10px;
 }
-.control-section .chipfluent-tabbed-content > .chipfluent-field .chipfluent-title,
-.control-section .chipfluent-sortable-content > .chipfluent-field .chipfluent-title,
-.control-section .chipfluent-repeater-content > .chipfluent-field .chipfluent-title,
-.control-section .chipfluent-fieldset-content > .chipfluent-field .chipfluent-title,
-.control-section .chipfluent-cloneable-content > .chipfluent-field .chipfluent-title,
-.control-section .chipfluent-accordion-content > .chipfluent-field .chipfluent-title {
+.control-section .csf-tabbed-content > .csf-field .csf-title,
+.control-section .csf-sortable-content > .csf-field .csf-title,
+.control-section .csf-repeater-content > .csf-field .csf-title,
+.control-section .csf-fieldset-content > .csf-field .csf-title,
+.control-section .csf-cloneable-content > .csf-field .csf-title,
+.control-section .csf-accordion-content > .csf-field .csf-title {
   margin-bottom: 5px;
 }
-.control-section .chipfluent-tabbed-content > .chipfluent-field h4,
-.control-section .chipfluent-sortable-content > .chipfluent-field h4,
-.control-section .chipfluent-repeater-content > .chipfluent-field h4,
-.control-section .chipfluent-fieldset-content > .chipfluent-field h4,
-.control-section .chipfluent-cloneable-content > .chipfluent-field h4,
-.control-section .chipfluent-accordion-content > .chipfluent-field h4 {
+.control-section .csf-tabbed-content > .csf-field h4,
+.control-section .csf-sortable-content > .csf-field h4,
+.control-section .csf-repeater-content > .csf-field h4,
+.control-section .csf-fieldset-content > .csf-field h4,
+.control-section .csf-cloneable-content > .csf-field h4,
+.control-section .csf-accordion-content > .csf-field h4 {
   font-size: 12px;
 }
-.control-section .chipfluent-depend-hidden.chipfluent-depend-on {
+.control-section .csf-depend-hidden.csf-depend-on {
   display: none !important;
 }
-.control-section .chipfluent-depend-visible.chipfluent-depend-on {
+.control-section .csf-depend-visible.csf-depend-on {
   border-top: 0 !important;
 }
 
 /**
  * 06. Taxonomy
  */
-.chipfluent-taxonomy {
+.csf-taxonomy {
   max-width: 95%;
 }
-.chipfluent-taxonomy > .chipfluent-field {
+.csf-taxonomy > .csf-field {
   border-top: none !important;
 }
-.chipfluent-taxonomy > .chipfluent-field-heading {
+.csf-taxonomy > .csf-field-heading {
   font-size: 1.1em;
   padding: 20px !important;
   border: 1px solid #ddd;
 }
-.chipfluent-taxonomy > .chipfluent-field-subheading {
+.csf-taxonomy > .csf-field-subheading {
   font-size: 12px;
   padding: 15px !important;
   border: 1px solid #ddd;
 }
-.chipfluent-taxonomy > .chipfluent-field-submessage .chipfluent-submessage {
+.csf-taxonomy > .csf-field-submessage .csf-submessage {
   padding: 15px;
   border-left-width: 1px;
   border-left-style: solid;
   border-right-width: 1px;
   border-right-style: solid;
 }
-.chipfluent-taxonomy > .chipfluent-field-notice {
+.csf-taxonomy > .csf-field-notice {
   background-color: transparent;
 }
-.chipfluent-taxonomy .chipfluent-section-title {
+.csf-taxonomy .csf-section-title {
   display: block;
   padding: 15px;
   background-color: #f9f9f9;
@@ -2871,54 +2871,54 @@
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
 
-.chipfluent-taxonomy-add-fields > .chipfluent-field {
+.csf-taxonomy-add-fields > .csf-field {
   padding: 8px 0;
 }
-.chipfluent-taxonomy-add-fields > .chipfluent-field > .chipfluent-title {
+.csf-taxonomy-add-fields > .csf-field > .csf-title {
   float: none;
   width: 100%;
   padding: 2px 2px 4px 0;
 }
-.chipfluent-taxonomy-add-fields > .chipfluent-field > .chipfluent-title h4 {
+.csf-taxonomy-add-fields > .csf-field > .csf-title h4 {
   font-size: 12px;
   font-weight: normal;
 }
-.chipfluent-taxonomy-add-fields > .chipfluent-field > .chipfluent-fieldset {
+.csf-taxonomy-add-fields > .csf-field > .csf-fieldset {
   float: none;
   width: 100%;
 }
-.chipfluent-taxonomy-add-fields > .chipfluent-field > .chipfluent-fieldset > .chipfluent-help {
+.csf-taxonomy-add-fields > .csf-field > .csf-fieldset > .csf-help {
   right: -5px;
 }
-.chipfluent-taxonomy-add-fields + p.submit {
+.csf-taxonomy-add-fields + p.submit {
   margin-top: 0;
 }
 
-.chipfluent-taxonomy-edit-fields > .chipfluent-field {
+.csf-taxonomy-edit-fields > .csf-field {
   padding: 20px 0;
 }
-.chipfluent-taxonomy-edit-fields > .chipfluent-field > .chipfluent-title {
+.csf-taxonomy-edit-fields > .csf-field > .csf-title {
   width: 200px;
 }
-.chipfluent-taxonomy-edit-fields > .chipfluent-field > .chipfluent-title h4 {
+.csf-taxonomy-edit-fields > .csf-field > .csf-title h4 {
   font-size: 14px;
   font-weight: 600;
   line-height: 1.3;
   display: inline-block;
   vertical-align: middle;
 }
-.chipfluent-taxonomy-edit-fields > .chipfluent-field > .chipfluent-fieldset {
+.csf-taxonomy-edit-fields > .csf-field > .csf-fieldset {
   width: calc(100% - 220px);
 }
-.chipfluent-taxonomy-edit-fields > .chipfluent-field > .chipfluent-fieldset > .chipfluent-help {
+.csf-taxonomy-edit-fields > .csf-field > .csf-fieldset > .csf-help {
   top: -5px;
   right: -5px;
 }
-.chipfluent-taxonomy-edit-fields > .chipfluent-field-submessage {
+.csf-taxonomy-edit-fields > .csf-field-submessage {
   margin: 20px 0;
 }
-.chipfluent-taxonomy-edit-fields > .chipfluent-field-subheading,
-.chipfluent-taxonomy-edit-fields > .chipfluent-field-heading {
+.csf-taxonomy-edit-fields > .csf-field-subheading,
+.csf-taxonomy-edit-fields > .csf-field-heading {
   margin: 20px 0;
   border: 1px solid #ddd;
 }
@@ -2926,112 +2926,112 @@
 /**
  * 08. Nav Menu
  */
-.chipfluent-nav-menu-options {
+.csf-nav-menu-options {
   clear: both;
   float: left;
   width: 100%;
 }
-.chipfluent-nav-menu-options > .chipfluent-fields {
+.csf-nav-menu-options > .csf-fields {
   margin: 10px -10px;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
-.chipfluent-nav-menu-options > .chipfluent-fields > .chipfluent-field {
+.csf-nav-menu-options > .csf-fields > .csf-field {
   padding: 12px;
 }
-.chipfluent-nav-menu-options > .chipfluent-fields > .chipfluent-field .chipfluent-title {
+.csf-nav-menu-options > .csf-fields > .csf-field .csf-title {
   float: none;
   width: 100%;
   margin-bottom: 5px;
 }
-.chipfluent-nav-menu-options > .chipfluent-fields > .chipfluent-field .chipfluent-fieldset {
+.csf-nav-menu-options > .csf-fields > .csf-field .csf-fieldset {
   float: none;
   width: 100%;
 }
-.chipfluent-nav-menu-options .chipfluent-field-text input {
+.csf-nav-menu-options .csf-field-text input {
   width: 100%;
 }
-.chipfluent-nav-menu-options .chipfluent-field-notice .chipfluent-notice {
+.csf-nav-menu-options .csf-field-notice .csf-notice {
   padding: 15px;
 }
 
-.chipfluent-nav-menu-title {
+.csf-nav-menu-title {
   padding: 12px;
   background-color: #f5f5f5;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
-.chipfluent-nav-menu-title:first-child {
+.csf-nav-menu-title:first-child {
   border-top: 0;
 }
-.chipfluent-nav-menu-title h4 {
+.csf-nav-menu-title h4 {
   margin: 0;
   padding: 0;
   color: #23282d;
 }
 
-.chipfluent-nav-menu-icon {
+.csf-nav-menu-icon {
   margin-right: 5px;
 }
 
 /**
  * 06. Profile
  */
-.chipfluent-profile-options > h2 > .fa {
+.csf-profile-options > h2 > .fa {
   padding-right: 7px;
 }
-.chipfluent-profile-options > .chipfluent-field {
+.csf-profile-options > .csf-field {
   max-width: 750px;
   padding: 15px 0;
   border-top: none !important;
 }
-.chipfluent-profile-options > .chipfluent-field > .chipfluent-title {
+.csf-profile-options > .csf-field > .csf-title {
   width: 200px;
 }
-.chipfluent-profile-options > .chipfluent-field > .chipfluent-title h4 {
+.csf-profile-options > .csf-field > .csf-title h4 {
   font-size: 14px;
   font-weight: 600;
   line-height: 1.3;
   display: inline-block;
   vertical-align: middle;
 }
-.chipfluent-profile-options > .chipfluent-field > .chipfluent-fieldset {
+.csf-profile-options > .csf-field > .csf-fieldset {
   width: calc(100% - 220px);
 }
-.chipfluent-profile-options > .chipfluent-field > .chipfluent-fieldset > .chipfluent-help {
+.csf-profile-options > .csf-field > .csf-fieldset > .csf-help {
   top: -15px;
   right: -5px;
 }
-.chipfluent-profile-options > .chipfluent-field-heading {
+.csf-profile-options > .csf-field-heading {
   font-size: 1.1em;
 }
-.chipfluent-profile-options > .chipfluent-field-subheading {
+.csf-profile-options > .csf-field-subheading {
   font-size: 12px;
 }
-.chipfluent-profile-options > .chipfluent-field-subheading,
-.chipfluent-profile-options > .chipfluent-field-heading {
+.csf-profile-options > .csf-field-subheading,
+.csf-profile-options > .csf-field-heading {
   margin: 10px 0;
   padding: 15px !important;
   border: 1px solid #ddd;
 }
-.chipfluent-profile-options > .chipfluent-field-submessage {
+.csf-profile-options > .csf-field-submessage {
   margin: 20px 0;
 }
-.chipfluent-profile-options > .chipfluent-field-submessage .chipfluent-submessage {
+.csf-profile-options > .csf-field-submessage .csf-submessage {
   padding: 10px;
   border-left-width: 1px;
   border-left-style: solid;
   border-right-width: 1px;
   border-right-style: solid;
 }
-.chipfluent-profile-options > .chipfluent-field-notice {
+.csf-profile-options > .csf-field-notice {
   background-color: transparent;
 }
 
 /**
  * 09. Modal
  */
-.chipfluent-modal {
+.csf-modal {
   position: fixed;
   z-index: 100101;
   top: 0;
@@ -3039,27 +3039,27 @@
   width: 100%;
   height: 100%;
 }
-.chipfluent-modal.hidden {
+.csf-modal.hidden {
   display: none;
 }
 
-.chipfluent-modal-icon {
+.csf-modal-icon {
   z-index: 100102;
 }
 
-.chipfluent-modal-table {
+.csf-modal-table {
   display: table;
   width: 100%;
   height: 100%;
 }
 
-.chipfluent-modal-table-cell {
+.csf-modal-table-cell {
   display: table-cell;
   vertical-align: middle;
   margin: 100px 0;
 }
 
-.chipfluent-modal-inner {
+.csf-modal-inner {
   position: relative;
   z-index: 10;
   width: 760px;
@@ -3068,32 +3068,32 @@
   background-color: #fff;
 }
 
-.chipfluent-modal-content {
+.csf-modal-content {
   position: relative;
   overflow: hidden;
   overflow-y: auto;
   height: 595px;
 }
-.chipfluent-modal-content .chipfluent-shortcode-button {
+.csf-modal-content .csf-shortcode-button {
   display: none;
 }
-.chipfluent-modal-content .chipfluent-field {
+.csf-modal-content .csf-field {
   padding: 15px 30px 15px 15px;
 }
-.chipfluent-modal-content a:active, .chipfluent-modal-content a:focus {
+.csf-modal-content a:active, .csf-modal-content a:focus {
   outline: none;
   box-shadow: none;
 }
-.chipfluent-modal-content h4 {
+.csf-modal-content h4 {
   font-size: 13px;
 }
-.chipfluent-modal-content h4 small {
+.csf-modal-content h4 small {
   font-style: italic;
   font-weight: 400;
   color: #aaa;
 }
 
-.chipfluent-modal-title {
+.csf-modal-title {
   position: relative;
   background-color: #fcfcfc;
   border-bottom: 1px solid #ddd;
@@ -3105,13 +3105,13 @@
   padding: 0 36px 0 16px;
 }
 
-.chipfluent-modal-header {
+.csf-modal-header {
   width: 100%;
   padding: 14px 0;
   background-color: #f5f5f5;
   border-bottom: 1px solid #ddd;
 }
-.chipfluent-modal-header select {
+.csf-modal-header select {
   display: block;
   width: 250px;
   margin: 0 auto;
@@ -3122,7 +3122,7 @@
   background-color: #fff;
 }
 
-.chipfluent-modal-close {
+.csf-modal-close {
   color: #666;
   padding: 0;
   position: absolute;
@@ -3135,18 +3135,18 @@
   border: none;
   cursor: pointer;
 }
-.chipfluent-modal-close:before {
+.csf-modal-close:before {
   font: normal 20px/36px dashicons;
   content: "\f158";
   vertical-align: top;
   width: 36px;
   height: 36px;
 }
-.chipfluent-modal-close:hover {
+.csf-modal-close:hover {
   opacity: 0.5;
 }
 
-.chipfluent-modal-insert-wrapper {
+.csf-modal-insert-wrapper {
   text-align: center;
   width: 100%;
   padding: 15px 0;
@@ -3154,7 +3154,7 @@
   border-top: 1px solid #ddd;
 }
 
-.chipfluent-modal-overlay {
+.csf-modal-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -3167,24 +3167,24 @@
 /**
  * 09. 01. Shortcode Modal
  */
-.chipfluent--repeatable {
+.csf--repeatable {
   padding: 15px 15px 0 15px;
 }
 
-.chipfluent--repeat-button-block {
+.csf--repeat-button-block {
   text-align: center;
   padding-bottom: 15px;
 }
 
-.chipfluent--repeat-shortcode {
+.csf--repeat-shortcode {
   position: relative;
   margin-bottom: 15px;
   border: 1px dashed #ddd;
 }
-.chipfluent--repeat-shortcode:first-child .chipfluent-repeat-remove {
+.csf--repeat-shortcode:first-child .csf-repeat-remove {
   display: none;
 }
-.chipfluent--repeat-shortcode .chipfluent-repeat-remove {
+.csf--repeat-shortcode .csf-repeat-remove {
   position: absolute;
   right: 10px;
   top: 10px;
@@ -3201,28 +3201,28 @@
   background-color: #e14d43;
   opacity: 0.5;
 }
-.chipfluent--repeat-shortcode .chipfluent-repeat-remove:hover {
+.csf--repeat-shortcode .csf-repeat-remove:hover {
   opacity: 0.5;
 }
 
-.chipfluent-shortcode-single .chipfluent-modal-inner {
+.csf-shortcode-single .csf-modal-inner {
   height: 750px;
 }
-.chipfluent-shortcode-single .chipfluent-modal-content {
+.csf-shortcode-single .csf-modal-content {
   height: 652px;
 }
 
-.elementor-editor-active .chipfluent-shortcode-button {
+.elementor-editor-active .csf-shortcode-button {
   margin-left: 5px;
 }
-.elementor-editor-active .chipfluent-modal .hidden {
+.elementor-editor-active .csf-modal .hidden {
   display: none !important;
 }
 
 /**
  * 09. 02. Gutenberg Modal
  */
-.chipfluent-shortcode-block {
+.csf-shortcode-block {
   text-align: center;
   padding: 14px;
   font-size: 13px;
@@ -3230,14 +3230,14 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
-.chipfluent-shortcode-block .components-button {
+.csf-shortcode-block .components-button {
   margin-bottom: 10px;
 }
 
 /**
  * 09. 03. Icon Modal
  */
-.chipfluent-modal-icon .chipfluent-icon-title {
+.csf-modal-icon .csf-icon-title {
   padding: 15px 0;
   margin: 4px;
   font-size: 14px;
@@ -3246,15 +3246,15 @@
   border: 1px solid #eee;
   background-color: #f7f7f7;
 }
-.chipfluent-modal-icon .chipfluent-modal-header {
+.csf-modal-icon .csf-modal-header {
   text-align: center;
 }
-.chipfluent-modal-icon .chipfluent-icon-search {
+.csf-modal-icon .csf-icon-search {
   width: 50%;
   height: 40px;
   line-height: 40px;
 }
-.chipfluent-modal-icon i {
+.csf-modal-icon i {
   cursor: pointer;
   display: inline-block;
   margin: 4px;
@@ -3269,27 +3269,27 @@
   border-radius: 2px;
   box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.05);
 }
-.chipfluent-modal-icon i:hover {
+.csf-modal-icon i:hover {
   color: #fff;
   border-color: #222;
   background-color: #222;
 }
-.chipfluent-modal-icon .chipfluent-modal-content {
+.csf-modal-icon .csf-modal-content {
   padding: 10px;
   height: 618px;
 }
-.chipfluent-modal-icon .chipfluent-error-text {
+.csf-modal-icon .csf-error-text {
   padding: 10px;
 }
 
-.chipfluent-modal-loading {
+.csf-modal-loading {
   display: none;
   position: absolute;
   left: 15px;
   top: 15px;
 }
 
-.chipfluent-loading {
+.csf-loading {
   position: relative;
   width: 20px;
   height: 20px;
@@ -3297,7 +3297,7 @@
   border-radius: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07);
 }
-.chipfluent-loading:after {
+.csf-loading:after {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -3310,11 +3310,11 @@
   animation-duration: 0.5s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  animation-name: chipfluentLoader;
+  animation-name: csfLoader;
   border-radius: 4px;
 }
 
-@keyframes chipfluentLoader {
+@keyframes csfLoader {
   0% {
     transform: rotate(0deg) translateX(-6px) rotate(0deg);
   }
@@ -3325,13 +3325,13 @@
 /**
  * 10. Helper
  */
-.chipfluent-subtitle-text {
+.csf-subtitle-text {
   margin-top: 6px;
   font-weight: 400;
   color: #999;
 }
 
-.chipfluent-desc-text {
+.csf-desc-text {
   clear: both;
   float: left;
   width: 100%;
@@ -3340,39 +3340,39 @@
   color: #999;
 }
 
-.chipfluent-error-text {
+.csf-error-text {
   margin-top: 6px;
   color: #d02c21;
 }
 
-.chipfluent-before-text {
+.csf-before-text {
   margin-bottom: 6px;
 }
 
-.chipfluent-after-text {
+.csf-after-text {
   margin-top: 6px;
 }
 
-.chipfluent-metabox-hide {
+.csf-metabox-hide {
   display: none !important;
 }
 
-.chipfluent-metabox-show {
+.csf-metabox-show {
   display: block !important;
 }
 
-.chipfluent-depend-hidden.chipfluent-depend-on {
+.csf-depend-hidden.csf-depend-on {
   display: none;
 }
 
-.chipfluent-depend-visible.chipfluent-depend-on {
+.csf-depend-visible.csf-depend-on {
   display: block;
   opacity: 0.75;
   filter: grayscale(1);
   user-select: none;
   border-top: 1px solid #eee;
 }
-.chipfluent-depend-visible.chipfluent-depend-on .clear:before {
+.csf-depend-visible.csf-depend-on .clear:before {
   content: "";
   left: 0;
   top: 0;
@@ -3384,24 +3384,24 @@
   z-index: 10;
 }
 
-.chipfluent-warning-primary {
+.csf-warning-primary {
   color: #fff !important;
   border-color: #dc3545 !important;
   background: #dc3545 !important;
 }
-.chipfluent-warning-primary:hover, .chipfluent-warning-primary:focus {
+.csf-warning-primary:hover, .csf-warning-primary:focus {
   border-color: #bd2130 !important;
   background: #bd2130 !important;
 }
-.chipfluent-warning-primary:focus {
+.csf-warning-primary:focus {
   box-shadow: 0 0 0 1px #fff, 0 0 0 3px #bd2130 !important;
 }
-.chipfluent-warning-primary:active {
+.csf-warning-primary:active {
   border-color: #bd2130 !important;
   background: #bd2130 !important;
 }
 
-.chipfluent-form-result {
+.csf-form-result {
   display: none;
   float: left;
   padding: 0 8px;
@@ -3412,21 +3412,21 @@
   border-radius: 2px;
 }
 
-.chipfluent-form-show {
+.csf-form-show {
   display: block;
 }
 
-.chipfluent-form-success {
+.csf-form-success {
   color: #fff;
   background-color: #46b450;
 }
 
-.chipfluent-form-warning {
+.csf-form-warning {
   color: #8a6d3b;
   background-color: #faebcc;
 }
 
-.chipfluent-label-error {
+.csf-label-error {
   position: relative;
   top: -2px;
   display: inline-block;
@@ -3443,23 +3443,23 @@
   border-radius: 2px;
 }
 
-.chipfluent-no-option {
+.csf-no-option {
   padding: 30px;
 }
 
-.chipfluent-input-number {
+.csf-input-number {
   -moz-appearance: textfield;
 }
 
-.chipfluent-input-number::-webkit-inner-spin-button,
-.chipfluent-input-number::-webkit-outer-spin-button {
+.csf-input-number::-webkit-inner-spin-button,
+.csf-input-number::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.chipfluent-fa5-shims .chipfluent .fas,
-.chipfluent-fa5-shims .chipfluent .far,
-.chipfluent-fa5-shims .chipfluent .fab {
+.csf-fa5-shims .csf .fas,
+.csf-fa5-shims .csf .far,
+.csf-fa5-shims .csf .fab {
   font-family: "FontAwesome";
   font-style: normal;
 }
@@ -3467,17 +3467,17 @@
 /**
  * 11. Welcome Page
  */
-.chipfluent-welcome-wrap {
+.csf-welcome-wrap {
   position: relative;
   margin: 25px 40px 0 20px;
   font-size: 15px;
   max-width: 1200px;
 }
-.chipfluent-welcome-wrap p {
+.csf-welcome-wrap p {
   font-size: 14px;
   line-height: 1.5;
 }
-.chipfluent-welcome-wrap h1 {
+.csf-welcome-wrap h1 {
   margin: 0.2em 200px 0 0;
   padding: 0;
   color: #32373c;
@@ -3485,7 +3485,7 @@
   font-size: 2.8em;
   font-weight: 400;
 }
-.chipfluent-welcome-wrap .chipfluent-logo {
+.csf-welcome-wrap .csf-logo {
   position: absolute;
   overflow: hidden;
   top: 0;
@@ -3495,35 +3495,35 @@
   background-image: linear-gradient(45deg, #2d67cb, #ad19f3);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), inset 0 0 0 4px rgba(0, 0, 0, 0.25);
 }
-.chipfluent-welcome-wrap .chipfluent-logo .chipfluent--effects i {
+.csf-welcome-wrap .csf-logo .csf--effects i {
   position: absolute;
   width: 200px;
   height: 100px;
   background-color: rgba(0, 0, 0, 0.15);
   transform: rotate(-45deg);
 }
-.chipfluent-welcome-wrap .chipfluent-logo .chipfluent--effects i:nth-child(1) {
+.csf-welcome-wrap .csf-logo .csf--effects i:nth-child(1) {
   bottom: -20px;
   right: -70px;
 }
-.chipfluent-welcome-wrap .chipfluent-logo .chipfluent--effects i:nth-child(2) {
+.csf-welcome-wrap .csf-logo .csf--effects i:nth-child(2) {
   bottom: -35px;
   right: -80px;
 }
-.chipfluent-welcome-wrap .chipfluent-logo .chipfluent--effects i:nth-child(3) {
+.csf-welcome-wrap .csf-logo .csf--effects i:nth-child(3) {
   bottom: -50px;
   right: -90px;
 }
-.chipfluent-welcome-wrap .chipfluent-logo .chipfluent--effects i:nth-child(4) {
+.csf-welcome-wrap .csf-logo .csf--effects i:nth-child(4) {
   bottom: -65px;
   right: -100px;
 }
-.chipfluent-welcome-wrap .chipfluent-logo .chipfluent--wp-logos {
+.csf-welcome-wrap .csf-logo .csf--wp-logos {
   position: relative;
   padding-top: 25px;
   text-align: center;
 }
-.chipfluent-welcome-wrap .chipfluent-logo .chipfluent--wp-logo {
+.csf-welcome-wrap .csf-logo .csf--wp-logo {
   position: absolute;
   left: 20px;
   width: 20px;
@@ -3532,7 +3532,7 @@
   background-position: center center;
   background-image: url(../images/wp-logo.svg);
 }
-.chipfluent-welcome-wrap .chipfluent-logo .chipfluent--wp-plugin-logo {
+.csf-welcome-wrap .csf-logo .csf--wp-plugin-logo {
   display: inline-block;
   width: 50px;
   height: 50px;
@@ -3544,7 +3544,7 @@
   border-radius: 100%;
   vertical-align: middle;
 }
-.chipfluent-welcome-wrap .chipfluent-logo .chipfluent--text {
+.csf-welcome-wrap .csf-logo .csf--text {
   position: absolute;
   left: 0;
   right: 0;
@@ -3557,7 +3557,7 @@
   text-transform: uppercase;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25);
 }
-.chipfluent-welcome-wrap .chipfluent-logo .chipfluent--version {
+.csf-welcome-wrap .csf-logo .csf--version {
   top: auto;
   left: auto;
   right: 8px;
@@ -3565,76 +3565,76 @@
   font-size: 11px;
   text-transform: lowercase;
 }
-.chipfluent-welcome-wrap .chipfluent-about-text {
+.csf-welcome-wrap .csf-about-text {
   font-weight: 400;
   line-height: 1.6em;
   font-size: 19px;
   margin: 1em 200px 1em 0;
   color: #555d66;
 }
-.chipfluent-welcome-wrap .chipfluent-demo-button {
+.csf-welcome-wrap .csf-demo-button {
   margin: 1em 200px 2em 0;
 }
-.chipfluent-welcome-wrap .nav-tab-wrapper {
+.csf-welcome-wrap .nav-tab-wrapper {
   margin-bottom: 20px;
 }
-.chipfluent-welcome-wrap ul {
+.csf-welcome-wrap ul {
   list-style-type: disc;
   padding-left: 15px;
 }
-.chipfluent-welcome-wrap .chipfluent--col {
+.csf-welcome-wrap .csf--col {
   float: left;
   padding-right: 20px;
   box-sizing: border-box;
 }
-.chipfluent-welcome-wrap .chipfluent--col-2 {
+.csf-welcome-wrap .csf--col-2 {
   width: 50%;
 }
-.chipfluent-welcome-wrap .chipfluent--col-3 {
+.csf-welcome-wrap .csf--col-3 {
   width: 33.333%;
 }
-.chipfluent-welcome-wrap .chipfluent--col-4 {
+.csf-welcome-wrap .csf--col-4 {
   width: 25%;
 }
-.chipfluent-welcome-wrap .chipfluent--col-5 {
+.csf-welcome-wrap .csf--col-5 {
   width: 20%;
 }
-.chipfluent-welcome-wrap .chipfluent--col-last {
+.csf-welcome-wrap .csf--col-last {
   padding-right: 0;
 }
-.chipfluent-welcome-wrap .chipfluent--col-upgrade {
+.csf-welcome-wrap .csf--col-upgrade {
   padding: 10px 0;
   text-align: center;
   border-top: 1px solid #e5e5e5;
 }
 
-.chipfluent--table-compare thead td,
-.chipfluent--table-compare tfoot td {
+.csf--table-compare thead td,
+.csf--table-compare tfoot td {
   text-align: center;
 }
-.chipfluent--table-compare td {
+.csf--table-compare td {
   font-size: 14px;
   text-align: center;
   vertical-align: middle;
   padding: 10px;
 }
-.chipfluent--table-compare td:first-child {
+.csf--table-compare td:first-child {
   text-align: left;
 }
-.chipfluent--table-compare tfoot td {
+.csf--table-compare tfoot td {
   padding: 15px 0;
 }
-.chipfluent--table-compare .fa {
+.csf--table-compare .fa {
   font-size: 18px;
 }
-.chipfluent--table-compare .fa-check-circle {
+.csf--table-compare .fa-check-circle {
   color: #46b450;
 }
-.chipfluent--table-compare .fa-times-circle {
+.csf--table-compare .fa-times-circle {
   color: #dc3232;
 }
 
-.chipfluent-welcome-cols {
+.csf-welcome-cols {
   clear: both;
   margin: 20px 0;
   background-color: #fff;
@@ -3642,7 +3642,7 @@
   border-radius: 2px;
   border: 1px solid #e5e5e5;
 }
-.chipfluent-welcome-cols .chipfluent--col {
+.csf-welcome-cols .csf--col {
   width: 33.333%;
   float: left;
   padding: 20px;
@@ -3651,27 +3651,27 @@
   min-height: 200px;
   border-right: 1px solid #e5e5e5;
 }
-.chipfluent-welcome-cols .chipfluent--left,
-.chipfluent-welcome-cols .chipfluent--block {
+.csf-welcome-cols .csf--left,
+.csf-welcome-cols .csf--block {
   float: left;
   width: 20%;
   padding: 0 30px;
   text-align: center;
   box-sizing: border-box;
 }
-.chipfluent-welcome-cols .chipfluent--block {
+.csf-welcome-cols .csf--block {
   width: 80%;
 }
-.chipfluent-welcome-cols .chipfluent--col-first {
+.csf-welcome-cols .csf--col-first {
   border-bottom: 1px solid #e5e5e5;
 }
-.chipfluent-welcome-cols .chipfluent--last {
+.csf-welcome-cols .csf--last {
   border-right: none;
 }
-.chipfluent-welcome-cols .chipfluent--space {
+.csf-welcome-cols .csf--space {
   height: 20px;
 }
-.chipfluent-welcome-cols .chipfluent--icon {
+.csf-welcome-cols .csf--icon {
   display: inline-block;
   font-size: 20px;
   width: 30px;
@@ -3683,67 +3683,67 @@
   background-color: #555;
   border-radius: 30px;
 }
-.chipfluent-welcome-cols .chipfluent--active {
+.csf-welcome-cols .csf--active {
   background-color: #5cb85c;
 }
-.chipfluent-welcome-cols .chipfluent--deactive {
+.csf-welcome-cols .csf--deactive {
   background-color: #e14d43;
 }
-.chipfluent-welcome-cols .chipfluent--title {
+.csf-welcome-cols .csf--title {
   font-weight: bold;
   display: block;
 }
-.chipfluent-welcome-cols p:last-child {
+.csf-welcome-cols p:last-child {
   margin-bottom: 0;
 }
 
-.chipfluent-features-cols .chipfluent--key-features {
+.csf-features-cols .csf--key-features {
   width: 30%;
 }
-.chipfluent-features-cols .chipfluent--available-fields {
+.csf-features-cols .csf--available-fields {
   width: 70%;
 }
 
-.chipfluent-code-block {
+.csf-code-block {
   margin: 20px 0;
   padding: 5px 20px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 }
-.chipfluent-code-block pre {
+.csf-code-block pre {
   font-size: 13px;
   color: #0073aa;
 }
-.chipfluent-code-block pre span {
+.csf-code-block pre span {
   color: #999;
 }
 
-.chipfluent--table-fields td {
+.csf--table-fields td {
   font-size: 14px;
 }
 
-.chipfluent--upgrade a {
+.csf--upgrade a {
   color: #5cb85c;
   font-weight: bold;
 }
-.chipfluent--upgrade a:focus, .chipfluent--upgrade a:hover {
+.csf--upgrade a:focus, .csf--upgrade a:hover {
   color: #4aa14a;
   outline: none;
   box-shadow: none;
 }
 
 @media only screen and (max-width: 782px) {
-  .chipfluent-welcome-cols .chipfluent--col {
+  .csf-welcome-cols .csf--col {
     width: 100%;
     min-height: auto;
     border-right: none;
     border-bottom: 1px solid #e5e5e5;
   }
-  .chipfluent-features-cols .chipfluent--key-features {
+  .csf-features-cols .csf--key-features {
     width: 100%;
   }
-  .chipfluent-features-cols .chipfluent--available-fields {
+  .csf-features-cols .csf--available-fields {
     width: 100%;
   }
 }
@@ -3751,104 +3751,104 @@
  * 12. Responsive
  */
 @media only screen and (max-width: 1200px) {
-  .chipfluent-metabox .chipfluent-field .chipfluent-title {
+  .csf-metabox .csf-field .csf-title {
     float: none;
     width: 100%;
     margin-bottom: 10px;
   }
-  .chipfluent-metabox .chipfluent-field .chipfluent-fieldset {
+  .csf-metabox .csf-field .csf-fieldset {
     float: none;
     width: 100%;
   }
 }
 @media only screen and (max-width: 782px) {
-  .chipfluent-header-inner {
+  .csf-header-inner {
     text-align: center;
   }
-  .chipfluent-header-inner h1 {
+  .csf-header-inner h1 {
     width: 100%;
     margin-bottom: 10px;
   }
-  .chipfluent-form-result {
+  .csf-form-result {
     float: none;
     margin-right: 0;
     margin-bottom: 10px;
   }
-  .chipfluent-search,
-.chipfluent-header-right,
-.chipfluent-header-left {
+  .csf-search,
+.csf-header-right,
+.csf-header-left {
     width: 100%;
   }
-  .chipfluent-search {
+  .csf-search {
     text-align: center;
     margin-bottom: 15px;
   }
-  .chipfluent-footer {
+  .csf-footer {
     text-align: center;
   }
-  .chipfluent-buttons {
+  .csf-buttons {
     float: none;
   }
-  .chipfluent-copyright {
+  .csf-copyright {
     float: none;
     margin-top: 10px;
   }
-  .chipfluent-nav,
-.chipfluent-expand-all,
-.chipfluent-reset-section,
-.chipfluent-nav-background {
+  .csf-nav,
+.csf-expand-all,
+.csf-reset-section,
+.csf-nav-background {
     display: none !important;
   }
-  .chipfluent-nav-normal + .chipfluent-content {
+  .csf-nav-normal + .csf-content {
     margin-left: 0;
   }
-  .chipfluent-section-title,
-.chipfluent-section {
+  .csf-section-title,
+.csf-section {
     display: block !important;
   }
-  .chipfluent-field .chipfluent-title {
+  .csf-field .csf-title {
     float: none;
     width: 100%;
     margin-bottom: 10px;
   }
-  .chipfluent-field .chipfluent-fieldset {
+  .csf-field .csf-fieldset {
     float: none;
     width: 100%;
   }
-  .chipfluent-field-color .button.wp-picker-clear {
+  .csf-field-color .button.wp-picker-clear {
     padding: 0 8px;
     line-height: 2.14285714;
     min-height: 32px;
   }
-  .chipfluent-profile-options > .chipfluent-field > .chipfluent-title,
-.chipfluent-taxonomy-edit-fields > .chipfluent-field > .chipfluent-title {
+  .csf-profile-options > .csf-field > .csf-title,
+.csf-taxonomy-edit-fields > .csf-field > .csf-title {
     float: none;
     width: 100%;
     margin-bottom: 10px;
   }
-  .chipfluent-profile-options > .chipfluent-field > .chipfluent-fieldset,
-.chipfluent-taxonomy-edit-fields > .chipfluent-field > .chipfluent-fieldset {
+  .csf-profile-options > .csf-field > .csf-fieldset,
+.csf-taxonomy-edit-fields > .csf-field > .csf-fieldset {
     float: none;
     width: 100%;
   }
-  .chipfluent-nav-menu-options > .chipfluent-fields {
+  .csf-nav-menu-options > .csf-fields {
     margin-left: -10px;
     margin-right: -10px;
   }
-  .chipfluent-nav-menu-options > .chipfluent-fields > .chipfluent-field {
+  .csf-nav-menu-options > .csf-fields > .csf-field {
     padding: 10px;
   }
 }
 @media only screen and (max-width: 782px) {
-  .chipfluent-modal .chipfluent-modal-inner {
+  .csf-modal .csf-modal-inner {
     width: 90%;
   }
 }
 @media only screen and (max-height: 750px) {
-  .chipfluent-modal .chipfluent-modal-inner {
+  .csf-modal .csf-modal-inner {
     height: auto;
   }
-  .chipfluent-modal .chipfluent-modal-content {
+  .csf-modal .csf-modal-content {
     height: calc(100vh - 200px);
   }
 }

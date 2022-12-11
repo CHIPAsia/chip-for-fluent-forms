@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_radio' ) ) {
-  class CHIPFLUENT_Field_radio extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_radio' ) ) {
+  class CSF_Field_radio extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -21,7 +21,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_radio' ) ) {
         'query_args' => array(),
       ) );
 
-      $inline_class = ( $args['inline'] ) ? ' class="chipfluent--inline-list"' : '';
+      $inline_class = ( $args['inline'] ) ? ' class="csf--inline-list"' : '';
 
       echo $this->field_before();
 
@@ -32,7 +32,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_radio' ) ) {
 
         if ( is_array( $options ) && ! empty( $options ) ) {
 
-          echo '<ul'. esc_attr( $inline_class ) .'>';
+          echo '<ul'. $inline_class .'>';
 
           foreach ( $options as $option_key => $option_value ) {
 
@@ -46,7 +46,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_radio' ) ) {
                     echo '<li>';
                     echo '<label>';
                     echo '<input type="radio" name="'. esc_attr( $this->field_name() ) .'" value="'. esc_attr( $sub_key ) .'"'. $this->field_attributes() . esc_attr( $checked ) .'/>';
-                    echo '<span class="chipfluent--text">'. esc_attr( $sub_value ) .'</span>';
+                    echo '<span class="csf--text">'. esc_attr( $sub_value ) .'</span>';
                     echo '</label>';
                     echo '</li>';
                   }
@@ -60,7 +60,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_radio' ) ) {
               echo '<li>';
               echo '<label>';
               echo '<input type="radio" name="'. esc_attr( $this->field_name() ) .'" value="'. esc_attr( $option_key ) .'"'. $this->field_attributes() . esc_attr( $checked ) .'/>';
-              echo '<span class="chipfluent--text">'. esc_attr( $option_value ) .'</span>';
+              echo '<span class="csf--text">'. esc_attr( $option_value ) .'</span>';
               echo '</label>';
               echo '</li>';
 
@@ -72,7 +72,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_radio' ) ) {
 
         } else {
 
-          echo ( ! empty( $this->field['empty_message'] ) ) ? esc_attr( $this->field['empty_message'] ) : esc_html__( 'No data available.', 'chipfluent' );
+          echo ( ! empty( $this->field['empty_message'] ) ) ? esc_attr( $this->field['empty_message'] ) : esc_html__( 'No data available.', 'csf' );
 
         }
 
@@ -80,7 +80,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_radio' ) ) {
 
         $label = ( isset( $this->field['label'] ) ) ? $this->field['label'] : '';
         echo '<label><input type="radio" name="'. esc_attr( $this->field_name() ) .'" value="1"'. $this->field_attributes() . esc_attr( checked( $this->value, 1, false ) ) .'/>';
-        echo ( ! empty( $this->field['label'] ) ) ? '<span class="chipfluent--text">'. esc_attr( $this->field['label'] ) .'</span>' : '';
+        echo ( ! empty( $this->field['label'] ) ) ? '<span class="csf--text">'. esc_attr( $this->field['label'] ) .'</span>' : '';
         echo '</label>';
 
       }

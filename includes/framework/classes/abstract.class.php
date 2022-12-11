@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Abstract' ) ) {
-  abstract class CHIPFLUENT_Abstract {
+if ( ! class_exists( 'CSF_Abstract' ) ) {
+  abstract class CSF_Abstract {
 
     public $abstract   = '';
     public $output_css = '';
@@ -18,7 +18,7 @@ if ( ! class_exists( 'CHIPFLUENT_Abstract' ) ) {
       // Collect output css and typography
       if ( ! empty( $this->args['output_css'] ) || ! empty( $this->args['enqueue_webfont'] ) ) {
         add_action( 'wp_enqueue_scripts', array( $this, 'collect_output_css_and_typography' ), 10 );
-        CHIPFLUENT::$css = apply_filters( "chipfluent_{$this->unique}_output_css", CHIPFLUENT::$css, $this );
+        CSF::$css = apply_filters( "csf_{$this->unique}_output_css", CSF::$css, $this );
       }
 
     }
@@ -37,7 +37,7 @@ if ( ! class_exists( 'CHIPFLUENT_Abstract' ) ) {
           $field_type   = ( ! empty( $field['type'] ) ) ? $field['type'] : '';
           $field_output = ( ! empty( $field['output'] ) ) ? $field['output'] : '';
           $field_check  = ( $field_type === 'typography' || $field_output ) ? true : false;
-          $field_class  = 'CHIPFLUENT_Field_' . $field_type;
+          $field_class  = 'CSF_Field_' . $field_type;
 
           if ( $field_type && $field_id ) {
 
@@ -111,7 +111,7 @@ if ( ! class_exists( 'CHIPFLUENT_Abstract' ) ) {
 
                 // output css
                 if ( $field_output && $this->args['output_css'] ) {
-                  CHIPFLUENT::$css .= $instance->output();
+                  CSF::$css .= $instance->output();
                 }
 
                 unset( $instance );

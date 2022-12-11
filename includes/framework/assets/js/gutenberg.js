@@ -2,7 +2,7 @@
  *
  * -----------------------------------------------------------
  *
- * Chipfluent Framework Gutenberg Block
+ * Codestar Framework Gutenberg Block
  * A Simple and Lightweight WordPress Option Framework
  *
  * -----------------------------------------------------------
@@ -10,9 +10,9 @@
  */
 ( function( blocks, blockEditor, element, components ) {
 
-  if ( !window.chipfluent_gutenberg_blocks ) { return; }
+  if ( !window.csf_gutenberg_blocks ) { return; }
 
-  Object.values(window.chipfluent_gutenberg_blocks).forEach( function( block ) {
+  Object.values(window.csf_gutenberg_blocks).forEach( function( block ) {
 
     var registerBlockType = blocks.registerBlockType;
     var PlainText         = blockEditor.PlainText;
@@ -39,14 +39,14 @@
       },
       edit: function (props) {
         return (
-          createElement('div', {className: 'chipfluent-shortcode-block'},
+          createElement('div', {className: 'csf-shortcode-block'},
 
             createElement(Button, {
               'data-modal-id': block.modal_id,
               'data-gutenberg-id': block.name,
-              className: 'is-secondary chipfluent-shortcode-button',
+              className: 'is-secondary csf-shortcode-button',
               onClick: function () {
-                window.chipfluent_gutenberg_props = props;
+                window.csf_gutenberg_props = props;
               },
             }, block.button_title ),
 

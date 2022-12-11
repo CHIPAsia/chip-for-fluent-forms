@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_notice' ) ) {
-  class CHIPFLUENT_Field_notice extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_notice' ) ) {
+  class CSF_Field_notice extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -18,7 +18,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_notice' ) ) {
 
       $style = ( ! empty( $this->field['style'] ) ) ? $this->field['style'] : 'normal';
 
-      echo ( ! empty( $this->field['content'] ) ) ? '<div class="chipfluent-notice chipfluent-notice-'. esc_attr( $style ) .'">'. $this->field['content'] .'</div>' : '';
+      echo ( ! empty( $this->field['content'] ) ) ? '<div class="csf-notice csf-notice-'. esc_attr( $style ) .'">'. $this->field['content'] .'</div>' : '';
 
     }
 

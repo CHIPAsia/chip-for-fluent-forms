@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_code_editor' ) ) {
-  class CHIPFLUENT_Field_code_editor extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_code_editor' ) ) {
+  class CSF_Field_code_editor extends CSF_Fields {
 
     public $version = '6.65.7';
     public $cdn_url = 'https://cdn.jsdelivr.net/npm/codemirror@';
@@ -43,13 +43,13 @@ if ( ! class_exists( 'CHIPFLUENT_Field_code_editor' ) ) {
       // Do not loads CodeMirror in revslider page.
       if ( in_array( $page, array( 'revslider' ) ) ) { return; }
 
-      if ( ! wp_script_is( 'chipfluent-codemirror' ) ) {
-        wp_enqueue_script( 'chipfluent-codemirror', esc_url( $this->cdn_url . $this->version .'/lib/codemirror.min.js' ), array( 'chipfluent' ), $this->version, true );
-        wp_enqueue_script( 'chipfluent-codemirror-loadmode', esc_url( $this->cdn_url . $this->version .'/addon/mode/loadmode.min.js' ), array( 'chipfluent-codemirror' ), $this->version, true );
+      if ( ! wp_script_is( 'csf-codemirror' ) ) {
+        wp_enqueue_script( 'csf-codemirror', esc_url( $this->cdn_url . $this->version .'/lib/codemirror.min.js' ), array( 'csf' ), $this->version, true );
+        wp_enqueue_script( 'csf-codemirror-loadmode', esc_url( $this->cdn_url . $this->version .'/addon/mode/loadmode.min.js' ), array( 'csf-codemirror' ), $this->version, true );
       }
 
-      if ( ! wp_style_is( 'chipfluent-codemirror' ) ) {
-        wp_enqueue_style( 'chipfluent-codemirror', esc_url( $this->cdn_url . $this->version .'/lib/codemirror.min.css' ), array(), $this->version );
+      if ( ! wp_style_is( 'csf-codemirror' ) ) {
+        wp_enqueue_style( 'csf-codemirror', esc_url( $this->cdn_url . $this->version .'/lib/codemirror.min.css' ), array(), $this->version );
       }
 
     }

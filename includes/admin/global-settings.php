@@ -4,7 +4,7 @@ $slug = FF_CHIP_FSLUG;
 
 $ff_module_settings = get_option( '__fluentform_payment_module_settings' );
 
-CHIPFLUENT_Setup::createOptions( $slug, array(
+CSF_Setup::createOptions( $slug, array(
   'framework_title' => __( 'CHIP for Fluent Forms', 'chip-for-fluent-forms' ),
 
   'menu_title'  => __( 'CHIP Settings', 'chip-for-fluent-forms' ),
@@ -80,7 +80,7 @@ $miscellaneous_global_fields = array(
     'default'     => '60',
     'placeholder' => '60',
     'dependency'  => array( ['due-strict', '==', 'true'] ),
-    'validate'    => 'chipfluent_validate_numeric',
+    'validate'    => 'csf_validate_numeric',
   ),
 );
 
@@ -98,13 +98,13 @@ $refund_global_fields = array(
   ),
 );
 
-CHIPFLUENT_Setup::createSection( $slug, array(
+CSF_Setup::createSection( $slug, array(
   'id'    => 'global-configuration',
   'title' => __( 'Global Configuration', 'chip-for-fluent-forms' ),
   'icon'  => 'fa fa-home',
 ) );
 
-CHIPFLUENT_Setup::createSection( $slug, array(
+CSF_Setup::createSection( $slug, array(
   'parent'      => 'global-configuration',
   'id'          => 'credentials',
   'title'       => __( 'Credentials', 'chip-for-fluent-forms' ),
@@ -112,7 +112,7 @@ CHIPFLUENT_Setup::createSection( $slug, array(
   'fields'      => $credentials_global_fields,
 ) );
 
-CHIPFLUENT_Setup::createSection( $slug, array(
+CSF_Setup::createSection( $slug, array(
   'parent'      => 'global-configuration',
   'id'          => 'miscellaneous',
   'title'       => __( 'Miscellaneous', 'chip-for-fluent-forms' ),
@@ -120,7 +120,7 @@ CHIPFLUENT_Setup::createSection( $slug, array(
   'fields'      => $miscellaneous_global_fields,
 ) );
 
-CHIPFLUENT_Setup::createSection( $slug, array(
+CSF_Setup::createSection( $slug, array(
   'parent'      => 'global-configuration',
   'id'          => 'refund',
   'title'       => __( 'Refund Synchronization', 'chip-for-fluent-forms' ),

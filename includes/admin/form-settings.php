@@ -68,7 +68,7 @@ function ff_chip_form_fields( $form ){
       'default'     => '60',
       'placeholder' => '60',
       'dependency'  => array( ['due-strict-' . $form->id, '==', 'true'], ['form-customize-' . $form->id, '==', 'true'] ),
-      'validate'    => 'chipfluent_validate_numeric',
+      'validate'    => 'csf_validate_numeric',
     ),
     array(
       'type'    => 'subheading',
@@ -90,7 +90,7 @@ function ff_chip_form_fields( $form ){
   return $form_fields;
 }
 
-CHIPFLUENT_Setup::createSection( $slug, array(
+CSF_Setup::createSection( $slug, array(
   'id'    => 'form-configuration',
   'title' => __( 'Form Configuration', 'chip-for-fluent-forms' ),
   'icon'  => 'fa fa-gear'
@@ -104,7 +104,7 @@ $all_forms_query = wpFluent()->table('fluentform_forms')
 
 foreach( $all_forms_query as $form ) {
 
-  CHIPFLUENT_Setup::createSection( $slug, array(
+  CSF_Setup::createSection( $slug, array(
     'parent'      => 'form-configuration',
     'id'          => 'form-id-' . $form->id,
     'title'       => sprintf( __( 'Form #%s - %s', 'chip-for-fluent-forms' ), $form->id, substr( $form->title, 0, 15 ) ),

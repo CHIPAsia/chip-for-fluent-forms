@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_textarea' ) ) {
-  class CHIPFLUENT_Field_textarea extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_textarea' ) ) {
+  class CSF_Field_textarea extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -28,7 +28,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_textarea' ) ) {
       if ( ! empty( $this->field['shortcoder'] ) ) {
 
         $shortcodes = ( is_array( $this->field['shortcoder'] ) ) ? $this->field['shortcoder'] : array_filter( (array) $this->field['shortcoder'] );
-        $instances  = ( ! empty( CHIPFLUENT::$shortcode_instances ) ) ? CHIPFLUENT::$shortcode_instances : array();
+        $instances  = ( ! empty( CSF::$shortcode_instances ) ) ? CSF::$shortcode_instances : array();
 
         if ( ! empty( $shortcodes ) && ! empty( $instances ) ) {
 
@@ -41,7 +41,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_textarea' ) ) {
                 $id    = $instance['modal_id'];
                 $title = $instance['button_title'];
 
-                echo '<a href="#" class="button button-primary chipfluent-shortcode-button" data-modal-id="'. esc_attr( $id ) .'">'. esc_html( $title ) .'</a>';
+                echo '<a href="#" class="button button-primary csf-shortcode-button" data-modal-id="'. esc_attr( $id ) .'">'. esc_html( $title ) .'</a>';
 
               }
 

@@ -1,7 +1,7 @@
 /**
  *
  * ---------------------------------------------------------
- * CHIPFLUENT FRAMEWORK RTL CSS MAP
+ * CODESTAR FRAMEWORK RTL CSS MAP
  * ---------------------------------------------------------
  *
  * 01. Base
@@ -56,7 +56,7 @@
 /**
  * 01. Base
  */
-.chipfluent-options{
+.csf-options{
   margin-left: 20px;
   margin-right: 0;
 }
@@ -64,7 +64,7 @@
 /**
  * 01. 01. Header
  */
-.chipfluent-header{
+.csf-header{
   h1{
     float: right;
   }
@@ -77,43 +77,43 @@
 /**
  * 01. 02. Header Buttons
  */
-.chipfluent-buttons{
+.csf-buttons{
   float: left;
   direction: ltr;
 }
 
-.chipfluent-header-left{
+.csf-header-left{
   float: right;
 }
 
-.chipfluent-header-right{
+.csf-header-right{
   float: left;
 }
 
 /**
  * 01. 03. Navigation
  */
-.chipfluent-nav{
+.csf-nav{
   float: right;
 
   ul{
     clear: right;
 
     li{
-      .chipfluent-active:after{
+      .csf-active:after{
         right: auto;
         left: 0;
         border-left-color: #fff;
         border-right-color: transparent;
       }
 
-      .chipfluent-arrow:after{
+      .csf-arrow:after{
         content: "\f053";
         right: auto;
         left: 10px;
       }
 
-      &.chipfluent-tab-expanded .chipfluent-arrow:after{
+      &.csf-tab-expanded .csf-arrow:after{
         transform: rotate(-90deg);
       }
     }
@@ -133,13 +133,13 @@
     }
   }
 
-  .chipfluent-tab-icon{
+  .csf-tab-icon{
     margin-left: 5px;
     margin-right: 0;
   }
 }
 
-.chipfluent-nav-background{
+.csf-nav-background{
   left: auto;
   right: 0;
 }
@@ -147,7 +147,7 @@
 /**
  * 01. 04. Content
  */
-.chipfluent-content{
+.csf-content{
   margin-left: 0;
   margin-right: 225px;
 }
@@ -155,19 +155,19 @@
 /**
  * 01. 05. Section
  */
-.chipfluent-sections{
+.csf-sections{
   float: right;
 }
 
 /**
  * 01. 06. Show all options
  */
-.chipfluent-show-all .chipfluent-content{
+.csf-show-all .csf-content{
   margin-right: 0;
   overflow: hidden;
 }
 
-.chipfluent-expand-all{
+.csf-expand-all{
   float: right;
   right: auto;
   left: 40px;
@@ -178,7 +178,7 @@
 /**
  * 01. 07. Search Input
  */
-.chipfluent-search{
+.csf-search{
   float: right;
 
   input{
@@ -189,24 +189,24 @@
 /**
  * 01. 08. Copyright
  */
-.chipfluent-copyright{
+.csf-copyright{
   float: right;
 }
 
 /**
  * 01. 09. Metabox
  */
-.chipfluent-metabox{
+.csf-metabox{
   margin: -6px -12px -12px -12px;
 
-  .chipfluent-section-title{
+  .csf-section-title{
     padding: 20px;
   }
 }
 
-.chipfluent-section-title{
+.csf-section-title{
 
-  .chipfluent-section-icon{
+  .csf-section-icon{
     margin-left: 5px;
     margin-right: 0;
   }
@@ -215,38 +215,38 @@
 /**
  * 02. Fields
  */
-.chipfluent-field{
+.csf-field{
 
-  .chipfluent-title{
+  .csf-title{
     float: right;
   }
 
-  .chipfluent-fieldset{
+  .csf-fieldset{
     float: left;
   }
 }
 
-.chipfluent-pseudo-field{
+.csf-pseudo-field{
   padding: 0 0 0 5px !important;
 }
 
 /**
  * 02. 01. Field: typography
  */
-.chipfluent-field-typography{
+.csf-field-typography{
 
   select{
     margin: 0;
     width: 100%;
   }
 
-  .chipfluent--blocks-inputs{
-    .chipfluent--blocks{
+  .csf--blocks-inputs{
+    .csf--blocks{
       flex-direction: row-reverse;
     }
   }
 
-  .chipfluent--unit{
+  .csf--unit{
     left: 4px;
     right: auto;
   }
@@ -255,8 +255,8 @@
 /**
  * 02. 02. Field: checkbox, radio
  */
-.chipfluent-field-checkbox,
-.chipfluent-field-radio{
+.csf-field-checkbox,
+.csf-field-radio{
 
   ul ul li{
     margin-left: 0;
@@ -267,12 +267,12 @@
     }
   }
 
-  .chipfluent--inline-list li{
+  .csf--inline-list li{
     margin-right: 0;
     margin-left: 15px;
   }
 
-  .chipfluent--text{
+  .csf--text{
     margin-left: 0;
     margin-right: 5px;
   }
@@ -281,13 +281,13 @@
 /**
  * 02. 03. Field: switcher
  */
-.chipfluent-field-switcher{
+.csf-field-switcher{
 
-  .chipfluent--switcher{
+  .csf--switcher{
     float: right;
   }
 
-  .chipfluent--label{
+  .csf--label{
     float: right;
     margin-left: 0;
     margin-right: 5px;
@@ -297,10 +297,10 @@
 /**
  * 02. 04. Field: upload
  */
-.chipfluent-field-upload{
+.csf-field-upload{
 
-  .chipfluent--remove,
-  .chipfluent--button{
+  .csf--remove,
+  .csf--button{
     margin-left: 0;
     margin-right: 5px;
   }
@@ -309,13 +309,13 @@
 /**
  * 02. 05. Field: group
  */
-.chipfluent-field-group{
+.csf-field-group{
 
-  .chipfluent-cloneable-title{
+  .csf-cloneable-title{
     padding: 15px 10px 15px 65px;
   }
 
-  .chipfluent-cloneable-helper{
+  .csf-cloneable-helper{
     right: auto;
     left: 10px;
   }
@@ -324,9 +324,9 @@
 /**
  * 02. 06. Field: repeater
  */
-.chipfluent-field-repeater{
+.csf-field-repeater{
 
-  .chipfluent-repeater-helper{
+  .csf-repeater-helper{
     border-left: 0;
     border-right: 1px solid #eee;
   }
@@ -335,7 +335,7 @@
 /**
  * 02. 07. Field: help
  */
-.chipfluent-help{
+.csf-help{
   right: auto;
   left: 5px;
 }
@@ -343,14 +343,14 @@
 /**
  * 02. 08. Field: icon
  */
-.chipfluent-field-icon{
+.csf-field-icon{
 
   .button{
     margin-right: 0;
     margin-left: 5px;
   }
 
-  .chipfluent-icon-preview i{
+  .csf-icon-preview i{
     margin-right: 0;
     margin-left: 5px;
   }
@@ -359,7 +359,7 @@
 /**
  * 02. 09. Field: gallery
  */
-.chipfluent-field-gallery{
+.csf-field-gallery{
 
   ul li{
     margin-right: 0;
@@ -375,11 +375,11 @@
 /**
  * 02. 11. Field: tabbed
  */
-.chipfluent-field-tabbed{
+.csf-field-tabbed{
 
-  .chipfluent-tabbed-nav{
+  .csf-tabbed-nav{
 
-    .chipfluent--icon{
+    .csf--icon{
       padding-right: 0;
       padding-left: 5px;
     }
@@ -394,7 +394,7 @@
 /**
  * 02. 12. Field: media
  */
-.chipfluent-field-media{
+.csf-field-media{
 
   .button{
     margin-left: 0;
@@ -409,7 +409,7 @@
 /**
  * 02. 13. Field: notice
  */
-.chipfluent-notice{
+.csf-notice{
   border-left: none;
   border-right-style: solid;
   border-right-width: 4px;
@@ -418,21 +418,21 @@
 /**
  * 02. 14. Field: border, spacing, dimensions
  */
-.chipfluent-field-dimensions,
-.chipfluent-field-spacing,
-.chipfluent-field-border{
+.csf-field-dimensions,
+.csf-field-spacing,
+.csf-field-border{
 
-  .chipfluent--input,
-  .chipfluent-fieldset{
+  .csf--input,
+  .csf-fieldset{
     direction: ltr;
   }
 
-  .chipfluent--inputs,
-  .chipfluent--color{
+  .csf--inputs,
+  .csf--color{
     float: right;
   }
 
-  .chipfluent--color{
+  .csf--color{
     margin-right: 4px;
     direction: rtl;
   }
@@ -441,18 +441,18 @@
 /**
  * 02. 15. Field: background
  */
-.chipfluent-field-background{
+.csf-field-background{
 
-  .chipfluent--block{
+  .csf--block{
     float: right;
   }
 
-  .chipfluent--select,
-  .chipfluent--media{
+  .csf--select,
+  .csf--media{
     padding-right: 0;
   }
 
-  .chipfluent--title{
+  .csf--title{
     margin-right: 0;
     margin-left: 5px;
   }
@@ -461,9 +461,9 @@
 /**
  * 02. 16. Field: spinner
  */
-.chipfluent-field-spinner{
+.csf-field-spinner{
 
-  .chipfluent--spin{
+  .csf--spin{
     float: right;
     direction: ltr;
   }
@@ -472,15 +472,15 @@
 /**
  * 02. 17. Field: slider
  */
-.chipfluent-field-slider{
+.csf-field-slider{
 
-  .chipfluent-slider-ui{
+  .csf-slider-ui{
     direction: ltr;
     margin-right: 0;
     margin-left: 15px;
   }
 
-  .chipfluent--input{
+  .csf--input{
     direction: ltr;
   }
 }
@@ -488,9 +488,9 @@
 /**
  * 02. 18. Field: button_set
  */
-.chipfluent-field-button_set{
+.csf-field-button_set{
 
-  .chipfluent--button-group{
+  .csf--button-group{
     float: right;
   }
 }
@@ -498,9 +498,9 @@
 /**
  * 02. 19. Field: link_color
  */
-.chipfluent-field-link_color{
+.csf-field-link_color{
 
-  .chipfluent--left{
+  .csf--left{
     float: right;
     margin-right: 0;
     margin-left: 10px;
@@ -510,9 +510,9 @@
 /**
  * 02. 20. Field: color_group
  */
-.chipfluent-field-color_group{
+.csf-field-color_group{
 
-  .chipfluent--left{
+  .csf--left{
     float: right;
     margin-right: 0;
     margin-left: 10px;
@@ -522,9 +522,9 @@
 /**
  * 02. 21. Field: palette
  */
-.chipfluent-field-palette{
+.csf-field-palette{
 
-  .chipfluent--palette{
+  .csf--palette{
     margin-right: 0;
     margin-left: 10px;
   }
@@ -533,9 +533,9 @@
 /**
  * 02. 22. Field: accordion
  */
-.chipfluent-field-accordion{
+.csf-field-accordion{
 
-  .chipfluent--icon{
+  .csf--icon{
     margin-right: 0;
     margin-left: 2px;
   }
@@ -544,9 +544,9 @@
 /**
  * 02. 23. Field: date
  */
-.chipfluent-field-date{
+.csf-field-date{
 
-  .chipfluent--to {
+  .csf--to {
     margin-left: 0;
     margin-right: 7px;
   }
@@ -555,9 +555,9 @@
 /**
  * 02. 24. Field: map
  */
-.chipfluent-field-map{
+.csf-field-map{
 
-  .chipfluent--map-input:last-child {
+  .csf--map-input:last-child {
     padding-left: 0;
     padding-right: 10px;
   }
@@ -566,9 +566,9 @@
 /**
  * 02. 25. Field: sortable
  */
-.chipfluent-field-sortable{
+.csf-field-sortable{
 
-  .chipfluent-sortable-helper{
+  .csf-sortable-helper{
     border-left: none;
     border-right: 1px solid #eee;
   }
@@ -577,13 +577,13 @@
 /**
  * 02. 26. Field: number
  */
-.chipfluent-field-number{
+.csf-field-number{
 
-  .chipfluent--wrap{
+  .csf--wrap{
     float: right;
   }
 
-  .chipfluent--unit{
+  .csf--unit{
     left: 4px;
     right: auto;
   }
@@ -592,21 +592,21 @@
 /**
  * 03. Taxonomy
  */
-.chipfluent-taxonomy-add-fields{
+.csf-taxonomy-add-fields{
   margin-right: 0;
   margin-left: 30px;
 
-  .chipfluent-field > .chipfluent-fieldset > .chipfluent-help{
+  .csf-field > .csf-fieldset > .csf-help{
     left: -5px;
     right: auto;
   }
 }
 
-.chipfluent-taxonomy-edit-fields{
+.csf-taxonomy-edit-fields{
   margin-right: 0;
   margin-left: 35px;
 
-  .chipfluent-field > .chipfluent-fieldset > .chipfluent-help{
+  .csf-field > .csf-fieldset > .csf-help{
     right: auto;
     left: -5px;
   }
@@ -615,18 +615,18 @@
 /**
  * 04. Profile
  */
-.chipfluent-profile-options{
+.csf-profile-options{
 
   > h2 > .fa{
     padding-right: 0;
     padding-left: 7px;
   }
 
-  > .chipfluent-field{
+  > .csf-field{
 
-    > .chipfluent-fieldset{
+    > .csf-fieldset{
 
-      > .chipfluent-help{
+      > .csf-help{
         left: -5px;
         right: auto;
       }
@@ -637,20 +637,20 @@
 /**
  * 05. Nav Menu
  */
-.chipfluent-nav-menu-options{
+.csf-nav-menu-options{
 
-  > .chipfluent-fields{
+  > .csf-fields{
     margin-left: 0;
     margin-right: -10px;
   }
 }
 
-.chipfluent-nav-menu-title {
+.csf-nav-menu-title {
   padding-left: 14px;
   padding-right: 12px;
 }
 
-.chipfluent-nav-menu-icon{
+.csf-nav-menu-icon{
   margin-right: 0;
   margin-left: 5px;
 }
@@ -658,18 +658,18 @@
 /**
  * 06. Modal
  */
-.chipfluent-modal-content{
+.csf-modal-content{
 
-  .chipfluent-field{
+  .csf-field{
     padding: 15px 15px 15px 30px;
   }
 }
 
-.chipfluent-modal-title{
+.csf-modal-title{
   padding: 0 16px 0 36px;
 }
 
-.chipfluent-modal-close{
+.csf-modal-close{
   right: auto;
   left: 0;
 }
@@ -679,9 +679,9 @@
  */
 .control-section{
 
-  .chipfluent-field{
+  .csf-field{
 
-    .chipfluent-fieldset{
+    .csf-fieldset{
       margin-right: 0;
     }
   }
@@ -691,14 +691,14 @@
  * 08. Responsive
  */
 @media only screen and (max-width:1200px){
-  .chipfluent-metabox .chipfluent-field .chipfluent-fieldset{
+  .csf-metabox .csf-field .csf-fieldset{
     margin-left: 0;
   }
 }
 
 @media only screen and (max-width:782px){
-  .chipfluent .chipfluent-fieldset,
-  .chipfluent .chipfluent-content{
+  .csf .csf-fieldset,
+  .csf .csf-content{
     margin-right: 0;
   }
 }
@@ -706,9 +706,9 @@
 /**
  * 09. Others
  */
-.chipfluent-field{
+.csf-field{
 
-  .chipfluent--transparent-slider{
+  .csf--transparent-slider{
     margin-left: 0;
     margin-right: 2px;
 
@@ -717,11 +717,11 @@
     }
   }
 
-  .chipfluent--transparent-offset{
+  .csf--transparent-offset{
     background-position: center right;
   }
 
-  .chipfluent--transparent-text{
+  .csf--transparent-text{
     right: auto;
     left: 10px;
   }

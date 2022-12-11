@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_tabbed' ) ) {
-  class CHIPFLUENT_Field_tabbed extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_tabbed' ) ) {
+  class CSF_Field_tabbed extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -20,23 +20,23 @@ if ( ! class_exists( 'CHIPFLUENT_Field_tabbed' ) ) {
 
       echo $this->field_before();
 
-      echo '<div class="chipfluent-tabbed-nav" data-depend-id="'. esc_attr( $this->field['id'] ) .'">';
+      echo '<div class="csf-tabbed-nav" data-depend-id="'. esc_attr( $this->field['id'] ) .'">';
       foreach ( $this->field['tabs'] as $key => $tab ) {
 
-        $tabbed_icon   = ( ! empty( $tab['icon'] ) ) ? '<i class="chipfluent--icon '. esc_attr( $tab['icon'] ) .'"></i>' : '';
-        $tabbed_active = ( empty( $key ) ) ? 'chipfluent-tabbed-active' : '';
+        $tabbed_icon   = ( ! empty( $tab['icon'] ) ) ? '<i class="csf--icon '. esc_attr( $tab['icon'] ) .'"></i>' : '';
+        $tabbed_active = ( empty( $key ) ) ? 'csf-tabbed-active' : '';
 
         echo '<a href="#" class="'. esc_attr( $tabbed_active ) .'"">'. $tabbed_icon . esc_attr( $tab['title'] ) .'</a>';
 
       }
       echo '</div>';
 
-      echo '<div class="chipfluent-tabbed-contents">';
+      echo '<div class="csf-tabbed-contents">';
       foreach ( $this->field['tabs'] as $key => $tab ) {
 
         $tabbed_hidden = ( ! empty( $key ) ) ? ' hidden' : '';
 
-        echo '<div class="chipfluent-tabbed-content'. esc_attr( $tabbed_hidden ) .'">';
+        echo '<div class="csf-tabbed-content'. esc_attr( $tabbed_hidden ) .'">';
 
         foreach ( $tab['fields'] as $field ) {
 
@@ -47,7 +47,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_tabbed' ) ) {
           $field_value   = ( isset( $this->value[$field_id] ) ) ? $this->value[$field_id] : $field_default;
           $unique_id     = ( ! empty( $this->unique ) ) ? $this->unique .'['. $this->field['id'] .']' : $this->field['id'];
 
-          CHIPFLUENT::field( $field, $field_value, $unique_id, 'field/tabbed' );
+          CSF::field( $field, $field_value, $unique_id, 'field/tabbed' );
 
         }
 

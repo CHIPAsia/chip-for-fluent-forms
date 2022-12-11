@@ -1,5 +1,5 @@
-# Copyright (C) 2021 Chipfluent
-# This file is distributed under the same license as the Chipfluent Framework package.
+# Copyright (C) 2021 Codestar
+# This file is distributed under the same license as the Codestar Framework package.
 msgid ""
 msgstr ""
 "POT-Creation-Date: 2021-06-25 12:32:35+00:00\n"
@@ -652,21 +652,21 @@ msgid "Please enter a valid URL."
 msgstr "请输入有效网址"
 
 #. Plugin Name of the plugin/theme
-msgid "Chipfluent Framework"
-msgstr "Chipfluent Framework"
+msgid "Codestar Framework"
+msgstr "Codestar Framework"
 
 #. Plugin URI of the plugin/theme
-msgid "http://chipfluentframework.com/"
-msgstr "http://chipfluentframework.com/"
+msgid "http://codestarframework.com/"
+msgstr "http://codestarframework.com/"
 
 #. Description of the plugin/theme
 msgid "A Simple and Lightweight WordPress Option Framework for Themes and Plugins"
 msgstr "一个简单且轻量的 WordPress 主题和插件选项框架"
 
 #. Author of the plugin/theme
-msgid "Chipfluent"
-msgstr "Chipfluent"
+msgid "Codestar"
+msgstr "Codestar"
 
 #. Author URI of the plugin/theme
-msgid "http://chipfluentthemes.com/"
-msgstr "http://chipfluentthemes.com/"
+msgid "http://codestarthemes.com/"
+msgstr "http://codestarthemes.com/"

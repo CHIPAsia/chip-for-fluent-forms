@@ -1,13 +1,13 @@
 /**
  * 10. Helper
  */
-.chipfluent-subtitle-text{
+.csf-subtitle-text{
   margin-top: 6px;
   font-weight: 400;
   color: #999;
 }
 
-.chipfluent-desc-text{
+.csf-desc-text{
   clear: both;
   float: left;
   width: 100%;
@@ -16,32 +16,32 @@
   color: #999;
 }
 
-.chipfluent-error-text{
+.csf-error-text{
   margin-top: 6px;
   color: #d02c21;
 }
 
-.chipfluent-before-text{
+.csf-before-text{
   margin-bottom: 6px;
 }
 
-.chipfluent-after-text{
+.csf-after-text{
   margin-top: 6px;
 }
 
-.chipfluent-metabox-hide{
+.csf-metabox-hide{
   display: none !important;
 }
 
-.chipfluent-metabox-show{
+.csf-metabox-show{
   display: block !important;
 }
 
-.chipfluent-depend-hidden.chipfluent-depend-on{
+.csf-depend-hidden.csf-depend-on{
   display: none;
 }
 
-.chipfluent-depend-visible.chipfluent-depend-on{
+.csf-depend-visible.csf-depend-on{
   display: block;
   opacity: 0.75;
   filter: grayscale(1);
@@ -61,7 +61,7 @@
   }
 }
 
-.chipfluent-warning-primary{
+.csf-warning-primary{
   color: #fff !important;
   border-color: #dc3545 !important;
   background: #dc3545 !important;
@@ -82,7 +82,7 @@
   }
 }
 
-.chipfluent-form-result{
+.csf-form-result{
   display: none;
   float: left;
   padding: 0 8px;
@@ -93,21 +93,21 @@
   border-radius: 2px;
 }
 
-.chipfluent-form-show{
+.csf-form-show{
   display: block;
 }
 
-.chipfluent-form-success{
+.csf-form-success{
   color: #fff;
   background-color: #46b450;
 }
 
-.chipfluent-form-warning{
+.csf-form-warning{
   color: #8a6d3b;
   background-color: #faebcc;
 }
 
-.chipfluent-label-error{
+.csf-label-error{
   position: relative;
   top: -2px;
   display: inline-block;
@@ -124,23 +124,23 @@
   border-radius: 2px;
 }
 
-.chipfluent-no-option{
+.csf-no-option{
   padding: 30px;
 }
 
-.chipfluent-input-number{
+.csf-input-number{
   -moz-appearance:textfield;
 }
 
-.chipfluent-input-number::-webkit-inner-spin-button,
-.chipfluent-input-number::-webkit-outer-spin-button{
+.csf-input-number::-webkit-inner-spin-button,
+.csf-input-number::-webkit-outer-spin-button{
   -webkit-appearance: none;
   margin: 0;
 }
 
-.chipfluent-fa5-shims{
+.csf-fa5-shims{
 
-  .chipfluent{
+  .csf{
 
     .fas,
     .far,

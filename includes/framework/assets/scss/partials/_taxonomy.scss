@@ -1,28 +1,28 @@
 /**
  * 06. Taxonomy
  */
-.chipfluent-taxonomy{
+.csf-taxonomy{
   max-width: 95%;
 
-  > .chipfluent-field{
+  > .csf-field{
     border-top: none !important;
   }
 
-  > .chipfluent-field-heading{
+  > .csf-field-heading{
     font-size: 1.1em;
     padding: 20px !important;
     border: 1px solid #ddd;
   }
 
-  > .chipfluent-field-subheading{
+  > .csf-field-subheading{
     font-size: 12px;
     padding: 15px !important;
     border: 1px solid #ddd;
   }
 
-  > .chipfluent-field-submessage{
+  > .csf-field-submessage{
 
-    .chipfluent-submessage{
+    .csf-submessage{
       padding: 15px;
       border-left-width: 1px;
       border-left-style: solid;
@@ -31,11 +31,11 @@
     }
   }
 
-  > .chipfluent-field-notice{
+  > .csf-field-notice{
     background-color: transparent;
   }
 
-  .chipfluent-section-title{
+  .csf-section-title{
     display: block;
     padding: 15px ;
     background-color: #f9f9f9;
@@ -44,12 +44,12 @@
   }
 }
 
-.chipfluent-taxonomy-add-fields{
+.csf-taxonomy-add-fields{
 
-  > .chipfluent-field{
+  > .csf-field{
     padding: 8px 0;
 
-    > .chipfluent-title{
+    > .csf-title{
       float: none;
       width: 100%;
       padding: 2px 2px 4px 0;
@@ -60,11 +60,11 @@
       }
     }
 
-    > .chipfluent-fieldset{
+    > .csf-fieldset{
       float: none;
       width: 100%;
 
-      > .chipfluent-help{
+      > .csf-help{
         right: -5px;
       }
     }
@@ -75,12 +75,12 @@
   }
 }
 
-.chipfluent-taxonomy-edit-fields{
+.csf-taxonomy-edit-fields{
 
-  > .chipfluent-field{
+  > .csf-field{
     padding: 20px 0;
 
-    > .chipfluent-title{
+    > .csf-title{
       width: 200px;
 
       h4{
@@ -92,22 +92,22 @@
       }
     }
 
-    > .chipfluent-fieldset{
+    > .csf-fieldset{
       width: calc(100% - 220px);
 
-      > .chipfluent-help{
+      > .csf-help{
         top: -5px;
         right: -5px;
       }
     }
   }
 
-  > .chipfluent-field-submessage{
+  > .csf-field-submessage{
     margin: 20px 0;
   }
 
-  > .chipfluent-field-subheading,
-  > .chipfluent-field-heading{
+  > .csf-field-subheading,
+  > .csf-field-heading{
     margin: 20px 0;
     border: 1px solid #ddd;
   }

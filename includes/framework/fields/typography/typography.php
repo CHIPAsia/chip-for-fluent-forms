@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
-  class CHIPFLUENT_Field_typography extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_typography' ) ) {
+  class CSF_Field_typography extends CSF_Fields {
 
     public $chosen = false;
 
@@ -82,28 +82,28 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
       $default_value    = ( ! empty( $this->field['default'] ) ) ? wp_parse_args( $this->field['default'], $default_value ) : $default_value;
       $this->value      = wp_parse_args( $this->value, $default_value );
       $this->chosen     = $args['chosen'];
-      $chosen_class     = ( $this->chosen ) ? ' chipfluent--chosen' : '';
+      $chosen_class     = ( $this->chosen ) ? ' csf--chosen' : '';
       $line_height_unit = ( ! empty( $args['line_height_unit'] ) ) ? $args['line_height_unit'] : $args['unit'];
 
-      echo '<div class="chipfluent--typography'. esc_attr( $chosen_class ) .'" data-depend-id="'. esc_attr( $this->field['id'] ) .'" data-unit="'. esc_attr( $args['unit'] ) .'" data-line-height-unit="'. esc_attr( $line_height_unit ) .'" data-exclude="'. esc_attr( $args['exclude'] ) .'">';
+      echo '<div class="csf--typography'. esc_attr( $chosen_class ) .'" data-depend-id="'. esc_attr( $this->field['id'] ) .'" data-unit="'. esc_attr( $args['unit'] ) .'" data-line-height-unit="'. esc_attr( $line_height_unit ) .'" data-exclude="'. esc_attr( $args['exclude'] ) .'">';
 
-        echo '<div class="chipfluent--blocks chipfluent--blocks-selects">';
+        echo '<div class="csf--blocks csf--blocks-selects">';
 
           //
           // Font Family
           if ( ! empty( $args['font_family'] ) ) {
-            echo '<div class="chipfluent--block">';
-            echo '<div class="chipfluent--title">'. esc_html__( 'Font Family', 'chipfluent' ) .'</div>';
-            echo $this->create_select( array( $this->value['font-family'] => $this->value['font-family'] ), 'font-family', esc_html__( 'Select a font', 'chipfluent' ) );
+            echo '<div class="csf--block">';
+            echo '<div class="csf--title">'. esc_html__( 'Font Family', 'csf' ) .'</div>';
+            echo $this->create_select( array( $this->value['font-family'] => $this->value['font-family'] ), 'font-family', esc_html__( 'Select a font', 'csf' ) );
             echo '</div>';
           }
 
           //
           // Backup Font Family
           if ( ! empty( $args['backup_font_family'] ) ) {
-            echo '<div class="chipfluent--block chipfluent--block-backup-font-family hidden">';
-            echo '<div class="chipfluent--title">'. esc_html__( 'Backup Font Family', 'chipfluent' ) .'</div>';
-            echo $this->create_select( apply_filters( 'chipfluent_field_typography_backup_font_family', array(
+            echo '<div class="csf--block csf--block-backup-font-family hidden">';
+            echo '<div class="csf--title">'. esc_html__( 'Backup Font Family', 'csf' ) .'</div>';
+            echo $this->create_select( apply_filters( 'csf_field_typography_backup_font_family', array(
               'Arial, Helvetica, sans-serif',
               "'Arial Black', Gadget, sans-serif",
               "'Comic Sans MS', cursive, sans-serif",
@@ -116,7 +116,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
               "'Lucida Console', Monaco, monospace",
               'Georgia, serif',
               'Palatino Linotype'
-            ) ), 'backup-font-family', esc_html__( 'Default', 'chipfluent' ) );
+            ) ), 'backup-font-family', esc_html__( 'Default', 'csf' ) );
             echo '</div>';
           }
 
@@ -126,23 +126,23 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
 
             //
             // Font Style Select
-            echo '<div class="chipfluent--block chipfluent--block-font-style hidden">';
-            echo '<div class="chipfluent--title">'. esc_html__( 'Font Style', 'chipfluent') .'</div>';
-            echo '<select class="chipfluent--font-style-select" data-placeholder="Default">';
-            echo '<option value="">'. ( ! $this->chosen ? esc_html__( 'Default', 'chipfluent' ) : '' ) .'</option>';
+            echo '<div class="csf--block csf--block-font-style hidden">';
+            echo '<div class="csf--title">'. esc_html__( 'Font Style', 'csf') .'</div>';
+            echo '<select class="csf--font-style-select" data-placeholder="Default">';
+            echo '<option value="">'. ( ! $this->chosen ? esc_html__( 'Default', 'csf' ) : '' ) .'</option>';
             if ( ! empty( $this->value['font-weight'] ) || ! empty( $this->value['font-style'] ) ) {
               echo '<option value="'. esc_attr( strtolower( $this->value['font-weight'] . $this->value['font-style'] ) ) .'" selected></option>';
             }
             echo '</select>';
-            echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[font-weight]' ) ) .'" class="chipfluent--font-weight" value="'. esc_attr( $this->value['font-weight'] ) .'" />';
-            echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[font-style]' ) ) .'" class="chipfluent--font-style" value="'. esc_attr( $this->value['font-style'] ) .'" />';
+            echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[font-weight]' ) ) .'" class="csf--font-weight" value="'. esc_attr( $this->value['font-weight'] ) .'" />';
+            echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[font-style]' ) ) .'" class="csf--font-style" value="'. esc_attr( $this->value['font-style'] ) .'" />';
 
             //
             // Extra Font Style Select
             if ( ! empty( $args['extra_styles'] ) ) {
-              echo '<div class="chipfluent--block-extra-styles hidden">';
-              echo ( ! $this->chosen ) ? '<div class="chipfluent--title">'. esc_html__( 'Load Extra Styles', 'chipfluent' ) .'</div>' : '';
-              $placeholder = ( $this->chosen ) ? esc_html__( 'Load Extra Styles', 'chipfluent' ) : esc_html__( 'Default', 'chipfluent' );
+              echo '<div class="csf--block-extra-styles hidden">';
+              echo ( ! $this->chosen ) ? '<div class="csf--title">'. esc_html__( 'Load Extra Styles', 'csf' ) .'</div>' : '';
+              $placeholder = ( $this->chosen ) ? esc_html__( 'Load Extra Styles', 'csf' ) : esc_html__( 'Default', 'csf' );
               echo $this->create_select( $this->value['extra-styles'], 'extra-styles', $placeholder, true );
               echo '</div>';
             }
@@ -154,86 +154,86 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
           //
           // Subset
           if ( ! empty( $args['subset'] ) ) {
-            echo '<div class="chipfluent--block chipfluent--block-subset hidden">';
-            echo '<div class="chipfluent--title">'. esc_html__( 'Subset', 'chipfluent' ) .'</div>';
+            echo '<div class="csf--block csf--block-subset hidden">';
+            echo '<div class="csf--title">'. esc_html__( 'Subset', 'csf' ) .'</div>';
             $subset = ( is_array( $this->value['subset'] ) ) ? $this->value['subset'] : array_filter( (array) $this->value['subset'] );
-            echo $this->create_select( $subset, 'subset', esc_html__( 'Default', 'chipfluent' ), $args['multi_subset'] );
+            echo $this->create_select( $subset, 'subset', esc_html__( 'Default', 'csf' ), $args['multi_subset'] );
             echo '</div>';
           }
 
           //
           // Text Align
           if ( ! empty( $args['text_align'] ) ) {
-            echo '<div class="chipfluent--block">';
-            echo '<div class="chipfluent--title">'. esc_html__( 'Text Align', 'chipfluent' ) .'</div>';
+            echo '<div class="csf--block">';
+            echo '<div class="csf--title">'. esc_html__( 'Text Align', 'csf' ) .'</div>';
             echo $this->create_select( array(
-              'inherit' => esc_html__( 'Inherit', 'chipfluent' ),
-              'left'    => esc_html__( 'Left', 'chipfluent' ),
-              'center'  => esc_html__( 'Center', 'chipfluent' ),
-              'right'   => esc_html__( 'Right', 'chipfluent' ),
-              'justify' => esc_html__( 'Justify', 'chipfluent' ),
-              'initial' => esc_html__( 'Initial', 'chipfluent' )
-            ), 'text-align', esc_html__( 'Default', 'chipfluent' ) );
+              'inherit' => esc_html__( 'Inherit', 'csf' ),
+              'left'    => esc_html__( 'Left', 'csf' ),
+              'center'  => esc_html__( 'Center', 'csf' ),
+              'right'   => esc_html__( 'Right', 'csf' ),
+              'justify' => esc_html__( 'Justify', 'csf' ),
+              'initial' => esc_html__( 'Initial', 'csf' )
+            ), 'text-align', esc_html__( 'Default', 'csf' ) );
             echo '</div>';
           }
 
           //
           // Font Variant
           if ( ! empty( $args['font_variant'] ) ) {
-            echo '<div class="chipfluent--block">';
-            echo '<div class="chipfluent--title">'. esc_html__( 'Font Variant', 'chipfluent' ) .'</div>';
+            echo '<div class="csf--block">';
+            echo '<div class="csf--title">'. esc_html__( 'Font Variant', 'csf' ) .'</div>';
             echo $this->create_select( array(
-              'normal'         => esc_html__( 'Normal', 'chipfluent' ),
-              'small-caps'     => esc_html__( 'Small Caps', 'chipfluent' ),
-              'all-small-caps' => esc_html__( 'All Small Caps', 'chipfluent' )
-            ), 'font-variant', esc_html__( 'Default', 'chipfluent' ) );
+              'normal'         => esc_html__( 'Normal', 'csf' ),
+              'small-caps'     => esc_html__( 'Small Caps', 'csf' ),
+              'all-small-caps' => esc_html__( 'All Small Caps', 'csf' )
+            ), 'font-variant', esc_html__( 'Default', 'csf' ) );
             echo '</div>';
           }
 
           //
           // Text Transform
           if ( ! empty( $args['text_transform'] ) ) {
-            echo '<div class="chipfluent--block">';
-            echo '<div class="chipfluent--title">'. esc_html__( 'Text Transform', 'chipfluent' ) .'</div>';
+            echo '<div class="csf--block">';
+            echo '<div class="csf--title">'. esc_html__( 'Text Transform', 'csf' ) .'</div>';
             echo $this->create_select( array(
-              'none'       => esc_html__( 'None', 'chipfluent' ),
-              'capitalize' => esc_html__( 'Capitalize', 'chipfluent' ),
-              'uppercase'  => esc_html__( 'Uppercase', 'chipfluent' ),
-              'lowercase'  => esc_html__( 'Lowercase', 'chipfluent' )
-            ), 'text-transform', esc_html__( 'Default', 'chipfluent' ) );
+              'none'       => esc_html__( 'None', 'csf' ),
+              'capitalize' => esc_html__( 'Capitalize', 'csf' ),
+              'uppercase'  => esc_html__( 'Uppercase', 'csf' ),
+              'lowercase'  => esc_html__( 'Lowercase', 'csf' )
+            ), 'text-transform', esc_html__( 'Default', 'csf' ) );
             echo '</div>';
           }
 
           //
           // Text Decoration
           if ( ! empty( $args['text_decoration'] ) ) {
-            echo '<div class="chipfluent--block">';
-            echo '<div class="chipfluent--title">'. esc_html__( 'Text Decoration', 'chipfluent' ) .'</div>';
+            echo '<div class="csf--block">';
+            echo '<div class="csf--title">'. esc_html__( 'Text Decoration', 'csf' ) .'</div>';
             echo $this->create_select( array(
-              'none'               => esc_html__( 'None', 'chipfluent' ),
-              'underline'          => esc_html__( 'Solid', 'chipfluent' ),
-              'underline double'   => esc_html__( 'Double', 'chipfluent' ),
-              'underline dotted'   => esc_html__( 'Dotted', 'chipfluent' ),
-              'underline dashed'   => esc_html__( 'Dashed', 'chipfluent' ),
-              'underline wavy'     => esc_html__( 'Wavy', 'chipfluent' ),
-              'underline overline' => esc_html__( 'Overline', 'chipfluent' ),
-              'line-through'       => esc_html__( 'Line-through', 'chipfluent' )
-            ), 'text-decoration', esc_html__( 'Default', 'chipfluent' ) );
+              'none'               => esc_html__( 'None', 'csf' ),
+              'underline'          => esc_html__( 'Solid', 'csf' ),
+              'underline double'   => esc_html__( 'Double', 'csf' ),
+              'underline dotted'   => esc_html__( 'Dotted', 'csf' ),
+              'underline dashed'   => esc_html__( 'Dashed', 'csf' ),
+              'underline wavy'     => esc_html__( 'Wavy', 'csf' ),
+              'underline overline' => esc_html__( 'Overline', 'csf' ),
+              'line-through'       => esc_html__( 'Line-through', 'csf' )
+            ), 'text-decoration', esc_html__( 'Default', 'csf' ) );
             echo '</div>';
           }
 
         echo '</div>';
 
-        echo '<div class="chipfluent--blocks chipfluent--blocks-inputs">';
+        echo '<div class="csf--blocks csf--blocks-inputs">';
 
           //
           // Font Size
           if ( ! empty( $args['font_size'] ) ) {
-            echo '<div class="chipfluent--block">';
-            echo '<div class="chipfluent--title">'. esc_html__( 'Font Size', 'chipfluent' ) .'</div>';
-            echo '<div class="chipfluent--input-wrap">';
-            echo '<input type="number" name="'. esc_attr( $this->field_name( '[font-size]' ) ) .'" class="chipfluent--font-size chipfluent--input chipfluent-input-number" value="'. esc_attr( $this->value['font-size'] ) .'" step="any" />';
-            echo '<span class="chipfluent--unit">'. esc_attr( $args['unit'] ) .'</span>';
+            echo '<div class="csf--block">';
+            echo '<div class="csf--title">'. esc_html__( 'Font Size', 'csf' ) .'</div>';
+            echo '<div class="csf--input-wrap">';
+            echo '<input type="number" name="'. esc_attr( $this->field_name( '[font-size]' ) ) .'" class="csf--font-size csf--input csf-input-number" value="'. esc_attr( $this->value['font-size'] ) .'" step="any" />';
+            echo '<span class="csf--unit">'. esc_attr( $args['unit'] ) .'</span>';
             echo '</div>';
             echo '</div>';
           }
@@ -241,11 +241,11 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
           //
           // Line Height
           if ( ! empty( $args['line_height'] ) ) {
-            echo '<div class="chipfluent--block">';
-            echo '<div class="chipfluent--title">'. esc_html__( 'Line Height', 'chipfluent' ) .'</div>';
-            echo '<div class="chipfluent--input-wrap">';
-            echo '<input type="number" name="'. esc_attr( $this->field_name( '[line-height]' ) ) .'" class="chipfluent--line-height chipfluent--input chipfluent-input-number" value="'. esc_attr( $this->value['line-height'] ) .'" step="any" />';
-            echo '<span class="chipfluent--unit">'. esc_attr( $line_height_unit ) .'</span>';
+            echo '<div class="csf--block">';
+            echo '<div class="csf--title">'. esc_html__( 'Line Height', 'csf' ) .'</div>';
+            echo '<div class="csf--input-wrap">';
+            echo '<input type="number" name="'. esc_attr( $this->field_name( '[line-height]' ) ) .'" class="csf--line-height csf--input csf-input-number" value="'. esc_attr( $this->value['line-height'] ) .'" step="any" />';
+            echo '<span class="csf--unit">'. esc_attr( $line_height_unit ) .'</span>';
             echo '</div>';
             echo '</div>';
           }
@@ -253,11 +253,11 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
           //
           // Letter Spacing
           if ( ! empty( $args['letter_spacing'] ) ) {
-            echo '<div class="chipfluent--block">';
-            echo '<div class="chipfluent--title">'. esc_html__( 'Letter Spacing', 'chipfluent' ) .'</div>';
-            echo '<div class="chipfluent--input-wrap">';
-            echo '<input type="number" name="'. esc_attr( $this->field_name( '[letter-spacing]' ) ) .'" class="chipfluent--letter-spacing chipfluent--input chipfluent-input-number" value="'. esc_attr( $this->value['letter-spacing'] ) .'" step="any" />';
-            echo '<span class="chipfluent--unit">'. esc_attr( $args['unit'] ) .'</span>';
+            echo '<div class="csf--block">';
+            echo '<div class="csf--title">'. esc_html__( 'Letter Spacing', 'csf' ) .'</div>';
+            echo '<div class="csf--input-wrap">';
+            echo '<input type="number" name="'. esc_attr( $this->field_name( '[letter-spacing]' ) ) .'" class="csf--letter-spacing csf--input csf-input-number" value="'. esc_attr( $this->value['letter-spacing'] ) .'" step="any" />';
+            echo '<span class="csf--unit">'. esc_attr( $args['unit'] ) .'</span>';
             echo '</div>';
             echo '</div>';
           }
@@ -265,11 +265,11 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
           //
           // Word Spacing
           if ( ! empty( $args['word_spacing'] ) ) {
-            echo '<div class="chipfluent--block">';
-            echo '<div class="chipfluent--title">'. esc_html__( 'Word Spacing', 'chipfluent' ) .'</div>';
-            echo '<div class="chipfluent--input-wrap">';
-            echo '<input type="number" name="'. esc_attr( $this->field_name( '[word-spacing]' ) ) .'" class="chipfluent--word-spacing chipfluent--input chipfluent-input-number" value="'. esc_attr( $this->value['word-spacing'] ) .'" step="any" />';
-            echo '<span class="chipfluent--unit">'. esc_attr( $args['unit'] ) .'</span>';
+            echo '<div class="csf--block">';
+            echo '<div class="csf--title">'. esc_html__( 'Word Spacing', 'csf' ) .'</div>';
+            echo '<div class="csf--input-wrap">';
+            echo '<input type="number" name="'. esc_attr( $this->field_name( '[word-spacing]' ) ) .'" class="csf--word-spacing csf--input csf-input-number" value="'. esc_attr( $this->value['word-spacing'] ) .'" step="any" />';
+            echo '<span class="csf--unit">'. esc_attr( $args['unit'] ) .'</span>';
             echo '</div>';
             echo '</div>';
           }
@@ -280,10 +280,10 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
         // Font Color
         if ( ! empty( $args['color'] ) ) {
           $default_color_attr = ( ! empty( $default_value['color'] ) ) ? ' data-default-color="'. esc_attr( $default_value['color'] ) .'"' : '';
-          echo '<div class="chipfluent--block chipfluent--block-font-color">';
-          echo '<div class="chipfluent--title">'. esc_html__( 'Font Color', 'chipfluent' ) .'</div>';
-          echo '<div class="chipfluent-field-color">';
-          echo '<input type="text" name="'. esc_attr( $this->field_name( '[color]' ) ) .'" class="chipfluent-color chipfluent--color" value="'. esc_attr( $this->value['color'] ) .'"'. $default_color_attr .' />';
+          echo '<div class="csf--block csf--block-font-color">';
+          echo '<div class="csf--title">'. esc_html__( 'Font Color', 'csf' ) .'</div>';
+          echo '<div class="csf-field-color">';
+          echo '<input type="text" name="'. esc_attr( $this->field_name( '[color]' ) ) .'" class="csf-color csf--color" value="'. esc_attr( $this->value['color'] ) .'"'. $default_color_attr .' />';
           echo '</div>';
           echo '</div>';
         }
@@ -291,9 +291,9 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
         //
         // Custom style
         if ( ! empty( $args['custom_style'] ) ) {
-          echo '<div class="chipfluent--block chipfluent--block-custom-style">';
-          echo '<div class="chipfluent--title">'. esc_html__( 'Custom Style', 'chipfluent' ) .'</div>';
-          echo '<textarea name="'. esc_attr( $this->field_name( '[custom-style]' ) ) .'" class="chipfluent--custom-style">'. esc_attr( $this->value['custom-style'] ) .'</textarea>';
+          echo '<div class="csf--block csf--block-custom-style">';
+          echo '<div class="csf--title">'. esc_html__( 'Custom Style', 'csf' ) .'</div>';
+          echo '<textarea name="'. esc_attr( $this->field_name( '[custom-style]' ) ) .'" class="csf--custom-style">'. esc_attr( $this->value['custom-style'] ) .'</textarea>';
           echo '</div>';
         }
 
@@ -302,14 +302,14 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
         $always_preview = ( $args['preview'] !== 'always' ) ? ' hidden' : '';
 
         if ( ! empty( $args['preview'] ) ) {
-          echo '<div class="chipfluent--block chipfluent--block-preview'. esc_attr( $always_preview ) .'">';
-          echo '<div class="chipfluent--toggle fas fa-toggle-off"></div>';
-          echo '<div class="chipfluent--preview">'. esc_attr( $args['preview_text'] ) .'</div>';
+          echo '<div class="csf--block csf--block-preview'. esc_attr( $always_preview ) .'">';
+          echo '<div class="csf--toggle fas fa-toggle-off"></div>';
+          echo '<div class="csf--preview">'. esc_attr( $args['preview_text'] ) .'</div>';
           echo '</div>';
         }
 
-        echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[type]' ) ) .'" class="chipfluent--type" value="'. esc_attr( $this->value['type'] ) .'" />';
-        echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[unit]' ) ) .'" class="chipfluent--unit-save" value="'. esc_attr( $args['unit'] ) .'" />';
+        echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[type]' ) ) .'" class="csf--type" value="'. esc_attr( $this->value['type'] ) .'" />';
+        echo '<input type="hidden" name="'. esc_attr( $this->field_name( '[unit]' ) ) .'" class="csf--unit-save" value="'. esc_attr( $args['unit'] ) .'" />';
 
       echo '</div>';
 
@@ -323,7 +323,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
       $multiple_attr = ( $is_multiple ) ? ' multiple data-multiple="true"' : '';
       $chosen_rtl    = ( $this->chosen && is_rtl() ) ? ' chosen-rtl' : '';
 
-      $output  = '<select name="'. esc_attr( $this->field_name( '['. $name .']'. $multiple_name ) ) .'" class="chipfluent--'. esc_attr( $name ) . esc_attr( $chosen_rtl ) .'" data-placeholder="'. esc_attr( $placeholder ) .'"'. $multiple_attr .'>';
+      $output  = '<select name="'. esc_attr( $this->field_name( '['. $name .']'. $multiple_name ) ) .'" class="csf--'. esc_attr( $name ) . esc_attr( $chosen_rtl ) .'" data-placeholder="'. esc_attr( $placeholder ) .'"'. $multiple_attr .'>';
       $output .= ( ! empty( $placeholder ) ) ? '<option value="">'. esc_attr( ( ! $this->chosen ) ? $placeholder : '' ) .'</option>' : '';
 
       if ( ! empty( $options ) ) {
@@ -347,26 +347,26 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
 
     public function enqueue() {
 
-      if ( ! wp_script_is( 'chipfluent-webfontloader' ) ) {
+      if ( ! wp_script_is( 'csf-webfontloader' ) ) {
 
-        CHIPFLUENT::include_plugin_file( 'fields/typography/google-fonts.php' );
+        CSF::include_plugin_file( 'fields/typography/google-fonts.php' );
 
-        wp_enqueue_script( 'chipfluent-webfontloader', 'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js', array( 'chipfluent' ), '1.6.28', true );
+        wp_enqueue_script( 'csf-webfontloader', 'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js', array( 'csf' ), '1.6.28', true );
 
         $webfonts = array();
 
-        $customwebfonts = apply_filters( 'chipfluent_field_typography_customwebfonts', array() );
+        $customwebfonts = apply_filters( 'csf_field_typography_customwebfonts', array() );
 
         if ( ! empty( $customwebfonts ) ) {
           $webfonts['custom'] = array(
-            'label' => esc_html__( 'Custom Web Fonts', 'chipfluent' ),
+            'label' => esc_html__( 'Custom Web Fonts', 'csf' ),
             'fonts' => $customwebfonts
           );
         }
 
         $webfonts['safe'] = array(
-          'label' => esc_html__( 'Safe Web Fonts', 'chipfluent' ),
-          'fonts' => apply_filters( 'chipfluent_field_typography_safewebfonts', array(
+          'label' => esc_html__( 'Safe Web Fonts', 'csf' ),
+          'fonts' => apply_filters( 'csf_field_typography_safewebfonts', array(
             'Arial',
             'Arial Black',
             'Helvetica',
@@ -385,13 +385,13 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
         ) );
 
         $webfonts['google'] = array(
-          'label' => esc_html__( 'Google Web Fonts', 'chipfluent' ),
-          'fonts' => apply_filters( 'chipfluent_field_typography_googlewebfonts', chipfluent_get_google_fonts()
+          'label' => esc_html__( 'Google Web Fonts', 'csf' ),
+          'fonts' => apply_filters( 'csf_field_typography_googlewebfonts', csf_get_google_fonts()
         ) );
 
-        $defaultstyles = apply_filters( 'chipfluent_field_typography_defaultstyles', array( 'normal', 'italic', '700', '700italic' ) );
+        $defaultstyles = apply_filters( 'csf_field_typography_defaultstyles', array( 'normal', 'italic', '700', '700italic' ) );
 
-        $googlestyles = apply_filters( 'chipfluent_field_typography_googlestyles', array(
+        $googlestyles = apply_filters( 'csf_field_typography_googlestyles', array(
           '100'       => 'Thin 100',
           '100italic' => 'Thin 100 Italic',
           '200'       => 'Extra-Light 200',
@@ -412,9 +412,9 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
           '900italic' => 'Black 900 Italic'
         ) );
 
-        $webfonts = apply_filters( 'chipfluent_field_typography_webfonts', $webfonts );
+        $webfonts = apply_filters( 'csf_field_typography_webfonts', $webfonts );
 
-        wp_localize_script( 'chipfluent', 'chipfluent_typography_json', array(
+        wp_localize_script( 'csf', 'csf_typography_json', array(
           'webfonts'      => $webfonts,
           'defaultstyles' => $defaultstyles,
           'googlestyles'  => $googlestyles
@@ -431,8 +431,8 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
       if ( ! empty( $this->value['type'] ) ) {
         $is_google = ( $this->value['type'] === 'google' ) ? true : false;
       } else {
-        CHIPFLUENT::include_plugin_file( 'fields/typography/google-fonts.php' );
-        $is_google = ( array_key_exists( $this->value['font-family'], chipfluent_get_google_fonts() ) ) ? true : false;
+        CSF::include_plugin_file( 'fields/typography/google-fonts.php' );
+        $is_google = ( array_key_exists( $this->value['font-family'], csf_get_google_fonts() ) ) ? true : false;
       }
 
       if ( $is_google ) {
@@ -446,10 +446,10 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
           $style = $font_weight . $font_style;
           if ( ! empty( $style ) ) {
             $style = ( $style === 'normal' ) ? '400' : $style;
-            CHIPFLUENT::$webfonts[$method][$font_family][$style] = $style;
+            CSF::$webfonts[$method][$font_family][$style] = $style;
           }
         } else {
-          CHIPFLUENT::$webfonts[$method][$font_family] = array();
+          CSF::$webfonts[$method][$font_family] = array();
         }
 
         // set extra styles
@@ -457,7 +457,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
           foreach ( $this->value['extra-styles'] as $extra_style ) {
             if ( ! empty( $extra_style ) ) {
               $extra_style = ( $extra_style === 'normal' ) ? '400' : $extra_style;
-              CHIPFLUENT::$webfonts[$method][$font_family][$extra_style] = $extra_style;
+              CSF::$webfonts[$method][$font_family][$extra_style] = $extra_style;
             }
           }
         }
@@ -467,7 +467,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_typography' ) ) {
           $this->value['subset'] = ( is_array( $this->value['subset'] ) ) ? $this->value['subset'] : array_filter( (array) $this->value['subset'] );
           foreach ( $this->value['subset'] as $subset ) {
             if( ! empty( $subset ) ) {
-              CHIPFLUENT::$subsets[$subset] = $subset;
+              CSF::$subsets[$subset] = $subset;
             }
           }
         }

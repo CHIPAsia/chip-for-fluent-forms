@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_palette' ) ) {
-  class CHIPFLUENT_Field_palette extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_palette' ) ) {
+  class CSF_Field_palette extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -22,14 +22,14 @@ if ( ! class_exists( 'CHIPFLUENT_Field_palette' ) ) {
 
       if ( ! empty( $palette ) ) {
 
-        echo '<div class="chipfluent-siblings chipfluent--palettes">';
+        echo '<div class="csf-siblings csf--palettes">';
 
         foreach ( $palette as $key => $colors ) {
 
-          $active  = ( $key === $this->value ) ? ' chipfluent--active' : '';
+          $active  = ( $key === $this->value ) ? ' csf--active' : '';
           $checked = ( $key === $this->value ) ? ' checked' : '';
 
-          echo '<div class="chipfluent--sibling chipfluent--palette'. esc_attr( $active ) .'">';
+          echo '<div class="csf--sibling csf--palette'. esc_attr( $active ) .'">';
 
           if ( ! empty( $colors ) ) {
 

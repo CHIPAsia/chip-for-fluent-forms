@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
-  class CHIPFLUENT_Options extends CHIPFLUENT_Abstract {
+if ( ! class_exists( 'CSF_Options' ) ) {
+  class CSF_Options extends CSF_Abstract {
 
     // constans
     public $unique       = '';
@@ -23,7 +23,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
     public $args         = array(
 
       // framework title
-      'framework_title'         => 'Chipfluent Framework <small>by Chipfluent</small>',
+      'framework_title'         => 'Codestar Framework <small>by Codestar</small>',
       'framework_class'         => '',
 
       // menu settings
@@ -59,7 +59,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
       'admin_bar_menu_priority' => 50,
 
       // footer
-      'footer_text'             => 'Thank you for creating with Chipfluent Framework',
+      'footer_text'             => 'Thank you for creating with Codestar Framework',
       'footer_after'            => '',
       'footer_credit'           => '',
 
@@ -92,8 +92,8 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
     public function __construct( $key, $params = array() ) {
 
       $this->unique   = $key;
-      $this->args     = apply_filters( "chipfluent_{$this->unique}_args", wp_parse_args( $params['args'], $this->args ), $this );
-      $this->sections = apply_filters( "chipfluent_{$this->unique}_sections", $params['sections'], $this );
+      $this->args     = apply_filters( "csf_{$this->unique}_args", wp_parse_args( $params['args'], $this->args ), $this );
+      $this->sections = apply_filters( "csf_{$this->unique}_sections", $params['sections'], $this );
 
       // run only is admin panel options, avoid performance loss
       $this->pre_tabs     = $this->pre_tabs( $this->sections );
@@ -106,7 +106,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
 
       add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
       add_action( 'admin_bar_menu', array( $this, 'add_admin_bar_menu' ), $this->args['admin_bar_menu_priority'] );
-      add_action( 'wp_ajax_chipfluent_'. $this->unique .'_ajax_save', array( $this, 'ajax_save' ) );
+      add_action( 'wp_ajax_csf_'. $this->unique .'_ajax_save', array( $this, 'ajax_save' ) );
 
       if ( $this->args['database'] === 'network' && ! empty( $this->args['show_in_network'] ) ) {
         add_action( 'network_admin_menu', array( $this, 'add_admin_menu' ) );
@@ -138,7 +138,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
         global $submenu;
 
         $menu_slug = $this->args['menu_slug'];
-        $menu_icon = ( ! empty( $this->args['admin_bar_menu_icon'] ) ) ? '<span class="chipfluent-ab-icon ab-icon '. esc_attr( $this->args['admin_bar_menu_icon'] ) .'"></span>' : '';
+        $menu_icon = ( ! empty( $this->args['admin_bar_menu_icon'] ) ) ? '<span class="csf-ab-icon ab-icon '. esc_attr( $this->args['admin_bar_menu_icon'] ) .'"></span>' : '';
 
         $wp_admin_bar->add_node( array(
           'id'    => $menu_slug,
@@ -166,7 +166,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
       $result = $this->set_options( true );
 
       if ( ! $result ) {
-        wp_send_json_error( array( 'error' => esc_html__( 'Error while saving the changes.', 'chipfluent' ) ) );
+        wp_send_json_error( array( 'error' => esc_html__( 'Error while saving the changes.', 'csf' ) ) );
       } else {
         wp_send_json_success( array( 'notice' => $this->notice, 'errors' => $this->errors ) );
       }
@@ -205,28 +205,28 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
 
       // XSS ok.
       // No worries, This "POST" requests is sanitizing in the below foreach. see #L337 - #L341
-      $response  = ( $ajax && ! empty( $_POST['data'] ) ) ? json_decode( wp_unslash( trim( wp_kses_post( $_POST['data'] ) ) ), true ) : $_POST;
+      $response  = ( $ajax && ! empty( $_POST['data'] ) ) ? json_decode( wp_unslash( trim( $_POST['data'] ) ), true ) : $_POST;
 
       // Set variables.
       $data      = array();
-      $noncekey  = 'chipfluent_options_nonce'. $this->unique;
+      $noncekey  = 'csf_options_nonce'. $this->unique;
       $nonce     = ( ! empty( $response[$noncekey] ) ) ? $response[$noncekey] : '';
       $options   = ( ! empty( $response[$this->unique] ) ) ? $response[$this->unique] : array();
-      $transient = ( ! empty( $response['chipfluent_transient'] ) ) ? $response['chipfluent_transient'] : array();
+      $transient = ( ! empty( $response['csf_transient'] ) ) ? $response['csf_transient'] : array();
 
-      if ( wp_verify_nonce( $nonce, 'chipfluent_options_nonce' ) ) {
+      if ( wp_verify_nonce( $nonce, 'csf_options_nonce' ) ) {
 
         $importing  = false;
         $section_id = ( ! empty( $transient['section'] ) ) ? $transient['section'] : '';
 
-        if ( ! $ajax && ! empty( $response[ 'chipfluent_import_data' ] ) ) {
+        if ( ! $ajax && ! empty( $response[ 'csf_import_data' ] ) ) {
 
           // XSS ok.
           // No worries, This "POST" requests is sanitizing in the below foreach. see #L337 - #L341
-          $import_data  = json_decode( wp_unslash( trim( $response[ 'chipfluent_import_data' ] ) ), true );
+          $import_data  = json_decode( wp_unslash( trim( $response[ 'csf_import_data' ] ) ), true );
           $options      = ( is_array( $import_data ) && ! empty( $import_data ) ) ? $import_data : array();
           $importing    = true;
-          $this->notice = esc_html__( 'Settings successfully imported.', 'chipfluent' );
+          $this->notice = esc_html__( 'Settings successfully imported.', 'csf' );
 
         }
 
@@ -238,7 +238,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
             }
           }
 
-          $this->notice = esc_html__( 'Default settings restored.', 'chipfluent' );
+          $this->notice = esc_html__( 'Default settings restored.', 'csf' );
 
         } else if ( ! empty( $transient['reset_section'] ) && ! empty( $section_id ) ) {
 
@@ -254,7 +254,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
 
           $data = wp_parse_args( $data, $this->options );
 
-          $this->notice = esc_html__( 'Default settings restored.', 'chipfluent' );
+          $this->notice = esc_html__( 'Default settings restored.', 'csf' );
 
         } else {
 
@@ -314,18 +314,18 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
 
         }
 
-        $data = apply_filters( "chipfluent_{$this->unique}_save", $data, $this );
+        $data = apply_filters( "csf_{$this->unique}_save", $data, $this );
 
-        do_action( "chipfluent_{$this->unique}_save_before", $data, $this );
+        do_action( "csf_{$this->unique}_save_before", $data, $this );
 
         $this->options = $data;
 
         $this->save_options( $data );
 
-        do_action( "chipfluent_{$this->unique}_save_after", $data, $this );
+        do_action( "csf_{$this->unique}_save_after", $data, $this );
 
         if ( empty( $this->notice ) ) {
-          $this->notice = esc_html__( 'Settings saved.', 'chipfluent' );
+          $this->notice = esc_html__( 'Settings saved.', 'csf' );
         }
 
         return true;
@@ -349,7 +349,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
         update_option( $this->unique, $data );
       }
 
-      do_action( "chipfluent_{$this->unique}_saved", $data, $this );
+      do_action( "csf_{$this->unique}_saved", $data, $this );
 
     }
 
@@ -446,7 +446,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
           foreach ( $sections['fields'] as $field ) {
             if ( ! empty( $field['id'] ) ) {
               if ( array_key_exists( $field['id'], $this->errors ) ) {
-                $err = '<span class="chipfluent-label-error">!</span>';
+                $err = '<span class="csf-label-error">!</span>';
               }
             }
           }
@@ -471,51 +471,51 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
     public function add_options_html() {
 
       $has_nav       = ( count( $this->pre_tabs ) > 1 ) ? true : false;
-      $show_all      = ( ! $has_nav ) ? ' chipfluent-show-all' : '';
-      $ajax_class    = ( $this->args['ajax_save'] ) ? ' chipfluent-save-ajax' : '';
-      $sticky_class  = ( $this->args['sticky_header'] ) ? ' chipfluent-sticky-header' : '';
+      $show_all      = ( ! $has_nav ) ? ' csf-show-all' : '';
+      $ajax_class    = ( $this->args['ajax_save'] ) ? ' csf-save-ajax' : '';
+      $sticky_class  = ( $this->args['sticky_header'] ) ? ' csf-sticky-header' : '';
       $wrapper_class = ( $this->args['framework_class'] ) ? ' '. $this->args['framework_class'] : '';
-      $theme         = ( $this->args['theme'] ) ? ' chipfluent-theme-'. $this->args['theme'] : '';
+      $theme         = ( $this->args['theme'] ) ? ' csf-theme-'. $this->args['theme'] : '';
       $class         = ( $this->args['class'] ) ? ' '. $this->args['class'] : '';
       $nav_type      = ( $this->args['nav'] === 'inline' ) ? 'inline' : 'normal';
       $form_action   = ( $this->args['form_action'] ) ? $this->args['form_action'] : '';
 
-      do_action( 'chipfluent_options_before' );
+      do_action( 'csf_options_before' );
 
-      echo '<div class="chipfluent chipfluent-options'. esc_attr( $theme . $class . $wrapper_class ) .'" data-slug="'. esc_attr( $this->args['menu_slug'] ) .'" data-unique="'. esc_attr( $this->unique ) .'">';
+      echo '<div class="csf csf-options'. esc_attr( $theme . $class . $wrapper_class ) .'" data-slug="'. esc_attr( $this->args['menu_slug'] ) .'" data-unique="'. esc_attr( $this->unique ) .'">';
 
-        echo '<div class="chipfluent-container">';
+        echo '<div class="csf-container">';
 
-        echo '<form method="post" action="'. esc_attr( $form_action ) .'" enctype="multipart/form-data" id="chipfluent-form" autocomplete="off" novalidate="novalidate">';
+        echo '<form method="post" action="'. esc_attr( $form_action ) .'" enctype="multipart/form-data" id="csf-form" autocomplete="off" novalidate="novalidate">';
 
-        echo '<input type="hidden" class="chipfluent-section-id" name="chipfluent_transient[section]" value="1">';
+        echo '<input type="hidden" class="csf-section-id" name="csf_transient[section]" value="1">';
 
-        wp_nonce_field( 'chipfluent_options_nonce', 'chipfluent_options_nonce'. $this->unique );
+        wp_nonce_field( 'csf_options_nonce', 'csf_options_nonce'. $this->unique );
 
-        echo '<div class="chipfluent-header'. esc_attr( $sticky_class ) .'">';
-        echo '<div class="chipfluent-header-inner">';
+        echo '<div class="csf-header'. esc_attr( $sticky_class ) .'">';
+        echo '<div class="csf-header-inner">';
 
-          echo '<div class="chipfluent-header-left">';
-          echo '<h1>'. esc_html( $this->args['framework_title'] ) .'</h1>';
+          echo '<div class="csf-header-left">';
+          echo '<h1>'. $this->args['framework_title'] .'</h1>';
           echo '</div>';
 
-          echo '<div class="chipfluent-header-right">';
+          echo '<div class="csf-header-right">';
 
-            $notice_class = ( ! empty( $this->notice ) ) ? 'chipfluent-form-show' : '';
+            $notice_class = ( ! empty( $this->notice ) ) ? 'csf-form-show' : '';
             $notice_text  = ( ! empty( $this->notice ) ) ? $this->notice : '';
 
-            echo '<div class="chipfluent-form-result chipfluent-form-success '. esc_attr( $notice_class ) .'">'. esc_html( $notice_text ) .'</div>';
+            echo '<div class="csf-form-result csf-form-success '. esc_attr( $notice_class ) .'">'. $notice_text .'</div>';
 
-            echo ( $this->args['show_form_warning'] ) ? '<div class="chipfluent-form-result chipfluent-form-warning">'. esc_html__( 'You have unsaved changes, save your changes!', 'chipfluent' ) .'</div>' : '';
+            echo ( $this->args['show_form_warning'] ) ? '<div class="csf-form-result csf-form-warning">'. esc_html__( 'You have unsaved changes, save your changes!', 'csf' ) .'</div>' : '';
 
-            echo ( $has_nav && $this->args['show_all_options'] ) ? '<div class="chipfluent-expand-all" title="'. esc_html__( 'show all settings', 'chipfluent' ) .'"><i class="fas fa-outdent"></i></div>' : '';
+            echo ( $has_nav && $this->args['show_all_options'] ) ? '<div class="csf-expand-all" title="'. esc_html__( 'show all settings', 'csf' ) .'"><i class="fas fa-outdent"></i></div>' : '';
 
-            echo ( $this->args['show_search'] ) ? '<div class="chipfluent-search"><input type="text" name="chipfluent-search" placeholder="'. esc_html__( 'Search...', 'chipfluent' ) .'" autocomplete="off" /></div>' : '';
+            echo ( $this->args['show_search'] ) ? '<div class="csf-search"><input type="text" name="csf-search" placeholder="'. esc_html__( 'Search...', 'csf' ) .'" autocomplete="off" /></div>' : '';
 
-            echo '<div class="chipfluent-buttons">';
-            echo '<input type="submit" name="'. esc_attr( $this->unique ) .'[_nonce][save]" class="button button-primary chipfluent-top-save chipfluent-save'. esc_attr( $ajax_class ) .'" value="'. esc_html__( 'Save', 'chipfluent' ) .'" data-save="'. esc_html__( 'Saving...', 'chipfluent' ) .'">';
-            echo ( $this->args['show_reset_section'] ) ? '<input type="submit" name="chipfluent_transient[reset_section]" class="button button-secondary chipfluent-reset-section chipfluent-confirm" value="'. esc_html__( 'Reset Section', 'chipfluent' ) .'" data-confirm="'. esc_html__( 'Are you sure to reset this section options?', 'chipfluent' ) .'">' : '';
-            echo ( $this->args['show_reset_all'] ) ? '<input type="submit" name="chipfluent_transient[reset]" class="button chipfluent-warning-primary chipfluent-reset-all chipfluent-confirm" value="'. ( ( $this->args['show_reset_section'] ) ? esc_html__( 'Reset All', 'chipfluent' ) : esc_html__( 'Reset', 'chipfluent' ) ) .'" data-confirm="'. esc_html__( 'Are you sure you want to reset all settings to default values?', 'chipfluent' ) .'">' : '';
+            echo '<div class="csf-buttons">';
+            echo '<input type="submit" name="'. esc_attr( $this->unique ) .'[_nonce][save]" class="button button-primary csf-top-save csf-save'. esc_attr( $ajax_class ) .'" value="'. esc_html__( 'Save', 'csf' ) .'" data-save="'. esc_html__( 'Saving...', 'csf' ) .'">';
+            echo ( $this->args['show_reset_section'] ) ? '<input type="submit" name="csf_transient[reset_section]" class="button button-secondary csf-reset-section csf-confirm" value="'. esc_html__( 'Reset Section', 'csf' ) .'" data-confirm="'. esc_html__( 'Are you sure to reset this section options?', 'csf' ) .'">' : '';
+            echo ( $this->args['show_reset_all'] ) ? '<input type="submit" name="csf_transient[reset]" class="button csf-warning-primary csf-reset-all csf-confirm" value="'. ( ( $this->args['show_reset_section'] ) ? esc_html__( 'Reset All', 'csf' ) : esc_html__( 'Reset', 'csf' ) ) .'" data-confirm="'. esc_html__( 'Are you sure you want to reset all settings to default values?', 'csf' ) .'">' : '';
             echo '</div>';
 
           echo '</div>';
@@ -524,11 +524,11 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
           echo '</div>';
         echo '</div>';
 
-        echo '<div class="chipfluent-wrapper'. esc_attr( $show_all ) .'">';
+        echo '<div class="csf-wrapper'. esc_attr( $show_all ) .'">';
 
           if ( $has_nav ) {
 
-            echo '<div class="chipfluent-nav chipfluent-nav-'. esc_attr( $nav_type ) .' chipfluent-nav-options">';
+            echo '<div class="csf-nav csf-nav-'. esc_attr( $nav_type ) .' csf-nav-options">';
 
               echo '<ul>';
 
@@ -536,13 +536,13 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
 
                 $tab_id    = sanitize_title( $tab['title'] );
                 $tab_error = $this->error_check( $tab );
-                $tab_icon  = ( ! empty( $tab['icon'] ) ) ? '<i class="chipfluent-tab-icon '. esc_attr( $tab['icon'] ) .'"></i>' : '';
+                $tab_icon  = ( ! empty( $tab['icon'] ) ) ? '<i class="csf-tab-icon '. esc_attr( $tab['icon'] ) .'"></i>' : '';
 
                 if ( ! empty( $tab['subs'] ) ) {
 
-                  echo '<li class="chipfluent-tab-item">';
+                  echo '<li class="csf-tab-item">';
 
-                    echo '<a href="#tab='. esc_attr( $tab_id ) .'" data-tab-id="'. esc_attr( $tab_id ) .'" class="chipfluent-arrow">'. $tab_icon . $tab['title'] . $tab_error .'</a>';
+                    echo '<a href="#tab='. esc_attr( $tab_id ) .'" data-tab-id="'. esc_attr( $tab_id ) .'" class="csf-arrow">'. $tab_icon . $tab['title'] . $tab_error .'</a>';
 
                     echo '<ul>';
 
@@ -550,7 +550,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
 
                       $sub_id    = $tab_id .'/'. sanitize_title( $sub['title'] );
                       $sub_error = $this->error_check( $sub );
-                      $sub_icon  = ( ! empty( $sub['icon'] ) ) ? '<i class="chipfluent-tab-icon '. esc_attr( $sub['icon'] ) .'"></i>' : '';
+                      $sub_icon  = ( ! empty( $sub['icon'] ) ) ? '<i class="csf-tab-icon '. esc_attr( $sub['icon'] ) .'"></i>' : '';
 
                       echo '<li><a href="#tab='. esc_attr( $sub_id ) .'" data-tab-id="'. esc_attr( $sub_id ) .'">'. $sub_icon . $sub['title'] . $sub_error .'</a></li>';
 
@@ -562,7 +562,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
 
                 } else {
 
-                  echo '<li class="chipfluent-tab-item"><a href="#tab='. esc_attr( $tab_id ) .'" data-tab-id="'. esc_attr( $tab_id ) .'">'. $tab_icon . $tab['title'] . $tab_error .'</a></li>';
+                  echo '<li class="csf-tab-item"><a href="#tab='. esc_attr( $tab_id ) .'" data-tab-id="'. esc_attr( $tab_id ) .'">'. $tab_icon . $tab['title'] . $tab_error .'</a></li>';
 
                 }
 
@@ -574,22 +574,22 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
 
           }
 
-          echo '<div class="chipfluent-content">';
+          echo '<div class="csf-content">';
 
-            echo '<div class="chipfluent-sections">';
+            echo '<div class="csf-sections">';
 
             foreach ( $this->pre_sections as $section ) {
 
-              $section_onload = ( ! $has_nav ) ? ' chipfluent-onload' : '';
+              $section_onload = ( ! $has_nav ) ? ' csf-onload' : '';
               $section_class  = ( ! empty( $section['class'] ) ) ? ' '. $section['class'] : '';
-              $section_icon   = ( ! empty( $section['icon'] ) ) ? '<i class="chipfluent-section-icon '. esc_attr( $section['icon'] ) .'"></i>' : '';
+              $section_icon   = ( ! empty( $section['icon'] ) ) ? '<i class="csf-section-icon '. esc_attr( $section['icon'] ) .'"></i>' : '';
               $section_title  = ( ! empty( $section['title'] ) ) ? $section['title'] : '';
               $section_parent = ( ! empty( $section['ptitle'] ) ) ? sanitize_title( $section['ptitle'] ) .'/' : '';
               $section_slug   = ( ! empty( $section['title'] ) ) ? sanitize_title( $section_title ) : '';
 
-              echo '<div class="chipfluent-section hidden'. esc_attr( $section_onload . $section_class ) .'" data-section-id="'. esc_attr( $section_parent . $section_slug ) .'">';
-              echo ( $has_nav ) ? '<div class="chipfluent-section-title"><h3>'. esc_html( $section_icon . $section_title ) .'</h3></div>' : '';
-              echo ( ! empty( $section['description'] ) ) ? '<div class="chipfluent-field chipfluent-section-description">'. $section['description'] .'</div>' : '';
+              echo '<div class="csf-section hidden'. esc_attr( $section_onload . $section_class ) .'" data-section-id="'. esc_attr( $section_parent . $section_slug ) .'">';
+              echo ( $has_nav ) ? '<div class="csf-section-title"><h3>'. $section_icon . $section_title .'</h3></div>' : '';
+              echo ( ! empty( $section['description'] ) ) ? '<div class="csf-field csf-section-description">'. $section['description'] .'</div>' : '';
 
               if ( ! empty( $section['fields'] ) ) {
 
@@ -607,13 +607,13 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
 
                   $value = ( ! empty( $field['id'] ) && isset( $this->options[$field['id']] ) ) ? $this->options[$field['id']] : '';
 
-                  CHIPFLUENT::field( $field, $value, $this->unique, 'options' );
+                  CSF::field( $field, $value, $this->unique, 'options' );
 
                 }
 
               } else {
 
-                echo '<div class="chipfluent-no-option">'. esc_html__( 'No data available.', 'chipfluent' ) .'</div>';
+                echo '<div class="csf-no-option">'. esc_html__( 'No data available.', 'csf' ) .'</div>';
 
               }
 
@@ -627,21 +627,21 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
 
           echo '</div>';
 
-          echo ( $has_nav && $nav_type === 'normal' ) ? '<div class="chipfluent-nav-background"></div>' : '';
+          echo ( $has_nav && $nav_type === 'normal' ) ? '<div class="csf-nav-background"></div>' : '';
 
         echo '</div>';
 
         if ( ! empty( $this->args['show_footer'] ) ) {
 
-          echo '<div class="chipfluent-footer">';
+          echo '<div class="csf-footer">';
 
-          echo '<div class="chipfluent-buttons">';
-          echo '<input type="submit" name="chipfluent_transient[save]" class="button button-primary chipfluent-save'. esc_attr( $ajax_class ) .'" value="'. esc_html__( 'Save', 'chipfluent' ) .'" data-save="'. esc_html__( 'Saving...', 'chipfluent' ) .'">';
-          echo ( $this->args['show_reset_section'] ) ? '<input type="submit" name="chipfluent_transient[reset_section]" class="button button-secondary chipfluent-reset-section chipfluent-confirm" value="'. esc_html__( 'Reset Section', 'chipfluent' ) .'" data-confirm="'. esc_html__( 'Are you sure to reset this section options?', 'chipfluent' ) .'">' : '';
-          echo ( $this->args['show_reset_all'] ) ? '<input type="submit" name="chipfluent_transient[reset]" class="button chipfluent-warning-primary chipfluent-reset-all chipfluent-confirm" value="'. ( ( $this->args['show_reset_section'] ) ? esc_html__( 'Reset All', 'chipfluent' ) : esc_html__( 'Reset', 'chipfluent' ) ) .'" data-confirm="'. esc_html__( 'Are you sure you want to reset all settings to default values?', 'chipfluent' ) .'">' : '';
+          echo '<div class="csf-buttons">';
+          echo '<input type="submit" name="csf_transient[save]" class="button button-primary csf-save'. esc_attr( $ajax_class ) .'" value="'. esc_html__( 'Save', 'csf' ) .'" data-save="'. esc_html__( 'Saving...', 'csf' ) .'">';
+          echo ( $this->args['show_reset_section'] ) ? '<input type="submit" name="csf_transient[reset_section]" class="button button-secondary csf-reset-section csf-confirm" value="'. esc_html__( 'Reset Section', 'csf' ) .'" data-confirm="'. esc_html__( 'Are you sure to reset this section options?', 'csf' ) .'">' : '';
+          echo ( $this->args['show_reset_all'] ) ? '<input type="submit" name="csf_transient[reset]" class="button csf-warning-primary csf-reset-all csf-confirm" value="'. ( ( $this->args['show_reset_section'] ) ? esc_html__( 'Reset All', 'csf' ) : esc_html__( 'Reset', 'csf' ) ) .'" data-confirm="'. esc_html__( 'Are you sure you want to reset all settings to default values?', 'csf' ) .'">' : '';
           echo '</div>';
 
-          echo ( ! empty( $this->args['footer_text'] ) ) ? '<div class="chipfluent-copyright">'. $this->args['footer_text'] .'</div>' : '';
+          echo ( ! empty( $this->args['footer_text'] ) ) ? '<div class="csf-copyright">'. $this->args['footer_text'] .'</div>' : '';
 
           echo '<div class="clear"></div>';
           echo '</div>';
@@ -658,7 +658,7 @@ if ( ! class_exists( 'CHIPFLUENT_Options' ) ) {
 
       echo '</div>';
 
-      do_action( 'chipfluent_options_after' );
+      do_action( 'csf_options_after' );
 
     }
   }

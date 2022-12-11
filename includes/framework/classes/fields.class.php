@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Fields' ) ) {
-  abstract class CHIPFLUENT_Fields extends CHIPFLUENT_Abstract {
+if ( ! class_exists( 'CSF_Fields' ) ) {
+  abstract class CSF_Fields extends CSF_Abstract {
 
     public function __construct( $field = array(), $value = '', $unique = '', $where = '', $parent = '' ) {
       $this->field  = $field;
@@ -65,15 +65,15 @@ if ( ! class_exists( 'CHIPFLUENT_Fields' ) ) {
     }
 
     public function field_before() {
-      return ( ! empty( $this->field['before'] ) ) ? '<div class="chipfluent-before-text">'. $this->field['before'] .'</div>' : '';
+      return ( ! empty( $this->field['before'] ) ) ? '<div class="csf-before-text">'. $this->field['before'] .'</div>' : '';
     }
 
     public function field_after() {
 
-      $output  = ( ! empty( $this->field['after'] ) ) ? '<div class="chipfluent-after-text">'. $this->field['after'] .'</div>' : '';
-      $output .= ( ! empty( $this->field['desc'] ) ) ? '<div class="clear"></div><div class="chipfluent-desc-text">'. $this->field['desc'] .'</div>' : '';
-      $output .= ( ! empty( $this->field['help'] ) ) ? '<div class="chipfluent-help"><span class="chipfluent-help-text">'. $this->field['help'] .'</span><i class="fas fa-question-circle"></i></div>' : '';
-      $output .= ( ! empty( $this->field['_error'] ) ) ? '<div class="chipfluent-error-text">'. $this->field['_error'] .'</div>' : '';
+      $output  = ( ! empty( $this->field['after'] ) ) ? '<div class="csf-after-text">'. $this->field['after'] .'</div>' : '';
+      $output .= ( ! empty( $this->field['desc'] ) ) ? '<div class="clear"></div><div class="csf-desc-text">'. $this->field['desc'] .'</div>' : '';
+      $output .= ( ! empty( $this->field['help'] ) ) ? '<div class="csf-help"><span class="csf-help-text">'. $this->field['help'] .'</span><i class="fas fa-question-circle"></i></div>' : '';
+      $output .= ( ! empty( $this->field['_error'] ) ) ? '<div class="csf-error-text">'. $this->field['_error'] .'</div>' : '';
 
       return $output;
 

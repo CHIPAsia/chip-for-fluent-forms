@@ -1,11 +1,11 @@
 /**
  * 03. Fields
  */
-.chipfluent-field{
+.csf-field{
   position: relative;
   padding: 30px;
 
-  + .chipfluent-field{
+  + .csf-field{
     border-top: 1px solid #eee;
   }
 
@@ -31,7 +31,7 @@
     margin-top: 0;
   }
 
-  .chipfluent-title{
+  .csf-title{
     position: relative;
     width: 20%;
     float: left;
@@ -42,17 +42,17 @@
     }
   }
 
-  .chipfluent-fieldset{
+  .csf-fieldset{
     float: right;
     width: calc(80% - 20px);
   }
 }
 
-.chipfluent-pseudo-field{
+.csf-pseudo-field{
   padding: 0 5px 0 0 !important;
   display: inline-block;
 
-  + .chipfluent-pseudo-field{
+  + .csf-pseudo-field{
     border: 0;
   }
 
@@ -64,9 +64,9 @@
 /**
  * 03. 02. Field: accordion
  */
-.chipfluent-field-accordion{
+.csf-field-accordion{
 
-  .chipfluent-accordion-item{
+  .csf-accordion-item{
     position: relative;
     margin-bottom: 5px;
 
@@ -79,7 +79,7 @@
     }
   }
 
-  .chipfluent-accordion-title{
+  .csf-accordion-title{
     display: block;
     cursor: pointer;
     position: relative;
@@ -100,19 +100,19 @@
       border-color: #999;
     }
 
-    .chipfluent--icon{
+    .csf--icon{
       width: 20px;
       text-align: center;
       margin-right: 2px;
     }
   }
 
-  .chipfluent-accordion-icon{
+  .csf-accordion-icon{
     width: 16px;
     text-align: center;
   }
 
-  .chipfluent-accordion-content{
+  .csf-accordion-content{
     display: none;
     padding: 0;
     border: 1px solid #ccd0d4;
@@ -120,12 +120,12 @@
     background-color: #fff;
     box-shadow: 0 1px 1px rgba(0,0,0,0.04);
 
-    > .chipfluent-field{
+    > .csf-field{
       padding: 15px;
     }
   }
 
-  .chipfluent-accordion-open{
+  .csf-accordion-open{
     display: block;
   }
 }
@@ -133,26 +133,26 @@
 /**
  * 03. 03. Field: background
  */
-.chipfluent-field-background{
+.csf-field-background{
 
-  .chipfluent-field{
+  .csf-field{
     border: 0 !important;
     padding: 0;
     margin-bottom: 6px;
     margin-right: 6px;
   }
 
-  .chipfluent--title{
+  .csf--title{
     color: #777;
     font-size: 12px;
   }
 
-  .chipfluent--background-colors{
+  .csf--background-colors{
     display: flex;
     flex-wrap: wrap;
   }
 
-  .chipfluent--background-attributes{
+  .csf--background-attributes{
     display: flex;
     flex-wrap: wrap;
 
@@ -161,12 +161,12 @@
       margin: 0;
     }
 
-    .chipfluent-field{
+    .csf-field{
       flex: 1;
     }
   }
 
-  .chipfluent--attributes-hidden{
+  .csf--attributes-hidden{
     display: none;
   }
 }
@@ -174,7 +174,7 @@
 /**
  * 03. 04. Field: backup
  */
-.chipfluent-field-backup{
+.csf-field-backup{
 
   textarea{
     width: 100%;
@@ -197,17 +197,17 @@
 /**
  * 03. 05. Field: border, spacing, dimensions
  */
-.chipfluent-field-border,
-.chipfluent-field-spacing,
-.chipfluent-field-dimensions{
+.csf-field-border,
+.csf-field-spacing,
+.csf-field-dimensions{
 
-  .chipfluent--inputs{
+  .csf--inputs{
     float: left;
     display: flex;
     flex-wrap: wrap;
   }
 
-  .chipfluent--input{
+  .csf--input{
     display: flex;
     padding-right: 6px;
     padding-bottom: 4px;
@@ -227,11 +227,11 @@
     }
   }
 
-  .chipfluent--color{
+  .csf--color{
     float: left;
   }
 
-  .chipfluent--label{
+  .csf--label{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -246,22 +246,22 @@
     background-color: #f5f5f5;
   }
 
-  .chipfluent--icon{
+  .csf--icon{
     border-right: 0;
     border-radius: 4px 0 0 4px;
   }
 
-  .chipfluent--icon + input{
+  .csf--icon + input{
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
   }
 
-  .chipfluent--unit{
+  .csf--unit{
     border-left: 0;
     border-radius: 0 4px 4px 0;
   }
 
-  .chipfluent--is-unit{
+  .csf--is-unit{
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
@@ -270,13 +270,13 @@
 /**
  * 03. 06. Field: button_set
  */
-.chipfluent-field-button_set{
+.csf-field-button_set{
 
-  .chipfluent--buttons{
+  .csf--buttons{
     display: inline-block;
   }
 
-  .chipfluent--button{
+  .csf--button{
     position: relative;
     z-index: 1;
     float: left;
@@ -307,8 +307,8 @@
     }
   }
 
-  .chipfluent--active:hover,
-  .chipfluent--active{
+  .csf--active:hover,
+  .csf--active{
     z-index: 2;
     color: #fff;
     border-color: #006799;
@@ -323,8 +323,8 @@
 /**
  * 03. 07. Field: checkbox, radio
  */
-.chipfluent-field-checkbox,
-.chipfluent-field-radio{
+.csf-field-checkbox,
+.csf-field-radio{
 
   ul{
     margin: 0;
@@ -354,21 +354,21 @@
     margin: 0 1px;
   }
 
-  .chipfluent--inline-list li{
+  .csf--inline-list li{
     display: inline-block;
     margin-right: 15px;
   }
 
-  .chipfluent--text{
+  .csf--text{
     margin-left: 5px;
     vertical-align: middle;
   }
 
-  .chipfluent-checker{
+  .csf-checker{
     cursor: pointer;
   }
 
-  .chipfluent-checkbox-all{
+  .csf-checkbox-all{
     user-select: none;
     cursor: pointer;
     margin-top: 5px;
@@ -380,7 +380,7 @@
 /**
  * 03. 08. Field: code_editor
  */
-.chipfluent-field-code_editor{
+.csf-field-code_editor{
 
   .CodeMirror{
     width: 100%;
@@ -400,7 +400,7 @@
 /**
  * 03. 09. Field: color
  */
-.chipfluent-field-color{
+.csf-field-color{
 
   > input{
     opacity: 0.75;
@@ -419,15 +419,15 @@
 /**
  * 03. 10. Field: color_group
  */
-.chipfluent-field-color_group{
+.csf-field-color_group{
 
-  .chipfluent--left{
+  .csf--left{
     float: left;
     margin-right: 10px;
     margin-bottom: 5px;
   }
 
-  .chipfluent--title{
+  .csf--title{
     color: #999;
     margin-bottom: 5px;
   }
@@ -436,19 +436,19 @@
 /**
  * 03. 11. Field: fieldset
  */
-.chipfluent-field-fieldset{
+.csf-field-fieldset{
 
-  .chipfluent-fieldset-content{
+  .csf-fieldset-content{
     border: 1px solid #ccd0d4;
     background-color: #fff;
     box-shadow: 0 1px 1px rgba(0,0,0,0.04);
 
-    > .chipfluent-field{
+    > .csf-field{
       padding: 15px;
     }
   }
 
-  .chipfluent-field-subheading{
+  .csf-field-subheading{
     font-size: 13px;
   }
 }
@@ -456,18 +456,18 @@
 /**
  * 03. 12. Field: date
  */
-.chipfluent-field-date{
+.csf-field-date{
 
   input{
     margin: 0;
   }
 
-  .chipfluent--to{
+  .csf--to{
     margin-left: 7px;
   }
 }
 
-.chipfluent-datepicker-wrapper{
+.csf-datepicker-wrapper{
   margin-top: 5px;
   width: auto;
   background-color: #fff;
@@ -622,18 +622,18 @@
 /**
  * 03. 13. Field: datetime
  */
-.chipfluent-field-datetime{
+.csf-field-datetime{
 
   input{
     margin: 0;
   }
 
-  .chipfluent--to{
+  .csf--to{
     margin-left: 7px;
   }
 }
 
-.chipfluent-flatpickr{
+.csf-flatpickr{
 
   select,
   input{
@@ -652,7 +652,7 @@
 /**
  * 03. 14. Field: gallery
  */
-.chipfluent-field-gallery{
+.csf-field-gallery{
 
   ul{
     margin: 0;
@@ -686,17 +686,17 @@
 /**
  * 03. 15. Field: group
  */
-.chipfluent-field-group{
+.csf-field-group{
 
-  .chipfluent-cloneable-hidden{
+  .csf-cloneable-hidden{
     display: none !important;
   }
 
-  .chipfluent-cloneable-wrapper{
+  .csf-cloneable-wrapper{
     position: relative;
   }
 
-  .chipfluent-cloneable-item{
+  .csf-cloneable-item{
     display: none;
     position: relative;
     margin-bottom: 5px;
@@ -706,21 +706,21 @@
     }
   }
 
-  .ui-accordion .chipfluent-cloneable-item{
+  .ui-accordion .csf-cloneable-item{
     display: block;
   }
 
-  .chipfluent-cloneable-content{
+  .csf-cloneable-content{
     border: 1px solid #ccd0d4;
     background-color: #fff;
     box-shadow: 0 1px 1px rgba(0,0,0,0.04);
 
-    > .chipfluent-field{
+    > .csf-field{
       padding: 15px;
     }
   }
 
-  .chipfluent-cloneable-title{
+  .csf-cloneable-title{
     display: block;
     cursor: pointer;
     position: relative;
@@ -742,7 +742,7 @@
     }
   }
 
-  .chipfluent-cloneable-helper{
+  .csf-cloneable-helper{
     position: absolute;
     top: 12px;
     right: 10px;
@@ -762,17 +762,17 @@
     }
   }
 
-  .chipfluent-cloneable-content{
+  .csf-cloneable-content{
     padding: 0;
     border-top: 0;
   }
 
-  .chipfluent-cloneable-title-prefix,
-  .chipfluent-cloneable-title-number{
+  .csf-cloneable-title-prefix,
+  .csf-cloneable-title-number{
     margin-right: 5px;
   }
 
-  .chipfluent-cloneable-alert{
+  .csf-cloneable-alert{
     display: none;
     margin-bottom: 5px;
     padding: 10px 20px;
@@ -787,7 +787,7 @@
     background-color: #fffae4;
   }
 
-  .chipfluent-cloneable-header-icon{
+  .csf-cloneable-header-icon{
     display: inline-block;
     text-align: center;
     font-size: 14px;
@@ -796,7 +796,7 @@
     vertical-align: text-top;
   }
 
-  .chipfluent-cloneable-placeholder{
+  .csf-cloneable-placeholder{
     background-color: #ddd;
     margin-top: 4px;
     width: 100px;
@@ -812,18 +812,18 @@
 /**
  * 03. 16. Field: icon
  */
-.chipfluent-field-icon{
+.csf-field-icon{
 
-  .chipfluent-icon-select{
+  .csf-icon-select{
     display: flex;
     grid-gap: 5px;
   }
 
-  .chipfluent-icon-preview:not(.hidden){
+  .csf-icon-preview:not(.hidden){
     display: flex;
   }
 
-  .chipfluent-icon-preview{
+  .csf-icon-preview{
 
     i{
       display: flex;
@@ -845,14 +845,14 @@
 /**
  * 03. 17. Field: image_select
  */
-.chipfluent-field-image_select{
+.csf-field-image_select{
 
-  .chipfluent--image{
+  .csf--image{
     display: inline-block;
     margin: 0 5px 5px 0;
   }
 
-  .chipfluent--inline-list .chipfluent--image{
+  .csf--inline-list .csf--image{
     display: block;
   }
 
@@ -887,7 +887,7 @@
     }
   }
 
-  .chipfluent--active figure{
+  .csf--active figure{
     border-color: #222;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
 
@@ -910,15 +910,15 @@
 /**
  * 03. 18. Field: link_color
  */
-.chipfluent-field-link_color{
+.csf-field-link_color{
 
-  .chipfluent--left{
+  .csf--left{
     float: left;
     margin-right: 10px;
     margin-bottom: 5px;
   }
 
-  .chipfluent--title{
+  .csf--title{
     color: #777;
     margin-bottom: 5px;
   }
@@ -927,7 +927,7 @@
 /**
  * 03. 19. Field: map
  */
-.chipfluent-field-map{
+.csf-field-map{
 
   input{
     width: 100%;
@@ -937,11 +937,11 @@
     background-position-x: calc(100% - 5px);
   }
 
-  .chipfluent--map-search + .chipfluent--map-osm-wrap{
+  .csf--map-search + .csf--map-osm-wrap{
     margin-top: 10px;
   }
 
-  .chipfluent--map-osm-wrap{
+  .csf--map-osm-wrap{
     position: relative;
     padding: 5px;
     border: 1px solid #eee;
@@ -949,19 +949,19 @@
     box-shadow: 0 1px 1px rgba(0,0,0,.04);
   }
 
-  .chipfluent--map-osm{
+  .csf--map-osm{
     position: relative;
     z-index: 1;
     min-height: 250px;
   }
 
-  .chipfluent--map-inputs{
+  .csf--map-inputs{
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
   }
 
-  .chipfluent--map-input{
+  .csf--map-input{
     flex: 1;
 
     &:last-child{
@@ -977,7 +977,7 @@
   }
 }
 
-.chipfluent-map-ui-autocomplate{
+.csf-map-ui-autocomplate{
   z-index: 999999;
   border-radius: 4px;
   overflow: hidden;
@@ -987,9 +987,9 @@
 /**
  * 03. 20. Field: media
  */
-.chipfluent-field-media{
+.csf-field-media{
 
-  .chipfluent--placeholder{
+  .csf--placeholder{
     display: flex;
     align-items: flex-start;
 
@@ -1007,7 +1007,7 @@
     margin-left: 0;
   }
 
-  .chipfluent--preview{
+  .csf--preview{
     position: relative;
   }
 }
@@ -1015,9 +1015,9 @@
 /**
  * 03. 21. Field: palette
  */
-.chipfluent-field-palette{
+.csf-field-palette{
 
-  .chipfluent--palette{
+  .csf--palette{
     position: relative;
     display: inline-block;
     cursor: pointer;
@@ -1057,7 +1057,7 @@
     }
   }
 
-  .chipfluent--active{
+  .csf--active{
     border-color: #222;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
 
@@ -1074,19 +1074,19 @@
 /**
  * 03. 22. Field: repeater
  */
-.chipfluent-field-repeater{
+.csf-field-repeater{
 
-  .chipfluent-field-text input{
+  .csf-field-text input{
     width: 100%;
   }
 
-  .chipfluent-repeater-hidden{
+  .csf-repeater-hidden{
     display: none !important;
   }
 
-  .chipfluent-repeater-wrapper{
+  .csf-repeater-wrapper{
 
-    .chipfluent-repeater-item{
+    .csf-repeater-item{
       display: table;
       width: 100%;
       margin-bottom: 5px;
@@ -1098,18 +1098,18 @@
     }
   }
 
-  .chipfluent-repeater-content{
+  .csf-repeater-content{
     width: 100%;
     display: table-cell;
     vertical-align: middle;
     background-color: #fff;
 
-    > .chipfluent-field{
+    > .csf-field{
       padding: 15px;
     }
   }
 
-  .chipfluent-repeater-helper{
+  .csf-repeater-helper{
     width: 100%;
     display: table-cell;
     vertical-align: middle;
@@ -1131,11 +1131,11 @@
     }
   }
 
-  .chipfluent-repeater-helper-inner{
+  .csf-repeater-helper-inner{
     width: 75px;
   }
 
-  .chipfluent-repeater-alert{
+  .csf-repeater-alert{
     display: none;
     margin-bottom: 5px;
     padding: 10px 20px;
@@ -1158,8 +1158,8 @@
     background-color: #eee !important;
     opacity: 0.5;
 
-    .chipfluent-repeater-helper,
-    .chipfluent-repeater-content{
+    .csf-repeater-helper,
+    .csf-repeater-content{
       display: none;
     }
   }
@@ -1168,13 +1168,13 @@
 /**
  * 03. 23. Field: select
  */
-.chipfluent-field-select{
+.csf-field-select{
 
-  .chipfluent-fieldset{
+  .csf-fieldset{
     min-height: 30px;
   }
 
-  .chipfluent-chosen{
+  .csf-chosen{
     display: none;
   }
 
@@ -1183,7 +1183,7 @@
     margin: 0;
   }
 
-  .chipfluent-hide-select{
+  .csf-hide-select{
     display: none !important;
   }
 }
@@ -1191,18 +1191,18 @@
 /**
  * 03. 24. Field: slider
  */
-.chipfluent-field-slider{
+.csf-field-slider{
 
-  .chipfluent--wrap{
+  .csf--wrap{
     display: flex;
     align-items: center;
   }
 
-  .chipfluent--input{
+  .csf--input{
     display: flex;
   }
 
-  .chipfluent--unit{
+  .csf--unit{
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -1217,7 +1217,7 @@
     background-color: #f5f5f5;
   }
 
-  .chipfluent-slider-ui{
+  .csf-slider-ui{
     margin-right: 15px;
   }
 
@@ -1229,7 +1229,7 @@
     text-align: center;
   }
 
-  .chipfluent--is-unit{
+  .csf--is-unit{
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
@@ -1271,9 +1271,9 @@
 /**
  * 03. 25. Field: sortable
  */
-.chipfluent-field-sortable{
+.csf-field-sortable{
 
-  .chipfluent-field-text{
+  .csf-field-text{
 
     input{
       width: 100%;
@@ -1281,9 +1281,9 @@
     }
   }
 
-  .chipfluent-sortable{
+  .csf-sortable{
 
-    .chipfluent-sortable-item{
+    .csf-sortable-item{
       display: table;
       width: 100%;
       margin-bottom: 5px;
@@ -1295,18 +1295,18 @@
     }
   }
 
-  .chipfluent-sortable-content{
+  .csf-sortable-content{
     width: 100%;
     display: table-cell;
     vertical-align: middle;
     background-color: #fff;
 
-    > .chipfluent-field{
+    > .csf-field{
       padding: 15px;
     }
   }
 
-  .chipfluent-sortable-helper{
+  .csf-sortable-helper{
     width: 100%;
     display: table-cell;
     vertical-align: middle;
@@ -1342,8 +1342,8 @@
     background-color: #eee !important;
     opacity: 0.5;
 
-    .chipfluent-sortable-helper,
-    .chipfluent-sortable-content{
+    .csf-sortable-helper,
+    .csf-sortable-content{
       display: none;
     }
   }
@@ -1352,7 +1352,7 @@
 /**
  * 03. 26. Field: sorter
  */
-.chipfluent-field-sorter{
+.csf-field-sorter{
 
   .ui-sortable-placeholder{
     height: 20px;
@@ -1360,7 +1360,7 @@
     background-color: #fffae4;
   }
 
-  .chipfluent-modules{
+  .csf-modules{
     float: left;
     width: 50%;
     box-sizing: border-box;
@@ -1374,14 +1374,14 @@
     }
   }
 
-  .chipfluent-disabled,
-  .chipfluent-enabled{
+  .csf-disabled,
+  .csf-enabled{
     padding: 5px 15px;
     border: 1px dashed #ddd;
     background-color: #fff;
   }
 
-  .chipfluent-disabled{
+  .csf-disabled{
     li{
       opacity: 0.5;
       transition: opacity .15s;
@@ -1392,7 +1392,7 @@
     }
   }
 
-  .chipfluent-sorter-title{
+  .csf-sorter-title{
     font-size: 13px;
     font-weight: 600;
     padding: 10px;
@@ -1429,9 +1429,9 @@
 /**
  * 03. 27. Field: spinner
  */
-.chipfluent-field-spinner{
+.csf-field-spinner{
 
-  .chipfluent--spin{
+  .csf--spin{
     display: flex;
   }
 
@@ -1499,7 +1499,7 @@
       }
     }
 
-    .chipfluent--unit{
+    .csf--unit{
       border-left: 0;
       user-select: none;
     }
@@ -1531,7 +1531,7 @@
     order: 2;
   }
 
-  .chipfluent--unit{
+  .csf--unit{
     order: 3;
   }
 
@@ -1543,9 +1543,9 @@
 /**
  * 03. 28. Field: switcher
  */
-.chipfluent-field-switcher{
+.csf-field-switcher{
 
-  .chipfluent--switcher{
+  .csf--switcher{
     float: left;
     cursor: pointer;
     position: relative;
@@ -1560,7 +1560,7 @@
     -webkit-user-select: none;
   }
 
-  .chipfluent--ball{
+  .csf--ball{
     position: absolute;
     top: 4px;
     left: 4px;
@@ -1572,8 +1572,8 @@
     box-shadow: 1px 1px 1px rgba(0,0,0,0.15);
   }
 
-  .chipfluent--on,
-  .chipfluent--off{
+  .csf--on,
+  .csf--off{
     position: absolute;
     top: 0;
     left: 0;
@@ -1590,30 +1590,30 @@
     transition: all .1s;
   }
 
-  .chipfluent--off{
+  .csf--off{
     padding-right: 0;
     padding-left: 28px;
     opacity: 1;
   }
 
-  .chipfluent--active{
+  .csf--active{
     background: #4fb845;
 
-    .chipfluent--on{
+    .csf--on{
       opacity: 1;
     }
 
-    .chipfluent--off{
+    .csf--off{
       opacity: 0;
     }
 
-    .chipfluent--ball{
+    .csf--ball{
       left: 100%;
       margin-left: -28px;
     }
   }
 
-  .chipfluent--label{
+  .csf--label{
     float: left;
     margin-top: 4px;
     margin-left: 8px;
@@ -1625,21 +1625,21 @@
 /**
  * 03. 29. Field: tabbed
  */
-.chipfluent-field-tabbed{
+.csf-field-tabbed{
 
-  .chipfluent-tabbed-content{
+  .csf-tabbed-content{
     border: 1px solid #ccd0d4;
     background-color: #fff;
     box-shadow: 0 1px 1px rgba(0,0,0,.04);
 
-    > .chipfluent-field{
+    > .csf-field{
       padding: 15px;
     }
   }
 
-  .chipfluent-tabbed-nav{
+  .csf-tabbed-nav{
 
-    .chipfluent--icon{
+    .csf--icon{
       padding-right: 5px;
     }
 
@@ -1661,7 +1661,7 @@
         background-color: #f9f9f9;
       }
 
-      &.chipfluent-tabbed-active{
+      &.csf-tabbed-active{
         background-color: #fff;
         border-bottom-color: #fff;
       }
@@ -1677,7 +1677,7 @@
 /**
  * 03. 30. Field: text
  */
-.chipfluent-field-text{
+.csf-field-text{
 
   input{
     width: 50%;
@@ -1689,7 +1689,7 @@
 /**
  * 03. 31. Field: textarea
  */
-.chipfluent-field-textarea{
+.csf-field-textarea{
 
   textarea{
     width: 100%;
@@ -1697,7 +1697,7 @@
     min-height: 125px;
   }
 
-  .chipfluent-shortcode-button{
+  .csf-shortcode-button{
     margin-bottom: 10px;
     margin-right: 5px;
   }
@@ -1706,7 +1706,7 @@
 /**
  * 03. 32. Field: typography
  */
-.chipfluent-field-typography{
+.csf-field-typography{
 
   textarea,
   select{
@@ -1715,7 +1715,7 @@
     max-width: 100%;
   }
 
-  .chipfluent--title{
+  .csf--title{
     color: #777;
     margin: 0 0 2px 0;
     font-size: 12px;
@@ -1725,28 +1725,28 @@
     }
   }
 
-  .chipfluent--blocks{
+  .csf--blocks{
     display: flex;
     flex-wrap: wrap;
   }
 
-  .chipfluent--block{
+  .csf--block{
     flex: 1;
     max-width: 100%;
     padding-right: 6px;
     padding-bottom: 6px;
   }
 
-  .chipfluent--input{
+  .csf--input{
     margin: 0;
     min-width: 100%;
   }
 
-  .chipfluent--input-wrap{
+  .csf--input-wrap{
     position: relative;
   }
 
-  .chipfluent--unit{
+  .csf--unit{
     position: absolute;
     z-index: 1;
     right: 4px;
@@ -1764,7 +1764,7 @@
     flex-direction: column;
   }
 
-  .chipfluent--preview{
+  .csf--preview{
     font-size: 16px;
     line-height: 20px;
     padding: 20px;
@@ -1777,7 +1777,7 @@
     transition: background-color .2s, border-color .2s;
   }
 
-  .chipfluent--block-preview{
+  .csf--block-preview{
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -1785,19 +1785,19 @@
     max-width: 100%;
   }
 
-  .chipfluent--black-background{
+  .csf--black-background{
     border-color: #000;
     background-color: #000;
   }
 
-  .chipfluent--toggle{
+  .csf--toggle{
     position: absolute;
     top: 5px;
     right: 10px;
     color: #999;
   }
 
-  .chipfluent--block-extra-styles{
+  .csf--block-extra-styles{
     margin-top: 5px;
   }
 }
@@ -1805,14 +1805,14 @@
 /**
  * 03. 33. Field: upload
  */
-.chipfluent-field-upload{
+.csf-field-upload{
 
   input{
     width: 100%;
     margin: 0;
   }
 
-  .chipfluent--wrap{
+  .csf--wrap{
     display: flex;
     align-items: flex-start;
   }
@@ -1821,7 +1821,7 @@
     margin-left: 5px;
   }
 
-  .chipfluent--preview{
+  .csf--preview{
     position: relative;
   }
 }
@@ -1829,9 +1829,9 @@
 /**
  * 03. 34. Field: wp_editor
  */
-.chipfluent-field-wp_editor{
+.csf-field-wp_editor{
 
-  .chipfluent-wp-editor{
+  .csf-wp-editor{
     float: left;
     width: 100%;
   }
@@ -1858,11 +1858,11 @@
     z-index: 1;
   }
 
-  .chipfluent-no-tinymce{
+  .csf-no-tinymce{
     border: 1px solid #e5e5e5;
   }
 
-  .chipfluent-no-quicktags{
+  .csf-no-quicktags{
 
     .wp-media-buttons{
       float: none;
@@ -1886,7 +1886,7 @@
 /**
  * 03. 35. Field: heading
  */
-.chipfluent-field-heading{
+.csf-field-heading{
   font-size: 1.5em;
   font-weight: bold;
   color: #23282d;
@@ -1896,7 +1896,7 @@
 /**
  * 03. 36. Field: subheading
  */
-.chipfluent-field-subheading{
+.csf-field-subheading{
   font-size: 14px;
   font-weight: bold;
   padding-top: 17px;
@@ -1908,47 +1908,47 @@
 /**
  * 03. 37. Field: submessage
  */
-.chipfluent-field-submessage{
+.csf-field-submessage{
   padding: 0 !important;
   border: 0 !important;
 
-  + .chipfluent-field{
+  + .csf-field{
     border-top: 0 !important;
   }
 }
 
-.chipfluent-submessage{
+.csf-submessage{
   font-size: 12px;
   padding: 17px 30px;
   border-top: 1px solid transparent;
   border-bottom: 1px solid transparent;
 }
 
-.chipfluent-submessage-success{
+.csf-submessage-success{
   color: #3c763d;
   border-color: #d6e9c6;
   background-color: #dff0d8;
 }
 
-.chipfluent-submessage-info{
+.csf-submessage-info{
   color: #31708f;
   border-color: #bce8f1;
   background-color: #d9edf7;
 }
 
-.chipfluent-submessage-warning{
+.csf-submessage-warning{
   color: #8a6d3b;
   border-color: #faebcc;
   background-color: #fcf8e3;
 }
 
-.chipfluent-submessage-danger{
+.csf-submessage-danger{
   color: #a94442;
   border-color: #ebccd1;
   background-color: #f2dede;
 }
 
-.chipfluent-submessage-normal{
+.csf-submessage-normal{
   color: #23282d;
   border-color: #eee;
   background-color: #f7f7f7;
@@ -1957,11 +1957,11 @@
 /**
  * 03. 38. Field: notice
  */
-.chipfluent-field-notice{
+.csf-field-notice{
   background-color: #f7f7f7;
 }
 
-.chipfluent-notice{
+.csf-notice{
   padding: 12px;
   background-color: #fff;
   border-left-style: solid;
@@ -1969,43 +1969,43 @@
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-.chipfluent-notice-success{
+.csf-notice-success{
   border-color: #46b450;
 }
 
-.chipfluent-notice-info{
+.csf-notice-info{
   border-color: #339fd4;
 }
 
-.chipfluent-notice-warning{
+.csf-notice-warning{
   border-color: #ffbc00;
 }
 
-.chipfluent-notice-danger{
+.csf-notice-danger{
   border-color: #dc3232;
 }
 
-.chipfluent-notice-normal{
+.csf-notice-normal{
   border-color: #222;
 }
 
 /**
  * 03. 39. Field: number
  */
-.chipfluent-field-number{
+.csf-field-number{
 
   input{
     width: 100%;
     margin: 0;
   }
 
-  .chipfluent--wrap{
+  .csf--wrap{
     position: relative;
     float: left;
     width: 100px;
   }
 
-  .chipfluent--unit{
+  .csf--unit{
     position: absolute;
     z-index: 1;
     right: 4px;
@@ -2027,9 +2027,9 @@
 /**
  * 03. 40. Field: link
  */
-.chipfluent-field-link{
+.csf-field-link{
 
-  .chipfluent--result{
+  .csf--result{
     display: inline-block;
     font-size: 12px;
     line-height: 16px;
@@ -2042,13 +2042,13 @@
     world-break: break-word;
   }
 
-  .chipfluent--wrap{
+  .csf--wrap{
     position: relative;
     float: left;
     width: 100px;
   }
 
-  .chipfluent--unit{
+  .csf--unit{
     position: absolute;
     z-index: 1;
     right: 4px;
@@ -2070,7 +2070,7 @@
 /**
  * 03. 41. others
  */
-.chipfluent-help{
+.csf-help{
   cursor: help;
   position: absolute;
   top: 0;
@@ -2079,16 +2079,16 @@
   font-size: 13px;
   color: #aaa;
 
-  .chipfluent-help-text{
+  .csf-help-text{
     display: none;
   }
 }
 
-.chipfluent--preview{
+.csf--preview{
   max-width: 100%;
 }
 
-.chipfluent-image-preview{
+.csf-image-preview{
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2148,14 +2148,14 @@
   }
 }
 
-.chipfluent-field-custom{
+.csf-field-custom{
 
-  .chipfluent-field{
+  .csf-field{
     padding: 0;
   }
 }
 
-.chipfluent-field{
+.csf-field{
 
   .chosen-container-single .chosen-single{
     height: 28px;
@@ -2266,7 +2266,7 @@
     }
   }
 
-  .chipfluent--transparent-wrap{
+  .csf--transparent-wrap{
     display: none;
     position: relative;
     top: -1px;
@@ -2277,11 +2277,11 @@
     background-color: #fff;
   }
 
-  .wp-picker-active .chipfluent--transparent-wrap{
+  .wp-picker-active .csf--transparent-wrap{
     display: block;
   }
 
-  .chipfluent--transparent-slider{
+  .csf--transparent-slider{
     position: absolute;
     width: 190px;
     margin-left: 2px;
@@ -2317,7 +2317,7 @@
     }
   }
 
-  .chipfluent--transparent-offset{
+  .csf--transparent-offset{
     height: 18px;
     width: 200px;
     background: url(../images/checkerboard.png) repeat-y center left scroll #fff;
@@ -2325,7 +2325,7 @@
     box-shadow: inset 0 0 5px rgba(0,0,0,0.4);
   }
 
-  .chipfluent--transparent-text{
+  .csf--transparent-text{
     position: absolute;
     top: 12px;
     right: 10px;
@@ -2336,7 +2336,7 @@
     color: #999;
   }
 
-  .chipfluent--transparent-button{
+  .csf--transparent-button{
     cursor: pointer;
     user-select: none;
     margin-top: 10px;
@@ -2352,7 +2352,7 @@
     transition: background-color .2s, border-color .2s, color .2s;
   }
 
-  .chipfluent--transparent-active{
+  .csf--transparent-active{
 
     .wp-color-result{
       background-image: url(../images/checkerboard.png);
@@ -2361,7 +2361,7 @@
       background-color: transparent !important;
     }
 
-    .chipfluent--transparent-button{
+    .csf--transparent-button{
       color: #fff;
       border-color: #3ea032;
       background-color: #4fb845;

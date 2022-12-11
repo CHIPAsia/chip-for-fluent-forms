@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_link_color' ) ) {
-  class CHIPFLUENT_Field_link_color extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_link_color' ) ) {
+  class CSF_Field_link_color extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -33,11 +33,11 @@ if ( ! class_exists( 'CHIPFLUENT_Field_link_color' ) ) {
       );
 
       $color_props = array(
-        'color'    => esc_html__( 'Normal', 'chipfluent' ),
-        'hover'    => esc_html__( 'Hover', 'chipfluent' ),
-        'active'   => esc_html__( 'Active', 'chipfluent' ),
-        'visited'  => esc_html__( 'Visited', 'chipfluent' ),
-        'focus'    => esc_html__( 'Focus', 'chipfluent' )
+        'color'    => esc_html__( 'Normal', 'csf' ),
+        'hover'    => esc_html__( 'Hover', 'csf' ),
+        'active'   => esc_html__( 'Active', 'csf' ),
+        'visited'  => esc_html__( 'Visited', 'csf' ),
+        'focus'    => esc_html__( 'Focus', 'csf' )
       );
 
       $value = wp_parse_args( $this->value, $default_values );
@@ -50,9 +50,9 @@ if ( ! class_exists( 'CHIPFLUENT_Field_link_color' ) ) {
 
           $default_attr = ( ! empty( $this->field['default'][$color_prop_key] ) ) ? ' data-default-color="'. esc_attr( $this->field['default'][$color_prop_key] ) .'"' : '';
 
-          echo '<div class="chipfluent--left chipfluent-field-color">';
-          echo '<div class="chipfluent--title">'. esc_attr( $color_prop_value ) .'</div>';
-          echo '<input type="text" name="'. esc_attr( $this->field_name( '['. $color_prop_key .']' ) ) .'" value="'. esc_attr( $value[$color_prop_key] ) .'" class="chipfluent-color"'. $default_attr . $this->field_attributes() .'/>';
+          echo '<div class="csf--left csf-field-color">';
+          echo '<div class="csf--title">'. esc_attr( $color_prop_value ) .'</div>';
+          echo '<input type="text" name="'. esc_attr( $this->field_name( '['. $color_prop_key .']' ) ) .'" value="'. esc_attr( $value[$color_prop_key] ) .'" class="csf-color"'. $default_attr . $this->field_attributes() .'/>';
           echo '</div>';
 
         }

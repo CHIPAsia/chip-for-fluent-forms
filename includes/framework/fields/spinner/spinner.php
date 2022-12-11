@@ -7,8 +7,8 @@
  * @version 1.0.0
  *
  */
-if ( ! class_exists( 'CHIPFLUENT_Field_spinner' ) ) {
-  class CHIPFLUENT_Field_spinner extends CHIPFLUENT_Fields {
+if ( ! class_exists( 'CSF_Field_spinner' ) ) {
+  class CSF_Field_spinner extends CSF_Fields {
 
     public function __construct( $field, $value = '', $unique = '', $where = '', $parent = '' ) {
       parent::__construct( $field, $value, $unique, $where, $parent );
@@ -25,7 +25,7 @@ if ( ! class_exists( 'CHIPFLUENT_Field_spinner' ) ) {
 
       echo $this->field_before();
 
-      echo '<div class="chipfluent--spin"><input type="number" name="'. esc_attr( $this->field_name() ) .'" value="'. esc_attr( $this->value ) .'"'. $this->field_attributes( array( 'class' => 'chipfluent-input-number' ) ) .' data-min="'. esc_attr( $args['min'] ) .'" data-max="'. esc_attr( $args['max'] ) .'" data-step="'. esc_attr( $args['step'] ) .'" data-unit="'. esc_attr( $args['unit'] ) .'" step="any" /></div>';
+      echo '<div class="csf--spin"><input type="number" name="'. esc_attr( $this->field_name() ) .'" value="'. esc_attr( $this->value ) .'"'. $this->field_attributes( array( 'class' => 'csf-input-number' ) ) .' data-min="'. esc_attr( $args['min'] ) .'" data-max="'. esc_attr( $args['max'] ) .'" data-step="'. esc_attr( $args['step'] ) .'" data-unit="'. esc_attr( $args['unit'] ) .'" step="any" /></div>';
 
       echo $this->field_after();
 

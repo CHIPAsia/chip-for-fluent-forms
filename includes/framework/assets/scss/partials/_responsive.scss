@@ -3,17 +3,17 @@
  */
 @media only screen and (max-width:1200px){
 
-  .chipfluent-metabox{
+  .csf-metabox{
 
-    .chipfluent-field{
+    .csf-field{
 
-      .chipfluent-title{
+      .csf-title{
         float: none;
         width: 100%;
         margin-bottom: 10px;
       }
 
-      .chipfluent-fieldset{
+      .csf-fieldset{
         float: none;
         width: 100%;
       }
@@ -23,7 +23,7 @@
 
 @media only screen and (max-width:782px){
 
-  .chipfluent-header-inner{
+  .csf-header-inner{
     text-align: center;
 
     h1{
@@ -32,67 +32,67 @@
     }
   }
 
-  .chipfluent-form-result{
+  .csf-form-result{
     float: none;
     margin-right: 0;
     margin-bottom: 10px;
   }
 
-  .chipfluent-search,
-  .chipfluent-header-right,
-  .chipfluent-header-left{
+  .csf-search,
+  .csf-header-right,
+  .csf-header-left{
     width: 100%;
   }
 
-  .chipfluent-search{
+  .csf-search{
     text-align: center;
     margin-bottom: 15px;
   }
 
-  .chipfluent-footer{
+  .csf-footer{
     text-align: center;
   }
 
-  .chipfluent-buttons{
+  .csf-buttons{
     float: none;
   }
 
-  .chipfluent-copyright{
+  .csf-copyright{
     float: none;
     margin-top: 10px;
   }
 
-  .chipfluent-nav,
-  .chipfluent-expand-all,
-  .chipfluent-reset-section,
-  .chipfluent-nav-background{
+  .csf-nav,
+  .csf-expand-all,
+  .csf-reset-section,
+  .csf-nav-background{
     display: none !important;
   }
 
-  .chipfluent-nav-normal + .chipfluent-content{
+  .csf-nav-normal + .csf-content{
     margin-left: 0;
   }
 
-  .chipfluent-section-title,
-  .chipfluent-section{
+  .csf-section-title,
+  .csf-section{
     display: block !important;
   }
 
-  .chipfluent-field{
+  .csf-field{
 
-    .chipfluent-title{
+    .csf-title{
       float: none;
       width: 100%;
       margin-bottom: 10px;
     }
 
-    .chipfluent-fieldset{
+    .csf-fieldset{
       float: none;
       width: 100%;
     }
   }
 
-  .chipfluent-field-color{
+  .csf-field-color{
 
     .button.wp-picker-clear{
       padding: 0 8px;
@@ -101,31 +101,31 @@
     }
   }
 
-  .chipfluent-profile-options,
-  .chipfluent-taxonomy-edit-fields{
+  .csf-profile-options,
+  .csf-taxonomy-edit-fields{
 
-    > .chipfluent-field{
+    > .csf-field{
 
-      > .chipfluent-title{
+      > .csf-title{
         float: none;
         width: 100%;
         margin-bottom: 10px;
       }
 
-      > .chipfluent-fieldset{
+      > .csf-fieldset{
         float: none;
         width: 100%;
       }
     }
   }
 
-  .chipfluent-nav-menu-options{
+  .csf-nav-menu-options{
 
-    > .chipfluent-fields{
+    > .csf-fields{
       margin-left: -10px;
       margin-right: -10px;
 
-      > .chipfluent-field{
+      > .csf-field{
         padding: 10px;
       }
     }
@@ -134,9 +134,9 @@
 
 @media only screen and (max-width: 782px) {
 
-  .chipfluent-modal{
+  .csf-modal{
 
-    .chipfluent-modal-inner{
+    .csf-modal-inner{
       width: 90%;
     }
   }
@@ -144,13 +144,13 @@
 
 @media only screen and (max-height: 750px) {
 
-  .chipfluent-modal{
+  .csf-modal{
 
-    .chipfluent-modal-inner{
+    .csf-modal-inner{
       height: auto;
     }
 
-    .chipfluent-modal-content{
+    .csf-modal-content{
       height: calc(100vh - 200px);
     }
   }
