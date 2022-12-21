@@ -1,6 +1,6 @@
 === CHIP for Fluent Forms ===
 Contributors: chipasia, wanzulnet
-Tags: chip, cash, card, coin
+Tags: chip
 Requires at least: 4.7
 Tested up to: 6.1
 Stable tag: 1.0.0
@@ -8,13 +8,15 @@ Requires PHP: 7.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-CHIP - Cash, Card and Coin Handling Integrated Platform. Securely accept payment with CHIP for Fluent Forms.
+CHIP - Better Payment & Business Solutions. Securely accept payment with CHIP for Fluent Forms.
 
 == Description ==
 
 This is a CHIP plugin for Fluent Forms.
 
-CHIP allows you to securely sell your products and get paid with Cash, Card and Coin.
+CHIP is a payment and business solutions platform that allow you to securely sell your products and get paid via multiple local and international payment methods.
+
+This plugin will enable your Fluent Forms site to be integrated with CHIP as per documented in [API Documentation](https://developer.chip-in.asia/).
 
 == Screenshots ==
 * Fill up the form with Brand ID and Secret Key on Global Configuration.

@@ -3,7 +3,7 @@
  *
  * Plugin Name: CHIP for Fluent Forms
  * Plugin URI: https://wordpress.org/plugins/chip-for-fluent-forms/
- * Description: Cash, Card and Coin Handling Integrated Platform
+ * Description: CHIP - Better Payment & Business Solutions
  * Version: 1.0.0
  * Author: Chip In Sdn Bhd
  * Author URI: http://www.chip-in.asia
