@@ -46,7 +46,7 @@ class Chip_Fluent_Forms {
   public function includes() {
     $includes_dir = plugin_dir_path( FF_CHIP_FILE ) . 'includes/';
     include $includes_dir . 'class-api.php';
-    include $includes_dir . 'framework/classes/setup.class.php';
+    include $includes_dir . 'codestar-framework/classes/setup.class.php';
 
     if ( is_admin() ){
       include $includes_dir . 'admin/global-settings.php';
