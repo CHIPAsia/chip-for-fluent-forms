@@ -84,8 +84,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       'success_redirect' => $success_redirect,
       'failure_redirect' => $failure_redirect,
       'creator_agent'    => 'FluentForms: ' . FF_CHIP_MODULE_VERSION,
-      'reference'        => $transaction->id,
-      'platform'         => 'api', // TODO: change to fluentforms
+      'reference'        => substr($form->title, 0, 128),
+      'platform'         => 'fluentforms',
       'send_receipt'     => $option['send_rcpt'],
       'due'              => time() + ( absint( $option['due_time'] ) * 60 ),
       'brand_id'         => $option['brand_id'],
@@ -225,7 +225,9 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
     $transaction = $this->getTransaction( $transaction_hash, 'transaction_hash' );
 
-    if ( $transaction->id != $payment['reference'] ) {
+    $transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id') ;
+
+    if ( $transaction->id != $transaction_by_charge_id->id  ) {
       return;
     }
 
@@ -397,7 +399,9 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
     $transaction = $this->getTransaction( $submission_id, 'submission_id');
 
-    if ( $transaction->id != $payment['reference'] ) {
+    $transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id') ;
+
+    if ( $transaction->id != $transaction_by_charge_id->id  ) {
       return;
     }
 
@@ -467,7 +471,9 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     // get transaction once for thread safe
     $transaction = $this->getTransaction( $submission_id, 'submission_id');
 
-    if ( $transaction->id != $payment['related_to']['reference'] ) {
+    $transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id') ;
+
+    if ( $transaction->id != $transaction_by_charge_id->id  ) {
       return;
     }
 

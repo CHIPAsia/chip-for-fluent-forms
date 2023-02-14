@@ -3,7 +3,7 @@ Contributors: chipasia, wanzulnet
 Tags: chip
 Requires at least: 4.7
 Tested up to: 6.1
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 7.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -26,6 +26,10 @@ This plugin will enable your Fluent Forms site to be integrated with CHIP as per
 * Confirmation page after successful payment.
 
 == Changelog ==
+
+= 1.0.2 - 2023-02-14 =
+* Changed - Reference value now using form title instead of transaction id.
+* Changed - Platform value now set to fluentforms instead of API.
 
 = 1.0.1 - 2023-01-10 =
 * Fixed - Error when new forms created using global configuration.

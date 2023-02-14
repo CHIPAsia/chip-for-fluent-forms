@@ -4,11 +4,11 @@
  * Plugin Name: CHIP for Fluent Forms
  * Plugin URI: https://wordpress.org/plugins/chip-for-fluent-forms/
  * Description: CHIP - Better Payment & Business Solutions
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Chip In Sdn Bhd
  * Author URI: http://www.chip-in.asia
  *
- * Copyright: © 2022 CHIP
+ * Copyright: © 2023 CHIP
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -16,7 +16,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access directly.
 
-define('FF_CHIP_MODULE_VERSION', 'v1.0.1');
+define('FF_CHIP_MODULE_VERSION', 'v1.0.2');
 
 class Chip_Fluent_Forms {
 
@@ -85,6 +85,6 @@ function load_chip_for_fluent_forms() {
   if ( !class_exists( 'FluentFormPro\Payments\PaymentHelper' ) && !class_exists( 'FluentFormPro\Payments\PaymentMethods\BaseProcessor' ) ) {
     return;
   }
-  
+
   Chip_Fluent_Forms::get_instance();
 }
