@@ -84,7 +84,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       'success_redirect' => $success_redirect,
       'failure_redirect' => $failure_redirect,
       'creator_agent'    => 'FluentForms: ' . FF_CHIP_MODULE_VERSION,
-      'reference'        => substr($form->title, 0, 128),
+      // reference value shall be using unique
+      // 'reference'        => substr($form->title, 0, 128),
       'platform'         => 'fluentforms',
       'send_receipt'     => $option['send_rcpt'],
       'due'              => time() + ( absint( $option['due_time'] ) * 60 ),
