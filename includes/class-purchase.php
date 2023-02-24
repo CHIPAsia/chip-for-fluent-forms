@@ -46,7 +46,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $this->is_form_currency_supported( strtoupper( $submission->currency ) );
 
     $transactionId = $this->insertTransaction([
-      'payment_total'  => $totalPayable,
+      'payment_total'  => $this->getAmountTotal(),
       'status'         => 'pending',
       'currency'       => strtoupper( $submission->currency ),
       'payment_method' => 'chip',
