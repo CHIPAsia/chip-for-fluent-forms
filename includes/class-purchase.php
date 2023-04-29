@@ -79,7 +79,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       'submission_id'                 => $submission->id
     ), site_url('index.php'));
 
-    $params = array(
+    $params = apply_filters( 'ff_chip_create_purchase_params', array(
       'success_callback' => $success_callback,
       'success_redirect' => $success_redirect,
       'failure_redirect' => $failure_redirect,
@@ -104,7 +104,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
           'quantity' => '1',
         ]),
       ),
-    );
+    ), $transaction, $submission, $form);
 
     $chip = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], $option['brand_id'] );
     $payment = $chip->create_payment($params);
@@ -124,6 +124,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
         'message' => print_r($payment, true)
       ], 500);
     }
+
+    do_action( 'ff_chip_after_purchase_create', $transaction, $submission, $form, $payment );
 
     $this->updateTransaction($transaction->id, array(
       'payment_mode' => $payment['is_test'] ? 'test' : 'live',
@@ -292,11 +294,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
     $status = sanitize_text_field( $vendorTransaction['status'] );
 
-    $updateData = [
+    $updateData = apply_filters( 'ff_chip_handle_paid_data', [
       'payment_note'  => maybe_serialize($vendorTransaction),
       'charge_id'     => sanitize_text_field($vendorTransaction['id']),
       'payment_total' => intval($vendorTransaction['purchase']['total']),
-    ];
+    ], $submission, $transaction, $vendorTransaction);
 
     $this->updateTransaction($transaction->id, $updateData);
     $this->changeSubmissionPaymentStatus($status);
