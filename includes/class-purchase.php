@@ -1,4 +1,5 @@
 <?php
+use FluentForm\App\Modules\Form\FormHandler;
 use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Services\FormBuilder\Notifications\EmailNotificationActions;
@@ -42,11 +43,12 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $this->setSubmissionId( $submissionId );
     $this->form = $form;
     $submission = $this->getSubmission();
+    $amountTotal = $this->getAmountTotal();
 
     $this->is_form_currency_supported( strtoupper( $submission->currency ) );
 
     $transactionId = $this->insertTransaction([
-      'payment_total'  => $this->getAmountTotal(),
+      'payment_total'  => $amountTotal,
       'status'         => 'pending',
       'currency'       => strtoupper( $submission->currency ),
       'payment_method' => 'chip',
@@ -305,6 +307,10 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $this->changeTransactionStatus($transaction->id, $status);
     $this->recalculatePaidTotal();
     $this->setMetaData('is_form_action_fired', 'yes');
+
+    (new FormHandler(wpFluentForm()))->processFormSubmissionData(
+      $this->submissionId, $submission->response, $this->getForm()
+    );
 
     $email_feeds = wpFluent()->table( 'fluentform_form_meta' )
     ->where( 'form_id', $this->getForm()->id )
