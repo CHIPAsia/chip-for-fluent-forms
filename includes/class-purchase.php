@@ -81,7 +81,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       'submission_id'                 => $submission->id
     ), site_url('index.php'));
 
-    $params = apply_filters( 'ff_chip_create_purchase_params', array(
+    $params = array(
       'success_callback' => $success_callback,
       'success_redirect' => $success_redirect,
       'failure_redirect' => $failure_redirect,
@@ -106,7 +106,30 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
           'quantity' => '1',
         ]),
       ),
-    ), $transaction, $submission, $form);
+    );
+
+    if ( $option['payment_whitelist'] ) {
+      $params['payment_method_whitelist'] = array();
+
+      if ( $option['payment_method_fpx'] ) {
+        $params['payment_method_whitelist'][] = 'fpx';
+      }
+
+      if ( $option['payment_method_fpxb2b1'] ) {
+        $params['payment_method_whitelist'][] = 'fpx_b2b1';
+      }
+
+      if ( $option['payment_method_card'] ) {
+        $params['payment_method_whitelist'][] = 'visa';
+        $params['payment_method_whitelist'][] = 'mastercard';
+      }
+
+      if ( empty( $params['payment_method_whitelist']) ) {
+        unset( $params['payment_method_whitelist'] );
+      }
+    }
+
+    $params = apply_filters( 'ff_chip_create_purchase_params', $params, $transaction, $submission, $form);
 
     $chip = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], $option['brand_id'] );
     $payment = $chip->create_payment($params);
@@ -194,6 +217,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       'due_strict' => empty( $options['due-strict' . $postfix] ) ? false : $options['due-strict' . $postfix],
       'due_time'   => $options['due-strict-timing' . $postfix],
       'refund'     => empty( $options['refund' . $postfix] ) ? false : $options['refund' . $postfix],
+
+      'payment_whitelist'      => empty( $options['payment-method-whitelist' . $postfix] ) ? false : $options['payment-method-whitelist' . $postfix],
+      'payment_method_fpx'     => empty( $options['payment-method-fpx' . $postfix] ) ? false : $options['payment-method-fpx' . $postfix],
+      'payment_method_fpxb2b1' => empty( $options['payment-method-fpxb2b1' . $postfix] ) ? false : $options['payment-method-fpxb2b1' . $postfix],
+      'payment_method_card'    => empty( $options['payment-method-card' . $postfix] ) ? false : $options['payment-method-card' . $postfix],
     );
   }
 

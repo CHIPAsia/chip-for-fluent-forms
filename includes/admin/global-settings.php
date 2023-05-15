@@ -82,6 +82,37 @@ $miscellaneous_global_fields = array(
     'dependency'  => array( ['due-strict', '==', 'true'] ),
     'validate'    => 'csf_validate_numeric',
   ),
+  array(
+    'id'    => 'payment-method-whitelist',
+    'type'  => 'switcher',
+    'title' => __( 'Payment Method Whitelist', 'chip-for-fluent-forms' ),
+    'desc'  => __( 'To allow whitelisting a payment method.', 'chip-for-fluent-forms' ),
+    'help'  => __( 'Whether to enable payment method whitelisting.', 'chip-for-fluent-forms' ),
+  ),
+  array(
+    'id'    => 'payment-method-fpx',
+    'type'  => 'switcher',
+    'title' => __( 'Enable FPX', 'chip-for-fluent-forms' ),
+    'desc'  => __( 'To enable FPX payment method.', 'chip-for-fluent-forms' ),
+    'help'  => __( 'Whether to enable FPX payment method.', 'chip-for-fluent-forms' ),
+    'dependency'  => array( ['payment-method-whitelist', '==', 'true'] ),
+  ),
+  array(
+    'id'    => 'payment-method-fpxb2b1',
+    'type'  => 'switcher',
+    'title' => __( 'Enable FPX B2B1', 'chip-for-fluent-forms' ),
+    'desc'  => __( 'To enable FPX B2B1 payment method.', 'chip-for-fluent-forms' ),
+    'help'  => __( 'Whether to enable FPX B2B1 payment method.', 'chip-for-fluent-forms' ),
+    'dependency'  => array( ['payment-method-whitelist', '==', 'true'] ),
+  ),
+  array(
+    'id'    => 'payment-method-card',
+    'type'  => 'switcher',
+    'title' => __( 'Enable Card', 'chip-for-fluent-forms' ),
+    'desc'  => __( 'To enable Card payment method.', 'chip-for-fluent-forms' ),
+    'help'  => __( 'Whether to enable Card payment method.', 'chip-for-fluent-forms' ),
+    'dependency'  => array( ['payment-method-whitelist', '==', 'true'] ),
+  ),
 );
 
 $refund_global_fields = array(

@@ -71,6 +71,38 @@ function ff_chip_form_fields( $form ){
       'validate'    => 'csf_validate_numeric',
     ),
     array(
+      'id'    => 'payment-method-whitelist-' . $form->id,
+      'type'  => 'switcher',
+      'title' => __( 'Payment Method Whitelist', 'chip-for-fluent-forms' ),
+      'desc'  => __( 'To allow whitelisting a payment method.', 'chip-for-fluent-forms' ),
+      'help'  => __( 'Whether to enable payment method whitelisting.', 'chip-for-fluent-forms' ),
+      'dependency'  => array( ['form-customize-' . $form->id, '==', 'true'] ),
+    ),
+    array(
+      'id'    => 'payment-method-fpx-' . $form->id,
+      'type'  => 'switcher',
+      'title' => __( 'Enable FPX', 'chip-for-fluent-forms' ),
+      'desc'  => __( 'To enable FPX payment method.', 'chip-for-fluent-forms' ),
+      'help'  => __( 'Whether to enable FPX payment method.', 'chip-for-fluent-forms' ),
+      'dependency'  => array( ['payment-method-whitelist-' . $form->id, '==', 'true'] ),
+    ),
+    array(
+      'id'    => 'payment-method-fpxb2b1-' . $form->id,
+      'type'  => 'switcher',
+      'title' => __( 'Enable FPX B2B1', 'chip-for-fluent-forms' ),
+      'desc'  => __( 'To enable FPX B2B1 payment method.', 'chip-for-fluent-forms' ),
+      'help'  => __( 'Whether to enable FPX B2B1 payment method.', 'chip-for-fluent-forms' ),
+      'dependency'  => array( ['payment-method-whitelist-' . $form->id, '==', 'true'] ),
+    ),
+    array(
+      'id'    => 'payment-method-card-' . $form->id,
+      'type'  => 'switcher',
+      'title' => __( 'Enable Card', 'chip-for-fluent-forms' ),
+      'desc'  => __( 'To enable Card payment method.', 'chip-for-fluent-forms' ),
+      'help'  => __( 'Whether to enable Card payment method.', 'chip-for-fluent-forms' ),
+      'dependency'  => array( ['payment-method-whitelist-' . $form->id, '==', 'true'] ),
+    ),
+    array(
       'type'    => 'subheading',
       'content' => __( 'Refund Synchronization', 'chip-for-fluent-forms' ),
 
