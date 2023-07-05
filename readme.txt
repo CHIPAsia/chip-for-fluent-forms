@@ -3,7 +3,7 @@ Contributors: chipasia, wanzulnet
 Tags: chip
 Requires at least: 4.7
 Tested up to: 6.2
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 Requires PHP: 7.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -26,6 +26,9 @@ This plugin will enable your Fluent Forms site to be integrated with CHIP as per
 * Confirmation page after successful payment.
 
 == Changelog ==
+
+= 1.0.8 - 2023-07-05 =
+* Fixed - Issue with duplicate email notification now only send once.
 
 = 1.0.7 - 2023-05-15 =
 * Added - Option to whitelist specific payment method.

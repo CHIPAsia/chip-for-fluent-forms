@@ -384,7 +384,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       );
       $feed['processedValues'] = $processedValues;
 
-      $ena->notify( $feed, $form_data, $entry, $this->getForm() );
+      // $ena->notify( $feed, $form_data, $entry, $this->getForm() );
     }
 
     Helper::setSubmissionMeta($submission->id, '_ff_chip_on_payment_success', 'yes', $this->getForm()->id );
