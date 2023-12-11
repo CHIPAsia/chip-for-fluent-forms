@@ -16,8 +16,7 @@ This is an official CHIP plugin for Fluent Forms.
 
 CHIP is a comprehensive Digital Finance Platform specifically designed to support and empower Micro, Small and Medium Enterprises (MSMEs). We provide a suite of solutions encompassing payment collection, expense management, risk mitigation, and treasury management.
 
-Our aim is to help businesses streamline their financial processes, reduce
-operational complexity, and drive growth.
+Our aim is to help businesses streamline their financial processes, reduce operational complexity, and drive growth.
 
 With CHIP, you gain a financial partner committed to simplifying, digitizing, and enhancing your financial operations for ultimate success.
 
