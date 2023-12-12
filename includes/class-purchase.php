@@ -27,13 +27,13 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
   }
 
   public function add_action() {
-    add_action( 'fluentform_process_payment_chip', array( $this, 'handlePaymentAction' ), 10, 6 );
+    add_action( 'fluentform/process_payment_chip', array( $this, 'handlePaymentAction' ), 10, 6 );
     
     // this is redirect
-    add_action( 'fluent_payment_frameless_chip', array( $this, 'redirect' ) );
+    add_action( 'fluentform/payment_frameless_chip', array( $this, 'redirect' ) );
 
     // this is callback
-    add_action( 'fluentform_ipn_endpoint_chip', array( $this, 'callback' ) );
+    add_action( 'fluentform/ipn_endpoint_chip', array( $this, 'callback' ) );
   }
 
   public function handlePaymentAction( $submissionId, $submissionData, $form, $methodSettings, $hasSubscriptions, $totalPayable ) {
@@ -94,12 +94,13 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       'brand_id'         => $option['brand_id'],
       'client'           => [
         'email'          => PaymentHelper::getCustomerEmail($submission, $form),
-        'full_name'      => substr(PaymentHelper::getCustomerName($submission, $form), 0, 30),
+        'full_name'      => substr(PaymentHelper::getCustomerName($submission, $form), 0, 128),
       ],
       'purchase'         => array(
         'timezone'   => apply_filters( 'ff_chip_purchase_timezone', $this->get_timezone() ),
         'currency'   => strtoupper( $submission->currency ),
         'due_strict' => $option['due_strict'],
+        'notes'      => substr( $form->title . ' | ' . $submission->id, 0, 10000 ),
         'products'   => array([
           'name'     => substr($form->title, 0, 256),
           'price'    => round($transaction->payment_total),

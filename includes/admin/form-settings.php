@@ -128,11 +128,15 @@ CSF_Setup::createSection( $slug, array(
   'icon'  => 'fa fa-gear'
 ));
 
-$all_forms_query = wpFluent()->table('fluentform_forms')
+$all_forms_query = [];
+
+if (function_exists('wpFluent')) {
+  $all_forms_query = wpFluent()->table('fluentform_forms')
   ->select(['id', 'title'])
   ->orderBy('id')
   ->limit(500)
   ->get();
+}
 
 foreach( $all_forms_query as $form ) {
 

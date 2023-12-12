@@ -14,7 +14,7 @@ class Chip_Fluent_Forms_Register {
   }
 
   public function __construct() {
-    add_filter( 'fluentformpro_available_payment_methods', array( $this, 'push' ) );
+    add_filter( 'fluentform/available_payment_methods', array( $this, 'push' ) );
   }
 
   public function push( $methods ) {

@@ -2,21 +2,25 @@
 Contributors: chipasia, wanzulnet
 Tags: chip
 Requires at least: 4.7
-Tested up to: 6.2
-Stable tag: 1.0.8
+Tested up to: 6.4
+Stable tag: 1.0.9
 Requires PHP: 7.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-CHIP - Better Payment & Business Solutions. Securely accept payment with CHIP for Fluent Forms.
+CHIP - Digital Finance Platform. Securely accept one-time and subscription payment with CHIP for Fluent Forms.
 
 == Description ==
 
-This is a CHIP plugin for Fluent Forms.
+This is an official CHIP plugin for Fluent Forms.
 
-CHIP is a payment and business solutions platform that allow you to securely sell your products and get paid via multiple local and international payment methods.
+CHIP is a comprehensive Digital Finance Platform specifically designed to support and empower Micro, Small and Medium Enterprises (MSMEs). We provide a suite of solutions encompassing payment collection, expense management, risk mitigation, and treasury management.
 
-This plugin will enable your Fluent Forms site to be integrated with CHIP as per documented in [API Documentation](https://developer.chip-in.asia/).
+Our aim is to help businesses streamline their financial processes, reduce operational complexity, and drive growth.
+
+With CHIP, you gain a financial partner committed to simplifying, digitizing, and enhancing your financial operations for ultimate success.
+
+This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per documented in [API Documentation](https://docs.chip-in.asia).
 
 == Screenshots ==
 * Fill up the form with Brand ID and Secret Key on Global Configuration.
@@ -27,23 +31,21 @@ This plugin will enable your Fluent Forms site to be integrated with CHIP as per
 
 == Changelog ==
 
-= 1.0.8 - 2023-07-05 =
-* Fixed - Issue with duplicate email notification now only send once.
+= 1.0.9 2023-12-12 =
+* Added   - Now purchase will include with Form Title and Submission Id.
+* Changed - Use new Fluent Form action hooks.
+* Fixed   - Customer full name will now truncated at 128.
+* Fixed   - undefined wpFluent() on some circumstances.
 
-= 1.0.7 - 2023-05-15 =
-* Added - Option to whitelist specific payment method.
-
-= 1.0.6 - 2023-05-10 =
-* Added - Add execution for processFormSubmissionData to ensure compatibility with Google Sheet
-
-= 1.0.5 - 2023-04-29 =
-* Added - Add filter "ff_chip_create_purchase_params", "ff_chip_handle_paid_data" and action "ff_chip_after_purchase_create"
+[See changelog for all versions](https://raw.githubusercontent.com/CHIPAsia/chip-for-fluent-forms/main/changelog.txt).
 
 == Installation ==
 
 = Minimum Requirements =
 
 * WordPress 5.9 or greater
+* PHP 7.4 or greater is required (PHP 8.0 or greater is recommended)
+* MySQL 5.6 or greater, OR MariaDB version 10.1 or greater, is required
 * Fluent Forms Pro Add On Pack 4.3.21 or greater
 
 = Automatic installation =
@@ -73,7 +75,7 @@ No.
 
 = Where can I find documentation? =
 
-You can visit our [API documentation](https://developer.chip-in.asia/) for your reference.
+You can visit our [API documentation](https://docs.chip-in.asia/) for your reference.
 
 = What CHIP API services used in this plugin? =
 
@@ -92,6 +94,6 @@ This plugin rely on CHIP API ([FLUENT_FORMS_CHIP_ROOT_URL](https://gate.chip-in.
 
 [Privacy Policy](https://www.chip-in.asia/privacy-policy)
 
-[API Documentation](https://developer.chip-in.asia/)
+[API Documentation](https://docs.chip-in.asia/)
 
 [CHIP Merchants & DEV Community](https://www.facebook.com/groups/3210496372558088)
