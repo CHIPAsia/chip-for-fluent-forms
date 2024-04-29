@@ -2,8 +2,8 @@
 Contributors: chipasia, wanzulnet
 Tags: chip
 Requires at least: 4.7
-Tested up to: 6.4
-Stable tag: 1.0.9
+Tested up to: 6.5
+Stable tag: 1.1.0
 Requires PHP: 7.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -31,11 +31,10 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 
 == Changelog ==
 
-= 1.0.9 2023-12-12 =
-* Added   - Now purchase will include with Form Title and Submission Id.
-* Changed - Use new Fluent Form action hooks.
-* Fixed   - Customer full name will now truncated at 128.
-* Fixed   - undefined wpFluent() on some circumstances.
+= 1.1.0 2024-04-29 =
+* Added   - Duitnow QR in payment method whitelist option.
+* Changed - Updated CSF.
+* Fixed   - Error after payment completion.
 
 [See changelog for all versions](https://raw.githubusercontent.com/CHIPAsia/chip-for-fluent-forms/main/changelog.txt).
 

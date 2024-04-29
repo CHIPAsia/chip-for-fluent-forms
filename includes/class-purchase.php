@@ -1,5 +1,5 @@
 <?php
-use FluentForm\App\Modules\Form\FormHandler;
+use FluentForm\App\Services\Form\SubmissionHandlerService;
 use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Services\FormBuilder\Notifications\EmailNotificationActions;
@@ -122,7 +122,12 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
       if ( $option['payment_method_card'] ) {
         $params['payment_method_whitelist'][] = 'visa';
+        $params['payment_method_whitelist'][] = 'maestro';
         $params['payment_method_whitelist'][] = 'mastercard';
+      }
+
+      if ( $option['payment_method_duitnow'] ) {
+        $params['payment_method_whitelist'][] = 'duitnow_qr';
       }
 
       if ( empty( $params['payment_method_whitelist']) ) {
@@ -222,6 +227,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
       'payment_whitelist'      => empty( $options['payment-method-whitelist' . $postfix] ) ? false : $options['payment-method-whitelist' . $postfix],
       'payment_method_fpx'     => empty( $options['payment-method-fpx' . $postfix] ) ? false : $options['payment-method-fpx' . $postfix],
       'payment_method_fpxb2b1' => empty( $options['payment-method-fpxb2b1' . $postfix] ) ? false : $options['payment-method-fpxb2b1' . $postfix],
+      'payment_method_duitnow' => empty( $options['payment-method-duitnow' . $postfix] ) ? false : $options['payment-method-duitnow' . $postfix],
       'payment_method_card'    => empty( $options['payment-method-card' . $postfix] ) ? false : $options['payment-method-card' . $postfix],
     );
   }
@@ -328,6 +334,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $updateData = apply_filters( 'ff_chip_handle_paid_data', [
       'payment_note'  => maybe_serialize($vendorTransaction),
       'charge_id'     => sanitize_text_field($vendorTransaction['id']),
+      'payer_email'   => $vendorTransaction['client']['email'],
       'payment_total' => intval($vendorTransaction['purchase']['total']),
     ], $submission, $transaction, $vendorTransaction);
 
@@ -337,9 +344,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $this->recalculatePaidTotal();
     $this->setMetaData('is_form_action_fired', 'yes');
 
-    (new FormHandler(wpFluentForm()))->processFormSubmissionData(
-      $this->submissionId, $submission->response, $this->getForm()
-    );
+    $submission_service = new SubmissionHandlerService();
+    $submission_service->processSubmissionData($this->submissionId, $submission->response, $this->getForm());
 
     $email_feeds = wpFluent()->table( 'fluentform_form_meta' )
     ->where( 'form_id', $this->getForm()->id )
