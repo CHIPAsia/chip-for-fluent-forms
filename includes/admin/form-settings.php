@@ -95,6 +95,14 @@ function ff_chip_form_fields( $form ){
       'dependency'  => array( ['payment-method-whitelist-' . $form->id, '==', 'true'] ),
     ),
     array(
+      'id'    => 'payment-method-duitnow-' . $form->id,
+      'type'  => 'switcher',
+      'title' => __( 'Enable Duitnow QR', 'chip-for-fluent-forms' ),
+      'desc'  => __( 'To enable Duitnow QR payment method.', 'chip-for-fluent-forms' ),
+      'help'  => __( 'Whether to enable Duitnow QR payment method.', 'chip-for-fluent-forms' ),
+      'dependency'  => array( ['payment-method-whitelist-' . $form->id, '==', 'true'] ),
+    ),
+    array(
       'id'    => 'payment-method-card-' . $form->id,
       'type'  => 'switcher',
       'title' => __( 'Enable Card', 'chip-for-fluent-forms' ),
