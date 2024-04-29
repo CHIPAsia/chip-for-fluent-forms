@@ -1,6 +1,5 @@
 <?php
-// use FluentForm\App\Modules\Form\FormHandler;
-// use FluentForm\App\Services\Form\SubmissionHandlerService;
+use FluentForm\App\Services\Form\SubmissionHandlerService;
 use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentForm\App\Helpers\Helper;
 use FluentForm\App\Services\FormBuilder\Notifications\EmailNotificationActions;
@@ -345,9 +344,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
     $this->recalculatePaidTotal();
     $this->setMetaData('is_form_action_fired', 'yes');
 
-    // (new FormHandler(wpFluentForm()))->processFormSubmissionData(
-    //   $this->submissionId, $submission->response, $this->getForm()
-    // );
+    $submission_service = new SubmissionHandlerService();
+    $submission_service->processSubmissionData($this->submissionId, $submission->response, $this->getForm());
 
     $email_feeds = wpFluent()->table( 'fluentform_form_meta' )
     ->where( 'form_id', $this->getForm()->id )
