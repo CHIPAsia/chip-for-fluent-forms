@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 1.0.9 2023-12-12 =
+* Added   - Now purchase will include with Form Title and Submission Id.
+* Changed - Use new Fluent Form action hooks.
+* Fixed   - Customer full name will now truncated at 128.
+* Fixed   - undefined wpFluent() on some circumstances.
+
 = 1.0.8 2023-07-05 =
 * Fixed - Issue with duplicate email notification now only send once.
 
