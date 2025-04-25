@@ -78,7 +78,7 @@ class Chip_Fluent_Forms {
   }
 }
 
-add_action( 'plugins_loaded', 'load_chip_for_fluent_forms' );
+add_action( 'init', 'load_chip_for_fluent_forms', 0 );
 
 function load_chip_for_fluent_forms() {
 
