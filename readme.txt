@@ -1,10 +1,10 @@
 === CHIP for Fluent Forms ===
 Contributors: chipasia, wanzulnet
 Tags: chip
-Requires at least: 4.7
-Tested up to: 6.6
-Stable tag: 1.1.1
-Requires PHP: 7.1
+Requires at least: 6.1
+Tested up to: 6.8
+Stable tag: 1.1.2
+Requires PHP: 7.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,8 +31,8 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 
 == Changelog ==
 
-= 1.1.1 2024-08-21 =
-* Fixed - Fix settings link.
+= 1.1.2 2025-05-05 =
+* Fixed - Fixed issue with load_textdomain.
 
 [See changelog for all versions](https://raw.githubusercontent.com/CHIPAsia/chip-for-fluent-forms/main/changelog.txt).
 
@@ -40,7 +40,7 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 
 = Minimum Requirements =
 
-* WordPress 5.9 or greater
+* WordPress 6.1 or greater
 * PHP 7.4 or greater is required (PHP 8.0 or greater is recommended)
 * MySQL 5.6 or greater, OR MariaDB version 10.1 or greater, is required
 * Fluent Forms Pro Add On Pack 4.3.21 or greater

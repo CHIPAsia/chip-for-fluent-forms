@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 1.1.2 2025-05-05 =
+* Fixed - Fixed issue with load_textdomain.
+
+= 1.1.1 2024-08-21 =
+* Fixed - Fix settings link.
+
 = 1.1.0 2024-04-29 =
 * Added   - Duitnow QR in payment method whitelist option.
 * Changed - Updated CSF.
