@@ -1,14 +1,17 @@
-<?php 
+<?php
+
 /**
  *
  * Plugin Name: CHIP for Fluent Forms
  * Plugin URI: https://wordpress.org/plugins/chip-for-fluent-forms/
  * Description: CHIP - Digital Finance Platform
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author: Chip In Sdn Bhd
  * Author URI: http://www.chip-in.asia
+ * Requires PHP: 7.4
+ * Requires at least: 6.1
  *
- * Copyright: © 2024 CHIP
+ * Copyright: © 2025 CHIP
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  *
@@ -16,7 +19,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access directly.
 
-define('FF_CHIP_MODULE_VERSION', 'v1.1.1');
+define('FF_CHIP_MODULE_VERSION', 'v1.1.2');
 
 class Chip_Fluent_Forms {
 
