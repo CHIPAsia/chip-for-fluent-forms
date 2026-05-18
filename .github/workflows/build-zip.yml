@@ -14,12 +14,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Build plugin # Remove or modify this step as needed
-      run: |
-        composer install --no-dev
-        npm install
-        # npm run build
-
     - name: Generate zip
       uses: 10up/action-wordpress-plugin-build-zip@stable
       with:

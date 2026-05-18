@@ -26,7 +26,7 @@ class Chip_Fluent_Forms {
 	private static $_instance;
 
 	public static function get_instance() {
-		if ( self::$_instance == null ) {
+		if ( self::$_instance === null ) {
 			self::$_instance = new self();
 		}
 
@@ -80,6 +80,12 @@ class Chip_Fluent_Forms {
 
 		return array_merge( $new_links, $links );
 	}
+}
+
+add_action( 'plugins_loaded', 'chip_for_fluent_forms_load_textdomain' );
+
+function chip_for_fluent_forms_load_textdomain() {
+	load_plugin_textdomain( 'chip-for-fluent-forms', false, dirname( FF_CHIP_BASENAME ) . '/languages/' );
 }
 
 add_action( 'init', 'load_chip_for_fluent_forms', 0 );

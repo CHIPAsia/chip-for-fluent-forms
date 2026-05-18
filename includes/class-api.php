@@ -9,16 +9,17 @@ define( 'FLUENT_FORMS_CHIP_ROOT_URL', 'https://gate.chip-in.asia' );
 
 class Chip_Fluent_Forms_API {
 
-	private static $_instance;
+	private static $_instances = array();
 	private $secret_key;
 	private $brand_id;
 
 	public static function get_instance( $secret_key, $brand_id ) {
-		if ( self::$_instance == null ) {
-			self::$_instance = new self( $secret_key, $brand_id );
+		$key = md5( $secret_key . $brand_id );
+		if ( ! isset( self::$_instances[ $key ] ) ) {
+			self::$_instances[ $key ] = new self( $secret_key, $brand_id );
 		}
 
-		return self::$_instance;
+		return self::$_instances[ $key ];
 	}
 
 	public function __construct( $secret_key, $brand_id ) {

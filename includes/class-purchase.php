@@ -15,7 +15,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	protected $method             = 'chip'; // used by BaseProcessor->insertRefund($data)
 
 	public static function get_instance() {
-		if ( self::$_instance == null ) {
+		if ( self::$_instance === null ) {
 			self::$_instance = new self();
 		}
 
@@ -167,7 +167,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 				)
 			);
 
-			wp_send_json_success(
+			wp_send_json_error(
 				array(
 					'message' => print_r( $payment, true ),
 				),
@@ -232,8 +232,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	private function is_form_currency_supported( $currency ) {
 
 		if ( ! in_array( $currency, $this->supported_currencies ) ) {
-			printf( __( 'Error! Currency not supported. The only supported currency is MYR and the current currency is %s.', 'chip-for-fluent-forms' ), esc_html( $currency ) );
-			exit( 200 );
+			wp_die( sprintf( __( 'Error! Currency not supported. The only supported currency is MYR and the current currency is %s.', 'chip-for-fluent-forms' ), esc_html( $currency ) ) );
 		}
 	}
 
@@ -277,7 +276,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$submission_id    = absint( $data['fluentform_payment'] );
 		$transaction_hash = sanitize_text_field( $data['transaction_hash'] );
 
-		if ( $data['payment_method'] != 'chip' ) {
+		if ( $data['payment_method'] !== 'chip' ) {
 			return;
 		}
 
@@ -298,7 +297,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
 		$transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id' );
 
-		if ( $transaction->id != $transaction_by_charge_id->id ) {
+		if ( $transaction->id !== $transaction_by_charge_id->id ) {
 			return;
 		}
 
@@ -383,56 +382,6 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$submission_service = new SubmissionHandlerService();
 		$submission_service->processSubmissionData( $this->submissionId, $submission->response, $this->getForm() );
 
-		$email_feeds = wpFluent()->table( 'fluentform_form_meta' )
-		->where( 'form_id', $this->getForm()->id )
-		->where( 'meta_key', 'notifications' )
-		->get();
-
-		if ( ! $email_feeds ) {
-			return;
-		}
-
-		$form_data            = $submission->response;
-		$notification_manager = new \FluentForm\App\Services\Integrations\GlobalNotificationManager( wpFluentForm() );
-
-		$active_email_feeds = $notification_manager->getEnabledFeeds( $email_feeds, $form_data, $submission->id );
-
-		if ( ! $active_email_feeds ) {
-			return;
-		}
-
-		$after_success_email_feeds = array_filter(
-			$active_email_feeds,
-			function ( $feed ) {
-				return 'payment_success' == ArrayHelper::get( $feed, 'settings.feed_trigger_event' );
-			}
-		);
-
-		if ( ! $after_success_email_feeds || 'yes' === Helper::getSubmissionMeta( $submission->id, '_ff_chip_on_payment_success' ) ) {
-			return;
-		}
-
-		$ena = new EmailNotificationActions( wpFluentForm() );
-
-		$entry = $ena->getEntry( $submission->id );
-
-		foreach ( $after_success_email_feeds as $feed ) {
-			$processedValues = $feed['settings'];
-			unset( $processedValues['conditionals'] );
-
-			$processedValues         = ShortCodeParser::parse(
-				$processedValues,
-				$submission->id,
-				$form_data,
-				$this->getForm(),
-				false,
-				$feed['meta_key']
-			);
-			$feed['processedValues'] = $processedValues;
-
-			// $ena->notify( $feed, $form_data, $entry, $this->getForm() );
-		}
-
 		Helper::setSubmissionMeta( $submission->id, '_ff_chip_on_payment_success', 'yes', $this->getForm()->id );
 	}
 
@@ -484,7 +433,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
 		$transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id' );
 
-		if ( $transaction->id != $transaction_by_charge_id->id ) {
+		if ( $transaction->id !== $transaction_by_charge_id->id ) {
 			return;
 		}
 
@@ -559,7 +508,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
 		$transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id' );
 
-		if ( $transaction->id != $transaction_by_charge_id->id ) {
+		if ( $transaction->id !== $transaction_by_charge_id->id ) {
 			return;
 		}
 

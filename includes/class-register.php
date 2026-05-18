@@ -6,7 +6,7 @@ class Chip_Fluent_Forms_Register {
 	private static $_instance;
 
 	public static function get_instance() {
-		if ( self::$_instance == null ) {
+		if ( self::$_instance === null ) {
 			self::$_instance = new self();
 		}
 

@@ -6,7 +6,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
 	private $results = array();
 
 	public static function get_instance() {
-		if ( self::$_instance == null ) {
+		if ( self::$_instance === null ) {
 			self::$_instance = new self();
 		}
 
@@ -94,14 +94,14 @@ class Chip_Fluent_Forms_Webhook_Setup {
 					continue;
 				}
 
-				if ( $data[ 'refund-' . $form->id ] == false ) {
+				if ( $data[ 'refund-' . $form->id ] === false ) {
 					continue;
 				}
 
 				if ( array_key_exists( $data[ 'secret-key-' . $form->id ], $this->results ) ) {
 					$webhooks = $this->results[ $data[ 'secret-key-' . $form->id ] ];
 				} else {
-					$chip     = Chip_Fluent_Forms_API::get_instance( $data['secret-key'], '' );
+					$chip     = Chip_Fluent_Forms_API::get_instance( $data[ 'secret-key-' . $form->id ], '' );
 					$webhooks = $chip->get_webhooks();
 				}
 
@@ -117,7 +117,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
 				$found_webhook = false;
 
 				foreach ( $webhooks['results'] as $webhook ) {
-					if ( $webhook['title'] == 'CHIP for GiveWP' ) {
+					if ( $webhook['title'] === 'CHIP for Fluent Forms' ) {
 						$public_key    = str_replace( '\n', "\n", $webhook['public_key'] );
 						$found_webhook = true;
 						break;
@@ -127,7 +127,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
 				if ( ! $found_webhook ) {
 					$webhook = $chip->create_webhook(
 						array(
-							'title'      => 'CHIP for GiveWP',
+							'title'      => 'CHIP for Fluent Forms',
 							'all_events' => false,
 							'events'     => array( 'payment.refunded' ),
 							'callback'   => $this->get_callback_url(),
