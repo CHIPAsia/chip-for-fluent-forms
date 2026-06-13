@@ -32,6 +32,13 @@ class Chip_Fluent_Forms_Register {
 					'value'    => 'Pay with CHIP',
 					'label'    => 'Method Label',
 				),
+				'notes' => array(
+					'type'     => 'text',
+					'template' => 'inputText',
+					'value'    => '',
+					'label'    => 'Notes',
+					'help_text' => 'Add payment notes. You can use {inputs.<Name Attribute>} for dynamic values from form fields.',
+				),
 			),
 		);
 

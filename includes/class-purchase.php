@@ -92,6 +92,9 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			site_url( 'index.php' )
 		);
 
+		$additional_notes_array = ArrayHelper::get( $methodSettings, 'settings.notes.value', '' );
+		$additional_notes = sanitize_text_field( ShortCodeParser::parse( $additional_notes_array, $submission->id, $submission->response, $form, false, true ) );
+
 		$params = array(
 			'success_callback' => $success_callback,
 			'success_redirect' => $success_redirect,
@@ -111,7 +114,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 				'timezone'   => apply_filters( 'ff_chip_purchase_timezone', $this->get_timezone() ),
 				'currency'   => strtoupper( $submission->currency ),
 				'due_strict' => $option['due_strict'],
-				'notes'      => substr( $form->title . ' | ' . $submission->id, 0, 10000 ),
+				'notes'      => substr( $form->title . ' | ' . $submission->id . $additional_notes, 0, 10000 ),
 				'products'   => array(
 					array(
 						'name'     => substr( $form->title, 0, 256 ),
