@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<ruleset name="CHIP for Fluent Forms">
+	<description>PHPCS ruleset for CHIP for Fluent Forms plugin.</description>
+
+	<!-- What to scan -->
+	<file>.</file>
+
+	<!-- Only scan PHP files -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Exclude paths -->
+	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/assets/*</exclude-pattern>
+	<exclude-pattern>/build/*</exclude-pattern>
+	<exclude-pattern>/ci-build/*</exclude-pattern>
+	<exclude-pattern>/dist/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
+
+	<!-- Use WordPress coding standards -->
+	<rule ref="WordPress">
+	</rule>
+
+	<!-- Set minimum supported PHP version -->
+	<config name="minimum_supported_wp_version" value="6.1"/>
+	<config name="testVersion" value="7.4-8.5"/>
+
+	<!-- Text domain -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="chip-for-fluent-forms"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Main plugin entry point cannot be renamed to class-chip-fluent-forms.php. -->
+	<rule ref="WordPress.Files.FileName">
+		<exclude-pattern>chip-for-fluent-forms.php</exclude-pattern>
+		<exclude-pattern>uninstall.php</exclude-pattern>
+	</rule>
+
+	<!-- WordPress pseudo-singleton pattern uses $instance (not $_instance). -->
+	<rule ref="PSR2.Classes.PropertyDeclaration">
+		<exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
+	</rule>
+</ruleset>

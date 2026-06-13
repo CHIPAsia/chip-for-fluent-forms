@@ -1,0 +1,239 @@
+name: Deploy to WordPress.org
+
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: 'Deployment stage'
+        required: true
+        default: 'trunk'
+        type: choice
+        options:
+          - trunk
+          - release
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  deploy:
+    name: Deploy to WordPress.org SVN
+    runs-on: ubuntu-latest
+    environment: wordpress-org
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Prepare plugin folder
+        run: |
+          mkdir -p dist/chip-for-fluent-forms
+          git archive HEAD | tar -x -C dist/chip-for-fluent-forms
+          echo "✅ Plugin folder prepared"
+          ls -la dist/chip-for-fluent-forms/
+
+      - name: Determine stage and version
+        id: vars
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            STAGE="${{ github.event.inputs.stage }}"
+          else
+            STAGE="release"
+          fi
+          echo "stage=$STAGE" >> "$GITHUB_OUTPUT"
+
+          if [ "$STAGE" = "release" ] && [ "${{ github.event_name }}" = "push" ]; then
+            # Fluent Forms historically uses both vX.Y.Z and X.Y.Z tags; support both.
+            TAG_NAME="${GITHUB_REF##*/}"
+            VERSION="${TAG_NAME#v}"
+          else
+            VERSION=$(grep "Version:" chip-for-fluent-forms.php | head -1 | awk '{print $3}')
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "📦 Stage: $STAGE"
+          echo "📦 Version: $VERSION"
+
+      - name: Install SVN
+        run: sudo apt-get install -y subversion
+
+      - name: Revert stable tag for trunk deploy
+        if: steps.vars.outputs.stage == 'trunk'
+        run: |
+          # For trunk testing, keep Stable tag pointing to the version currently
+          # live on WordPress.org (source of truth from SVN trunk readme.txt).
+          svn export --force \
+            --username "${{ secrets.SVN_USERNAME }}" \
+            --password "${{ secrets.SVN_PASSWORD }}" \
+            --non-interactive \
+            "https://plugins.svn.wordpress.org/chip-for-fluent-forms/trunk/readme.txt" \
+            /tmp/svn-readme.txt >/dev/null 2>&1 || true
+
+          if [ -f /tmp/svn-readme.txt ]; then
+            CURRENT_STABLE=$(grep -m1 "^Stable tag:" /tmp/svn-readme.txt | awk '{print $3}')
+          fi
+
+          if [ -n "${CURRENT_STABLE:-}" ]; then
+            echo "🧪 Trunk mode: keeping Stable tag at ${CURRENT_STABLE}"
+            sed -i "s/^Stable tag: .*/Stable tag: ${CURRENT_STABLE}/" dist/chip-for-fluent-forms/readme.txt
+            grep "^Stable tag:" dist/chip-for-fluent-forms/readme.txt
+            rm -f /tmp/svn-readme.txt
+          else
+            echo "⚠️ Could not read current stable tag from SVN; leaving as-is"
+          fi
+
+      - name: Sparse-checkout SVN (trunk + assets only)
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        run: |
+          # Checkout only the repo root skeleton (no tag history)
+          svn checkout --depth=empty \
+            --username "$SVN_USERNAME" \
+            --password "$SVN_PASSWORD" \
+            --non-interactive \
+            https://plugins.svn.wordpress.org/chip-for-fluent-forms/ \
+            svn-repo
+
+          cd svn-repo
+          svn update --set-depth=infinity trunk
+          svn update --set-depth=infinity assets
+          cd ..
+          echo "✅ Sparse-checkout complete"
+
+      - name: Update trunk
+        run: |
+          # Clear existing files in trunk (preserve .svn metadata)
+          cd svn-repo/trunk
+          find . -type f -not -path './.svn/*' -delete 2>/dev/null || true
+          find . -mindepth 1 -type d -not -path './.svn*' -empty -delete 2>/dev/null || true
+          cd ../..
+
+          # Copy new files into trunk
+          rsync -av \
+            --exclude='.git*' \
+            --exclude='.github' \
+            --exclude='.vscode' \
+            --exclude='ci-build' \
+            --exclude='dist' \
+            --exclude='node_modules' \
+            --exclude='.wordpress-org' \
+            dist/chip-for-fluent-forms/ \
+            svn-repo/trunk/
+
+      - name: Sync WordPress.org assets
+        run: |
+          if [ -d ".wordpress-org" ]; then
+            echo "📁 Syncing WordPress.org directory assets..."
+            cd svn-repo/assets
+            find . -type f -not -path './.svn/*' -delete 2>/dev/null || true
+            cd ../..
+            rsync -av .wordpress-org/ svn-repo/assets/
+          else
+            echo "ℹ️ No .wordpress-org directory found; skipping assets sync."
+          fi
+
+      - name: Commit trunk only (test stage)
+        if: steps.vars.outputs.stage == 'trunk'
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        run: |
+          cd svn-repo
+          svn add --force . > /dev/null 2>&1 || true
+          svn status | grep '^!' | sed 's/^! *//' | while read -r f; do
+            svn delete "$f" --force
+          done
+          svn commit \
+            -m "Update trunk to ${{ steps.vars.outputs.version }} for testing" \
+            --username "$SVN_USERNAME" \
+            --password "$SVN_PASSWORD" \
+            --non-interactive
+          echo "✅ Deployed trunk for testing. Stable tag unchanged."
+
+      - name: Create SVN tag and release
+        if: steps.vars.outputs.stage == 'release'
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        run: |
+          VERSION="${{ steps.vars.outputs.version }}"
+          cd svn-repo
+
+          # Add new files
+          svn add --force . > /dev/null 2>&1 || true
+
+          # Remove deleted files
+          svn status | grep '^!' | sed 's/^! *//' | while read -r f; do
+            svn delete "$f" --force
+          done
+
+          # Check for duplicate tag
+          if svn ls \
+            --username "$SVN_USERNAME" \
+            --password "$SVN_PASSWORD" \
+            --non-interactive \
+            "https://plugins.svn.wordpress.org/chip-for-fluent-forms/tags/$VERSION" >/dev/null 2>&1; then
+            echo "❌ Tag $VERSION already exists in SVN. Aborting."
+            exit 1
+          fi
+
+          # Commit trunk + assets first, then create tag from the new HEAD
+          svn commit \
+            -m "Release $VERSION" \
+            --username "$SVN_USERNAME" \
+            --password "$SVN_PASSWORD" \
+            --non-interactive
+
+          svn cp \
+            --username "$SVN_USERNAME" \
+            --password "$SVN_PASSWORD" \
+            --non-interactive \
+            "https://plugins.svn.wordpress.org/chip-for-fluent-forms/trunk" \
+            "https://plugins.svn.wordpress.org/chip-for-fluent-forms/tags/$VERSION" \
+            -m "Create tag $VERSION"
+          echo "🏷️ Created tag $VERSION"
+
+          echo "✅ Released $VERSION to WordPress.org"
+
+      - name: Create release zip
+        if: steps.vars.outputs.stage == 'release'
+        run: |
+          cd dist
+          zip -r ../chip-for-fluent-forms.zip chip-for-fluent-forms
+          cd ..
+          echo "✅ Created release zip"
+
+      - name: Extract changelog for release notes
+        if: steps.vars.outputs.stage == 'release'
+        run: |
+          VERSION="${{ steps.vars.outputs.version }}"
+
+          # Extract the latest changelog entry from changelog.txt (portable awk)
+          awk '/^== Changelog ==/ { getline; getline; print; while (getline > 0 && NF > 0) print }' changelog.txt > release_notes.md
+
+          echo "📝 Release notes from changelog:"
+          cat release_notes.md
+
+      - name: Create or update GitHub release
+        if: steps.vars.outputs.stage == 'release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.vars.outputs.version }}"
+          TAG="v${VERSION}"
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release edit "$TAG" --notes-file release_notes.md
+            echo "✅ Updated existing release"
+          else
+            gh release create "$TAG" --title "v${VERSION}" --notes-file release_notes.md
+            echo "✅ Created new release"
+          fi
+
+      - name: Upload release asset to GitHub
+        if: steps.vars.outputs.stage == 'release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="v${{ steps.vars.outputs.version }}"
+          gh release upload "$TAG" chip-for-fluent-forms.zip --clobber || true
