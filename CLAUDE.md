@@ -1,0 +1,76 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project Overview
+
+CHIP for Fluent Forms is a WordPress plugin that integrates the [CHIP Digital Finance Platform](https://www.chip-in.asia) as a payment method in [Fluent Forms Pro](https://fluentforms.com/). It allows site owners to accept one-time payments (MYR only) via CHIP with optional payment-method whitelisting (FPX, FPX B2B1, Card, Duitnow QR) and refund-status webhooks.
+
+- **WordPress**: ≥ 6.1
+- **PHP**: ≥ 7.4 (8.0+ recommended)
+- **Hard dependency**: Fluent Forms Pro Add On Pack ≥ 4.3.21 — the plugin's bootstrap short-circuits if `FluentFormPro\Payments\PaymentHelper` or `FluentFormPro\Payments\PaymentMethods\BaseProcessor` are missing.
+- **API base**: `https://gate.chip-in.asia/api/v1` (defined as `FLUENT_FORMS_CHIP_ROOT_URL`).
+- **Text domain**: `chip-for-fluent-forms`.
+- **Option keys**: `fluent_form_chip` (CSF settings), `fluent_form_chip_public_key` (refund webhook keys).
+
+## High-Level Architecture
+
+The plugin is intentionally small — a single bootstrap class plus four handler classes and the bundled [Codestar Framework](https://github.com/Codestar/codestar-framework) used purely as an admin settings UI.
+
+### Bootstrap — `chip-for-fluent-forms.php`
+- `Chip_Fluent_Forms` is a singleton instantiated on the `init` hook at priority 0, gated by the Fluent Forms Pro class check in `load_chip_for_fluent_forms()`.
+- Defines constants: `FF_CHIP_FILE`, `FF_CHIP_BASENAME`, `FF_CHIP_FSLUG` (`'fluent_form_chip'`), `FF_CHIP_MODULE_VERSION`.
+- Loads includes in two phases — admin-only files are only included when `is_admin()` is true; runtime classes are always loaded.
+
+### Runtime classes — `includes/`
+- **`class-api.php` — `Chip_Fluent_Forms_API`** — thin wrapper around `wp_remote_request` for the CHIP REST API. Singleton keyed by `(secret_key, brand_id)`. Cache-busts GETs with `?time=` suffix. Endpoints used: `POST /purchases/`, `GET /purchases/{id}/`, `POST /purchases/{id}/refund/`, `GET /payment_methods/`, `GET /webhooks/`, `POST /webhooks/`, `GET /public_key/`. Returns `null` on transport errors or when the response contains an `errors` key — callers must null-check.
+- **`class-register.php` — `Chip_Fluent_Forms_Register`** — hooks `fluentform/available_payment_methods` to add `'chip'` to the list Fluent Forms Pro renders on its payment settings page. Reads the configurable title from the `payment-title` option.
+- **`class-purchase.php` — `Chip_Fluent_Forms_Purchase`** — extends `FluentFormPro\Payments\PaymentMethods\BaseProcessor`. This is the core of the plugin. Registers three action hooks: `fluentform/process_payment_chip`, `fluentform/payment_frameless_chip` (user redirect back from CHIP), and `fluentform/ipn_endpoint_chip` (server-to-server callback). Currency support is hard-coded to `MYR` (`$supported_currencies`); subscriptions are rejected with HTTP 423.
+
+### Admin — `includes/admin/`
+All admin files only execute under `is_admin()`. They build Codestar Framework sections attached to the `fluent_form_chip` option slug, registered as a submenu under Fluent Forms (`menu_parent => 'fluent_forms'`, `menu_slug => 'chip-for-fluent-forms'`).
+- **`global-settings.php`** — Credentials (Secret Key, Brand ID), Miscellaneous (send-receipt, due-strict, due-strict-timing, payment-method-whitelist and per-method toggles), Refund Synchronization.
+- **`form-settings.php`** — Per-form override of every global field. Each form gets its own section keyed `form-id-{id}`; the first field `form-customize-{id}` is a master switch whose value controls whether the form uses global settings or its own. All form-specific field ids are suffixed with `-{form_id}`. Per-form customizations are read by `Chip_Fluent_Forms_Purchase::get_settings()` via a `-{form_id}` postfix appended to the option key.
+- **`backup-settings.php`** — single CSF `backup` field for export/import of the entire option blob.
+- **`class-webhook-setup.php` — `Chip_Fluent_Forms_Webhook_Setup`** — hooks `csf_fluent_form_chip_save_before` to (re)create the CHIP `payment.refunded` webhook and persist its public key to the `fluent_form_chip_public_key` option. Runs for both global and per-form secrets. The IPN callback URL is `site_url('index.php')` with `fluentform_payment_api_notify=1&payment_method=chip`. Public key is verified in `refund_callback()` via `openssl_verify` with `sha256WithRSAEncryption` against the `X-Signature` header. Note: there is a likely-buggy hard-coded check `if ( $webhook['title'] == 'CHIP for GiveWP' )` inside `form_public_key()` — the title should be `'CHIP for Fluent Forms'`.
+
+### Settings resolution — `Chip_Fluent_Forms_Purchase::get_settings()`
+Builds the runtime config by reading `get_option( FF_CHIP_FSLUG )` and applying a `-{form_id}` postfix to every key when the form's `form-customize-{id}` toggle is on. The form's option key is detected by `array_key_exists( 'form-customize-' . $form_id, $options )`.
+
+### Payment flow
+1. Fluent Forms Pro fires `fluentform/process_payment_chip` → `handlePaymentAction()` → `create_purchase()`.
+2. A pending transaction row is inserted via `BaseProcessor::insertTransaction()`.
+3. `Chip_Fluent_Forms_API::create_payment()` is called with the params built from `get_settings()` + submission data. The `creator_agent` is `'FluentForms: ' . FF_CHIP_MODULE_VERSION`; `platform` is hard-coded `'fluentforms'`.
+4. The `checkout_url` from the response is returned via `wp_send_json_success()` with `nextAction = payment`, which Fluent Forms' JS uses to redirect the browser.
+5. On the way back, both `fluentform/payment_frameless_chip` (user redirect) and `fluentform/ipn_endpoint_chip` (server callback) re-fetch the purchase from CHIP, take a MySQL named lock (`GET_LOCK('ff_chip_payment_{submission_id}', 15)`) to make paid/failed handling race-safe, and dispatch to `handlePaid()` or `handleFailed()`.
+6. `handlePaid()` triggers Fluent Forms' submission processing (`processSubmissionData`), updates the transaction, recalculates paid totals, and runs after-success email notifications guarded by a submission meta flag `_ff_chip_on_payment_success` to prevent duplicates.
+7. Refund webhooks are handled inside `callback()` → `refund_callback()` and dispatched to `handleRefund()` → inherited `BaseProcessor::refund()`.
+
+### Filters & actions for extension
+- `ff_chip_sslverify` (bool, default `true`) — toggles `sslverify` on outbound requests.
+- `ff_chip_purchase_timezone` (string) — overrides the timezone in purchase params.
+- `ff_chip_create_purchase_params` ($params, $transaction, $submission, $form) — last-mile mutation of the create-purchase payload.
+- `ff_chip_after_purchase_create` ($transaction, $submission, $form, $payment) — fired after a successful CHIP purchase creation.
+- `ff_chip_handle_paid_data` ($updateData, $submission, $transaction, $vendorTransaction) — mutates the transaction update payload on paid.
+- `ff_log_data` — Fluent Forms' standard logging action; used throughout for payment-component log entries.
+
+## Build / Test / Lint
+
+There is no application-level build, no test suite, and no linter configured. `composer.json` and `package.json` are empty `{}` placeholders (a PHP class autoloader / JS build would go here if added). CI uses the placeholder workflows in `.github/workflows/`.
+
+- **CI activation test** — `.github/workflows/plugin-activation.yml` boots MariaDB + WordPress test library, copies the plugin into `/tmp/wordpress/wp-content/plugins/`, and runs `wp plugin activate chip-for-fluent-forms`. PHP 8.2. There is no unit-test step.
+- **Release zip** — `.github/workflows/build-zip.yml` runs `composer install --no-dev` and `npm install` (both no-ops given empty manifests) then uses `10up/action-wordpress-plugin-build-zip` to produce a WordPress.org-ready zip. The build respects `.gitattributes` export-ignore rules (drops `.github`, `composer.json`, `package.json`, `*.md`, etc.).
+
+To run the activation test locally, replicate the CI shell:
+```
+wp plugin activate chip-for-fluent-forms --path=/tmp/wordpress
+```
+The plugin must be reachable as `chip-for-fluent-forms` under `wp-content/plugins/`.
+
+## Conventions
+
+- Indentation is **tabs** (the codebase uses tabs throughout — preserve them).
+- All public-facing strings are wrapped in `__()` / `esc_html__()` / `sprintf()` with the `chip-for-fluent-forms` text domain; preserve that on any new copy.
+- Generated code paths must respect the `fluent_form_chip` option schema; per-form field ids must be suffixed with `-{form_id}` and read via `get_settings()` so the postfix logic continues to work.
+- Use `do_action( 'ff_log_data', ... )` for any user-visible failure paths in the payment flow (the existing code does so for purchase creation failure, redirect, test-mode notice, and refund verification failure).
+- When extending `Chip_Fluent_Forms_API`, take the MySQL `GET_LOCK` pattern around any state-mutating callback (paid/failed/refund) so concurrent IPN + redirect handling can't double-process a submission.
