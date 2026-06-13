@@ -73,7 +73,7 @@ class Chip_Fluent_Forms_API {
 			$params = json_encode( $params );
 		}
 
-		$response = $this->request(
+		$request = $this->request(
 			$method,
 			sprintf( '%s/api/v1%s', FLUENT_FORMS_CHIP_ROOT_URL, $route ),
 			$params,
@@ -83,13 +83,46 @@ class Chip_Fluent_Forms_API {
 			)
 		);
 
+		if ( is_wp_error( $request ) ) {
+			return $request;
+		}
+
+		list( $response, $code ) = $request;
+
+		if ( $code < 200 || $code >= 300 ) {
+			return new \WP_Error(
+				'ff_chip_http_error',
+				sprintf( __( 'CHIP API responded with HTTP %1$d on %2$s %3$s.', 'chip-for-fluent-forms' ), $code, $method, $route ),
+				array( 'status' => $code, 'body' => $response )
+			);
+		}
+
+		if ( '' === trim( (string) $response ) ) {
+			return new \WP_Error(
+				'ff_chip_empty_response',
+				sprintf( __( 'CHIP API returned an empty response on %1$s %2$s.', 'chip-for-fluent-forms' ), $method, $route )
+			);
+		}
+
 		$result = json_decode( $response, true );
-		if ( ! $result ) {
-			return null;
+
+		if ( null === $result && JSON_ERROR_NONE !== json_last_error() ) {
+			return new \WP_Error(
+				'ff_chip_json_error',
+				sprintf(
+					/* translators: %s is the underlying json_last_error_msg() string */
+					__( 'CHIP API returned malformed JSON: %s', 'chip-for-fluent-forms' ),
+					json_last_error_msg()
+				)
+			);
 		}
 
 		if ( ! empty( $result['errors'] ) ) {
-			return null;
+			return new \WP_Error(
+				'ff_chip_api_error',
+				__( 'CHIP API returned errors in the response body.', 'chip-for-fluent-forms' ),
+				$result
+			);
 		}
 
 		return $result;
@@ -106,15 +139,13 @@ class Chip_Fluent_Forms_API {
 			)
 		);
 
-		$response = wp_remote_retrieve_body( $wp_request );
-
-		switch ( $code = wp_remote_retrieve_response_code( $wp_request ) ) {
-			case 200:
-			case 201:
-				break;
-			default:
+		if ( is_wp_error( $wp_request ) ) {
+			return $wp_request;
 		}
 
-		return $response;
+		return array(
+			wp_remote_retrieve_body( $wp_request ),
+			(int) wp_remote_retrieve_response_code( $wp_request ),
+		);
 	}
 }

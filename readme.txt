@@ -3,7 +3,7 @@ Contributors: chipasia, wanzulnet
 Tags: chip
 Requires at least: 6.1
 Tested up to: 7.0
-Stable tag: 1.1.2
+Stable tag: 1.2.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -30,6 +30,14 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 * Confirmation page after successful payment.
 
 == Changelog ==
+
+= 1.2.0 2026-06-13 =
+* Added payment method whitelist keys: crypto, DuitNow QR, Apple Pay, Google Pay, Atome, GrabPay, Maybank QR, ShopeePay, Touch 'n Go, Shopee Pay.
+* Dropped bundled Codestar Framework; settings live in Fluent Forms' native Payment Methods tab.
+* One-time migration of saved settings to the new option layout.
+* `ff_chip_payment_paid_chip` action hook for after-paid integrations.
+* `ff_chip_ipn_domain` filter and `FF_CHIP_IPN_DOMAIN` constant for reverse-proxy sites.
+* Fixed per-form refund signature verification and amount-mismatch handling.
 
 = 1.1.2 2025-05-05 =
 * Fixed - Fixed issue with load_textdomain.

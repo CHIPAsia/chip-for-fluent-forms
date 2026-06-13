@@ -1,5 +1,23 @@
 == Changelog ==
 
+= 1.2.0 2026-06-13 =
+* Added   - New payment method whitelist keys: crypto_coin, dnqr, mpgs_apple_pay, mpgs_google_pay, razer_atome, razer_grabpay, razer_maybankqr, razer_shopeepay, razer_tng, shopee_pay. The existing `cards` shortcut now expands to visa+mastercard+maestro at send-time.
+* Added   - Form-level "Notes" field on the payment method (merged from add/notes_parameter).
+* Added   - `ff_chip_payment_paid_chip` action hook fired after a submission is marked as paid.
+* Added   - `ff_chip_ipn_domain` filter and `FF_CHIP_IPN_DOMAIN` constant for reverse-proxy environments.
+* Added   - `ff_chip_payment_mode` filter.
+* Changed - Dropped bundled Codestar Framework (2.4M). Settings now register through Fluent Forms Pro's native Payment Methods tab via `BasePaymentMethod`.
+* Changed - One-time migration moves saved settings from the legacy `fluent_form_chip` option to the new layout: a global `fluent_form_chip_settings` option plus per-form `fluentform_form_meta` rows.
+* Changed - `Chip_Fluent_Forms_Purchase::init()` now follows the modern `BaseProcessor::init()` convention and registers all hooks in one place.
+* Changed - `Chip_Fluent_Forms_Purchase::handlePaymentAction` now uses `createInitialPendingTransaction()` and `getPaymentMode()`.
+* Changed - `Chip_Fluent_Forms_Purchase::handlePaid` cross-verifies the amount reported by CHIP and downgrades to `requires_review` on mismatch.
+* Changed - `Chip_Fluent_Forms_Purchase::handleRefund` uses `updateRefund()` for idempotency.
+* Changed - `Chip_Fluent_Forms_API::call` returns `WP_Error` on transport / JSON / API errors. Callers now use `is_wp_error()`.
+* Fixed   - Per-form refund signature verification now reads the per-form public key, not the global one.
+* Fixed   - Log entries when the CHIP public key is missing for a refund.
+* Fixed   - Dead email-notification code removed; replaced with a documented `do_action`.
+* Removed - Standalone `CHIP Settings` admin submenu page; use Fluent Forms → Settings → Payment Methods instead.
+
 = 1.1.2 2025-05-05 =
 * Fixed - Fixed issue with load_textdomain.
 
