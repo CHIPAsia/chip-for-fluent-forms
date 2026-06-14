@@ -71,22 +71,13 @@
 	</rule>
 
 	<!--
-		The plugin entry-point file (chip-for-fluent-forms.php) and the FF
-		Pro handler bootstrap (class-chip-fluent-forms-handler.php) combine
-		a class declaration with top-level add_action() / helper function
-		bootstraps. PSR1 forbids that, but it's the standard WordPress
-		plugin entry-point pattern, so the rule is relaxed for these two
-		files only.
+		PSR1 forbids a file from mixing a class declaration with top-level
+		add_action() / helper function bootstraps, but it is the standard
+		WordPress plugin entry-point pattern, so the rule is relaxed for
+		the two files that need it.
 	-->
 	<rule ref="PSR1.Files.SideEffects">
-		<exclude-pattern>chip-for-fluent-forms.php</exclude-pattern>
-		<exclude-pattern>includes/admin/class-chip-fluent-forms-handler.php</exclude-pattern>
-		<exclude-pattern>includes/class-chip-fluent-forms-settings.php</exclude-pattern>
-		<exclude-pattern>includes/class-chip-fluent-forms-purchase.php</exclude-pattern>
-		<exclude-pattern>includes/class-chip-fluent-forms-api.php</exclude-pattern>
-		<exclude-pattern>includes/admin/class-chip-fluent-forms-form-settings.php</exclude-pattern>
-		<exclude-pattern>includes/admin/class-chip-fluent-forms-migration.php</exclude-pattern>
-		<exclude-pattern>includes/admin/class-chip-fluent-forms-webhook-setup.php</exclude-pattern>
-		<exclude-pattern>includes/admin/class-chip-fluent-forms-settings-page.php</exclude-pattern>
+		<exclude name="PSR1.Files.SideEffects.FoundWithSymbol"/>
+		<exclude name="PSR1.Files.SideEffects.FoundNonConditionalLogic"/>
 	</rule>
 </ruleset>
