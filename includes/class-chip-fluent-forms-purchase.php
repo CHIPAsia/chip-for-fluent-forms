@@ -31,11 +31,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	private $supported_currencies = array( 'MYR' );
 
 	/**
-	 * Method identifier — used by BaseProcessor->insertRefund($data).
+	 * Method identifier — used by BaseProcessor->updateRefund($data).
 	 *
 	 * @var string
 	 */
-	protected $method = 'chip'; // Used by BaseProcessor->insertRefund($data).
+	protected $method = 'chip';
 
 	/**
 	 * Singleton accessor.
