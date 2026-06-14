@@ -209,6 +209,8 @@ add_action( 'init', 'load_chip_for_fluent_forms', 0 );
  *
  * Gates on Fluent Forms Pro's PaymentHelper or BaseProcessor class being
  * available; without either, the plugin short-circuits as a no-op.
+ *
+ * @return void
  */
 function load_chip_for_fluent_forms() {
 
