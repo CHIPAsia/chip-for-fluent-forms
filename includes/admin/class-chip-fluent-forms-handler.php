@@ -13,7 +13,6 @@
  * @package CHIPForFluentForms
  */
 
-// phpcs:disable PSR1.Files.SideEffects -- ABSPATH guard + class declaration in the same file is the standard WordPress plugin pattern.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -177,6 +176,7 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
  *
  * @return void
  */
+// phpcs:ignore PSR1.Files.SideEffects.Mixed -- helper function intentionally defined after the FF Pro extension class in the same file.
 function chip_for_fluent_forms_init_handler() {
 	if ( ! class_exists( 'FluentFormPro\Payments\PaymentMethods\BasePaymentMethod' ) ) {
 		return;

@@ -201,6 +201,7 @@ add_action( 'plugins_loaded', 'chip_for_fluent_forms_load_textdomain' );
  *
  * @return void
  */
+// phpcs:ignore PSR1.Files.SideEffects.Mixed -- plugin entry-point file intentionally defines helper functions after the bootstrap class.
 function chip_for_fluent_forms_load_textdomain() {
 	load_plugin_textdomain( 'chip-for-fluent-forms', false, dirname( FF_CHIP_BASENAME ) . '/languages/' );
 }

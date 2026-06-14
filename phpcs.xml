@@ -79,7 +79,7 @@
 		files only.
 	-->
 	<rule ref="PSR1.Files.SideEffects">
-		<exclude-pattern>./chip-for-fluent-forms.php</exclude-pattern>
-		<exclude-pattern>./includes/admin/class-chip-fluent-forms-handler.php</exclude-pattern>
+		<exclude-pattern>chip-for-fluent-forms.php</exclude-pattern>
+		<exclude-pattern>includes/admin/class-chip-fluent-forms-handler.php</exclude-pattern>
 	</rule>
 </ruleset>

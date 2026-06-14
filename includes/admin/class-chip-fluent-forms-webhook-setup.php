@@ -17,7 +17,6 @@
  * @package CHIPForFluentForms
  */
 
-// phpcs:disable PSR1.Files.SideEffects -- ABSPATH guard + class declaration in the same file is the standard WordPress plugin pattern.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
