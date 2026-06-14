@@ -68,7 +68,11 @@ class Chip_Fluent_Forms_Form_Settings {
 		$fields = array(
 			array(
 				'key'      => 'is_active',
-				'label'    => sprintf( __( 'Customize for form #%d', 'chip-for-fluent-forms' ), (int) $form->id ),
+				'label'    => sprintf(
+					/* translators: %d: form id */
+					__( 'Customize for form #%d', 'chip-for-fluent-forms' ),
+					(int) $form->id
+				),
 				'type'     => 'checkbox',
 				'template' => 'inputYesNoCheckbox',
 				'value'    => $is_active ? 'yes' : 'no',
