@@ -57,19 +57,19 @@ class Chip_Fluent_Forms {
 		// Webhook lookup is needed on the public IPN side too (refund signature
 		// verification runs during the public POST), so this is loaded
 		// unconditionally alongside the runtime classes.
-		include $includes_dir . 'admin/class-chip-webhook-setup.php';
+		include $includes_dir . 'admin/class-chip-fluent-forms-webhook-setup.php';
 
 		// One-time migration from the legacy fluent_form_chip option.
-		include $includes_dir . 'admin/class-chip-migration.php';
+		include $includes_dir . 'admin/class-chip-fluent-forms-migration.php';
 
 		// Handler class is loaded unconditionally so its plugins_loaded hook can
 		// register before the priority-30 tick fires. The class itself is a no-op
 		// when Fluent Forms Pro is not active.
-		include $includes_dir . 'admin/class-chip-handler.php';
+		include $includes_dir . 'admin/class-chip-fluent-forms-handler.php';
 
 		if ( is_admin() ) {
-			include $includes_dir . 'admin/class-chip-settings-page.php';
-			include $includes_dir . 'admin/class-chip-form-settings.php';
+			include $includes_dir . 'admin/class-chip-fluent-forms-settings-page.php';
+			include $includes_dir . 'admin/class-chip-fluent-forms-form-settings.php';
 		}
 	}
 
