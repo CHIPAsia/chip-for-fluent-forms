@@ -193,6 +193,7 @@ class Chip_Fluent_Forms {
 	}
 }
 
+// phpcs:disable PSR1.Files.SideEffects
 add_action( 'plugins_loaded', 'chip_for_fluent_forms_load_textdomain' );
 
 /**

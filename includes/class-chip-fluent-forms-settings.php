@@ -5,6 +5,7 @@
  * @package CHIPForFluentForms
  */
 
+// phpcs:disable PSR1.Files.SideEffects -- ABSPATH guard + class declaration in the same file is the standard WordPress plugin pattern.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -148,8 +149,7 @@ class Chip_Fluent_Forms_Settings {
 		$stored = array();
 		if ( function_exists( 'wpFluent' ) ) {
 			$row = wpFluent()->table( 'fluentform_form_meta' )
-				// phpcs:ignore WordPress.DB.SlowDBQuery -- the fluentform_form_meta table is not a WordPress postmeta table, so the standard slow-query rule does not apply.
-				->where( 'meta_key', '_chip_payment_settings' )
+				->where( 'meta_key', '_chip_payment_settings' ) // phpcs:ignore WordPress.DB.SlowDBQuery -- the fluentform_form_meta table is not a WordPress postmeta table, so the standard slow-query rule does not apply.
 				->where( 'form_id', $form_id )
 				->first();
 			if ( $row && ! empty( $row->value ) ) {
@@ -239,8 +239,7 @@ class Chip_Fluent_Forms_Settings {
 		if ( function_exists( 'wpFluent' ) ) {
 			$row = wpFluent()->table( 'fluentform_form_meta' )
 				->where( 'form_id', $form_id )
-				// phpcs:ignore WordPress.DB.SlowDBQuery -- the fluentform_form_meta table is not a WordPress postmeta table, so the standard slow-query rule does not apply.
-				->where( 'meta_key', '_chip_payment_settings' )
+				->where( 'meta_key', '_chip_payment_settings' ) // phpcs:ignore WordPress.DB.SlowDBQuery -- the fluentform_form_meta table is not a WordPress postmeta table, so the standard slow-query rule does not apply.
 				->first();
 
 			if ( $row ) {

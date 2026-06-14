@@ -13,6 +13,8 @@
  * @package CHIPForFluentForms
  */
 
+
+// phpcs:disable PSR1.Files.SideEffects -- ABSPATH guard + class declaration in the same file is the standard WordPress plugin pattern.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -99,14 +101,14 @@ class Chip_Fluent_Forms_Form_Settings {
 			'value' => $form_settings['secret_key'],
 		);
 		$fields[] = array(
-			'key'    => 'payment_mode',
-			'label'  => __( 'Payment Mode', 'chip-for-fluent-forms' ),
-			'type'   => 'select',
+			'key'     => 'payment_mode',
+			'label'   => __( 'Payment Mode', 'chip-for-fluent-forms' ),
+			'type'    => 'select',
 			'options' => array(
 				'test' => __( 'Test', 'chip-for-fluent-forms' ),
 				'live' => __( 'Live', 'chip-for-fluent-forms' ),
 			),
-			'value'  => $form_settings['payment_mode'],
+			'value'   => $form_settings['payment_mode'],
 		);
 		$fields[] = array(
 			'key'      => 'send_receipt',
