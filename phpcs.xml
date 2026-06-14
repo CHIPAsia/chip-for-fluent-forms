@@ -19,6 +19,14 @@
 
 	<!-- Use WordPress coding standards -->
 	<rule ref="WordPress">
+		<!--
+			PSR1 forbids a file from mixing a class declaration with
+			top-level add_action() / helper function bootstraps, but it is
+			the standard WordPress plugin entry-point pattern. Exclude the
+			PSR1 side-effects sniff entirely from our scan.
+		-->
+		<exclude name="PSR1.Files.SideEffects.FoundWithSymbol"/>
+		<exclude name="PSR1.Files.SideEffects.FoundNonConditionalLogic"/>
 	</rule>
 
 	<!-- Set minimum supported PHP version -->
@@ -75,8 +83,4 @@
 		add_action() / helper function bootstraps, but it is the standard
 		WordPress plugin entry-point pattern, so the rule is relaxed.
 	-->
-	<rule ref="PSR1.Files.SideEffects">
-		<exclude-pattern>chip-for-fluent-forms.php</exclude-pattern>
-		<exclude-pattern>includes/admin/class-chip-fluent-forms-handler.php</exclude-pattern>
-	</rule>
 </ruleset>
