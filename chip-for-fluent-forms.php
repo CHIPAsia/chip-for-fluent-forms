@@ -21,18 +21,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'FF_CHIP_MODULE_VERSION', 'v1.2.0' );
 
+/**
+ * Chip_Fluent_Forms — main plugin bootstrap.
+ *
+ * Singleton that defines the plugin constants, includes the runtime
+ * classes, registers WP action/filter hooks, and provides the
+ * `setting_link` row action on the Plugins list table.
+ */
 class Chip_Fluent_Forms {
 
+	/**
+	 * Singleton instance.
+	 *
+	 * @var Chip_Fluent_Forms|null
+	 */
 	private static $_instance;
 
+	/**
+	 * Singleton accessor.
+	 *
+	 * @return Chip_Fluent_Forms
+	 */
 	public static function get_instance() {
-		if ( self::$_instance === null ) {
+		if ( null === self::$_instance ) {
 			self::$_instance = new self();
 		}
 
 		return self::$_instance;
 	}
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		$this->define();
 		$this->includes();
@@ -40,12 +60,18 @@ class Chip_Fluent_Forms {
 		$this->add_actions();
 	}
 
+	/**
+	 * Define plugin constants.
+	 */
 	public function define() {
 		define( 'FF_CHIP_FILE', __FILE__ );
 		define( 'FF_CHIP_BASENAME', plugin_basename( FF_CHIP_FILE ) );
 		define( 'FF_CHIP_FSLUG', 'fluent_form_chip' );
 	}
 
+	/**
+	 * Include all runtime, admin, and migration classes.
+	 */
 	public function includes() {
 		$includes_dir = plugin_dir_path( FF_CHIP_FILE ) . 'includes/';
 
@@ -73,10 +99,16 @@ class Chip_Fluent_Forms {
 		}
 	}
 
+	/**
+	 * Register WP filters.
+	 */
 	public function add_filters() {
 		add_filter( 'plugin_action_links_' . FF_CHIP_BASENAME, array( $this, 'setting_link' ) );
 	}
 
+	/**
+	 * Register WP actions (webhook setup hooks).
+	 */
 	public function add_actions() {
 		// Trigger webhook setup right after a global save.
 		add_action( 'update_option_fluent_form_chip_settings', array( $this, 'after_global_settings_save' ), 10, 2 );
@@ -86,6 +118,12 @@ class Chip_Fluent_Forms {
 		add_action( 'ff_chip_form_settings_saved', array( $this, 'after_form_settings_saved' ), 10, 2 );
 	}
 
+	/**
+	 * Add a "Settings" row action on the Plugins list table.
+	 *
+	 * @param array $links The existing row-action links.
+	 * @return array The augmented links.
+	 */
 	public function setting_link( $links ) {
 		$new_links = array(
 			'settings' => sprintf(
@@ -101,6 +139,9 @@ class Chip_Fluent_Forms {
 	/**
 	 * Hooked on update_option_{option}: re-create the CHIP refund webhook
 	 * when global refund-sync is on.
+	 *
+	 * @param mixed $old The previous option value.
+	 * @param mixed $new The new option value.
 	 */
 	public function after_global_settings_save( $old, $new ) {
 		if ( ! class_exists( 'Chip_Fluent_Forms_Webhook_Setup' ) ) {
@@ -109,6 +150,13 @@ class Chip_Fluent_Forms {
 		Chip_Fluent_Forms_Webhook_Setup::setup_for_global_settings( $new );
 	}
 
+	/**
+	 * Hooked on add_option_{option}: same as after_global_settings_save but
+	 * for the first-write path (WP doesn't fire update_option for new
+	 * options).
+	 *
+	 * @param mixed $option The newly-added option value.
+	 */
 	public function after_global_settings_added( $option ) {
 		if ( ! class_exists( 'Chip_Fluent_Forms_Webhook_Setup' ) ) {
 			return;
@@ -119,6 +167,9 @@ class Chip_Fluent_Forms {
 	/**
 	 * Hooked on ff_chip_form_settings_saved: re-create the per-form CHIP
 	 * refund webhook when the per-form refund-sync toggle is on.
+	 *
+	 * @param int   $form_id  Fluent Forms form id.
+	 * @param array $settings The sanitized per-form settings.
 	 */
 	public function after_form_settings_saved( $form_id, $settings ) {
 		if ( ! class_exists( 'Chip_Fluent_Forms_Webhook_Setup' ) ) {
@@ -130,12 +181,21 @@ class Chip_Fluent_Forms {
 
 add_action( 'plugins_loaded', 'chip_for_fluent_forms_load_textdomain' );
 
+/**
+ * Load the plugin text domain for translations.
+ */
 function chip_for_fluent_forms_load_textdomain() {
 	load_plugin_textdomain( 'chip-for-fluent-forms', false, dirname( FF_CHIP_BASENAME ) . '/languages/' );
 }
 
 add_action( 'init', 'load_chip_for_fluent_forms', 0 );
 
+/**
+ * Plugin entry point.
+ *
+ * Gates on Fluent Forms Pro's PaymentHelper or BaseProcessor class being
+ * available; without either, the plugin short-circuits as a no-op.
+ */
 function load_chip_for_fluent_forms() {
 
 	if ( ! class_exists( 'FluentFormPro\Payments\PaymentHelper' ) && ! class_exists( 'FluentFormPro\Payments\PaymentMethods\BaseProcessor' ) ) {
