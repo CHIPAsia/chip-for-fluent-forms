@@ -60,4 +60,4 @@ if ( ! function_exists( 'wp_remote_retrieve_response_code' ) ) {
 }
 
 // Load plugin files
-require_once FF_CHIP_PLUGIN_PATH . 'includes/class-api.php';
+require_once FF_CHIP_PLUGIN_PATH . 'includes/class-chip-fluent-forms-api.php';
