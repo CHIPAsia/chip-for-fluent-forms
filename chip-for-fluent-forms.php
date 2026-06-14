@@ -16,9 +16,7 @@
  * @package CHIPForFluentForms
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable WordPress.Functions.DontAddAction
-// phpcs:disable WordPress.WP.GlobalVariablesOverride -- the plugin entry-point file intentionally combines the bootstrap class with top-level helper function and add_action() bootstraps.
+// phpcs:disable PSR1.Files.SideEffects -- this file intentionally combines the bootstrap class with top-level add_action() calls and helper functions.
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

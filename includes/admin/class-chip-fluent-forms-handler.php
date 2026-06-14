@@ -13,9 +13,7 @@
  * @package CHIPForFluentForms
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable WordPress.Functions.DontAddAction
-// phpcs:disable WordPress.WP.GlobalVariablesOverride -- the plugin entry-point file intentionally combines the FF Pro extension class with top-level helper function and add_action() bootstraps.
+// phpcs:disable PSR1.Files.SideEffects -- this file intentionally combines the FF Pro extension class with a top-level helper function + add_action() bootstrap.
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
