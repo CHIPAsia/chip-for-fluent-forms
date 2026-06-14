@@ -339,6 +339,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * @param object $form       The Fluent Forms form object.
 	 * @param object $submission The Fluent Forms submission row.
 	 * @param mixed  $payment    WP_Error or response payload from CHIP.
+	 * @return void
 	 */
 	private function log_create_payment_failure( $form, $submission, $payment ) {
 		if ( is_wp_error( $payment ) ) {

@@ -32,6 +32,8 @@ class Chip_Fluent_Forms_Settings {
 	 * Keys are the canonical names sent to the CHIP API, except for `cards`
 	 * which is a UI shortcut that expands to visa+mastercard+maestro at
 	 * send-time (see expand_whitelist()).
+	 *
+	 * @return array Map of method key => human label.
 	 */
 	public static function payment_methods() {
 		return array(
@@ -57,6 +59,8 @@ class Chip_Fluent_Forms_Settings {
 	 *
 	 * The merchant only ever enables `cards` once, but the CHIP API expects
 	 * `visa`, `mastercard`, and `maestro` to be listed individually.
+	 *
+	 * @return array Map of source key => list of expansion targets.
 	 */
 	public static function whitelist_expansions() {
 		return array(
@@ -68,6 +72,8 @@ class Chip_Fluent_Forms_Settings {
 	 * Schema for the new global settings option.
 	 *
 	 * Used by the admin page, the migration, and the test/live sanity check.
+	 *
+	 * @return array
 	 */
 	public static function global_defaults() {
 		return array(
@@ -91,6 +97,8 @@ class Chip_Fluent_Forms_Settings {
 	 * Per-form settings are merged on top of the global settings; only the
 	 * `is_active` flag differentiates (when `is_active=yes` for a form, the
 	 * per-form values override; otherwise the global values are used).
+	 *
+	 * @return array
 	 */
 	public static function form_defaults() {
 		return array(
@@ -128,7 +136,7 @@ class Chip_Fluent_Forms_Settings {
 	 *
 	 * Returns the global settings with per-form overrides applied on top.
 	 *
-	 * @param int $form_id
+	 * @param int $form_id Fluent Forms form id.
 	 * @return array
 	 */
 	public static function for_form( $form_id ) {
@@ -203,6 +211,9 @@ class Chip_Fluent_Forms_Settings {
 
 	/**
 	 * Persist the global settings.
+	 *
+	 * @param array $settings The global settings payload.
+	 * @return array The sanitized settings that were saved.
 	 */
 	public static function save_global( $settings ) {
 		$clean = self::sanitize_global( $settings );
@@ -212,6 +223,10 @@ class Chip_Fluent_Forms_Settings {
 
 	/**
 	 * Persist per-form settings.
+	 *
+	 * @param int   $form_id  Fluent Forms form id.
+	 * @param array $settings The per-form settings payload.
+	 * @return array The sanitized settings that were saved.
 	 */
 	public static function save_form( $form_id, $settings ) {
 		$form_id = (int) $form_id;
@@ -256,6 +271,9 @@ class Chip_Fluent_Forms_Settings {
 
 	/**
 	 * Sanitize a global settings payload.
+	 *
+	 * @param mixed $settings The untrusted settings payload.
+	 * @return array
 	 */
 	public static function sanitize_global( $settings ) {
 		$defaults = self::global_defaults();
@@ -298,6 +316,9 @@ class Chip_Fluent_Forms_Settings {
 
 	/**
 	 * Sanitize a per-form settings payload.
+	 *
+	 * @param mixed $settings The untrusted per-form settings payload.
+	 * @return array
 	 */
 	public static function sanitize_form( $settings ) {
 		$defaults = self::form_defaults();
@@ -342,6 +363,9 @@ class Chip_Fluent_Forms_Settings {
 	 *
 	 * Map the legacy flat option keys into the new global settings shape.
 	 * Used only while a site is in the pre-migration window.
+	 *
+	 * @param mixed $legacy The legacy option payload.
+	 * @return array
 	 */
 	private static function migrate_legacy_to_global( $legacy ) {
 		if ( ! is_array( $legacy ) ) {
@@ -382,6 +406,10 @@ class Chip_Fluent_Forms_Settings {
 	 * @internal
 	 *
 	 * Map the legacy per-form postfix keys into the new per-form shape.
+	 *
+	 * @param mixed $legacy  The legacy option payload.
+	 * @param int   $form_id Fluent Forms form id.
+	 * @return array
 	 */
 	private static function migrate_legacy_to_form( $legacy, $form_id ) {
 		$postfix = '-' . (int) $form_id;

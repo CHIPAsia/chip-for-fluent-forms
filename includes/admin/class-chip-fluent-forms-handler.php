@@ -55,6 +55,8 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 	 * Constructor wires the FF Pro settings filters, instantiates the
 	 * per-form settings and settings page objects, and schedules the
 	 * processor boot on plugins_loaded.
+	 *
+	 * @return void
 	 */
 	public function __construct() {
 		$this->key         = self::KEY;
@@ -77,6 +79,8 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 	 * and after FF Pro loads). The processor auto-initializes via
 	 * ::get_instance() in its own include file; this method is a no-op
 	 * safety net that ensures the class is loadable.
+	 *
+	 * @return void
 	 */
 	public function boot_processor() {
 		if ( ! class_exists( 'FluentFormPro\Payments\PaymentMethods\BaseProcessor' ) ) {
