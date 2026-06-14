@@ -54,6 +54,11 @@ class Chip_Fluent_Forms {
 		include $includes_dir . 'class-chip-settings.php';
 		include $includes_dir . 'class-purchase.php';
 
+		// Webhook lookup is needed on the public IPN side too (refund signature
+		// verification runs during the public POST), so this is loaded
+		// unconditionally alongside the runtime classes.
+		include $includes_dir . 'admin/class-chip-webhook-setup.php';
+
 		// One-time migration from the legacy fluent_form_chip option.
 		include $includes_dir . 'admin/class-chip-migration.php';
 
@@ -63,9 +68,6 @@ class Chip_Fluent_Forms {
 		include $includes_dir . 'admin/class-chip-handler.php';
 
 		if ( is_admin() ) {
-			// Webhook setup, kept in the admin scope because the only caller is
-			// the sanitize callback for the settings pages.
-			include $includes_dir . 'admin/class-chip-webhook-setup.php';
 			include $includes_dir . 'admin/class-chip-settings-page.php';
 			include $includes_dir . 'admin/class-chip-form-settings.php';
 		}

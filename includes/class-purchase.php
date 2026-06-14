@@ -69,7 +69,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	}
 
 	private function create_purchase( $transaction, $submission, $form, $methodSettings ) {
-		$option = $this->get_settings( $form->id );
+		$option = Chip_Fluent_Forms_Settings::for_form( (int) $form->id );
 
 		$ipn_domain = defined( 'FF_CHIP_IPN_DOMAIN' ) && FF_CHIP_IPN_DOMAIN
 			? FF_CHIP_IPN_DOMAIN
@@ -125,8 +125,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			// reference value shall be using unique
 			// 'reference'        => substr($form->title, 0, 128),
 			'platform'         => 'fluentforms',
-			'send_receipt'     => $option['send_rcpt'],
-			'due'              => time() + ( absint( $option['due_time'] ) * 60 ),
+			'send_receipt'     => ! empty( $option['send_receipt'] ),
+			'due'              => time() + ( (int) $option['due_strict_timing'] * 60 ),
 			'brand_id'         => $option['brand_id'],
 			'client'           => array(
 				'email'     => PaymentHelper::getCustomerEmail( $submission, $form ),
@@ -135,7 +135,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			'purchase'         => array(
 				'timezone'   => apply_filters( 'ff_chip_purchase_timezone', $this->get_timezone() ),
 				'currency'   => strtoupper( $submission->currency ),
-				'due_strict' => $option['due_strict'],
+				'due_strict' => ! empty( $option['due_strict'] ),
 				'notes'      => substr( $form->title . ' | ' . $submission->id . $additional_notes, 0, 10000 ),
 				'products'   => array(
 					array(
@@ -147,7 +147,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			),
 		);
 
-		if ( $option['payment_whitelist'] ) {
+		if ( ! empty( $option['payment_method_whitelist'] ) ) {
 			$expanded = Chip_Fluent_Forms_Settings::expand_whitelist( $option['payment_method_whitelist'] );
 
 			if ( ! empty( $expanded ) ) {
@@ -286,29 +286,10 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	}
 
 	private function get_settings( $form_id ) {
-		$form_id  = (int) $form_id;
-		$resolved = Chip_Fluent_Forms_Settings::for_form( $form_id );
-
-		// Translate the new shape into the flat shape the rest of the class still uses.
-		return array(
-			'secret_key'             => $resolved['secret_key'],
-			'brand_id'               => $resolved['brand_id'],
-			'send_rcpt'              => $resolved['send_receipt'] ? true : false,
-			'due_strict'             => $resolved['due_strict'] ? true : false,
-			'due_time'               => (int) $resolved['due_strict_timing'],
-			'refund'                 => $resolved['synchronize_refund'] ? true : false,
-
-			'payment_whitelist'      => ! empty( $resolved['payment_method_whitelist'] ),
-			'payment_method_fpx'     => ! empty( $resolved['payment_method_whitelist']['fpx'] ),
-			'payment_method_fpxb2b1' => ! empty( $resolved['payment_method_whitelist']['fpx_b2b1'] ),
-			'payment_method_duitnow' => ! empty( $resolved['payment_method_whitelist']['duitnow_qr'] ),
-			'payment_method_card'    => ! empty( $resolved['payment_method_whitelist']['cards'] ),
-
-			// New: full whitelist map for the consumer in create_purchase().
-			'payment_method_whitelist' => is_array( $resolved['payment_method_whitelist'] )
-				? $resolved['payment_method_whitelist']
-				: array(),
-		);
+		// Kept for backward compatibility with any external subclasses that may
+		// have called this directly. Returns the new schema from
+		// Chip_Fluent_Forms_Settings::for_form() unchanged.
+		return Chip_Fluent_Forms_Settings::for_form( (int) $form_id );
 	}
 
 	private function get_timezone() {
@@ -332,7 +313,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$this->setSubmissionId( $submission_id );
 
 		$submission = $this->getSubmission();
-		$option     = $this->get_settings( $submission->form_id );
+		$option     = Chip_Fluent_Forms_Settings::for_form( (int) $submission->form_id );
 		$payment_id = $this->getMetaData( '_chip_purchase_id' );
 
 		$chip    = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], '' );
@@ -513,7 +494,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$this->setSubmissionId( $submission_id );
 
 		$submission = $this->getSubmission();
-		$option     = $this->get_settings( $submission->form_id );
+		$option     = Chip_Fluent_Forms_Settings::for_form( (int) $submission->form_id );
 		$payment_id = $this->getMetaData( '_chip_purchase_id' );
 
 		$chip    = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], '' );
@@ -667,7 +648,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$global = get_option( 'fluent_form_chip_settings', array() );
 		$mode   = isset( $global['payment_mode'] ) ? $global['payment_mode'] : 'test';
 
-		if ( $formId && class_exists( 'Chip_Fluent_Forms_Settings' ) ) {
+		if ( $formId ) {
 			$form_settings = Chip_Fluent_Forms_Settings::for_form( (int) $formId );
 			if ( ! empty( $form_settings['is_active'] ) && isset( $form_settings['payment_mode'] ) ) {
 				$mode = $form_settings['payment_mode'];
@@ -785,18 +766,14 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	/**
 	 * Look up the CHIP public key used to verify refund webhook signatures.
 	 *
-	 * The new webhook setup class (Chip_Fluent_Forms_Webhook_Setup) stores the
-	 * public key inside the new global option. For per-form setups, it is stored
-	 * inside the per-form payment settings row. This helper centralizes the read.
+	 * The webhook setup class stores the public key inside the new global option.
+	 * For per-form setups, it is stored inside the per-form payment settings row.
+	 * This helper centralizes the read.
 	 *
 	 * @param int $form_id
 	 * @return string PEM-encoded public key, or empty string if not configured.
 	 */
 	private function get_webhook_public_key( $form_id ) {
-		if ( ! class_exists( 'Chip_Fluent_Forms_Webhook_Setup' ) ) {
-			return '';
-		}
-
 		return Chip_Fluent_Forms_Webhook_Setup::get_public_key_for_form( (int) $form_id );
 	}
 }

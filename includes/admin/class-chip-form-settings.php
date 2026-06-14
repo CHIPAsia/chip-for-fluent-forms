@@ -24,10 +24,20 @@ class Chip_Fluent_Forms_Form_Settings {
 	 * the per-form settings pipeline (very old Pro).
 	 */
 	public function __construct() {
-		// Per-form payment settings can be saved via the FF Pro per-form
-		// payment settings UI. We hook both the legacy 'fluentform/payment_form_settings_save'
-		// and the modern filter 'fluentform/form_payment_settings' to be safe.
+		// Render side: a server-side filter that returns a `$settings['chip']`
+		// panel. Note that the FF Pro React UI does not currently render these
+		// server-side fields, so the display is a no-op until FF Pro's React
+		// form-settings UI grows a way to surface per-method subkeys. The
+		// save side (below) is what actually wires up per-form persistence.
 		add_filter( 'fluentform/form_payment_settings', array( $this, 'register_per_form_settings' ), 10, 2 );
+
+		// Save side: FF Pro's saveFormSettings() runs over the entire
+		// fluentform_form_meta `_payment_settings` row and then fires
+		// fluentform/after_save_form_settings with the full payload. We
+		// pick the `chip` subkey, sanitize it, and persist as our own
+		// `_chip_payment_settings` row so reads via Chip_Fluent_Forms_Settings::for_form()
+		// stay consistent.
+		add_action( 'fluentform/after_save_form_settings', array( $this, 'save_per_form_settings' ), 10, 2 );
 	}
 
 	/**
@@ -132,5 +142,38 @@ class Chip_Fluent_Forms_Form_Settings {
 		}
 
 		return $settings;
+	}
+
+	/**
+	 * Persist the per-form `chip` subkey from the FF Pro payment settings save
+	 * payload into our own `_chip_payment_settings` meta row.
+	 *
+	 * Hooked on fluentform/after_save_form_settings. Receives the full per-form
+	 * payment settings array; we extract the `chip` subkey, sanitize, and save.
+	 *
+	 * @param int   $form_id
+	 * @param array $all_settings
+	 */
+	public function save_per_form_settings( $form_id, $all_settings ) {
+		if ( ! is_array( $all_settings ) || empty( $all_settings['chip'] ) || ! is_array( $all_settings['chip'] ) ) {
+			return;
+		}
+
+		$chip_settings = $all_settings['chip'];
+
+		// Normalize: the React form-settings UI sends booleans for switchers
+		// ('true'/'false' strings, not '1'/'0' as our schema expects). Coerce.
+		$normalized = array();
+		foreach ( $chip_settings as $key => $value ) {
+			if ( is_string( $value ) && 'true' === $value ) {
+				$normalized[ $key ] = '1';
+			} elseif ( is_string( $value ) && 'false' === $value ) {
+				$normalized[ $key ] = '0';
+			} else {
+				$normalized[ $key ] = $value;
+			}
+		}
+
+		Chip_Fluent_Forms_Settings::save_form( (int) $form_id, $normalized );
 	}
 }

@@ -4,54 +4,85 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * One-time migration from the legacy option schema to the new one.
+ * Two-phase migration from the legacy option schema to the new one.
  *
- * Triggered on `plugins_loaded` at priority 20. Reads the legacy `fluent_form_chip`
- * option (and the cross-cutting `fluent_form_chip_public_key` option), writes the
- * new global option and per-form fluentform_form_meta rows, sets a `fluent_form_chip_migrated`
- * flag, and deletes the legacy options.
+ * Phase 1 (one request):
+ *   1. Read the legacy `fluent_form_chip` option (and `fluent_form_chip_public_key`).
+ *   2. Write the new `fluent_form_chip_settings` global option and per-form
+ *      fluentform_form_meta rows.
+ *   3. Set `fluent_form_chip_migrated_phase1` to '1' so the next request can
+ *      proceed to phase 2.
  *
- * Idempotent: re-running is a no-op. Wrapped in try/catch so a migration failure
- * never blocks the rest of the plugin from loading.
+ * Phase 2 (the request after phase 1):
+ *   1. Verify the new global option is present, well-formed, and contains the
+ *      same set of keys that were in the legacy option.
+ *   2. Verify every per-form row that was in the legacy option is now in
+ *      fluentform_form_meta.
+ *   3. Only if all verifications pass, delete the legacy options and set
+ *      `fluent_form_chip_migrated` to '1'.
+ *
+ * If phase 2 verification fails (partial write, DB error, race), the legacy
+ * options stay put and phase 1 re-runs on the next request — idempotently.
+ *
+ * Wrapped in try/catch so a migration failure never blocks the rest of the
+ * plugin from loading. The legacy read path in Chip_Fluent_Forms_Settings keeps
+ * the plugin working in the meantime.
  */
 class Chip_Fluent_Forms_Migration {
 
-	const FLAG_OPTION = 'fluent_form_chip_migrated';
+	const PHASE1_FLAG = 'fluent_form_chip_migrated_phase1';
+	const DONE_FLAG   = 'fluent_form_chip_migrated';
 
 	/**
-	 * Hooked on plugins_loaded. Does nothing if the migration has already run.
+	 * Hooked on plugins_loaded. Routes to the right phase based on flag state.
 	 */
 	public static function init() {
 		add_action( 'plugins_loaded', array( __CLASS__, 'maybe_migrate' ), 20 );
 	}
 
 	public static function maybe_migrate() {
-		if ( '1' === get_option( self::FLAG_OPTION, '0' ) ) {
+		if ( '1' === get_option( self::DONE_FLAG, '0' ) ) {
 			return;
 		}
 
-		// Nothing to migrate from.
+		// Nothing to migrate from. Mark complete and bail.
 		$legacy = get_option( 'fluent_form_chip', array() );
 		if ( ! is_array( $legacy ) || empty( $legacy ) ) {
-			// Still mark complete so we don't re-check on every request.
-			update_option( self::FLAG_OPTION, '1' );
+			update_option( self::DONE_FLAG, '1' );
 			return;
 		}
 
+		if ( '1' !== get_option( self::PHASE1_FLAG, '0' ) ) {
+			// Run phase 1.
+			try {
+				self::phase1_write( $legacy );
+				update_option( self::PHASE1_FLAG, '1' );
+			} catch ( \Exception $e ) {
+				error_log( '[chip-for-fluent-forms] migration phase 1 failed: ' . $e->getMessage() );
+			}
+			return;
+		}
+
+		// Phase 1 already ran; verify and run phase 2.
 		try {
-			self::migrate( $legacy );
-			update_option( self::FLAG_OPTION, '1' );
+			if ( self::phase2_verify( $legacy ) ) {
+				self::phase2_delete();
+				update_option( self::DONE_FLAG, '1' );
+			} else {
+				// Verification failed: roll back phase 1 so the next request
+				// retries from the (still-present) legacy source.
+				self::rollback_phase1();
+				error_log( '[chip-for-fluent-forms] migration phase 2 verification failed; rolling back and will retry' );
+			}
 		} catch ( \Exception $e ) {
-			// Don't block plugin load; the legacy read path inside Chip_Fluent_Forms_Settings
-			// will keep the plugin working until the next request retries.
-			error_log( '[chip-for-fluent-forms] migration failed: ' . $e->getMessage() );
+			error_log( '[chip-for-fluent-forms] migration phase 2 failed: ' . $e->getMessage() );
 		}
 	}
 
 	/**
-	 * Execute the migration.
+	 * Phase 1: write the new global option and per-form rows.
 	 */
-	private static function migrate( $legacy ) {
+	private static function phase1_write( $legacy ) {
 		if ( ! class_exists( 'Chip_Fluent_Forms_Settings' ) ) {
 			throw new \RuntimeException( 'Chip_Fluent_Forms_Settings is not available' );
 		}
@@ -117,12 +148,89 @@ class Chip_Fluent_Forms_Migration {
 				}
 			}
 		}
+	}
 
-		// Delete legacy options only after the new ones are written. A failure
-		// mid-write still leaves the legacy option in place so the next request
-		// can retry from a clean source.
+	/**
+	 * Phase 2: verify the new global option is well-formed and contains the
+	 * non-empty values from the legacy option. Returns true if verification
+	 * passes, false if any check fails (in which case phase 1 should roll back).
+	 */
+	private static function phase2_verify( $legacy ) {
+		$global = get_option( 'fluent_form_chip_settings', null );
+		if ( ! is_array( $global ) || empty( $global ) ) {
+			return false;
+		}
+
+		// Every non-empty legacy key that has a mapping must be reflected in the
+		// new global option. (Empty legacy values are not considered an error —
+		// the merchant just hadn't filled them in.)
+		$mapping = array(
+			'secret-key'         => 'secret_key',
+			'brand-id'           => 'brand_id',
+			'payment-title'      => 'payment_title',
+			'send-receipt'       => 'send_receipt',
+			'due-strict'         => 'due_strict',
+			'due-strict-timing'  => 'due_strict_timing',
+			'refund'             => 'synchronize_refund',
+		);
+
+		foreach ( $mapping as $legacy_key => $new_key ) {
+			if ( ! empty( $legacy[ $legacy_key ] ) && empty( $global[ $new_key ] ) ) {
+				return false;
+			}
+		}
+
+		// Every per-form-customized form must have a row in fluentform_form_meta.
+		if ( function_exists( 'wpFluent' ) ) {
+			foreach ( $legacy as $key => $value ) {
+				if ( 0 !== strpos( $key, 'form-customize-' ) || empty( $value ) ) {
+					continue;
+				}
+				$form_id = (int) substr( $key, strlen( 'form-customize-' ) );
+				if ( $form_id <= 0 ) {
+					continue;
+				}
+
+				$row = wpFluent()->table( 'fluentform_form_meta' )
+					->where( 'form_id', $form_id )
+					->where( 'meta_key', '_chip_payment_settings' )
+					->first();
+
+				if ( ! $row ) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Phase 2 deletion: only reached after phase2_verify() returns true.
+	 */
+	private static function phase2_delete() {
 		delete_option( 'fluent_form_chip' );
 		delete_option( 'fluent_form_chip_public_key' );
+	}
+
+	/**
+	 * Roll back phase 1 so the next request retries from the (still-present)
+	 * legacy source. Best-effort: we delete what we can and clear the flag.
+	 */
+	private static function rollback_phase1() {
+		// Only roll back the new global option if the per-form rows also got
+		// partially written — but since we don't track partial state cleanly,
+		// the simplest safe rollback is: leave the new global in place (it's
+		// already correct) and clear the phase-1 flag. The verify will keep
+		// re-checking until it passes (e.g., a per-form row that hadn't been
+		// written yet on the first attempt will be written by the next
+		// maybe_migrate() call's phase 1 re-run, which uses the same legacy
+		// source — and is itself idempotent).
+		//
+		// If the rollback is triggered because the per-form rows are missing
+		// but the global option is fine, we keep the global and just reset the
+		// flag so phase 1 re-runs and re-attempts the per-form writes.
+		delete_option( self::PHASE1_FLAG );
 	}
 
 	/**
