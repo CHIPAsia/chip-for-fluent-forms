@@ -132,10 +132,10 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					'label'    => __( 'Method Label', 'chip-for-fluent-forms' ),
 				),
 				'notes' => array(
-					'type'      => 'text',
-					'template'  => 'inputText',
-					'value'     => '',
-					'label'     => __( 'Notes', 'chip-for-fluent-forms' ),
+					'type'     => 'text',
+					'template' => 'inputText',
+					'value'    => '',
+					'label'    => __( 'Notes', 'chip-for-fluent-forms' ),
 					/* translators: %s: payment method title */
 					'help_text' => __( 'Add payment notes. You can use {inputs.<Name Attribute>} for dynamic values from form fields.', 'chip-for-fluent-forms' ),
 				),

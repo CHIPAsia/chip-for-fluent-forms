@@ -43,6 +43,8 @@ class Chip_Fluent_Forms_Migration {
 
 	/**
 	 * Hooked on plugins_loaded. Routes to the right phase based on flag state.
+	 *
+	 * @return void
 	 */
 	public static function init() {
 		add_action( 'plugins_loaded', array( __CLASS__, 'maybe_migrate' ), 20 );
@@ -52,6 +54,8 @@ class Chip_Fluent_Forms_Migration {
 	 * Run the appropriate migration phase based on flag state.
 	 *
 	 * Idempotent: re-running a phase that has already completed is a no-op.
+	 *
+	 * @return void
 	 */
 	public static function maybe_migrate() {
 		if ( '1' === get_option( self::DONE_FLAG, '0' ) ) {
@@ -226,6 +230,8 @@ class Chip_Fluent_Forms_Migration {
 
 	/**
 	 * Phase 2 deletion: only reached after phase2_verify() returns true.
+	 *
+	 * @return void
 	 */
 	private static function phase2_delete() {
 		delete_option( 'fluent_form_chip' );
@@ -235,6 +241,8 @@ class Chip_Fluent_Forms_Migration {
 	/**
 	 * Roll back phase 1 so the next request retries from the (still-present)
 	 * legacy source. Best-effort: we delete what we can and clear the flag.
+	 *
+	 * @return void
 	 */
 	private static function rollback_phase1() {
 		// Only roll back the new global option if the per-form rows also got
@@ -256,6 +264,9 @@ class Chip_Fluent_Forms_Migration {
 	 * The legacy schema did not have an is_active toggle at the global level
 	 * (CHIP was effectively always active when the option was present). Treat
 	 * the presence of any global setting as is_active=yes.
+	 *
+	 * @param array $legacy The legacy fluent_form_chip option array.
+	 * @return string 'yes' or 'no'.
 	 */
 	private static function resolve_legacy_is_active( $legacy ) {
 		if ( isset( $legacy['is_active'] ) ) {
@@ -270,6 +281,10 @@ class Chip_Fluent_Forms_Migration {
 	 * The four legacy keys are: payment-method-fpx, payment-method-fpxb2b1,
 	 * payment-method-card (which expands to visa+mastercard+maestro), and
 	 * payment-method-duitnow (which becomes duitnow_qr).
+	 *
+	 * @param array  $legacy  The legacy fluent_form_chip option array.
+	 * @param string $postfix '' for the global settings, '-{form_id}' for per-form.
+	 * @return array Map of new whitelist key => '1'.
 	 */
 	private static function resolve_legacy_whitelist( $legacy, $postfix ) {
 		$out = array();

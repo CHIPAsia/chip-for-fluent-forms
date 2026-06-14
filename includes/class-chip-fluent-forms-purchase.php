@@ -711,7 +711,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			: '';
 
 		$transaction = $this->getTransaction( $payment_id, 'charge_id' );
-		if ( is_null( $transaction ) ) {
+		if ( null === $transaction ) {
 			return;
 		}
 

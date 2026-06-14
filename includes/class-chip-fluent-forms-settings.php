@@ -71,17 +71,17 @@ class Chip_Fluent_Forms_Settings {
 	 */
 	public static function global_defaults() {
 		return array(
-			'is_active'              => 'no',
-			'payment_mode'           => 'test',
-			'brand_id'               => '',
-			'secret_key'             => '',
-			'payment_title'          => 'CHIP',
-			'send_receipt'           => '0',
-			'due_strict'             => '1',
-			'due_strict_timing'      => '60',
+			'is_active'                => 'no',
+			'payment_mode'             => 'test',
+			'brand_id'                 => '',
+			'secret_key'               => '',
+			'payment_title'            => 'CHIP',
+			'send_receipt'             => '0',
+			'due_strict'               => '1',
+			'due_strict_timing'        => '60',
 			'payment_method_whitelist' => array(),
-			'synchronize_refund'     => '0',
-			'public_key'             => '',
+			'synchronize_refund'       => '0',
+			'public_key'               => '',
 		);
 	}
 
@@ -94,16 +94,16 @@ class Chip_Fluent_Forms_Settings {
 	 */
 	public static function form_defaults() {
 		return array(
-			'is_active'         => 'no',
-			'payment_mode'      => 'test',
-			'brand_id'          => '',
-			'secret_key'        => '',
-			'send_receipt'      => '0',
-			'due_strict'        => '1',
-			'due_strict_timing' => '60',
+			'is_active'                => 'no',
+			'payment_mode'             => 'test',
+			'brand_id'                 => '',
+			'secret_key'               => '',
+			'send_receipt'             => '0',
+			'due_strict'               => '1',
+			'due_strict_timing'        => '60',
 			'payment_method_whitelist' => array(),
-			'synchronize_refund' => '0',
-			'public_key'        => '',
+			'synchronize_refund'       => '0',
+			'public_key'               => '',
 		);
 	}
 
@@ -165,15 +165,15 @@ class Chip_Fluent_Forms_Settings {
 		// effective field except the per-form "is_active" flag itself.
 		if ( 'yes' !== $merged['is_active'] ) {
 			$merged = array_merge( $merged, array(
-				'brand_id'               => $global['brand_id'],
-				'secret_key'             => $global['secret_key'],
-				'payment_mode'           => $global['payment_mode'],
-				'send_receipt'           => $global['send_receipt'],
-				'due_strict'             => $global['due_strict'],
-				'due_strict_timing'      => $global['due_strict_timing'],
+				'brand_id'                => $global['brand_id'],
+				'secret_key'              => $global['secret_key'],
+				'payment_mode'            => $global['payment_mode'],
+				'send_receipt'            => $global['send_receipt'],
+				'due_strict'              => $global['due_strict'],
+				'due_strict_timing'       => $global['due_strict_timing'],
 				'payment_method_whitelist' => $global['payment_method_whitelist'],
-				'synchronize_refund'     => $global['synchronize_refund'],
-				'public_key'             => $global['public_key'],
+				'synchronize_refund'      => $global['synchronize_refund'],
+				'public_key'              => $global['public_key'],
 			) );
 		}
 
@@ -282,17 +282,17 @@ class Chip_Fluent_Forms_Settings {
 		}
 
 		return array(
-			'is_active'                 => $is_active,
-			'payment_mode'              => $mode,
-			'brand_id'                  => isset( $settings['brand_id'] ) ? sanitize_text_field( $settings['brand_id'] ) : '',
-			'secret_key'                => isset( $settings['secret_key'] ) ? sanitize_text_field( $settings['secret_key'] ) : '',
-			'payment_title'             => isset( $settings['payment_title'] ) ? sanitize_text_field( $settings['payment_title'] ) : 'CHIP',
-			'send_receipt'              => $send_rcpt,
-			'due_strict'                => $due_strict,
-			'due_strict_timing'         => (string) $timing,
-			'payment_method_whitelist'  => $whitelist,
-			'synchronize_refund'        => $sync_rfnd,
-			'public_key'                => isset( $settings['public_key'] ) ? (string) $settings['public_key'] : '',
+			'is_active'                => $is_active,
+			'payment_mode'             => $mode,
+			'brand_id'                 => isset( $settings['brand_id'] ) ? sanitize_text_field( $settings['brand_id'] ) : '',
+			'secret_key'               => isset( $settings['secret_key'] ) ? sanitize_text_field( $settings['secret_key'] ) : '',
+			'payment_title'            => isset( $settings['payment_title'] ) ? sanitize_text_field( $settings['payment_title'] ) : 'CHIP',
+			'send_receipt'             => $send_rcpt,
+			'due_strict'               => $due_strict,
+			'due_strict_timing'        => (string) $timing,
+			'payment_method_whitelist' => $whitelist,
+			'synchronize_refund'       => $sync_rfnd,
+			'public_key'               => isset( $settings['public_key'] ) ? (string) $settings['public_key'] : '',
 		);
 	}
 
