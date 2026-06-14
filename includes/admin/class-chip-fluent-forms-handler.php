@@ -92,6 +92,11 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 	/**
 	 * @inheritDoc
 	 */
+	/**
+	 * @inheritDoc
+	 *
+	 * @return array
+	 */
 	public function getGlobalFields() {
 		if ( $this->settings_page ) {
 			return $this->settings_page->get_fields();
@@ -101,6 +106,8 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 
 	/**
 	 * @inheritDoc
+	 *
+	 * @return array
 	 */
 	public function getGlobalSettings() {
 		return Chip_Fluent_Forms_Settings::global();
@@ -146,6 +153,8 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 	}
 
 	/**
+	 * Whether the CHIP payment method is currently enabled.
+	 *
 	 * @return bool
 	 */
 	public function is_enabled() {
@@ -158,6 +167,8 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
  * Bootstrap the handler.
  *
  * Loaded from chip-for-fluent-forms.php after all includes are present.
+ *
+ * @return void
  */
 function chip_for_fluent_forms_init_handler() {
 	if ( ! class_exists( 'FluentFormPro\Payments\PaymentMethods\BasePaymentMethod' ) ) {

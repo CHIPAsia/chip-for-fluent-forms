@@ -30,6 +30,8 @@ class Chip_Fluent_Forms_Form_Settings {
 	 * Bootstrap: register the per-form UI hooks on FF Pro's payment form
 	 * settings pipeline. Falls back gracefully when FF Pro doesn't expose
 	 * the per-form settings pipeline (very old Pro).
+	 *
+	 * @return void
 	 */
 	public function __construct() {
 		// Render side: a server-side filter that returns a `$settings['chip']`
@@ -169,6 +171,7 @@ class Chip_Fluent_Forms_Form_Settings {
 	 *
 	 * @param int   $form_id      Fluent Forms form id.
 	 * @param array $all_settings The full per-form payment settings payload.
+	 * @return void
 	 */
 	public function save_per_form_settings( $form_id, $all_settings ) {
 		if ( ! is_array( $all_settings ) || empty( $all_settings['chip'] ) || ! is_array( $all_settings['chip'] ) ) {

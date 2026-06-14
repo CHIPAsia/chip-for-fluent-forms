@@ -52,6 +52,8 @@ class Chip_Fluent_Forms {
 
 	/**
 	 * Constructor.
+	 *
+	 * @return void
 	 */
 	public function __construct() {
 		$this->define();
@@ -62,6 +64,8 @@ class Chip_Fluent_Forms {
 
 	/**
 	 * Define plugin constants.
+	 *
+	 * @return void
 	 */
 	public function define() {
 		define( 'FF_CHIP_FILE', __FILE__ );
@@ -71,6 +75,8 @@ class Chip_Fluent_Forms {
 
 	/**
 	 * Include all runtime, admin, and migration classes.
+	 *
+	 * @return void
 	 */
 	public function includes() {
 		$includes_dir = plugin_dir_path( FF_CHIP_FILE ) . 'includes/';
@@ -101,6 +107,8 @@ class Chip_Fluent_Forms {
 
 	/**
 	 * Register WP filters.
+	 *
+	 * @return void
 	 */
 	public function add_filters() {
 		add_filter( 'plugin_action_links_' . FF_CHIP_BASENAME, array( $this, 'setting_link' ) );
@@ -108,6 +116,8 @@ class Chip_Fluent_Forms {
 
 	/**
 	 * Register WP actions (webhook setup hooks).
+	 *
+	 * @return void
 	 */
 	public function add_actions() {
 		// Trigger webhook setup right after a global save.
@@ -142,6 +152,7 @@ class Chip_Fluent_Forms {
 	 *
 	 * @param mixed $old The previous option value.
 	 * @param mixed $new The new option value.
+	 * @return void
 	 */
 	public function after_global_settings_save( $old, $new ) {
 		if ( ! class_exists( 'Chip_Fluent_Forms_Webhook_Setup' ) ) {
@@ -156,6 +167,7 @@ class Chip_Fluent_Forms {
 	 * options).
 	 *
 	 * @param mixed $option The newly-added option value.
+	 * @return void
 	 */
 	public function after_global_settings_added( $option ) {
 		if ( ! class_exists( 'Chip_Fluent_Forms_Webhook_Setup' ) ) {
@@ -170,6 +182,7 @@ class Chip_Fluent_Forms {
 	 *
 	 * @param int   $form_id  Fluent Forms form id.
 	 * @param array $settings The sanitized per-form settings.
+	 * @return void
 	 */
 	public function after_form_settings_saved( $form_id, $settings ) {
 		if ( ! class_exists( 'Chip_Fluent_Forms_Webhook_Setup' ) ) {
@@ -183,6 +196,8 @@ add_action( 'plugins_loaded', 'chip_for_fluent_forms_load_textdomain' );
 
 /**
  * Load the plugin text domain for translations.
+ *
+ * @return void
  */
 function chip_for_fluent_forms_load_textdomain() {
 	load_plugin_textdomain( 'chip-for-fluent-forms', false, dirname( FF_CHIP_BASENAME ) . '/languages/' );

@@ -80,6 +80,9 @@ class Chip_Fluent_Forms_Webhook_Setup {
 	 * After the global settings option has been saved: if refund sync is on
 	 * and we have credentials, ensure a CHIP webhook exists for the global
 	 * callback URL and persist the public key into the global option.
+	 *
+	 * @param array $settings The sanitized global settings.
+	 * @return void
 	 */
 	public static function setup_for_global_settings( $settings ) {
 		if ( ! is_array( $settings ) || empty( $settings['synchronize_refund'] ) ) {
@@ -106,6 +109,10 @@ class Chip_Fluent_Forms_Webhook_Setup {
 	 * After a per-form settings row has been saved: if refund sync is on and
 	 * the per-form secret key is set, ensure a CHIP webhook exists for the
 	 * per-form callback URL and persist the public key into the per-form row.
+	 *
+	 * @param int   $form_id  Fluent Forms form id.
+	 * @param array $settings The sanitized per-form settings.
+	 * @return void
 	 */
 	public static function setup_for_form_settings( $form_id, $settings ) {
 		$form_id = (int) $form_id;
@@ -133,6 +140,10 @@ class Chip_Fluent_Forms_Webhook_Setup {
 	 * Idempotent: look up the existing CHIP webhook for our callback URL and
 	 * title; if absent, create one. Returns the public key (PEM), or '' on
 	 * failure.
+	 *
+	 * @param string $secret_key   CHIP API secret key.
+	 * @param string $callback_url The IPN callback URL.
+	 * @return string PEM public key, or empty string.
 	 */
 	private static function ensure_webhook( $secret_key, $callback_url ) {
 		if ( ! class_exists( 'Chip_Fluent_Forms_API' ) ) {
@@ -176,6 +187,8 @@ class Chip_Fluent_Forms_Webhook_Setup {
 	 * The single CHIP callback URL for this site. There is no per-form
 	 * override (CHIP fires all events to the same URL; we dispatch on
 	 * submission_id inside the URL).
+	 *
+	 * @return string
 	 */
 	private static function get_callback_url() {
 		return add_query_arg(

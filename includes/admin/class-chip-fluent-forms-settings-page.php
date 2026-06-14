@@ -122,6 +122,8 @@ class Chip_Fluent_Forms_Settings_Page {
 	/**
 	 * Render the standalone settings page (fallback when FF Pro's native
 	 * Payment Methods tab is not available).
+	 *
+	 * @return void
 	 */
 	public function render_standalone_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -145,6 +147,8 @@ class Chip_Fluent_Forms_Settings_Page {
 
 	/**
 	 * Register the settings, sections, and fields used by the standalone page.
+	 *
+	 * @return void
 	 */
 	public function register_settings() {
 		register_setting(
