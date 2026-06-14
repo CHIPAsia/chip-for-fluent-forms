@@ -54,6 +54,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * Constructor — empty. Hook registration is deferred to init() so subclasses
 	 * and unit tests can override the action registration without instantiating
 	 * the singleton.
+	 *
+	 * @return void
 	 */
 	public function __construct() {
 	}
@@ -63,6 +65,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 *
 	 * Called once from the bottom of the file (Chip_Fluent_Forms_Purchase::get_instance()).
 	 * Mirrors the modern BaseProcessor::init() convention used by PayPal / Mollie.
+	 *
+	 * @return void
 	 */
 	public function init() {
 		add_action( 'fluentform/process_payment_chip', array( $this, 'handlePaymentAction' ), 10, 6 );
@@ -123,10 +127,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * JSON success response that the FF Pro frontend will follow (the
 	 * `nextAction=payment` field). On failure, logs and returns JSON error.
 	 *
-	 * @param object $transaction   The pending transaction row.
-	 * @param object $submission    The Fluent Forms submission row.
-	 * @param object $form          The Fluent Forms form object.
+	 * @param object $transaction    The pending transaction row.
+	 * @param object $submission     The Fluent Forms submission row.
+	 * @param object $form           The Fluent Forms form object.
 	 * @param array  $methodSettings Per-method settings from FF Pro.
+	 * @return void
 	 */
 	private function create_purchase( $transaction, $submission, $form, $methodSettings ) {
 		$option = Chip_Fluent_Forms_Settings::for_form( (int) $form->id );
@@ -309,6 +314,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * Bail with wp_die if the form's currency is not in $supported_currencies.
 	 *
 	 * @param string $currency Three-letter currency code (e.g. 'MYR').
+	 * @return void
 	 */
 	private function is_form_currency_supported( $currency ) {
 
@@ -406,6 +412,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * frameless payment view.
 	 *
 	 * @param array $data The WP query vars posted to index.php?payment_method=chip.
+	 * @return void
 	 */
 	public function redirect( $data ) {
 
@@ -464,6 +471,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * "Payment Cancelled" page if the transaction isn't paid.
 	 *
 	 * @param array $data The WP query vars posted to index.php?payment_method=chip.
+	 * @return void
 	 */
 	public function handleSessionRedirectBack( $data ) {
 		$submissionId = intval( $data['fluentform_payment'] );
@@ -504,9 +512,10 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * Idempotent: a second call returns the cached return-data via
 	 * the is_form_action_fired flag instead of re-processing.
 	 *
-	 * @param object $submission         The Fluent Forms submission row.
-	 * @param object $transaction        The Fluent Forms transaction row.
-	 * @param array  $vendorTransaction  The raw CHIP purchase payload.
+	 * @param object $submission        The Fluent Forms submission row.
+	 * @param object $transaction       The Fluent Forms transaction row.
+	 * @param array  $vendorTransaction The raw CHIP purchase payload.
+	 * @return void
 	 */
 	public function handlePaid( $submission, $transaction, $vendorTransaction ) {
 
@@ -589,9 +598,10 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	/**
 	 * Mark a submission as failed when the user abandons or cancels.
 	 *
-	 * @param object $submission         The Fluent Forms submission row.
-	 * @param object $transaction        The Fluent Forms transaction row.
-	 * @param array  $vendorTransaction  The raw CHIP purchase payload (may be partial).
+	 * @param object $submission        The Fluent Forms submission row.
+	 * @param object $transaction       The Fluent Forms transaction row.
+	 * @param array  $vendorTransaction The raw CHIP purchase payload (may be partial).
+	 * @return void
 	 */
 	public function handleFailed( $submission, $transaction, $vendorTransaction ) {
 		$this->setSubmissionId( $submission->id );
@@ -613,6 +623,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * Server-to-server IPN entry point. Routes to success_callback()
 	 * (for the user-IPN ping) or refund_callback() (for the refund
 	 * webhook) based on the query vars.
+	 *
+	 * @return void
 	 */
 	public function callback() {
 
@@ -640,6 +652,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * double-process the same submission.
 	 *
 	 * @param int $submission_id Fluent Forms submission id.
+	 * @return void
 	 */
 	private function success_callback( $submission_id ) {
 
@@ -688,6 +701,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * Reads the raw request body, verifies the X-Signature header against
 	 * the configured per-form public key, and (on a valid signature) calls
 	 * handleRefund() to upsert the refund transaction.
+	 *
+	 * @return void
 	 */
 	private function refund_callback() {
 		$content     = file_get_contents( 'php://input' );
@@ -791,6 +806,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * @param int    $transaction_id Fluent Forms transaction id.
 	 * @param int    $submission_id  Fluent Forms submission id.
 	 * @param string $refund_id      CHIP refund id (used as charge_id).
+	 * @return void
 	 */
 	public function handleRefund( $refund_amount, $transaction_id, $submission_id, $refund_id ) {
 		$this->setSubmissionId( $submission_id );
@@ -887,6 +903,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * fluentform/validate_payment_items_chip filter.
 	 *
 	 * @param bool $has_subscription True if the submission has any subscription item.
+	 * @return void
 	 */
 	private function validate_if_subscription( $has_subscription ) {
 		if ( $has_subscription ) {
@@ -933,6 +950,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * @param object $submission The Fluent Forms submission row.
 	 * @param mixed  $payment    WP_Error or response payload from CHIP.
 	 * @param string $payment_id The CHIP purchase id we tried to look up.
+	 * @return void
 	 */
 	private function log_vendor_lookup_failure( $submission, $payment, $payment_id ) {
 		$description = is_wp_error( $payment )
