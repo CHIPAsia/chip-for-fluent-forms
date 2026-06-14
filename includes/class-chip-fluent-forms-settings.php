@@ -1,10 +1,16 @@
 <?php
+/**
+ * Centralized reader for the new CHIP settings schema.
+ *
+ * @package CHIPForFluentForms
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Centralized reader for the new CHIP settings schema.
+ * Chip_Fluent_Forms_Settings — centralized reader for the new CHIP settings schema.
  *
  * The legacy plugin stored every setting (global and per-form) in a single
  * option `fluent_form_chip` with hyphenated keys and `-{form_id}` postfixes.
@@ -16,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * The legacy option is migrated by Chip_Fluent_Forms_Migration on plugins_loaded.
  * While a site is in the pre-migration window, the legacy keys still take effect
- * via get_settings_legacy() so the plugin keeps working.
+ * via the migration fallback so the plugin keeps working.
  */
 class Chip_Fluent_Forms_Settings {
 
