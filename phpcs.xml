@@ -18,13 +18,17 @@
 	<exclude-pattern>/tests/*</exclude-pattern>
 
 	<!-- Use WordPress coding standards -->
-	<rule ref="WordPress">
-		<!--
-			PSR1 forbids a file from mixing a class declaration with
-			top-level add_action() / helper function bootstraps, but it is
-			the standard WordPress plugin entry-point pattern. Exclude the
-			PSR1 side-effects sniff entirely from our scan.
-		-->
+	<rule ref="WordPress"/>
+
+	<!--
+		PSR1.Files.SideEffects forbids a file from mixing a class
+		declaration with top-level add_action() / helper function
+		bootstraps, but it is the standard WordPress plugin entry-point
+		pattern. PHPCS auto-loads the PSR1 ruleset, so we override the
+		rule with the same exclusions applied to the messages we want
+		suppressed.
+	-->
+	<rule ref="PSR1">
 		<exclude name="PSR1.Files.SideEffects.FoundWithSymbol"/>
 		<exclude name="PSR1.Files.SideEffects.FoundNonConditionalLogic"/>
 	</rule>
@@ -77,10 +81,4 @@
 		<exclude-pattern>includes/admin/class-chip-fluent-forms-handler.php</exclude-pattern>
 		<exclude-pattern>includes/admin/class-chip-fluent-forms-webhook-setup.php</exclude-pattern>
 	</rule>
-
-	<!--
-		PSR1 forbids a file from mixing a class declaration with top-level
-		add_action() / helper function bootstraps, but it is the standard
-		WordPress plugin entry-point pattern, so the rule is relaxed.
-	-->
 </ruleset>
