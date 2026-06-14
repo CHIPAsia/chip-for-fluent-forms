@@ -52,6 +52,10 @@ class Chip_Fluent_Forms_Form_Settings {
 	 * Add a "Customize" panel to FF Pro's per-form payment settings tab.
 	 *
 	 * The actual storage / read path is in Chip_Fluent_Forms_Settings::for_form().
+	 *
+	 * @param array  $settings The current per-method settings array, indexed by method.
+	 * @param object $form     The Fluent Forms form object.
+	 * @return array The augmented settings array.
 	 */
 	public function register_per_form_settings( $settings, $form ) {
 		if ( ! is_object( $form ) || empty( $form->id ) ) {
