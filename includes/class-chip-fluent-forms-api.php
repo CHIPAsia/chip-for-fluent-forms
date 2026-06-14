@@ -1,17 +1,15 @@
 <?php
-
 /**
  * CHIP API client.
  *
  * @package CHIPForFluentForms
  */
 
- /*
-  * License: GNU General Public License v3.0
-  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
-  */
-// This is CHIP API URL Endpoint as per documented in: https://developer.chip-in.asia/api
-define( 'FLUENT_FORMS_CHIP_ROOT_URL', 'https://gate.chip-in.asia' );
+/*
+ * License: GNU General Public License v3.0
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ */
+define( 'FLUENT_FORMS_CHIP_ROOT_URL', 'https://gate.chip-in.asia' ); // This is CHIP API URL Endpoint as per documented in: https://developer.chip-in.asia/api
 
 /**
  * Chip_Fluent_Forms_API — REST client for the CHIP payment gateway API.

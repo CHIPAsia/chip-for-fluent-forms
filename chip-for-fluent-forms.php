@@ -1,7 +1,5 @@
 <?php
-
 /**
- *
  * Plugin Name: CHIP for Fluent Forms
  * Plugin URI: https://wordpress.org/plugins/chip-for-fluent-forms/
  * Description: CHIP - Digital Finance Platform
@@ -17,7 +15,8 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	die; } // Cannot access directly.
+	exit;
+}
 
 define( 'FF_CHIP_MODULE_VERSION', 'v1.2.0' );
 
