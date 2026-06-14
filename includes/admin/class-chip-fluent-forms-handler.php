@@ -19,19 +19,43 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentFormPro\Payments\PaymentMethods\BasePaymentMethod;
+
+/**
+ * Chip_Fluent_Forms_Handler — see file-level docblock above. Extends
+ * BasePaymentMethod so modern Pro wires the global settings filters
+ * automatically; this class adds the per-method push, the per-form
+ * Customize UI hook, and the processor boot.
+ */
 class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 
 	const KEY = 'chip';
 
-	/** @var Chip_Fluent_Forms_Settings_Page */
+	/**
+	 * Settings page instance.
+	 *
+	 * @var Chip_Fluent_Forms_Settings_Page
+	 */
 	private $settings_page;
 
-	/** @var Chip_Fluent_Forms_Form_Settings */
+	/**
+	 * Per-form settings instance.
+	 *
+	 * @var Chip_Fluent_Forms_Form_Settings
+	 */
 	private $form_settings;
 
-	/** @var Chip_Fluent_Forms_Purchase */
+	/**
+	 * Processor instance.
+	 *
+	 * @var Chip_Fluent_Forms_Purchase
+	 */
 	private $processor;
 
+	/**
+	 * Constructor wires the FF Pro settings filters, instantiates the
+	 * per-form settings and settings page objects, and schedules the
+	 * processor boot on plugins_loaded.
+	 */
 	public function __construct() {
 		$this->key         = self::KEY;
 		$this->settingsKey = 'fluent_form_chip_settings';
@@ -46,6 +70,14 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 		add_action( 'plugins_loaded', array( $this, 'boot_processor' ), 30 );
 	}
 
+	/**
+	 * Late-bind the payment processor.
+	 *
+	 * Hooked on plugins_loaded priority 30 (after the migration runs at 20
+	 * and after FF Pro loads). The processor auto-initializes via
+	 * ::get_instance() in its own include file; this method is a no-op
+	 * safety net that ensures the class is loadable.
+	 */
 	public function boot_processor() {
 		if ( ! class_exists( 'FluentFormPro\Payments\PaymentMethods\BaseProcessor' ) ) {
 			return;
@@ -79,6 +111,9 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 	 *
 	 * Kept as a fallback (also covered by BasePaymentMethod on modern Pro)
 	 * so the plugin keeps working on older Pro versions that don't ship it.
+	 *
+	 * @param array $methods The current list of payment methods.
+	 * @return array The augmented list.
 	 */
 	public function push_payment_method( $methods ) {
 		$settings = Chip_Fluent_Forms_Settings::global();
@@ -93,6 +128,7 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					'type'     => 'text',
 					'template' => 'inputText',
 					'value'    => 'Pay with CHIP',
+					/* translators: %s: payment method title (e.g. "CHIP") */
 					'label'    => __( 'Method Label', 'chip-for-fluent-forms' ),
 				),
 				'notes' => array(
@@ -100,6 +136,7 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					'template'  => 'inputText',
 					'value'     => '',
 					'label'     => __( 'Notes', 'chip-for-fluent-forms' ),
+					/* translators: %s: payment method title */
 					'help_text' => __( 'Add payment notes. You can use {inputs.<Name Attribute>} for dynamic values from form fields.', 'chip-for-fluent-forms' ),
 				),
 			),
@@ -108,6 +145,9 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 		return $methods;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_enabled() {
 		$settings = Chip_Fluent_Forms_Settings::global();
 		return isset( $settings['is_active'] ) && 'yes' === $settings['is_active'];
