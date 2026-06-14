@@ -175,7 +175,8 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
  *
  * @return void
  */
-function chip_for_fluent_forms_init_handler() { // phpcs:ignore PSR1.Files.SideEffects.Mixed -- helper function intentionally defined after the FF Pro extension class in the same file.
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbol
+function chip_for_fluent_forms_init_handler() {
 	if ( ! class_exists( 'FluentFormPro\Payments\PaymentMethods\BasePaymentMethod' ) ) {
 		return;
 	}

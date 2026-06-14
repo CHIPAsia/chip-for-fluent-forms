@@ -13,7 +13,6 @@
  * @package CHIPForFluentForms
  */
 
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
