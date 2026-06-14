@@ -1,4 +1,6 @@
 <?php
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbol
+// phpcs:disable PSR1.Files.SideEffects.FoundNonConditionalLogic
 /**
  * Owns registration of the CHIP payment method with Fluent Forms Pro.
  *
@@ -12,8 +14,6 @@
  *
  * @package CHIPForFluentForms
  */
-
-// phpcs:disable PSR1.Files.SideEffects -- this file intentionally combines the FF Pro extension class with a top-level helper function + add_action() bootstrap.
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

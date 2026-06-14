@@ -1,4 +1,6 @@
 <?php
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbol
+// phpcs:disable PSR1.Files.SideEffects.FoundNonConditionalLogic
 /**
  * Plugin Name: CHIP for Fluent Forms
  * Plugin URI: https://wordpress.org/plugins/chip-for-fluent-forms/
@@ -15,8 +17,6 @@
  *
  * @package CHIPForFluentForms
  */
-
-// phpcs:disable PSR1.Files.SideEffects -- this file intentionally combines the bootstrap class with top-level add_action() calls and helper functions.
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
