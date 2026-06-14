@@ -20,6 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// phpcs:disable PSR1.Files.SideEffects -- this file intentionally combines the bootstrap class with top-level add_action() calls and helper functions.
+
 define( 'FF_CHIP_MODULE_VERSION', 'v1.2.0' );
 
 /**
@@ -200,7 +202,7 @@ add_action( 'plugins_loaded', 'chip_for_fluent_forms_load_textdomain' );
  *
  * @return void
  */
-function chip_for_fluent_forms_load_textdomain() { // phpcs:ignore PSR1.Files.SideEffects.FoundWithSymbol -- plugin entry-point file intentionally defines helper functions after the bootstrap class.
+function chip_for_fluent_forms_load_textdomain() {
 	load_plugin_textdomain( 'chip-for-fluent-forms', false, dirname( FF_CHIP_BASENAME ) . '/languages/' );
 }
 
@@ -222,3 +224,4 @@ function load_chip_for_fluent_forms() {
 
 	Chip_Fluent_Forms::get_instance();
 }
+// phpcs:enable
