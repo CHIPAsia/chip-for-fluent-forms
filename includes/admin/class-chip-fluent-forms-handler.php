@@ -13,9 +13,6 @@
  * @package CHIPForFluentForms
  */
 
-// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbol
-// phpcs:disable PSR1.Files.SideEffects.FoundNonConditionalLogic
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -170,34 +167,3 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 		return isset( $settings['is_active'] ) && 'yes' === $settings['is_active'];
 	}
 }
-
-/**
- * Bootstrap the handler.
- *
- * Loaded from chip-for-fluent-forms.php after all includes are present.
- *
- * @return void
- */
-function chip_for_fluent_forms_init_handler() {
-	if ( ! class_exists( 'FluentFormPro\Payments\PaymentMethods\BasePaymentMethod' ) ) {
-		return;
-	}
-	if ( ! class_exists( 'Chip_Fluent_Forms_Settings' ) ) {
-		return;
-	}
-	if ( ! class_exists( 'Chip_Fluent_Forms_Handler' ) ) {
-		return;
-	}
-
-	static $instance = null;
-	if ( null === $instance ) {
-		$instance = new Chip_Fluent_Forms_Handler();
-
-		// Fallback: on older Pro the parent doesn't auto-register the push filter.
-		if ( ! has_filter( 'fluentform/available_payment_methods', array( $instance, 'push_payment_method' ) ) ) {
-			add_filter( 'fluentform/available_payment_methods', array( $instance, 'push_payment_method' ) );
-		}
-	}
-}
-add_action( 'plugins_loaded', 'chip_for_fluent_forms_init_handler', 30 );
-// phpcs:enable

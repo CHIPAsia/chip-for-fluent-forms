@@ -16,9 +16,6 @@
  * @package CHIPForFluentForms
  */
 
-// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbol
-// phpcs:disable PSR1.Files.SideEffects.FoundNonConditionalLogic
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -102,6 +99,10 @@ class Chip_Fluent_Forms {
 		// register before the priority-30 tick fires. The class itself is a no-op
 		// when Fluent Forms Pro is not active.
 		include $includes_dir . 'admin/class-chip-fluent-forms-handler.php';
+
+		// Helper-function bootstrap is in its own file so each PHP file
+		// declares only one kind of symbol (PSR1.Files.SideEffects).
+		include $includes_dir . 'admin/chip-for-fluent-forms-handler-bootstrap.php';
 
 		if ( is_admin() ) {
 			include $includes_dir . 'admin/class-chip-fluent-forms-settings-page.php';
@@ -225,4 +226,3 @@ function load_chip_for_fluent_forms() {
 
 	Chip_Fluent_Forms::get_instance();
 }
-// phpcs:enable
