@@ -13,6 +13,10 @@
  * @package CHIPForFluentForms
  */
 
+// phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable WordPress.Functions.DontAddAction
+// phpcs:disable WordPress.WP.GlobalVariablesOverride -- the plugin entry-point file intentionally combines the FF Pro extension class with top-level helper function and add_action() bootstraps.
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -175,7 +179,7 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
  *
  * @return void
  */
-function chip_for_fluent_forms_init_handler() { // phpcs:ignore PSR1.Files.SideEffects.FoundWithSymbol -- helper function intentionally defined after the FF Pro extension class in the same file.
+function chip_for_fluent_forms_init_handler() {
 	if ( ! class_exists( 'FluentFormPro\Payments\PaymentMethods\BasePaymentMethod' ) ) {
 		return;
 	}
@@ -197,3 +201,4 @@ function chip_for_fluent_forms_init_handler() { // phpcs:ignore PSR1.Files.SideE
 	}
 }
 add_action( 'plugins_loaded', 'chip_for_fluent_forms_init_handler', 30 );
+// phpcs:enable

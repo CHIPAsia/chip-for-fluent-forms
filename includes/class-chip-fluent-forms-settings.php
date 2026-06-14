@@ -254,7 +254,7 @@ class Chip_Fluent_Forms_Settings {
 				wpFluent()->table( 'fluentform_form_meta' )->insert(
 					array(
 						'form_id'    => $form_id,
-						'meta_key'   => '_chip_payment_settings',
+						'meta_key'   => '_chip_payment_settings', // phpcs:ignore WordPress.DB.SlowDBQuery -- the fluentform_form_meta table is not a WordPress postmeta table, so the standard slow-query rule does not apply.
 						'value'      => maybe_serialize( $clean ),
 						'created_at' => current_time( 'mysql' ),
 						'updated_at' => current_time( 'mysql' ),

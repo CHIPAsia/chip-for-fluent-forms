@@ -16,6 +16,10 @@
  * @package CHIPForFluentForms
  */
 
+// phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable WordPress.Functions.DontAddAction
+// phpcs:disable WordPress.WP.GlobalVariablesOverride -- the plugin entry-point file intentionally combines the bootstrap class with top-level helper function and add_action() bootstraps.
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -200,7 +204,7 @@ add_action( 'plugins_loaded', 'chip_for_fluent_forms_load_textdomain' );
  *
  * @return void
  */
-function chip_for_fluent_forms_load_textdomain() { // phpcs:ignore PSR1.Files.SideEffects.FoundWithSymbol -- plugin entry-point file intentionally defines helper functions after the bootstrap class.
+function chip_for_fluent_forms_load_textdomain() {
 	load_plugin_textdomain( 'chip-for-fluent-forms', false, dirname( FF_CHIP_BASENAME ) . '/languages/' );
 }
 
@@ -222,3 +226,4 @@ function load_chip_for_fluent_forms() {
 
 	Chip_Fluent_Forms::get_instance();
 }
+// phpcs:enable
