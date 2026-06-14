@@ -67,8 +67,8 @@ class Chip_Fluent_Forms_Webhook_Setup {
 
 		// Pre-migration fallback: read the legacy option.
 		$legacy = get_option( 'fluent_form_chip_public_key', array() );
-		if ( is_array( $legacy ) && ! empty( $legacy[ 'public-key' ] ) ) {
-			return str_replace( '\n', "\n", (string) $legacy[ 'public-key' ] );
+		if ( is_array( $legacy ) && ! empty( $legacy['public-key'] ) ) {
+			return str_replace( '\n', "\n", (string) $legacy['public-key'] );
 		}
 		if ( is_array( $legacy ) && ! empty( $legacy[ 'public-key-' . $form_id ] ) ) {
 			return str_replace( '\n', "\n", (string) $legacy[ 'public-key-' . $form_id ] );
@@ -170,12 +170,14 @@ class Chip_Fluent_Forms_Webhook_Setup {
 			return str_replace( '\n', "\n", (string) $existing['public_key'] );
 		}
 
-		$created = $chip->create_webhook( array(
-			'title'      => self::WEBHOOK_TITLE,
-			'all_events' => false,
-			'events'     => array( 'payment.refunded' ),
-			'callback'   => $callback_url,
-		) );
+		$created = $chip->create_webhook(
+			array(
+				'title'      => self::WEBHOOK_TITLE,
+				'all_events' => false,
+				'events'     => array( 'payment.refunded' ),
+				'callback'   => $callback_url,
+			)
+		);
 
 		if ( is_wp_error( $created ) || ! is_array( $created ) || empty( $created['public_key'] ) ) {
 			return '';

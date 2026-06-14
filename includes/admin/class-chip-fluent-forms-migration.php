@@ -75,6 +75,7 @@ class Chip_Fluent_Forms_Migration {
 				self::phase1_write( $legacy );
 				update_option( self::PHASE1_FLAG, '1' );
 			} catch ( \Exception $e ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- the migration log is intentionally written so a host admin can diagnose a stuck site.
 				error_log( '[chip-for-fluent-forms] migration phase 1 failed: ' . $e->getMessage() );
 			}
 			return;
@@ -86,12 +87,13 @@ class Chip_Fluent_Forms_Migration {
 				self::phase2_delete();
 				update_option( self::DONE_FLAG, '1' );
 			} else {
-				// Verification failed: roll back phase 1 so the next request
-				// retries from the (still-present) legacy source.
+				// Verification failed: roll back phase 1 so the next request retries from the (still-present) legacy source.
 				self::rollback_phase1();
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- see phase-1 catch above.
 				error_log( '[chip-for-fluent-forms] migration phase 2 verification failed; rolling back and will retry' );
 			}
 		} catch ( \Exception $e ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- see phase-1 catch above.
 			error_log( '[chip-for-fluent-forms] migration phase 2 failed: ' . $e->getMessage() );
 		}
 	}
@@ -108,18 +110,20 @@ class Chip_Fluent_Forms_Migration {
 			throw new \RuntimeException( 'Chip_Fluent_Forms_Settings is not available' );
 		}
 
-		$global = Chip_Fluent_Forms_Settings::sanitize_global( array(
-			'is_active'                => self::resolve_legacy_is_active( $legacy ),
-			'payment_mode'             => isset( $legacy['payment_mode'] ) ? $legacy['payment_mode'] : 'test',
-			'brand_id'                 => isset( $legacy['brand-id'] ) ? $legacy['brand-id'] : '',
-			'secret_key'               => isset( $legacy['secret-key'] ) ? $legacy['secret-key'] : '',
-			'payment_title'            => isset( $legacy['payment-title'] ) ? $legacy['payment-title'] : 'CHIP',
-			'send_receipt'             => ! empty( $legacy['send-receipt'] ) ? '1' : '0',
-			'due_strict'               => ! empty( $legacy['due-strict'] ) ? '1' : '0',
-			'due_strict_timing'        => isset( $legacy['due-strict-timing'] ) ? $legacy['due-strict-timing'] : '60',
-			'payment_method_whitelist' => self::resolve_legacy_whitelist( $legacy, '' ),
-			'synchronize_refund'       => ! empty( $legacy['refund'] ) ? '1' : '0',
-		) );
+		$global = Chip_Fluent_Forms_Settings::sanitize_global(
+			array(
+				'is_active'                => self::resolve_legacy_is_active( $legacy ),
+				'payment_mode'             => isset( $legacy['payment_mode'] ) ? $legacy['payment_mode'] : 'test',
+				'brand_id'                 => isset( $legacy['brand-id'] ) ? $legacy['brand-id'] : '',
+				'secret_key'               => isset( $legacy['secret-key'] ) ? $legacy['secret-key'] : '',
+				'payment_title'            => isset( $legacy['payment-title'] ) ? $legacy['payment-title'] : 'CHIP',
+				'send_receipt'             => ! empty( $legacy['send-receipt'] ) ? '1' : '0',
+				'due_strict'               => ! empty( $legacy['due-strict'] ) ? '1' : '0',
+				'due_strict_timing'        => isset( $legacy['due-strict-timing'] ) ? $legacy['due-strict-timing'] : '60',
+				'payment_method_whitelist' => self::resolve_legacy_whitelist( $legacy, '' ),
+				'synchronize_refund'       => ! empty( $legacy['refund'] ) ? '1' : '0',
+			)
+		);
 
 		// Migrate global public key.
 		$public_key_legacy = get_option( 'fluent_form_chip_public_key', array() );
@@ -146,17 +150,19 @@ class Chip_Fluent_Forms_Migration {
 
 					$postfix = '-' . $form_id;
 
-					$per_form = Chip_Fluent_Forms_Settings::sanitize_form( array(
-						'is_active'                => 'yes',
-						'payment_mode'             => isset( $legacy[ 'payment-mode' . $postfix ] ) ? $legacy[ 'payment-mode' . $postfix ] : 'test',
-						'brand_id'                 => isset( $legacy[ 'brand-id' . $postfix ] ) ? $legacy[ 'brand-id' . $postfix ] : '',
-						'secret_key'               => isset( $legacy[ 'secret-key' . $postfix ] ) ? $legacy[ 'secret-key' . $postfix ] : '',
-						'send_receipt'             => ! empty( $legacy[ 'send-receipt' . $postfix ] ) ? '1' : '0',
-						'due_strict'               => ! empty( $legacy[ 'due-strict' . $postfix ] ) ? '1' : '0',
-						'due_strict_timing'        => isset( $legacy[ 'due-strict-timing' . $postfix ] ) ? $legacy[ 'due-strict-timing' . $postfix ] : '60',
-						'payment_method_whitelist' => self::resolve_legacy_whitelist( $legacy, $postfix ),
-						'synchronize_refund'       => ! empty( $legacy[ 'refund' . $postfix ] ) ? '1' : '0',
-					) );
+					$per_form = Chip_Fluent_Forms_Settings::sanitize_form(
+						array(
+							'is_active'                => 'yes',
+							'payment_mode'             => isset( $legacy[ 'payment-mode' . $postfix ] ) ? $legacy[ 'payment-mode' . $postfix ] : 'test',
+							'brand_id'                 => isset( $legacy[ 'brand-id' . $postfix ] ) ? $legacy[ 'brand-id' . $postfix ] : '',
+							'secret_key'               => isset( $legacy[ 'secret-key' . $postfix ] ) ? $legacy[ 'secret-key' . $postfix ] : '',
+							'send_receipt'             => ! empty( $legacy[ 'send-receipt' . $postfix ] ) ? '1' : '0',
+							'due_strict'               => ! empty( $legacy[ 'due-strict' . $postfix ] ) ? '1' : '0',
+							'due_strict_timing'        => isset( $legacy[ 'due-strict-timing' . $postfix ] ) ? $legacy[ 'due-strict-timing' . $postfix ] : '60',
+							'payment_method_whitelist' => self::resolve_legacy_whitelist( $legacy, $postfix ),
+							'synchronize_refund'       => ! empty( $legacy[ 'refund' . $postfix ] ) ? '1' : '0',
+						)
+					);
 
 					$per_form_public_key = isset( $public_key_legacy[ 'public-key' . $postfix ] )
 						? (string) $public_key_legacy[ 'public-key' . $postfix ]
@@ -185,17 +191,16 @@ class Chip_Fluent_Forms_Migration {
 			return false;
 		}
 
-		// Every non-empty legacy key that has a mapping must be reflected in the
-		// new global option. (Empty legacy values are not considered an error —
-		// the merchant just hadn't filled them in.)
+		// Every non-empty legacy key that has a mapping must be reflected in the new global option.
+		// (Empty legacy values are not considered an error — the merchant just hadn't filled them in.)
 		$mapping = array(
-			'secret-key'         => 'secret_key',
-			'brand-id'           => 'brand_id',
-			'payment-title'      => 'payment_title',
-			'send-receipt'       => 'send_receipt',
-			'due-strict'         => 'due_strict',
-			'due-strict-timing'  => 'due_strict_timing',
-			'refund'             => 'synchronize_refund',
+			'secret-key'        => 'secret_key',
+			'brand-id'          => 'brand_id',
+			'payment-title'     => 'payment_title',
+			'send-receipt'      => 'send_receipt',
+			'due-strict'        => 'due_strict',
+			'due-strict-timing' => 'due_strict_timing',
+			'refund'            => 'synchronize_refund',
 		);
 
 		foreach ( $mapping as $legacy_key => $new_key ) {

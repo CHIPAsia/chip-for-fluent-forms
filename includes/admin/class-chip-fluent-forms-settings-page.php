@@ -31,8 +31,8 @@ class Chip_Fluent_Forms_Settings_Page {
 	 * @return array
 	 */
 	public function get_fields() {
-		$methods = Chip_Fluent_Forms_Settings::payment_methods();
-		$whitelist_options = array();
+		$methods            = Chip_Fluent_Forms_Settings::payment_methods();
+		$whitelist_options  = array();
 		foreach ( $methods as $key => $label ) {
 			$whitelist_options[] = array(
 				'key'   => $key,
@@ -102,11 +102,11 @@ class Chip_Fluent_Forms_Settings_Page {
 				'help'  => __( 'How many minutes a strict-due purchase stays open. Defaults to 60.', 'chip-for-fluent-forms' ),
 			),
 			array(
-				'key'      => 'payment_method_whitelist',
-				'label'    => __( 'Payment Method Whitelist', 'chip-for-fluent-forms' ),
-				'type'     => 'checkbox_group',
-				'options'  => $whitelist_options,
-				'help'     => __( 'Pick which payment methods to allow at checkout. Leave empty to let CHIP decide.', 'chip-for-fluent-forms' ),
+				'key'     => 'payment_method_whitelist',
+				'label'   => __( 'Payment Method Whitelist', 'chip-for-fluent-forms' ),
+				'type'    => 'checkbox_group',
+				'options' => $whitelist_options,
+				'help'    => __( 'Pick which payment methods to allow at checkout. Leave empty to let CHIP decide.', 'chip-for-fluent-forms' ),
 			),
 			array(
 				'key'      => 'synchronize_refund',
