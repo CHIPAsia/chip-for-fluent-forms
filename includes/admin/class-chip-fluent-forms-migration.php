@@ -94,6 +94,9 @@ class Chip_Fluent_Forms_Migration {
 
 	/**
 	 * Phase 1: write the new global option and per-form rows.
+	 *
+	 * @param array $legacy The legacy fluent_form_chip option array.
+	 * @throws \RuntimeException If Chip_Fluent_Forms_Settings isn't loadable.
 	 */
 	private static function phase1_write( $legacy ) {
 		if ( ! class_exists( 'Chip_Fluent_Forms_Settings' ) ) {
@@ -167,6 +170,9 @@ class Chip_Fluent_Forms_Migration {
 	 * Phase 2: verify the new global option is well-formed and contains the
 	 * non-empty values from the legacy option. Returns true if verification
 	 * passes, false if any check fails (in which case phase 1 should roll back).
+	 *
+	 * @param array $legacy The legacy fluent_form_chip option array.
+	 * @return bool
 	 */
 	private static function phase2_verify( $legacy ) {
 		$global = get_option( 'fluent_form_chip_settings', null );
