@@ -58,6 +58,6 @@
 		relaxation to the processor file only.
 	-->
 	<rule ref="WordPress.NamingConventions.ValidVariableName">
-		<exclude-pattern>includes/class-purchase.php</exclude-pattern>
+		<exclude-pattern>includes/class-chip-fluent-forms-purchase.php</exclude-pattern>
 	</rule>
 </ruleset>
