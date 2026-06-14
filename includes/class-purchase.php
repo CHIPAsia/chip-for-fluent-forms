@@ -309,7 +309,15 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	private function is_form_currency_supported( $currency ) {
 
 		if ( ! in_array( $currency, $this->supported_currencies, true ) ) {
-			wp_die( sprintf( __( 'Error! Currency not supported. The only supported currency is MYR and the current currency is %s.', 'chip-for-fluent-forms' ), esc_html( $currency ) ) );
+			wp_die(
+				esc_html(
+					sprintf(
+						/* translators: %s: the unsupported currency code */
+						__( 'Error! Currency not supported. The only supported currency is MYR and the current currency is %s.', 'chip-for-fluent-forms' ),
+						$currency
+					)
+				)
+			);
 		}
 	}
 
@@ -334,7 +342,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			$description = sprintf(
 				/* translators: %s: print_r of the response */
 				__( 'User is not redirected to CHIP because create_payment returned no purchase id: %s', 'chip-for-fluent-forms' ),
-				print_r( $payment, true )
+				wp_json_encode( $payment )
 			);
 		}
 
@@ -418,26 +426,29 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			return;
 		}
 
-		$this->with_submission_lock( $submission_id, function () use ( $submission, $payment, $transaction_hash, $payment_id ) {
+		$this->with_submission_lock(
+			$submission_id,
+			function () use ( $submission, $payment, $transaction_hash, $payment_id ) {
 
-			$transaction = $this->getTransaction( $transaction_hash, 'transaction_hash' );
-			if ( ! $transaction ) {
-				return;
-			}
+				$transaction = $this->getTransaction( $transaction_hash, 'transaction_hash' );
+				if ( ! $transaction ) {
+					return;
+				}
 
-			$transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id' );
-			if ( ! $transaction_by_charge_id || $transaction->id !== $transaction_by_charge_id->id ) {
-				return;
-			}
+				$transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id' );
+				if ( ! $transaction_by_charge_id || $transaction->id !== $transaction_by_charge_id->id ) {
+					return;
+				}
 
-			if ( $transaction->status !== 'paid' && ( $payment['status'] ?? '' ) === 'paid' ) {
-				$this->handlePaid( $submission, $transaction, $payment );
-			}
+				if ( $transaction->status !== 'paid' && ( $payment['status'] ?? '' ) === 'paid' ) {
+					$this->handlePaid( $submission, $transaction, $payment );
+				}
 
-			if ( $transaction->status !== 'failed' && ( $payment['status'] ?? '' ) !== 'paid' ) {
-				$this->handleFailed( $submission, $transaction, $payment );
+				if ( $transaction->status !== 'failed' && ( $payment['status'] ?? '' ) !== 'paid' ) {
+					$this->handleFailed( $submission, $transaction, $payment );
+				}
 			}
-		} );
+		);
 
 		$this->handleSessionRedirectBack( $data );
 	}
@@ -642,26 +653,29 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			return;
 		}
 
-		$this->with_submission_lock( $submission_id, function () use ( $submission, $payment, $payment_id ) {
+		$this->with_submission_lock(
+			$submission_id,
+			function () use ( $submission, $payment, $payment_id ) {
 
-			$transaction = $this->getTransaction( $submission_id, 'submission_id' );
-			if ( ! $transaction ) {
-				return;
-			}
+				$transaction = $this->getTransaction( $submission_id, 'submission_id' );
+				if ( ! $transaction ) {
+					return;
+				}
 
-			$transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id' );
-			if ( ! $transaction_by_charge_id || $transaction->id !== $transaction_by_charge_id->id ) {
-				return;
-			}
+				$transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id' );
+				if ( ! $transaction_by_charge_id || $transaction->id !== $transaction_by_charge_id->id ) {
+					return;
+				}
 
-			if ( $transaction->status !== 'paid' && ( $payment['status'] ?? '' ) === 'paid' ) {
-				$this->handlePaid( $submission, $transaction, $payment );
-			}
+				if ( $transaction->status !== 'paid' && ( $payment['status'] ?? '' ) === 'paid' ) {
+					$this->handlePaid( $submission, $transaction, $payment );
+				}
 
-			if ( $transaction->status !== 'failed' && ( $payment['status'] ?? '' ) !== 'paid' ) {
-				$this->handleFailed( $submission, $transaction, $payment );
+				if ( $transaction->status !== 'failed' && ( $payment['status'] ?? '' ) !== 'paid' ) {
+					$this->handleFailed( $submission, $transaction, $payment );
+				}
 			}
-		} );
+		);
 	}
 
 	/**
@@ -734,30 +748,33 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			return;
 		}
 
-		$this->with_submission_lock( $submission_id, function () use ( $payment, $payment_id, $submission_id ) {
+		$this->with_submission_lock(
+			$submission_id,
+			function () use ( $payment, $payment_id, $submission_id ) {
 
-			// re-fetch for thread safety inside the lock
-			$transaction           = $this->getTransaction( $submission_id, 'submission_id' );
-			$transaction_by_charge = $this->getTransaction( $payment_id, 'charge_id' );
+				// re-fetch for thread safety inside the lock.
+				$transaction           = $this->getTransaction( $submission_id, 'submission_id' );
+				$transaction_by_charge = $this->getTransaction( $payment_id, 'charge_id' );
 
-			if ( ! $transaction || ! $transaction_by_charge || $transaction->id !== $transaction_by_charge->id ) {
-				return;
+				if ( ! $transaction || ! $transaction_by_charge || $transaction->id !== $transaction_by_charge->id ) {
+					return;
+				}
+
+				if (
+					$transaction->status !== 'refunded'
+					&& isset( $payment['status'], $payment['payment']['payment_type'] )
+					&& 'success' === $payment['status']
+					&& 'refund' === $payment['payment']['payment_type']
+				) {
+					$this->handleRefund(
+						absint( $payment['payment']['amount'] ),
+						$transaction->id,
+						$submission_id,
+						sanitize_text_field( $payment['id'] )
+					);
+				}
 			}
-
-			if (
-				$transaction->status !== 'refunded'
-				&& isset( $payment['status'], $payment['payment']['payment_type'] )
-				&& 'success' === $payment['status']
-				&& 'refund' === $payment['payment']['payment_type']
-			) {
-				$this->handleRefund(
-					absint( $payment['payment']['amount'] ),
-					$transaction->id,
-					$submission_id,
-					sanitize_text_field( $payment['id'] )
-				);
-			}
-		} );
+		);
 	}
 
 	/**
