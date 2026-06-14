@@ -50,9 +50,9 @@ class Chip_Fluent_Forms {
 		$includes_dir = plugin_dir_path( FF_CHIP_FILE ) . 'includes/';
 
 		// Core runtime.
-		include $includes_dir . 'class-api.php';
+		include $includes_dir . 'class-chip-fluent-forms-api.php';
 		include $includes_dir . 'class-chip-fluent-forms-settings.php';
-		include $includes_dir . 'class-purchase.php';
+		include $includes_dir . 'class-chip-fluent-forms-purchase.php';
 
 		// Webhook lookup is needed on the public IPN side too (refund signature
 		// verification runs during the public POST), so this is loaded
