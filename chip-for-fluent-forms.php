@@ -1,6 +1,4 @@
 <?php
-// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbol
-// phpcs:disable PSR1.Files.SideEffects.FoundNonConditionalLogic
 /**
  * Plugin Name: CHIP for Fluent Forms
  * Plugin URI: https://wordpress.org/plugins/chip-for-fluent-forms/
@@ -17,6 +15,9 @@
  *
  * @package CHIPForFluentForms
  */
+
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbol
+// phpcs:disable PSR1.Files.SideEffects.FoundNonConditionalLogic
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

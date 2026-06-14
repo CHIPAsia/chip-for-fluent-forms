@@ -1,6 +1,4 @@
 <?php
-// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbol
-// phpcs:disable PSR1.Files.SideEffects.FoundNonConditionalLogic
 /**
  * Owns registration of the CHIP payment method with Fluent Forms Pro.
  *
@@ -14,6 +12,9 @@
  *
  * @package CHIPForFluentForms
  */
+
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbol
+// phpcs:disable PSR1.Files.SideEffects.FoundNonConditionalLogic
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
