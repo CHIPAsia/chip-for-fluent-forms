@@ -16,9 +16,6 @@
  * @package CHIPForFluentForms
  */
 
-// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbol
-// phpcs:disable PSR1.Files.SideEffects.FoundNonConditionalLogic
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -106,6 +103,7 @@ class Chip_Fluent_Forms {
 		// Helper-function bootstrap is in its own file so each PHP file
 		// declares only one kind of symbol (PSR1.Files.SideEffects).
 		include $includes_dir . 'admin/chip-for-fluent-forms-handler-bootstrap.php';
+		include $includes_dir . 'chip-for-fluent-forms-bootstrap.php';
 
 		if ( is_admin() ) {
 			include $includes_dir . 'admin/class-chip-fluent-forms-settings-page.php';
@@ -199,34 +197,3 @@ class Chip_Fluent_Forms {
 		Chip_Fluent_Forms_Webhook_Setup::setup_for_form_settings( (int) $form_id, $settings );
 	}
 }
-
-add_action( 'plugins_loaded', 'chip_for_fluent_forms_load_textdomain' );
-
-/**
- * Load the plugin text domain for translations.
- *
- * @return void
- */
-function chip_for_fluent_forms_load_textdomain() {
-	load_plugin_textdomain( 'chip-for-fluent-forms', false, dirname( FF_CHIP_BASENAME ) . '/languages/' );
-}
-
-add_action( 'init', 'load_chip_for_fluent_forms', 0 );
-
-/**
- * Plugin entry point.
- *
- * Gates on Fluent Forms Pro's PaymentHelper or BaseProcessor class being
- * available; without either, the plugin short-circuits as a no-op.
- *
- * @return void
- */
-function load_chip_for_fluent_forms() {
-
-	if ( ! class_exists( 'FluentFormPro\Payments\PaymentHelper' ) && ! class_exists( 'FluentFormPro\Payments\PaymentMethods\BaseProcessor' ) ) {
-		return;
-	}
-
-	Chip_Fluent_Forms::get_instance();
-}
-// phpcs:enable
