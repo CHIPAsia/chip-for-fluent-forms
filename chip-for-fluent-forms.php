@@ -16,6 +16,9 @@
  * @package CHIPForFluentForms
  */
 
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbol
+// phpcs:disable PSR1.Files.SideEffects.FoundNonConditionalLogic
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -226,3 +229,4 @@ function load_chip_for_fluent_forms() {
 
 	Chip_Fluent_Forms::get_instance();
 }
+// phpcs:enable
