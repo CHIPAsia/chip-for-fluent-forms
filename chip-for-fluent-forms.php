@@ -20,8 +20,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// phpcs:disable PSR1.Files.SideEffects -- this file intentionally combines the bootstrap class with top-level add_action() calls and helper functions.
-
 define( 'FF_CHIP_MODULE_VERSION', 'v1.2.0' );
 
 /**
@@ -224,4 +222,3 @@ function load_chip_for_fluent_forms() {
 
 	Chip_Fluent_Forms::get_instance();
 }
-// phpcs:enable

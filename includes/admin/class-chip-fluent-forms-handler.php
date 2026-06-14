@@ -17,8 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// phpcs:disable PSR1.Files.SideEffects -- this file intentionally combines the FF Pro extension class with a top-level helper function + add_action() bootstrap.
-
 use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentFormPro\Payments\PaymentMethods\BasePaymentMethod;
 
@@ -199,4 +197,3 @@ function chip_for_fluent_forms_init_handler() {
 	}
 }
 add_action( 'plugins_loaded', 'chip_for_fluent_forms_init_handler', 30 );
-// phpcs:enable
