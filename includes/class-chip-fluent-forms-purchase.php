@@ -268,7 +268,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 				'component'        => 'Payment',
 				'status'           => 'info',
 				'title'            => __( 'Redirect to CHIP', 'chip-for-fluent-forms' ),
-				'description'      => sprintf( __( 'User redirect to CHIP for completing the payment: %s', 'chip-for-fluent-forms' ), esc_url( $payment['checkout_url'] ) ),
+				'description'      => sprintf(
+					/* translators: %s: checkout URL */
+					__( 'User redirect to CHIP for completing the payment: %s', 'chip-for-fluent-forms' ),
+					esc_url( $payment['checkout_url'] )
+				),
 			)
 		);
 
@@ -408,7 +412,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$submission_id    = absint( $data['fluentform_payment'] );
 		$transaction_hash = sanitize_text_field( $data['transaction_hash'] );
 
-		if ( $data['payment_method'] !== 'chip' ) {
+		if ( 'chip' !== $data['payment_method'] ) {
 			return;
 		}
 
@@ -440,11 +444,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 					return;
 				}
 
-				if ( $transaction->status !== 'paid' && ( $payment['status'] ?? '' ) === 'paid' ) {
+				if ( 'paid' === ( $payment['status'] ?? '' ) && 'paid' !== $transaction->status ) {
 					$this->handlePaid( $submission, $transaction, $payment );
 				}
 
-				if ( $transaction->status !== 'failed' && ( $payment['status'] ?? '' ) !== 'paid' ) {
+				if ( 'failed' !== $transaction->status && 'paid' !== ( $payment['status'] ?? '' ) ) {
 					$this->handleFailed( $submission, $transaction, $payment );
 				}
 			}
@@ -667,11 +671,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 					return;
 				}
 
-				if ( $transaction->status !== 'paid' && ( $payment['status'] ?? '' ) === 'paid' ) {
+				if ( 'paid' === ( $payment['status'] ?? '' ) && 'paid' !== $transaction->status ) {
 					$this->handlePaid( $submission, $transaction, $payment );
 				}
 
-				if ( $transaction->status !== 'failed' && ( $payment['status'] ?? '' ) !== 'paid' ) {
+				if ( 'failed' !== $transaction->status && 'paid' !== ( $payment['status'] ?? '' ) ) {
 					$this->handleFailed( $submission, $transaction, $payment );
 				}
 			}
@@ -761,7 +765,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 				}
 
 				if (
-					$transaction->status !== 'refunded'
+					'refunded' !== $transaction->status
 					&& isset( $payment['status'], $payment['payment']['payment_type'] )
 					&& 'success' === $payment['status']
 					&& 'refund' === $payment['payment']['payment_type']
