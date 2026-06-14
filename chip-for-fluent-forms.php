@@ -12,6 +12,8 @@
  * Copyright: © 2026 CHIP
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * @package CHIPForFluentForms
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -149,15 +151,15 @@ class Chip_Fluent_Forms {
 	 * Hooked on update_option_{option}: re-create the CHIP refund webhook
 	 * when global refund-sync is on.
 	 *
-	 * @param mixed $old The previous option value.
-	 * @param mixed $new The new option value.
+	 * @param mixed $old_value The previous option value.
+	 * @param mixed $new_value The new option value.
 	 * @return void
 	 */
-	public function after_global_settings_save( $old, $new ) {
+	public function after_global_settings_save( $old_value, $new_value ) {
 		if ( ! class_exists( 'Chip_Fluent_Forms_Webhook_Setup' ) ) {
 			return;
 		}
-		Chip_Fluent_Forms_Webhook_Setup::setup_for_global_settings( $new );
+		Chip_Fluent_Forms_Webhook_Setup::setup_for_global_settings( $new_value );
 	}
 
 	/**
@@ -191,6 +193,7 @@ class Chip_Fluent_Forms {
 	}
 }
 
+// phpcs:disable PSR1.Files.SideEffects -- plugin entry-point file intentionally combines the bootstrap class with top-level add_action() calls and helper functions.
 add_action( 'plugins_loaded', 'chip_for_fluent_forms_load_textdomain' );
 
 /**

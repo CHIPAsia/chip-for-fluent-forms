@@ -148,8 +148,9 @@ class Chip_Fluent_Forms_Settings {
 		$stored = array();
 		if ( function_exists( 'wpFluent' ) ) {
 			$row = wpFluent()->table( 'fluentform_form_meta' )
-				->where( 'form_id', $form_id )
+				// phpcs:ignore WordPress.DB.SlowDBQuery -- the fluentform_form_meta table is not a WordPress postmeta table, so the standard slow-query rule does not apply.
 				->where( 'meta_key', '_chip_payment_settings' )
+				->where( 'form_id', $form_id )
 				->first();
 			if ( $row && ! empty( $row->value ) ) {
 				$unserialized = maybe_unserialize( $row->value );
@@ -172,17 +173,20 @@ class Chip_Fluent_Forms_Settings {
 		// If the per-form toggle is off, fall back to the global values for every
 		// effective field except the per-form "is_active" flag itself.
 		if ( 'yes' !== $merged['is_active'] ) {
-			$merged = array_merge( $merged, array(
-				'brand_id'                => $global['brand_id'],
-				'secret_key'              => $global['secret_key'],
-				'payment_mode'            => $global['payment_mode'],
-				'send_receipt'            => $global['send_receipt'],
-				'due_strict'              => $global['due_strict'],
-				'due_strict_timing'       => $global['due_strict_timing'],
-				'payment_method_whitelist' => $global['payment_method_whitelist'],
-				'synchronize_refund'      => $global['synchronize_refund'],
-				'public_key'              => $global['public_key'],
-			) );
+			$merged = array_merge(
+				$merged,
+				array(
+					'brand_id'                => $global['brand_id'],
+					'secret_key'              => $global['secret_key'],
+					'payment_mode'            => $global['payment_mode'],
+					'send_receipt'            => $global['send_receipt'],
+					'due_strict'              => $global['due_strict'],
+					'due_strict_timing'       => $global['due_strict_timing'],
+					'payment_method_whitelist' => $global['payment_method_whitelist'],
+					'synchronize_refund'      => $global['synchronize_refund'],
+					'public_key'              => $global['public_key'],
+				)
+			);
 		}
 
 		return $merged;
@@ -235,24 +239,29 @@ class Chip_Fluent_Forms_Settings {
 		if ( function_exists( 'wpFluent' ) ) {
 			$row = wpFluent()->table( 'fluentform_form_meta' )
 				->where( 'form_id', $form_id )
+				// phpcs:ignore WordPress.DB.SlowDBQuery -- the fluentform_form_meta table is not a WordPress postmeta table, so the standard slow-query rule does not apply.
 				->where( 'meta_key', '_chip_payment_settings' )
 				->first();
 
 			if ( $row ) {
 				wpFluent()->table( 'fluentform_form_meta' )
 					->where( 'id', $row->id )
-					->update( array(
-						'value'      => maybe_serialize( $clean ),
-						'updated_at' => current_time( 'mysql' ),
-					) );
+					->update(
+						array(
+							'value'      => maybe_serialize( $clean ),
+							'updated_at' => current_time( 'mysql' ),
+						)
+					);
 			} else {
-				wpFluent()->table( 'fluentform_form_meta' )->insert( array(
-					'form_id'    => $form_id,
-					'meta_key'   => '_chip_payment_settings',
-					'value'      => maybe_serialize( $clean ),
-					'created_at' => current_time( 'mysql' ),
-					'updated_at' => current_time( 'mysql' ),
-				) );
+				wpFluent()->table( 'fluentform_form_meta' )->insert(
+					array(
+						'form_id'    => $form_id,
+						'meta_key'   => '_chip_payment_settings',
+						'value'      => maybe_serialize( $clean ),
+						'created_at' => current_time( 'mysql' ),
+						'updated_at' => current_time( 'mysql' ),
+					)
+				);
 			}
 		}
 
@@ -359,10 +368,9 @@ class Chip_Fluent_Forms_Settings {
 	}
 
 	/**
-	 * @internal
-	 *
 	 * Map the legacy flat option keys into the new global settings shape.
-	 * Used only while a site is in the pre-migration window.
+	 *
+	 * @internal Used only while a site is in the pre-migration window.
 	 *
 	 * @param mixed $legacy The legacy option payload.
 	 * @return array
@@ -376,7 +384,9 @@ class Chip_Fluent_Forms_Settings {
 
 		$whitelist = array();
 		foreach ( array(
-			'fpx', 'fpx_b2b1', 'duitnow',
+			'fpx',
+			'fpx_b2b1',
+			'duitnow',
 		) as $legacy_key ) {
 			$option_key = 'payment-method-' . $legacy_key;
 			if ( ! empty( $legacy[ $option_key ] ) ) {
@@ -403,18 +413,22 @@ class Chip_Fluent_Forms_Settings {
 	}
 
 	/**
-	 * @internal
-	 *
 	 * Map the legacy per-form postfix keys into the new per-form shape.
+	 *
+	 * @internal Used only while a site is in the pre-migration window.
 	 *
 	 * @param mixed $legacy  The legacy option payload.
 	 * @param int   $form_id Fluent Forms form id.
 	 * @return array
 	 */
 	private static function migrate_legacy_to_form( $legacy, $form_id ) {
-		$postfix = '-' . (int) $form_id;
+		$postfix   = '-' . (int) $form_id;
 		$whitelist = array();
-		foreach ( array( 'fpx', 'fpx_b2b1', 'duitnow' ) as $legacy_key ) {
+		foreach ( array(
+			'fpx',
+			'fpx_b2b1',
+			'duitnow',
+		) as $legacy_key ) {
 			$option_key = 'payment-method-' . $legacy_key . $postfix;
 			if ( ! empty( $legacy[ $option_key ] ) ) {
 				$whitelist[ 'fpx' === $legacy_key ? 'fpx' : ( 'fpx_b2b1' === $legacy_key ? 'fpx_b2b1' : 'duitnow_qr' ) ] = '1';

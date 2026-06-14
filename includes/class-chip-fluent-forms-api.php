@@ -9,7 +9,7 @@
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  */
-define( 'FLUENT_FORMS_CHIP_ROOT_URL', 'https://gate.chip-in.asia' ); // This is CHIP API URL Endpoint as per documented in: https://developer.chip-in.asia/api
+define( 'FLUENT_FORMS_CHIP_ROOT_URL', 'https://gate.chip-in.asia' ); // This is the CHIP API URL endpoint, as documented in: https://developer.chip-in.asia/api.
 
 /**
  * Chip_Fluent_Forms_API — REST client for the CHIP payment gateway API.
@@ -193,7 +193,10 @@ class Chip_Fluent_Forms_API {
 			return new \WP_Error(
 				'ff_chip_http_error',
 				sprintf( /* translators: 1: HTTP code, 2: method, 3: route */ __( 'CHIP API responded with HTTP %1$d on %2$s %3$s.', 'chip-for-fluent-forms' ), $code, $method, $route ),
-				array( 'status' => $code, 'body' => $response )
+				array(
+					'status' => $code,
+					'body'   => $response,
+				)
 			);
 		}
 

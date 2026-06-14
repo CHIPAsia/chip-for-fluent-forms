@@ -89,12 +89,12 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * The signature is dictated by BaseProcessor::init() / FF Pro's action
 	 * callback contract — do not rename the parameters.
 	 *
-	 * @param int     $submissionId       Fluent Forms submission id.
-	 * @param array   $submissionData     Raw submission payload.
-	 * @param object  $form               The Fluent Forms form object.
-	 * @param array   $methodSettings     Per-method settings from FF Pro.
-	 * @param bool    $hasSubscriptions   True if the form has subscription items.
-	 * @param float   $totalPayable       Total payable amount.
+	 * @param int    $submissionId     Fluent Forms submission id.
+	 * @param array  $submissionData   Raw submission payload.
+	 * @param object $form             The Fluent Forms form object.
+	 * @param array  $methodSettings   Per-method settings from FF Pro.
+	 * @param bool   $hasSubscriptions True if the form has subscription items.
+	 * @param float  $totalPayable     Total payable amount.
 	 * @return bool|void
 	 */
 	public function handlePaymentAction( $submissionId, $submissionData, $form, $methodSettings, $hasSubscriptions, $totalPayable ) {
@@ -180,7 +180,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		);
 
 		$additional_notes_array = ArrayHelper::get( $methodSettings, 'settings.notes.value', '' );
-		$additional_notes = sanitize_text_field( ShortCodeParser::parse( $additional_notes_array, $submission->id, $submission->response, $form, false, true ) );
+		$additional_notes      = sanitize_text_field( ShortCodeParser::parse( $additional_notes_array, $submission->id, $submission->response, $form, false, true ) );
 
 		$params = array(
 			'success_callback' => $success_callback,
@@ -516,7 +516,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * @param object $submission        The Fluent Forms submission row.
 	 * @param object $transaction       The Fluent Forms transaction row.
 	 * @param array  $vendorTransaction The raw CHIP purchase payload.
-	 * @return void
+	 * @return mixed The result of completePaymentSubmission() on the idempotent fast-path; void otherwise.
 	 */
 	public function handlePaid( $submission, $transaction, $vendorTransaction ) {
 
@@ -751,6 +751,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			return;
 		}
 
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode -- the X-Signature header from CHIP is a base64-encoded RSA signature, not user input.
 		if ( 1 !== openssl_verify( $content, base64_decode( $x_signature ), $public_key, 'sha256WithRSAEncryption' ) ) {
 			do_action(
 				'ff_log_data',
