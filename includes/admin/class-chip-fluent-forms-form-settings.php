@@ -163,8 +163,8 @@ class Chip_Fluent_Forms_Form_Settings {
 	 * Hooked on fluentform/after_save_form_settings. Receives the full per-form
 	 * payment settings array; we extract the `chip` subkey, sanitize, and save.
 	 *
-	 * @param int   $form_id
-	 * @param array $all_settings
+	 * @param int   $form_id      Fluent Forms form id.
+	 * @param array $all_settings The full per-form payment settings payload.
 	 */
 	public function save_per_form_settings( $form_id, $all_settings ) {
 		if ( ! is_array( $all_settings ) || empty( $all_settings['chip'] ) || ! is_array( $all_settings['chip'] ) ) {

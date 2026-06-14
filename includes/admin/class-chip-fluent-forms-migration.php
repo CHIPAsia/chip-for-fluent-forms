@@ -127,7 +127,7 @@ class Chip_Fluent_Forms_Migration {
 		// Migrate per-form entries.
 		if ( function_exists( 'wpFluent' ) ) {
 			$forms = wpFluent()->table( 'fluentform_forms' )
-				->select( array( 'id' ) )
+				->select( array( 0 => 'id' ) )
 				->orderBy( 'id' )
 				->get();
 
