@@ -94,9 +94,8 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	/**
+	 * Return the global fields schema.
+	 *
 	 * @inheritDoc
 	 *
 	 * @return array
@@ -109,6 +108,8 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 	}
 
 	/**
+	 * Return the global settings values.
+	 *
 	 * @inheritDoc
 	 *
 	 * @return array
@@ -142,11 +143,11 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					/* translators: %s: payment method title (e.g. "CHIP") */
 					'label'    => __( 'Method Label', 'chip-for-fluent-forms' ),
 				),
-				'notes' => array(
-					'type'     => 'text',
-					'template' => 'inputText',
-					'value'    => '',
-					'label'    => __( 'Notes', 'chip-for-fluent-forms' ),
+				'notes'        => array(
+					'type'      => 'text',
+					'template'  => 'inputText',
+					'value'     => '',
+					'label'     => __( 'Notes', 'chip-for-fluent-forms' ),
 					/* translators: %s: payment method title */
 					'help_text' => __( 'Add payment notes. You can use {inputs.<Name Attribute>} for dynamic values from form fields.', 'chip-for-fluent-forms' ),
 				),

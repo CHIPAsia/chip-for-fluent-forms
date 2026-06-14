@@ -176,15 +176,15 @@ class Chip_Fluent_Forms_Settings {
 			$merged = array_merge(
 				$merged,
 				array(
-					'brand_id'                => $global['brand_id'],
-					'secret_key'              => $global['secret_key'],
-					'payment_mode'            => $global['payment_mode'],
-					'send_receipt'            => $global['send_receipt'],
-					'due_strict'              => $global['due_strict'],
-					'due_strict_timing'       => $global['due_strict_timing'],
+					'brand_id'               => $global['brand_id'],
+					'secret_key'             => $global['secret_key'],
+					'payment_mode'           => $global['payment_mode'],
+					'send_receipt'           => $global['send_receipt'],
+					'due_strict'             => $global['due_strict'],
+					'due_strict_timing'      => $global['due_strict_timing'],
 					'payment_method_whitelist' => $global['payment_method_whitelist'],
-					'synchronize_refund'      => $global['synchronize_refund'],
-					'public_key'              => $global['public_key'],
+					'synchronize_refund'     => $global['synchronize_refund'],
+					'public_key'             => $global['public_key'],
 				)
 			);
 		}

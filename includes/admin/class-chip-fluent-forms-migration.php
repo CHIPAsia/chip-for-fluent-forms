@@ -192,7 +192,7 @@ class Chip_Fluent_Forms_Migration {
 		}
 
 		// Every non-empty legacy key that has a mapping must be reflected in the new global option.
-		// (Empty legacy values are not considered an error — the merchant just hadn't filled them in.)
+		// Empty legacy values are not considered an error — the merchant just hadn't filled them in.
 		$mapping = array(
 			'secret-key'        => 'secret_key',
 			'brand-id'          => 'brand_id',

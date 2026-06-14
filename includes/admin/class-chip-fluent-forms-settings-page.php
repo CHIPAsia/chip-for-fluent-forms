@@ -31,8 +31,8 @@ class Chip_Fluent_Forms_Settings_Page {
 	 * @return array
 	 */
 	public function get_fields() {
-		$methods            = Chip_Fluent_Forms_Settings::payment_methods();
-		$whitelist_options  = array();
+		$methods           = Chip_Fluent_Forms_Settings::payment_methods();
+		$whitelist_options = array();
 		foreach ( $methods as $key => $label ) {
 			$whitelist_options[] = array(
 				'key'   => $key,

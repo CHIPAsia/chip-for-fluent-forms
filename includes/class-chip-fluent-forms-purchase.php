@@ -180,7 +180,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		);
 
 		$additional_notes_array = ArrayHelper::get( $methodSettings, 'settings.notes.value', '' );
-		$additional_notes      = sanitize_text_field( ShortCodeParser::parse( $additional_notes_array, $submission->id, $submission->response, $form, false, true ) );
+		$additional_notes       = sanitize_text_field( ShortCodeParser::parse( $additional_notes_array, $submission->id, $submission->response, $form, false, true ) );
 
 		$params = array(
 			'success_callback' => $success_callback,

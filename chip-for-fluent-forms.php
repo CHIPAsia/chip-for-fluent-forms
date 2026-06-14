@@ -193,7 +193,6 @@ class Chip_Fluent_Forms {
 	}
 }
 
-// phpcs:disable PSR1.Files.SideEffects -- plugin entry-point file intentionally combines the bootstrap class with top-level add_action() calls and helper functions.
 add_action( 'plugins_loaded', 'chip_for_fluent_forms_load_textdomain' );
 
 /**

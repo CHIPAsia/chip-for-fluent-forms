@@ -65,7 +65,7 @@ class Chip_Fluent_Forms_Form_Settings {
 		}
 
 		$form_settings = Chip_Fluent_Forms_Settings::for_form( (int) $form->id );
-		$is_active    = 'yes' === $form_settings['is_active'];
+		$is_active     = 'yes' === $form_settings['is_active'];
 
 		$fields = array(
 			array(
@@ -99,28 +99,28 @@ class Chip_Fluent_Forms_Form_Settings {
 			'value' => $form_settings['secret_key'],
 		);
 		$fields[] = array(
-			'key'     => 'payment_mode',
-			'label'   => __( 'Payment Mode', 'chip-for-fluent-forms' ),
-			'type'    => 'select',
+			'key'    => 'payment_mode',
+			'label'  => __( 'Payment Mode', 'chip-for-fluent-forms' ),
+			'type'   => 'select',
 			'options' => array(
 				'test' => __( 'Test', 'chip-for-fluent-forms' ),
 				'live' => __( 'Live', 'chip-for-fluent-forms' ),
 			),
-			'value'   => $form_settings['payment_mode'],
+			'value'  => $form_settings['payment_mode'],
 		);
 		$fields[] = array(
-			'key'   => 'send_receipt',
-			'label' => __( 'Send Receipt', 'chip-for-fluent-forms' ),
-			'type'  => 'checkbox',
+			'key'      => 'send_receipt',
+			'label'    => __( 'Send Receipt', 'chip-for-fluent-forms' ),
+			'type'     => 'checkbox',
 			'template' => 'inputYesNoCheckbox',
-			'value' => $form_settings['send_receipt'],
+			'value'    => $form_settings['send_receipt'],
 		);
 		$fields[] = array(
-			'key'   => 'due_strict',
-			'label' => __( 'Due Strict', 'chip-for-fluent-forms' ),
-			'type'  => 'checkbox',
+			'key'      => 'due_strict',
+			'label'    => __( 'Due Strict', 'chip-for-fluent-forms' ),
+			'type'     => 'checkbox',
 			'template' => 'inputYesNoCheckbox',
-			'value' => $form_settings['due_strict'],
+			'value'    => $form_settings['due_strict'],
 		);
 		$fields[] = array(
 			'key'   => 'due_strict_timing',
@@ -129,11 +129,11 @@ class Chip_Fluent_Forms_Form_Settings {
 			'value' => $form_settings['due_strict_timing'],
 		);
 		$fields[] = array(
-			'key'     => 'synchronize_refund',
-			'label'   => __( 'Synchronize Refund', 'chip-for-fluent-forms' ),
-			'type'    => 'checkbox',
+			'key'      => 'synchronize_refund',
+			'label'    => __( 'Synchronize Refund', 'chip-for-fluent-forms' ),
+			'type'     => 'checkbox',
 			'template' => 'inputYesNoCheckbox',
-			'value'   => $form_settings['synchronize_refund'],
+			'value'    => $form_settings['synchronize_refund'],
 		);
 
 		// Whitelist (checkbox group).
