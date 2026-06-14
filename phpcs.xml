@@ -57,7 +57,16 @@
 		and the public FF Pro action signature. The exclude below scopes the
 		relaxation to the processor file only.
 	-->
+	<!--
+		Three classes inherit the FF Pro public surface (BasePaymentMethod /
+		BaseProcessor) which uses camelCase property names (settingsKey) and
+		method-parameter names (handlePaymentAction, getSubmission, etc.).
+		We cannot rename these without breaking the contract, so the rule
+		is relaxed for these files only.
+	-->
 	<rule ref="WordPress.NamingConventions.ValidVariableName">
 		<exclude-pattern>includes/class-chip-fluent-forms-purchase.php</exclude-pattern>
+		<exclude-pattern>includes/admin/class-chip-fluent-forms-handler.php</exclude-pattern>
+		<exclude-pattern>includes/admin/class-chip-fluent-forms-webhook-setup.php</exclude-pattern>
 	</rule>
 </ruleset>
