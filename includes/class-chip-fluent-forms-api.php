@@ -63,6 +63,7 @@ class Chip_Fluent_Forms_API {
 	 *
 	 * @param string $secret_key CHIP API secret key.
 	 * @param string $brand_id   CHIP brand id.
+	 * @return void
 	 */
 	public function __construct( $secret_key, $brand_id ) {
 		$this->secret_key = $secret_key;

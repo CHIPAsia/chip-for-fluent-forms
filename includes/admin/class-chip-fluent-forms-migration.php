@@ -100,6 +100,7 @@ class Chip_Fluent_Forms_Migration {
 	 * Phase 1: write the new global option and per-form rows.
 	 *
 	 * @param array $legacy The legacy fluent_form_chip option array.
+	 * @return void
 	 * @throws \RuntimeException If Chip_Fluent_Forms_Settings isn't loadable.
 	 */
 	private static function phase1_write( $legacy ) {
