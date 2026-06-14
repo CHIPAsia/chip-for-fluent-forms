@@ -51,7 +51,7 @@ class Chip_Fluent_Forms {
 
 		// Core runtime.
 		include $includes_dir . 'class-api.php';
-		include $includes_dir . 'class-chip-settings.php';
+		include $includes_dir . 'class-chip-fluent-forms-settings.php';
 		include $includes_dir . 'class-purchase.php';
 
 		// Webhook lookup is needed on the public IPN side too (refund signature

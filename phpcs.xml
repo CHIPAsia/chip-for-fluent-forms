@@ -44,4 +44,20 @@
 	<rule ref="PSR2.Classes.PropertyDeclaration">
 		<exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
 	</rule>
+
+	<!--
+		The processor class extends FluentFormPro\Payments\PaymentMethods\BaseProcessor
+		and overrides its methods. BaseProcessor's public method signatures use
+		camelCase parameter names (e.g. handlePaymentAction($submissionId,
+		$submissionData, $form, $methodSettings, $hasSubscriptions, $totalPayable))
+		that the parent class calls us with, and Fluent Forms Pro's own
+		callback-style invocations (the action handlers we register on
+		fluentform/process_payment_chip and friends) also pass camelCase params.
+		We cannot rename these without breaking the contract with BaseProcessor
+		and the public FF Pro action signature. The exclude below scopes the
+		relaxation to the processor file only.
+	-->
+	<rule ref="WordPress.NamingConventions.ValidVariableName">
+		<exclude-pattern>includes/class-purchase.php</exclude-pattern>
+	</rule>
 </ruleset>

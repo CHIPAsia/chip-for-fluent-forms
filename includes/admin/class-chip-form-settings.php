@@ -1,8 +1,4 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 /**
  * Per-form CHIP payment settings.
  *
@@ -13,7 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Also exposes a per-form sanitize hook used by the new webhook setup class
  * to (re)create the per-form refund webhook.
+ *
+ * @package CHIPForFluentForms
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 class Chip_Fluent_Forms_Form_Settings {
 
 	const META_KEY = '_chip_payment_settings';

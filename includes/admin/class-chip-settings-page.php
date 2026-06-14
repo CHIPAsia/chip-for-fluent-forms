@@ -1,8 +1,4 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 /**
  * Global CHIP settings page.
  *
@@ -11,7 +7,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * contract). The page itself is also capable of rendering standalone
  * under the Fluent Forms submenu if FF Pro is too old to render the
  * native tab.
+ *
+ * @package CHIPForFluentForms
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class Chip_Fluent_Forms_Settings_Page {
 
 	const OPTION_GROUP = 'fluentform_chip_settings_group';

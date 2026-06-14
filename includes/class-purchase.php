@@ -1,16 +1,41 @@
 <?php
+/**
+ * Payment processor that bridges Fluent Forms Pro and the CHIP API.
+ *
+ * @package CHIPForFluentForms
+ */
+
 use FluentForm\App\Services\Form\SubmissionHandlerService;
 use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentForm\App\Services\FormBuilder\ShortCodeParser;
 use FluentFormPro\Payments\PaymentMethods\BaseProcessor;
 use FluentFormPro\Payments\PaymentHelper;
 
+/**
+ * Chip_Fluent_Forms_Purchase — see file-level docblock above.
+ */
 class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
+	/**
+	 * Singleton instance.
+	 *
+	 * @var Chip_Fluent_Forms_Purchase|null
+	 */
 	private static $_instance;
 
+	/**
+	 * Currencies this payment method supports.
+	 *
+	 * @var string[]
+	 */
 	private $supported_currencies = array( 'MYR' );
-	protected $method             = 'chip'; // used by BaseProcessor->insertRefund($data)
+
+	/**
+	 * Method identifier — used by BaseProcessor->insertRefund($data).
+	 *
+	 * @var string
+	 */
+	protected $method = 'chip'; // Used by BaseProcessor->insertRefund($data).
 
 	public static function get_instance() {
 		if ( self::$_instance === null ) {

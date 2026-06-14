@@ -1,11 +1,4 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
-use FluentForm\Framework\Helpers\ArrayHelper;
-use FluentFormPro\Payments\PaymentMethods\BasePaymentMethod;
-
 /**
  * Owns registration of the CHIP payment method with Fluent Forms Pro.
  *
@@ -16,7 +9,16 @@ use FluentFormPro\Payments\PaymentMethods\BasePaymentMethod;
  *
  * Also boots the global settings page, the per-form settings page, and the
  * processor. Sits at the center of the plugin's runtime graph.
+ *
+ * @package CHIPForFluentForms
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+use FluentForm\Framework\Helpers\ArrayHelper;
+use FluentFormPro\Payments\PaymentMethods\BasePaymentMethod;
 class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 
 	const KEY = 'chip';

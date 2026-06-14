@@ -1,8 +1,4 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 /**
  * Two-phase migration from the legacy option schema to the new one.
  *
@@ -27,6 +23,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Wrapped in try/catch so a migration failure never blocks the rest of the
  * plugin from loading. The legacy read path in Chip_Fluent_Forms_Settings keeps
  * the plugin working in the meantime.
+ *
+ * @package CHIPForFluentForms
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Chip_Fluent_Forms_Migration — see file-level docblock at the top of the file.
  */
 class Chip_Fluent_Forms_Migration {
 

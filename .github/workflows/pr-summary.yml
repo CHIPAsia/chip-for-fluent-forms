@@ -41,7 +41,7 @@ jobs:
         env:
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           AI_API_URL: ${{ vars.AI_API_URL }}
-          AI_MODEL: ${{ vars.AI_MODEL || 'gemini-3-flash-preview:cloud' }}
+          AI_MODEL: ${{ vars.AI_MODEL || 'llama3.1:8b' }}
         run: |
           python scripts/generate_pr_summary.py pr_diff.txt current_body.md > summary.md
           echo "SUMMARY<<EOF" >> "$GITHUB_ENV"

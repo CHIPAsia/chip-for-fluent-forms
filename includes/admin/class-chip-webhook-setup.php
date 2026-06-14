@@ -1,8 +1,4 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
-
 /**
  * Webhook setup for CHIP refund synchronization.
  *
@@ -17,7 +13,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *   - The previous CSF hook (csf_fluent_form_chip_save_before) is gone,
  *     so we drive the setup directly from the sanitize callbacks of the
  *     two new settings pages.
+ *
+ * @package CHIPForFluentForms
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 class Chip_Fluent_Forms_Webhook_Setup {
 
 	const WEBHOOK_TITLE = 'CHIP for Fluent Forms';
