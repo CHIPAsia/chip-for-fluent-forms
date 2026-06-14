@@ -15,6 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Chip_Fluent_Forms_Settings_Page — see file-level docblock above.
+ *
+ * Owns the field schema consumed by FF Pro's native Payment Methods tab
+ * and the (optional) standalone settings page render.
+ */
 class Chip_Fluent_Forms_Settings_Page {
 
 	const OPTION_GROUP = 'fluentform_chip_settings_group';
@@ -264,6 +270,8 @@ class Chip_Fluent_Forms_Settings_Page {
 
 	/**
 	 * Generic text input.
+	 *
+	 * @param array $args The WP Settings API field args (expects a 'key').
 	 */
 	public function field_text( $args ) {
 		$settings = Chip_Fluent_Forms_Settings::global();
@@ -276,6 +284,11 @@ class Chip_Fluent_Forms_Settings_Page {
 		);
 	}
 
+	/**
+	 * Numeric input.
+	 *
+	 * @param array $args The WP Settings API field args (expects a 'key').
+	 */
 	public function field_number( $args ) {
 		$settings = Chip_Fluent_Forms_Settings::global();
 		$key      = $args['key'];
@@ -287,6 +300,11 @@ class Chip_Fluent_Forms_Settings_Page {
 		);
 	}
 
+	/**
+	 * Select input.
+	 *
+	 * @param array $args The WP Settings API field args (expects 'key' and 'options').
+	 */
 	public function field_select( $args ) {
 		$settings = Chip_Fluent_Forms_Settings::global();
 		$key      = $args['key'];
@@ -302,6 +320,11 @@ class Chip_Fluent_Forms_Settings_Page {
 		<?php
 	}
 
+	/**
+	 * Checkbox input.
+	 *
+	 * @param array $args The WP Settings API field args (expects a 'key').
+	 */
 	public function field_checkbox( $args ) {
 		$settings = Chip_Fluent_Forms_Settings::global();
 		$key      = $args['key'];
@@ -314,6 +337,11 @@ class Chip_Fluent_Forms_Settings_Page {
 		);
 	}
 
+	/**
+	 * Checkbox group for the payment method whitelist.
+	 *
+	 * @param array $args The WP Settings API field args (expects a 'key').
+	 */
 	public function field_checkbox_group( $args ) {
 		$settings = Chip_Fluent_Forms_Settings::global();
 		$key      = $args['key'];

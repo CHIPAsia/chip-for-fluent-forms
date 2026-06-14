@@ -20,6 +20,14 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+/**
+ * Chip_Fluent_Forms_Webhook_Setup — see file-level docblock above.
+ *
+ * Public API: get_public_key_for_form() (used by the processor's
+ * refund_callback) and the two setup_for_* entry points (called by
+ * the sanitize callbacks in chip-for-fluent-forms.php).
+ */
 class Chip_Fluent_Forms_Webhook_Setup {
 
 	const WEBHOOK_TITLE = 'CHIP for Fluent Forms';
@@ -31,6 +39,9 @@ class Chip_Fluent_Forms_Webhook_Setup {
 	 * key was registered) → global public key → empty string.
 	 *
 	 * Called by Chip_Fluent_Forms_Purchase::refund_callback().
+	 *
+	 * @param int $form_id Fluent Forms form id.
+	 * @return string PEM-encoded public key, or empty string.
 	 */
 	public static function get_public_key_for_form( $form_id ) {
 		$form_id = (int) $form_id;
