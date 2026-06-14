@@ -32,7 +32,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Chip_Fluent_Forms_Migration — see file-level docblock at the top of the file.
+ * Chip_Fluent_Forms_Migration — two-phase upgrade from the legacy
+ * fluent_form_chip option layout. See file-level docblock for the
+ * full phase 1 / phase 2 protocol.
  */
 class Chip_Fluent_Forms_Migration {
 
@@ -46,6 +48,11 @@ class Chip_Fluent_Forms_Migration {
 		add_action( 'plugins_loaded', array( __CLASS__, 'maybe_migrate' ), 20 );
 	}
 
+	/**
+	 * Run the appropriate migration phase based on flag state.
+	 *
+	 * Idempotent: re-running a phase that has already completed is a no-op.
+	 */
 	public static function maybe_migrate() {
 		if ( '1' === get_option( self::DONE_FLAG, '0' ) ) {
 			return;

@@ -16,6 +16,12 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+/**
+ * Chip_Fluent_Forms_Form_Settings — per-form Customize panel and save handler.
+ *
+ * @see file-level docblock at the top of the file.
+ */
 class Chip_Fluent_Forms_Form_Settings {
 
 	const META_KEY = '_chip_payment_settings';
