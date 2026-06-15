@@ -14,7 +14,7 @@ if ( ! defined( 'FF_CHIP_PLUGIN_PATH' ) ) {
 }
 
 if ( ! defined( 'FF_CHIP_MODULE_VERSION' ) ) {
-	define( 'FF_CHIP_MODULE_VERSION', 'v1.2.0' );
+	define( 'FF_CHIP_MODULE_VERSION', 'v2.0.0' );
 }
 
 $autoload = FF_CHIP_PLUGIN_PATH . 'vendor/autoload.php';

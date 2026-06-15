@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 1.2.0 2026-06-13 =
+= 2.0.0 2026-06-15 =
 * Added   - New payment method whitelist keys: crypto_coin, dnqr, mpgs_apple_pay, mpgs_google_pay, razer_atome, razer_grabpay, razer_maybankqr, razer_shopeepay, razer_tng, shopee_pay. The existing `cards` shortcut now expands to visa+mastercard+maestro at send-time.
 * Added   - Form-level "Notes" field on the payment method (merged from add/notes_parameter).
 * Added   - `ff_chip_payment_paid_chip` action hook fired after a submission is marked as paid.

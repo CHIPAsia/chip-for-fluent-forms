@@ -3,7 +3,7 @@ Contributors: chipasia, wanzulnet
 Tags: chip
 Requires at least: 6.1
 Tested up to: 7.0
-Stable tag: 1.2.0
+Stable tag: 2.0.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -31,17 +31,26 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 
 == Changelog ==
 
-= 1.2.0 2026-06-13 =
-* Added payment method whitelist keys: crypto, DuitNow QR, Apple Pay, Google Pay, Atome, GrabPay, Maybank QR, ShopeePay, Touch 'n Go, Shopee Pay.
-* Dropped bundled Codestar Framework; settings live in Fluent Forms' native Payment Methods tab.
-* One-time migration of saved settings to the new option layout.
-* `ff_chip_payment_paid_chip` action hook for after-paid integrations.
-* `ff_chip_ipn_domain` filter and `FF_CHIP_IPN_DOMAIN` constant for reverse-proxy sites.
-* Fixed per-form refund signature verification and amount-mismatch handling.
-* Updated API documentation URL to https://docs.chip-in.asia.
-
-= 1.1.2 2025-05-05 =
-* Fixed - Fixed issue with load_textdomain.
+= 2.0.0 2026-06-15 =
+* Major rewrite: dropped bundled Codestar Framework (2.4M) in favour of Fluent Forms Pro's native Payment Methods tab via `BasePaymentMethod`.
+* Added 10 new payment-method whitelist keys (crypto_coin, dnqr, mpgs_apple_pay, mpgs_google_pay, razer_atome, razer_grabpay, razer_maybankqr, razer_shopeepay, razer_tng, shopee_pay). The `cards` shortcut still expands to visa+mastercard+maestro at send-time.
+* Per-form "Customize" panel (per-form credentials, payment-mode override, payment-method whitelist, refund-sync toggle) wired through FF Pro's per-form payment settings.
+* Form-level "Notes" field on the payment method (merged from add/notes_parameter), with `{inputs.<Name Attribute>}` substitution.
+* `ff_chip_payment_paid_chip` action hook fired after a submission is marked as paid (replaces the undocumented `_ff_chip_on_payment_success` meta flag).
+* `ff_chip_ipn_domain` filter and `FF_CHIP_IPN_DOMAIN` constant for reverse-proxy / custom-hostname sites.
+* `ff_chip_payment_mode` filter.
+* New settings option schema: global `fluent_form_chip_settings` option + per-form `fluentform_form_meta` rows with `meta_key = '_chip_payment_settings'`. One-time migration copies values from the legacy `fluent_form_chip` (and `fluent_form_chip_public_key`) options, then deletes them.
+* `Chip_Fluent_Forms_Purchase::init()` now follows the modern `BaseProcessor::init()` convention.
+* `handlePaymentAction` now uses `createInitialPendingTransaction()` and `getPaymentMode()`.
+* `handlePaid` cross-verifies the amount reported by CHIP and downgrades to `requires_review` on mismatch.
+* `handleRefund` uses `updateRefund()` for idempotency (no more duplicate refund rows on replay).
+* `Chip_Fluent_Forms_API::call` returns `WP_Error` on transport / JSON / API-level errors; callers now use `is_wp_error()`.
+* Fixed per-form refund signature verification (was reading the global public key instead of the per-form one).
+* Logs when the CHIP public key is missing for a refund.
+* Removed dead email-notification code; replaced with a documented `do_action`.
+* Removed standalone `CHIP Settings` admin submenu page.
+* Updated inline API documentation URL to https://docs.chip-in.asia.
+* WordPress 7.0 readiness; PHPCS (WordPress coding standards) clean across all PHP files.
 
 [See changelog for all versions](https://raw.githubusercontent.com/CHIPAsia/chip-for-fluent-forms/main/changelog.txt).
 
