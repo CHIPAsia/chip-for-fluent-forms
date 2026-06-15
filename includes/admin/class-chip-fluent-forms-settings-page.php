@@ -79,14 +79,6 @@ class Chip_Fluent_Forms_Settings_Page {
 				'help'  => __( 'This allows you to customize the payment title shown to the user.', 'chip-for-fluent-forms' ),
 			),
 			array(
-				'key'      => 'send_receipt',
-				'label'    => __( 'Send Receipt', 'chip-for-fluent-forms' ),
-				'type'     => 'checkbox',
-				'template' => 'inputYesNoCheckbox',
-				'value'    => '0',
-				'help'     => __( 'Whether to send a receipt email when the purchase is paid. The receipt email is sent by CHIP.', 'chip-for-fluent-forms' ),
-			),
-			array(
 				'key'      => 'due_strict',
 				'label'    => __( 'Due Strict', 'chip-for-fluent-forms' ),
 				'type'     => 'checkbox',
@@ -217,15 +209,6 @@ class Chip_Fluent_Forms_Settings_Page {
 			'chip-for-fluent-forms',
 			'chip_global_misc',
 			array( 'key' => 'payment_title' )
-		);
-
-		add_settings_field(
-			'send_receipt',
-			__( 'Send Receipt', 'chip-for-fluent-forms' ),
-			array( $this, 'field_checkbox' ),
-			'chip-for-fluent-forms',
-			'chip_global_misc',
-			array( 'key' => 'send_receipt' )
 		);
 
 		add_settings_field(

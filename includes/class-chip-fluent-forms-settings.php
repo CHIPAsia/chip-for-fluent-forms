@@ -82,7 +82,6 @@ class Chip_Fluent_Forms_Settings {
 			'brand_id'                 => '',
 			'secret_key'               => '',
 			'payment_title'            => 'CHIP',
-			'send_receipt'             => '0',
 			'due_strict'               => '1',
 			'due_strict_timing'        => '60',
 			'payment_method_whitelist' => array(),
@@ -106,7 +105,6 @@ class Chip_Fluent_Forms_Settings {
 			'payment_mode'             => 'test',
 			'brand_id'                 => '',
 			'secret_key'               => '',
-			'send_receipt'             => '0',
 			'due_strict'               => '1',
 			'due_strict_timing'        => '60',
 			'payment_method_whitelist' => array(),
@@ -178,7 +176,6 @@ class Chip_Fluent_Forms_Settings {
 					'brand_id'                 => $global['brand_id'],
 					'secret_key'               => $global['secret_key'],
 					'payment_mode'             => $global['payment_mode'],
-					'send_receipt'             => $global['send_receipt'],
 					'due_strict'               => $global['due_strict'],
 					'due_strict_timing'        => $global['due_strict_timing'],
 					'payment_method_whitelist' => $global['payment_method_whitelist'],
@@ -287,7 +284,6 @@ class Chip_Fluent_Forms_Settings {
 
 		$is_active  = ! empty( $settings['is_active'] ) && 'yes' === $settings['is_active'] ? 'yes' : 'no';
 		$mode       = isset( $settings['payment_mode'] ) && 'live' === $settings['payment_mode'] ? 'live' : 'test';
-		$send_rcpt  = ! empty( $settings['send_receipt'] ) ? '1' : '0';
 		$due_strict = ! empty( $settings['due_strict'] ) ? '1' : '0';
 		$sync_rfnd  = ! empty( $settings['synchronize_refund'] ) ? '1' : '0';
 
@@ -312,7 +308,6 @@ class Chip_Fluent_Forms_Settings {
 			'brand_id'                 => isset( $settings['brand_id'] ) ? sanitize_text_field( $settings['brand_id'] ) : '',
 			'secret_key'               => isset( $settings['secret_key'] ) ? sanitize_text_field( $settings['secret_key'] ) : '',
 			'payment_title'            => isset( $settings['payment_title'] ) ? sanitize_text_field( $settings['payment_title'] ) : 'CHIP',
-			'send_receipt'             => $send_rcpt,
 			'due_strict'               => $due_strict,
 			'due_strict_timing'        => (string) $timing,
 			'payment_method_whitelist' => $whitelist,
@@ -332,7 +327,6 @@ class Chip_Fluent_Forms_Settings {
 
 		$is_active  = ! empty( $settings['is_active'] ) && 'yes' === $settings['is_active'] ? 'yes' : 'no';
 		$mode       = isset( $settings['payment_mode'] ) && 'live' === $settings['payment_mode'] ? 'live' : 'test';
-		$send_rcpt  = ! empty( $settings['send_receipt'] ) ? '1' : '0';
 		$due_strict = ! empty( $settings['due_strict'] ) ? '1' : '0';
 		$sync_rfnd  = ! empty( $settings['synchronize_refund'] ) ? '1' : '0';
 
@@ -356,7 +350,6 @@ class Chip_Fluent_Forms_Settings {
 			'payment_mode'             => $mode,
 			'brand_id'                 => isset( $settings['brand_id'] ) ? sanitize_text_field( $settings['brand_id'] ) : '',
 			'secret_key'               => isset( $settings['secret_key'] ) ? sanitize_text_field( $settings['secret_key'] ) : '',
-			'send_receipt'             => $send_rcpt,
 			'due_strict'               => $due_strict,
 			'due_strict_timing'        => (string) $timing,
 			'payment_method_whitelist' => $whitelist,
@@ -401,7 +394,6 @@ class Chip_Fluent_Forms_Settings {
 			'brand_id'                 => isset( $legacy['brand-id'] ) ? (string) $legacy['brand-id'] : '',
 			'secret_key'               => isset( $legacy['secret-key'] ) ? (string) $legacy['secret-key'] : '',
 			'payment_title'            => isset( $legacy['payment-title'] ) ? (string) $legacy['payment-title'] : 'CHIP',
-			'send_receipt'             => ! empty( $legacy['send-receipt'] ) ? '1' : '0',
 			'due_strict'               => ! empty( $legacy['due-strict'] ) ? '1' : '0',
 			'due_strict_timing'        => isset( $legacy['due-strict-timing'] ) ? (string) $legacy['due-strict-timing'] : '60',
 			'payment_method_whitelist' => $whitelist,
@@ -441,7 +433,6 @@ class Chip_Fluent_Forms_Settings {
 			'payment_mode'             => isset( $legacy[ 'payment-mode' . $postfix ] ) ? $legacy[ 'payment-mode' . $postfix ] : 'test',
 			'brand_id'                 => isset( $legacy[ 'brand-id' . $postfix ] ) ? (string) $legacy[ 'brand-id' . $postfix ] : '',
 			'secret_key'               => isset( $legacy[ 'secret-key' . $postfix ] ) ? (string) $legacy[ 'secret-key' . $postfix ] : '',
-			'send_receipt'             => ! empty( $legacy[ 'send-receipt' . $postfix ] ) ? '1' : '0',
 			'due_strict'               => ! empty( $legacy[ 'due-strict' . $postfix ] ) ? '1' : '0',
 			'due_strict_timing'        => isset( $legacy[ 'due-strict-timing' . $postfix ] ) ? (string) $legacy[ 'due-strict-timing' . $postfix ] : '60',
 			'payment_method_whitelist' => $whitelist,

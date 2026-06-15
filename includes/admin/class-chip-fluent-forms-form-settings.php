@@ -109,13 +109,6 @@ class Chip_Fluent_Forms_Form_Settings {
 			'value'   => $form_settings['payment_mode'],
 		);
 		$fields[] = array(
-			'key'      => 'send_receipt',
-			'label'    => __( 'Send Receipt', 'chip-for-fluent-forms' ),
-			'type'     => 'checkbox',
-			'template' => 'inputYesNoCheckbox',
-			'value'    => $form_settings['send_receipt'],
-		);
-		$fields[] = array(
 			'key'      => 'due_strict',
 			'label'    => __( 'Due Strict', 'chip-for-fluent-forms' ),
 			'type'     => 'checkbox',

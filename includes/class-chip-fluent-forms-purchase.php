@@ -188,7 +188,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			'failure_redirect' => $failure_redirect,
 			'creator_agent'    => 'FluentForms: ' . FF_CHIP_MODULE_VERSION,
 			'platform'         => 'fluentforms',
-			'send_receipt'     => ! empty( $option['send_receipt'] ),
+			'send_receipt'     => false, // Receipt emails are managed via the CHIP merchant dashboard.
 			'due'              => time() + ( (int) $option['due_strict_timing'] * 60 ),
 			'brand_id'         => $option['brand_id'],
 			'client'           => array(
