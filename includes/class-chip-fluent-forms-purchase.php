@@ -710,8 +710,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * @return void
 	 */
 	private function refund_callback() {
-		$content     = file_get_contents( 'php://input' );
-		$payment     = json_decode( (string) $content, true );
+		$content = file_get_contents( 'php://input' );
+		$payment = json_decode( (string) $content, true );
 
 		if ( ! is_array( $payment ) || ! isset( $payment['event_type'] ) || 'payment.refunded' !== $payment['event_type'] ) {
 			return;
@@ -754,8 +754,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * @param string $refund_id      CHIP refund id.
 	 * @return void
 	 */
-	public function handleRefund( $refund_amount, $transaction_id, $submission_id, $refund_id ) {
-		unset( $refund_amount, $transaction_id, $submission_id, $refund_id );
+	public function handleRefund( $refund_amount, $transaction_id, $submission_id, $refund_id ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 		// Intentionally empty — refund sync was removed in 2.0.0.
 	}
 
