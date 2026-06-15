@@ -4,11 +4,10 @@
  *
  * Stored as a fluentform_form_meta row with meta_key = '_chip_payment_settings'.
  * UI: a single Customize toggle that, when on, exposes per-form credentials,
- * a per-form payment-mode override, a per-form payment-method whitelist, and
- * a per-form refund-sync toggle.
+ * a per-form payment-mode override, and a per-form payment-method whitelist.
  *
- * Also exposes a per-form sanitize hook used by the new webhook setup class
- * to (re)create the per-form refund webhook.
+ * Also exposes a per-form sanitize hook (`ff_chip_form_settings_saved`) as a
+ * public extension point for downstream integrations.
  *
  * @package CHIPForFluentForms
  */
@@ -120,13 +119,6 @@ class Chip_Fluent_Forms_Form_Settings {
 			'label' => __( 'Due Strict Timing (minutes)', 'chip-for-fluent-forms' ),
 			'type'  => 'number',
 			'value' => $form_settings['due_strict_timing'],
-		);
-		$fields[] = array(
-			'key'      => 'synchronize_refund',
-			'label'    => __( 'Synchronize Refund', 'chip-for-fluent-forms' ),
-			'type'     => 'checkbox',
-			'template' => 'inputYesNoCheckbox',
-			'value'    => $form_settings['synchronize_refund'],
 		);
 
 		// Whitelist (checkbox group).

@@ -100,14 +100,6 @@ class Chip_Fluent_Forms_Settings_Page {
 				'options' => $whitelist_options,
 				'help'    => __( 'Pick which payment methods to allow at checkout. Leave empty to let CHIP decide.', 'chip-for-fluent-forms' ),
 			),
-			array(
-				'key'      => 'synchronize_refund',
-				'label'    => __( 'Synchronize Refund', 'chip-for-fluent-forms' ),
-				'type'     => 'checkbox',
-				'template' => 'inputYesNoCheckbox',
-				'value'    => '0',
-				'help'     => __( 'When on, refunds triggered on the CHIP dashboard are applied to the Fluent Forms submission.', 'chip-for-fluent-forms' ),
-			),
 		);
 	}
 
@@ -236,22 +228,6 @@ class Chip_Fluent_Forms_Settings_Page {
 			'chip-for-fluent-forms',
 			'chip_global_misc',
 			array( 'key' => 'payment_method_whitelist' )
-		);
-
-		add_settings_section(
-			'chip_global_refund',
-			__( 'Refund Synchronization', 'chip-for-fluent-forms' ),
-			'__return_false',
-			'chip-for-fluent-forms'
-		);
-
-		add_settings_field(
-			'synchronize_refund',
-			__( 'Synchronize Refund', 'chip-for-fluent-forms' ),
-			array( $this, 'field_checkbox' ),
-			'chip-for-fluent-forms',
-			'chip_global_refund',
-			array( 'key' => 'synchronize_refund' )
 		);
 	}
 

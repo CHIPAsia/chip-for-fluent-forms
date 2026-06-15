@@ -85,7 +85,6 @@ class Chip_Fluent_Forms_Settings {
 			'due_strict'               => '1',
 			'due_strict_timing'        => '60',
 			'payment_method_whitelist' => array(),
-			'synchronize_refund'       => '0',
 			'public_key'               => '',
 		);
 	}
@@ -108,7 +107,6 @@ class Chip_Fluent_Forms_Settings {
 			'due_strict'               => '1',
 			'due_strict_timing'        => '60',
 			'payment_method_whitelist' => array(),
-			'synchronize_refund'       => '0',
 			'public_key'               => '',
 		);
 	}
@@ -179,7 +177,6 @@ class Chip_Fluent_Forms_Settings {
 					'due_strict'               => $global['due_strict'],
 					'due_strict_timing'        => $global['due_strict_timing'],
 					'payment_method_whitelist' => $global['payment_method_whitelist'],
-					'synchronize_refund'       => $global['synchronize_refund'],
 					'public_key'               => $global['public_key'],
 				)
 			);
@@ -263,7 +260,8 @@ class Chip_Fluent_Forms_Settings {
 		/**
 		 * Fires after per-form CHIP settings have been persisted.
 		 *
-		 * Used internally to drive the per-form refund webhook setup.
+		 * Public extension point for downstream integrations (e.g.
+		 * custom analytics, external cache invalidation).
 		 *
 		 * @param int   $form_id  The Fluent Forms form id.
 		 * @param array $clean    The sanitized per-form settings.
@@ -285,7 +283,6 @@ class Chip_Fluent_Forms_Settings {
 		$is_active  = ! empty( $settings['is_active'] ) && 'yes' === $settings['is_active'] ? 'yes' : 'no';
 		$mode       = isset( $settings['payment_mode'] ) && 'live' === $settings['payment_mode'] ? 'live' : 'test';
 		$due_strict = ! empty( $settings['due_strict'] ) ? '1' : '0';
-		$sync_rfnd  = ! empty( $settings['synchronize_refund'] ) ? '1' : '0';
 
 		$timing = isset( $settings['due_strict_timing'] ) ? absint( $settings['due_strict_timing'] ) : 60;
 		if ( $timing <= 0 ) {
@@ -311,7 +308,6 @@ class Chip_Fluent_Forms_Settings {
 			'due_strict'               => $due_strict,
 			'due_strict_timing'        => (string) $timing,
 			'payment_method_whitelist' => $whitelist,
-			'synchronize_refund'       => $sync_rfnd,
 			'public_key'               => isset( $settings['public_key'] ) ? (string) $settings['public_key'] : '',
 		);
 	}
@@ -328,7 +324,6 @@ class Chip_Fluent_Forms_Settings {
 		$is_active  = ! empty( $settings['is_active'] ) && 'yes' === $settings['is_active'] ? 'yes' : 'no';
 		$mode       = isset( $settings['payment_mode'] ) && 'live' === $settings['payment_mode'] ? 'live' : 'test';
 		$due_strict = ! empty( $settings['due_strict'] ) ? '1' : '0';
-		$sync_rfnd  = ! empty( $settings['synchronize_refund'] ) ? '1' : '0';
 
 		$timing = isset( $settings['due_strict_timing'] ) ? absint( $settings['due_strict_timing'] ) : 60;
 		if ( $timing <= 0 ) {
@@ -353,7 +348,6 @@ class Chip_Fluent_Forms_Settings {
 			'due_strict'               => $due_strict,
 			'due_strict_timing'        => (string) $timing,
 			'payment_method_whitelist' => $whitelist,
-			'synchronize_refund'       => $sync_rfnd,
 			'public_key'               => isset( $settings['public_key'] ) ? (string) $settings['public_key'] : '',
 		);
 	}
@@ -397,7 +391,6 @@ class Chip_Fluent_Forms_Settings {
 			'due_strict'               => ! empty( $legacy['due-strict'] ) ? '1' : '0',
 			'due_strict_timing'        => isset( $legacy['due-strict-timing'] ) ? (string) $legacy['due-strict-timing'] : '60',
 			'payment_method_whitelist' => $whitelist,
-			'synchronize_refund'       => ! empty( $legacy['refund'] ) ? '1' : '0',
 			'public_key'               => '',
 		);
 	}
@@ -436,7 +429,6 @@ class Chip_Fluent_Forms_Settings {
 			'due_strict'               => ! empty( $legacy[ 'due-strict' . $postfix ] ) ? '1' : '0',
 			'due_strict_timing'        => isset( $legacy[ 'due-strict-timing' . $postfix ] ) ? (string) $legacy[ 'due-strict-timing' . $postfix ] : '60',
 			'payment_method_whitelist' => $whitelist,
-			'synchronize_refund'       => ! empty( $legacy[ 'refund' . $postfix ] ) ? '1' : '0',
 			'public_key'               => '',
 		);
 	}

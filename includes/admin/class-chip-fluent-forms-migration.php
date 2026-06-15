@@ -120,7 +120,6 @@ class Chip_Fluent_Forms_Migration {
 				'due_strict'               => ! empty( $legacy['due-strict'] ) ? '1' : '0',
 				'due_strict_timing'        => isset( $legacy['due-strict-timing'] ) ? $legacy['due-strict-timing'] : '60',
 				'payment_method_whitelist' => self::resolve_legacy_whitelist( $legacy, '' ),
-				'synchronize_refund'       => ! empty( $legacy['refund'] ) ? '1' : '0',
 			)
 		);
 
@@ -158,7 +157,6 @@ class Chip_Fluent_Forms_Migration {
 							'due_strict'               => ! empty( $legacy[ 'due-strict' . $postfix ] ) ? '1' : '0',
 							'due_strict_timing'        => isset( $legacy[ 'due-strict-timing' . $postfix ] ) ? $legacy[ 'due-strict-timing' . $postfix ] : '60',
 							'payment_method_whitelist' => self::resolve_legacy_whitelist( $legacy, $postfix ),
-							'synchronize_refund'       => ! empty( $legacy[ 'refund' . $postfix ] ) ? '1' : '0',
 						)
 					);
 
@@ -197,7 +195,6 @@ class Chip_Fluent_Forms_Migration {
 			'payment-title'     => 'payment_title',
 			'due-strict'        => 'due_strict',
 			'due-strict-timing' => 'due_strict_timing',
-			'refund'            => 'synchronize_refund',
 		);
 
 		foreach ( $mapping as $legacy_key => $new_key ) {

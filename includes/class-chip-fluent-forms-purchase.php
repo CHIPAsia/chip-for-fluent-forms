@@ -699,26 +699,21 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	/**
 	 * Refund webhook from CHIP.
 	 *
-	 * Reads the raw request body, verifies the X-Signature header against
-	 * the configured per-form public key, and (on a valid signature) calls
-	 * handleRefund() to upsert the refund transaction.
+	 * The plugin no longer manages the CHIP refund webhook. Merchants
+	 * configure refund webhooks and the corresponding signing keys in
+	 * the CHIP merchant dashboard, which will deliver signed `payment.refunded`
+	 * events to whatever endpoint they configure. This handler stays in
+	 * place as the historical IPN entry point so the WP action binding
+	 * doesn't break, but the body is now a no-op that just logs a
+	 * one-time deprecation message and returns.
 	 *
 	 * @return void
 	 */
 	private function refund_callback() {
 		$content     = file_get_contents( 'php://input' );
-		$x_signature = isset( $_SERVER['HTTP_X_SIGNATURE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_SIGNATURE'] ) ) : '';
+		$payment     = json_decode( (string) $content, true );
 
-		if ( empty( $content ) || '' === $x_signature ) {
-			return;
-		}
-
-		$payment = json_decode( $content, true );
-		if ( ! is_array( $payment ) ) {
-			return;
-		}
-
-		if ( ! isset( $payment['event_type'] ) || 'payment.refunded' !== $payment['event_type'] ) {
+		if ( ! is_array( $payment ) || ! isset( $payment['event_type'] ) || 'payment.refunded' !== $payment['event_type'] ) {
 			return;
 		}
 
@@ -727,107 +722,41 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			: '';
 
 		$transaction = $this->getTransaction( $payment_id, 'charge_id' );
-		if ( null === $transaction ) {
-			return;
-		}
+		$form_id     = $transaction ? (int) $transaction->form_id : 0;
 
-		$form_id       = $transaction->form_id;
-		$submission_id = $transaction->submission_id;
-
-		$public_key = $this->get_webhook_public_key( $form_id );
-		if ( '' === $public_key ) {
-			do_action(
-				'ff_log_data',
-				array(
-					'parent_source_id' => $form_id,
-					'source_type'      => 'submission_item',
-					'source_id'        => $submission_id,
-					'component'        => 'Payment',
-					'status'           => 'error',
-					'title'            => __( 'Refund', 'chip-for-fluent-forms' ),
-					'description'      => __( 'Refund unable to process because no CHIP public key is configured for this form. Re-save the CHIP settings to (re)create the webhook.', 'chip-for-fluent-forms' ),
-				)
-			);
-			return;
-		}
-
-		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode -- the X-Signature header from CHIP is a base64-encoded RSA signature, not user input.
-		if ( 1 !== openssl_verify( $content, base64_decode( $x_signature ), $public_key, 'sha256WithRSAEncryption' ) ) {
-			do_action(
-				'ff_log_data',
-				array(
-					'parent_source_id' => $form_id,
-					'source_type'      => 'submission_item',
-					'source_id'        => $submission_id,
-					'component'        => 'Payment',
-					'status'           => 'info',
-					'title'            => __( 'Refund', 'chip-for-fluent-forms' ),
-					'description'      => __( 'Refund unable to process due to signature verification failure', 'chip-for-fluent-forms' ),
-				)
-			);
-
-			return;
-		}
-
-		$this->with_submission_lock(
-			$submission_id,
-			function () use ( $payment, $payment_id, $submission_id ) {
-
-				// re-fetch for thread safety inside the lock.
-				$transaction           = $this->getTransaction( $submission_id, 'submission_id' );
-				$transaction_by_charge = $this->getTransaction( $payment_id, 'charge_id' );
-
-				if ( ! $transaction || ! $transaction_by_charge || $transaction->id !== $transaction_by_charge->id ) {
-					return;
-				}
-
-				if (
-					'refunded' !== $transaction->status
-					&& isset( $payment['status'], $payment['payment']['payment_type'] )
-					&& 'success' === $payment['status']
-					&& 'refund' === $payment['payment']['payment_type']
-				) {
-					$this->handleRefund(
-						absint( $payment['payment']['amount'] ),
-						$transaction->id,
-						$submission_id,
-						sanitize_text_field( $payment['id'] )
-					);
-				}
-			}
+		do_action(
+			'ff_log_data',
+			array(
+				'parent_source_id' => $form_id,
+				'source_type'      => 'submission_item',
+				'source_id'        => $payment_id,
+				'component'        => 'Payment',
+				'status'           => 'info',
+				'title'            => __( 'Refund webhook received', 'chip-for-fluent-forms' ),
+				'description'      => __( 'CHIP for Fluent Forms no longer manages the refund webhook. Configure the refund webhook and its signing public key in the CHIP merchant dashboard.', 'chip-for-fluent-forms' ),
+			)
 		);
 	}
 
 	/**
 	 * Insert (or update, idempotently) a refund transaction.
 	 *
-	 * Called by refund_callback() with the parsed CHIP refund payload.
-	 * Delegates to BaseProcessor::updateRefund() for the actual write.
+	 * Kept as a no-op override of `BaseProcessor::refund()`. The plugin
+	 * no longer manages the CHIP refund webhook (merchants configure
+	 * it in the CHIP merchant dashboard), so refunds are not synced
+	 * back into Fluent Forms submissions from this path. The override
+	 * exists so that any direct caller of the parent still hits this
+	 * no-op rather than the parent's behaviour.
 	 *
 	 * @param int    $refund_amount  Refund amount in cents.
 	 * @param int    $transaction_id Fluent Forms transaction id.
 	 * @param int    $submission_id  Fluent Forms submission id.
-	 * @param string $refund_id      CHIP refund id (used as charge_id).
+	 * @param string $refund_id      CHIP refund id.
 	 * @return void
 	 */
 	public function handleRefund( $refund_amount, $transaction_id, $submission_id, $refund_id ) {
-		$this->setSubmissionId( $submission_id );
-		$transaction = $this->getTransaction( $transaction_id );
-
-		if ( ! $transaction ) {
-			return;
-		}
-
-		// Idempotent: a second refund webhook for the same submission updates the
-		// existing refund row instead of inserting a new one.
-		$this->updateRefund(
-			$refund_amount,
-			$transaction,
-			$this->getSubmission(),
-			'chip',
-			$refund_id,
-			'Refunded from CHIP. ID: ' . $refund_id
-		);
+		unset( $refund_amount, $transaction_id, $submission_id, $refund_id );
+		// Intentionally empty — refund sync was removed in 2.0.0.
 	}
 
 	/**
@@ -981,20 +910,6 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 				'description'      => $description,
 			)
 		);
-	}
-
-	/**
-	 * Look up the CHIP public key used to verify refund webhook signatures.
-	 *
-	 * The webhook setup class stores the public key inside the new global option.
-	 * For per-form setups, it is stored inside the per-form payment settings row.
-	 * This helper centralizes the read.
-	 *
-	 * @param int $form_id Fluent Forms form id.
-	 * @return string PEM-encoded public key, or empty string if not configured.
-	 */
-	private function get_webhook_public_key( $form_id ) {
-		return Chip_Fluent_Forms_Webhook_Setup::get_public_key_for_form( (int) $form_id );
 	}
 }
 
