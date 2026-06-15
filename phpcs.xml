@@ -33,7 +33,12 @@
 		</properties>
 	</rule>
 
-	<!-- Main plugin entry point cannot be renamed to class-chip-fluent-forms.php. -->
+	<!--
+		Plugin entry point and uninstall script are not class files, so
+		they have no class-name-vs-filename relationship to enforce.
+		Everything else follows the WordPress naming convention:
+		class-Chip_Fluent_Forms.php contains class Chip_Fluent_Forms, etc.
+	-->
 	<rule ref="WordPress.Files.FileName">
 		<exclude-pattern>chip-for-fluent-forms.php</exclude-pattern>
 		<exclude-pattern>uninstall.php</exclude-pattern>
