@@ -17,6 +17,7 @@
 * Fixed   - Log entries when the CHIP public key is missing for a refund.
 * Fixed   - Dead email-notification code removed; replaced with a documented `do_action`.
 * Removed - Standalone `CHIP Settings` admin submenu page; use Fluent Forms → Settings → Payment Methods instead.
+* Changed - Updated inline API documentation URLs to point to https://docs.chip-in.asia.
 
 = 1.1.2 2025-05-05 =
 * Fixed - Fixed issue with load_textdomain.

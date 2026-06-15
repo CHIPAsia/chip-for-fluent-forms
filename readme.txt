@@ -38,6 +38,7 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 * `ff_chip_payment_paid_chip` action hook for after-paid integrations.
 * `ff_chip_ipn_domain` filter and `FF_CHIP_IPN_DOMAIN` constant for reverse-proxy sites.
 * Fixed per-form refund signature verification and amount-mismatch handling.
+* Updated API documentation URL to https://docs.chip-in.asia.
 
 = 1.1.2 2025-05-05 =
 * Fixed - Fixed issue with load_textdomain.
