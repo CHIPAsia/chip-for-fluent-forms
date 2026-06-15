@@ -27,7 +27,7 @@ class Chip_Fluent_Forms {
 	 *
 	 * @var Chip_Fluent_Forms|null
 	 */
-	private static $_instance;
+	private static $instance;
 
 	/**
 	 * Singleton accessor.
@@ -35,11 +35,11 @@ class Chip_Fluent_Forms {
 	 * @return Chip_Fluent_Forms
 	 */
 	public static function get_instance() {
-		if ( null === self::$_instance ) {
-			self->$_instance = new self();
+		if ( null === self::$instance ) {
+			self::$instance = new self();
 		}
 
-		return self::$_instance;
+		return self::$instance;
 	}
 
 	/**
