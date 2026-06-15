@@ -3,7 +3,7 @@ Contributors: chipasia, wanzulnet
 Tags: chip
 Requires at least: 6.1
 Tested up to: 7.0
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -30,6 +30,9 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 * Confirmation page after successful payment.
 
 == Changelog ==
+
+= 2.1.0 2026-06-15 =
+* Removed `send_receipt` and `synchronize_refund` settings (global and per-form). The CHIP `send_receipt` parameter is now always `false`; receipt emails and refund webhooks are managed via the CHIP merchant dashboard. The entire `Chip_Fluent_Forms_Webhook_Setup` class has been deleted. Refund webhooks received on `fluentform/ipn_endpoint_chip` now log a one-time deprecation notice instead of verifying signatures.
 
 = 2.0.0 2026-06-15 =
 * Major rewrite: dropped bundled Codestar Framework (2.4M) in favour of Fluent Forms Pro's native Payment Methods tab via `BasePaymentMethod`.

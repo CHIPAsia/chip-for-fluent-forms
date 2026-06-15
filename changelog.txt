@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 2.1.0 2026-06-15 =
+* Removed - `send_receipt` setting. The CHIP `send_receipt` parameter is now always sent as `false`; receipt emails are managed via the CHIP merchant dashboard.
+* Removed - `synchronize_refund` setting (global and per-form) and the entire `Chip_Fluent_Forms_Webhook_Setup` class. The plugin no longer manages the CHIP refund webhook. Merchants configure refund webhooks directly in the CHIP merchant dashboard, and the `fluentform/ipn_endpoint_chip` handler now logs a one-time deprecation notice instead of verifying signatures. `Chip_Fluent_Forms_Purchase::handleRefund()` is kept as a no-op override of `BaseProcessor::refund()` for forward-compatibility.
+
 = 2.0.0 2026-06-15 =
 * Added   - New payment method whitelist keys: crypto_coin, dnqr, mpgs_apple_pay, mpgs_google_pay, razer_atome, razer_grabpay, razer_maybankqr, razer_shopeepay, razer_tng, shopee_pay. The existing `cards` shortcut now expands to visa+mastercard+maestro at send-time.
 * Added   - Form-level "Notes" field on the payment method (merged from add/notes_parameter).
