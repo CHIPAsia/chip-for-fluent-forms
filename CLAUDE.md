@@ -30,11 +30,18 @@ The plugin is intentionally small — a single bootstrap class plus a handful of
 ### Admin — `includes/admin/`
 All admin files only execute under `is_admin()`. They register fields and panels through Fluent Forms Pro's native `BasePaymentMethod` contract — see `class-chip-fluent-forms-handler.php` for the entry point.
 - **`class-chip-fluent-forms-settings-page.php`** — Provides the field schema (`get_fields()`) consumed by `BasePaymentMethod::getGlobalFields()` for FF Pro's native Payment Methods tab. The schema uses the FF Pro shape: `{ label, fields: [{ settings_key, type, ... }] }` with `type` values like `yes-no-checkbox`, `input-radio`, `input-text`, `input-checkboxes`. The "standalone page" rendering path (`render_standalone_page`, `register_settings`, etc.) is legacy code kept for sites on very old FF Pro without `BasePaymentMethod` — the live UI is FF Pro's Payment Methods tab.
-- **`class-chip-fluent-forms-form-settings.php`** — Per-form "Customize" panel. Hooked on `fluentform/form_payment_settings` and `fluentform/after_save_form_settings` to add a per-form payment-mode override and a per-form payment-method whitelist.
+- **`class-chip-fluent-forms-form-settings.php`** — Per-form "Customize" panel. Hooked on `fluentform/form_payment_settings` and `fluentform/after_save_form_settings` to add a per-form payment-mode override and a per-form payment-method whitelist. **Note**: FF Pro's React form-settings UI does not currently render the per-method subkeys added by this filter, so the panel is invisible in the form editor; merchants use the dedicated per-form page below instead.
+- **`class-chip-fluent-forms-per-form-page.php`** — Standalone WP admin submenu under **Fluent Forms → CHIP Per-Form** (slug `chip-form-settings`). This is the merchant-facing UI to set per-form Brand ID / Secret Key / Payment Mode / Due Strict / Whitelist. Renders a list of all FF forms, plus a per-form view (`?form_id=N`) with a WP Settings API form. Persists via `Chip_Fluent_Forms_Settings::save_form()` and fires `ff_chip_form_settings_saved` (`$form_id, $saved`). The runtime reads from `Chip_Fluent_Forms_Settings::for_form($form_id)` — same data path the form-settings filter would have used.
 - **`class-chip-fluent-forms-migration.php`** — Two-phase upgrade from the legacy `fluent_form_chip` option (1.x) to the new schema. Phase 1 writes the new global option and per-form `_chip_payment_settings` rows, and also walks every form with a `payment_method` field to ensure `settings.payment_methods[chip].enabled === 'yes'` (preserves explicit `'no'`). Phase 2 verifies the writes; on success it deletes the legacy option. Loosened `resolve_legacy_is_active()` so any non-empty legacy option flips `is_active='yes'` for an upgrading user — the 1.x plugin had no master enable toggle, so the option existing is the signal the merchant was running CHIP.
 
-### Settings resolution — `Chip_Fluent_Forms_Purchase::get_settings()`
-Builds the runtime config by reading `get_option( CHIP_FF_FSLUG )` and applying a `-{form_id}` postfix to every key when the form's `form-customize-{id}` toggle is on. The form's option key is detected by `array_key_exists( 'form-customize-' . $form_id, $options )`.
+### Settings resolution — `Chip_Fluent_Forms_Purchase::create_purchase()`
+At purchase time the runtime calls `Chip_Fluent_Forms_Settings::for_form($form_id)` which:
+1. Reads the per-form `_chip_payment_settings` row from `wp_fluentform_form_meta`.
+2. Falls back to the legacy `fluent_form_chip` `form-customize-{id}` keys for users on intermediate 2.0 builds.
+3. Merges on top of `Chip_Fluent_Forms_Settings::form_defaults()`.
+4. If the per-form `is_active` toggle is off, replaces `brand_id`, `secret_key`, `payment_mode`, `due_strict`, `due_strict_timing`, `payment_method_whitelist` with the global values. The per-form `is_active` is the gate: when `'yes'`, per-form wins; otherwise global wins.
+
+The per-form UI lives at **Fluent Forms → CHIP Per-Form** in the admin sidebar.
 
 ### Payment flow
 1. Fluent Forms Pro fires `fluentform/process_payment_chip` → `handlePaymentAction()` → `create_purchase()`.
