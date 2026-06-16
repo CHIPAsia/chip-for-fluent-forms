@@ -33,14 +33,21 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 	/**
 	 * Settings page instance.
 	 *
-	 * @var Chip_Fluent_Forms_Settings_Page
+	 * Lazily instantiated in get_settings_page() — the Settings_Page class
+	 * is admin-only (loaded behind is_admin()), so the constructor can't
+	 * safely instantiate it on every request.
+	 *
+	 * @var Chip_Fluent_Forms_Settings_Page|null
 	 */
 	private $settings_page;
 
 	/**
 	 * Per-form settings instance.
 	 *
-	 * @var Chip_Fluent_Forms_Form_Settings
+	 * Lazily instantiated in get_form_settings() for the same reason as
+	 * `$settings_page`.
+	 *
+	 * @var Chip_Fluent_Forms_Form_Settings|null
 	 */
 	private $form_settings;
 
@@ -52,9 +59,10 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 	private $processor;
 
 	/**
-	 * Constructor wires the FF Pro settings filters, instantiates the
-	 * per-form settings and settings page objects, and schedules the
-	 * processor boot on plugins_loaded.
+	 * Constructor wires the FF Pro settings filters and schedules the
+	 * processor boot on plugins_loaded. Settings page and per-form
+	 * settings objects are deferred to first use — both are admin-only
+	 * and would fatal on non-admin requests if instantiated here.
 	 *
 	 * @return void
 	 */
@@ -65,9 +73,6 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 		// BasePaymentMethod::__construct() registers the global settings + payment
 		// settings filters. We hook the remaining pieces afterwards.
 		parent::__construct( self::KEY );
-
-		$this->settings_page = new Chip_Fluent_Forms_Settings_Page();
-		$this->form_settings = new Chip_Fluent_Forms_Form_Settings();
 
 		add_action( 'plugins_loaded', array( $this, 'boot_processor' ), 30 );
 
@@ -81,6 +86,34 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 		// `fluentform_payment_settings_chip` for our method, so the
 		// duplicate write is harmless.
 		add_filter( 'fluentform/payment_method_settings_save_chip', array( $this, 'mirror_settings_to_canonical_option' ), 10, 1 );
+	}
+
+	/**
+	 * Lazy-instantiate and return the settings page object.
+	 *
+	 * The Settings_Page class is only loaded when is_admin() is true; this
+	 * method is only ever called from FF Pro's admin UI hooks, so the
+	 * class will be available.
+	 *
+	 * @return Chip_Fluent_Forms_Settings_Page|null
+	 */
+	private function get_settings_page() {
+		if ( null === $this->settings_page && class_exists( 'Chip_Fluent_Forms_Settings_Page' ) ) {
+			$this->settings_page = new Chip_Fluent_Forms_Settings_Page();
+		}
+		return $this->settings_page;
+	}
+
+	/**
+	 * Lazy-instantiate and return the per-form settings object.
+	 *
+	 * @return Chip_Fluent_Forms_Form_Settings|null
+	 */
+	private function get_form_settings() {
+		if ( null === $this->form_settings && class_exists( 'Chip_Fluent_Forms_Form_Settings' ) ) {
+			$this->form_settings = new Chip_Fluent_Forms_Form_Settings();
+		}
+		return $this->form_settings;
 	}
 
 	/**
@@ -112,8 +145,9 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 	 * @return array
 	 */
 	public function getGlobalFields() {
-		if ( $this->settings_page ) {
-			return $this->settings_page->get_fields();
+		$settings_page = $this->get_settings_page();
+		if ( $settings_page ) {
+			return $settings_page->get_fields();
 		}
 		return array();
 	}

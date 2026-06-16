@@ -92,9 +92,8 @@ class Chip_Fluent_Forms {
 		// when Fluent Forms Pro is not active.
 		include $includes_dir . 'admin/class-chip-fluent-forms-handler.php';
 
-		// Helper-function bootstrap is in its own file so each PHP file
-		// declares only one kind of symbol (PSR1.Files.SideEffects).
-		include $includes_dir . 'admin/chip-for-fluent-forms-handlerbootstrap.php';
+		// Helper-function bootstrap is in its own file so each file declares only one kind of symbol (PSR1.Files.SideEffects).
+		include $includes_dir . 'admin/chip-for-fluent-forms-handler-bootstrap.php';
 
 		if ( is_admin() ) {
 			include $includes_dir . 'admin/class-chip-fluent-forms-settings-page.php';
