@@ -28,77 +28,82 @@ class Chip_Fluent_Forms_Settings_Page {
 	/**
 	 * Return the field schema consumed by FF Pro's native Payment Methods tab.
 	 *
+	 * Shape matches the FF Pro convention: a single `label` for the method
+	 * title plus a `fields` array of inputs. Each field uses `settings_key`
+	 * (the option key it persists under), a `type` that maps to a React
+	 * control, and an optional `check_status` flag that hides the field
+	 * until the Enable toggle is on.
+	 *
 	 * @return array
 	 */
 	public function get_fields() {
-		$methods           = Chip_Fluent_Forms_Settings::payment_methods();
-		$whitelist_options = array();
-		foreach ( $methods as $key => $label ) {
-			$whitelist_options[] = array(
-				'key'   => $key,
-				'label' => $label,
-			);
-		}
+		$whitelist_options = Chip_Fluent_Forms_Settings::payment_methods();
 
 		return array(
-			array(
-				'key'      => 'is_active',
-				'label'    => __( 'Enable CHIP', 'chip-for-fluent-forms' ),
-				'type'     => 'checkbox',
-				'template' => 'inputYesNoCheckbox',
-				'value'    => 'yes',
-				'help'     => __( 'Globally enable or disable the CHIP payment method.', 'chip-for-fluent-forms' ),
-			),
-			array(
-				'key'     => 'payment_mode',
-				'label'   => __( 'Payment Mode', 'chip-for-fluent-forms' ),
-				'type'    => 'select',
-				'options' => array(
-					'test' => __( 'Test', 'chip-for-fluent-forms' ),
-					'live' => __( 'Live', 'chip-for-fluent-forms' ),
+			'label'  => __( 'CHIP', 'chip-for-fluent-forms' ),
+			'fields' => array(
+				array(
+					'settings_key'   => 'is_active',
+					'type'           => 'yes-no-checkbox',
+					'label'          => __( 'Status', 'chip-for-fluent-forms' ),
+					'checkbox_label' => __( 'Enable CHIP Payment Method', 'chip-for-fluent-forms' ),
 				),
-				'help'    => __( 'Test purchases do not charge real cards and use the CHIP sandbox.', 'chip-for-fluent-forms' ),
-			),
-			array(
-				'key'   => 'brand_id',
-				'label' => __( 'Brand ID', 'chip-for-fluent-forms' ),
-				'type'  => 'text',
-				'help'  => __( 'Brand ID enables you to represent your Brand suitable for the system using the same CHIP account.', 'chip-for-fluent-forms' ),
-			),
-			array(
-				'key'   => 'secret_key',
-				'label' => __( 'Secret Key', 'chip-for-fluent-forms' ),
-				'type'  => 'text',
-				'help'  => __( 'Secret key is used to identify your account with CHIP. You are recommended to create a dedicated secret key for each website.', 'chip-for-fluent-forms' ),
-			),
-			array(
-				'key'   => 'payment_title',
-				'label' => __( 'Payment Title', 'chip-for-fluent-forms' ),
-				'type'  => 'text',
-				'value' => 'CHIP',
-				'help'  => __( 'This allows you to customize the payment title shown to the user.', 'chip-for-fluent-forms' ),
-			),
-			array(
-				'key'      => 'due_strict',
-				'label'    => __( 'Due Strict', 'chip-for-fluent-forms' ),
-				'type'     => 'checkbox',
-				'template' => 'inputYesNoCheckbox',
-				'value'    => '1',
-				'help'     => __( 'When on, the purchase expires after the strict-due timing instead of becoming overdue.', 'chip-for-fluent-forms' ),
-			),
-			array(
-				'key'   => 'due_strict_timing',
-				'label' => __( 'Due Strict Timing (minutes)', 'chip-for-fluent-forms' ),
-				'type'  => 'number',
-				'value' => '60',
-				'help'  => __( 'How many minutes a strict-due purchase stays open. Defaults to 60.', 'chip-for-fluent-forms' ),
-			),
-			array(
-				'key'     => 'payment_method_whitelist',
-				'label'   => __( 'Payment Method Whitelist', 'chip-for-fluent-forms' ),
-				'type'    => 'checkbox_group',
-				'options' => $whitelist_options,
-				'help'    => __( 'Pick which payment methods to allow at checkout. Leave empty to let CHIP decide.', 'chip-for-fluent-forms' ),
+				array(
+					'settings_key' => 'payment_mode',
+					'type'         => 'input-radio',
+					'label'        => __( 'Payment Mode', 'chip-for-fluent-forms' ),
+					'options'      => array(
+						'test' => __( 'Test Mode', 'chip-for-fluent-forms' ),
+						'live' => __( 'Live Mode', 'chip-for-fluent-forms' ),
+					),
+					'info_help'    => __( 'Test purchases do not charge real cards and use the CHIP sandbox.', 'chip-for-fluent-forms' ),
+					'check_status' => 'yes',
+				),
+				array(
+					'settings_key' => 'brand_id',
+					'type'         => 'input-text',
+					'label'        => __( 'Brand ID', 'chip-for-fluent-forms' ),
+					'info_help'    => __( 'Brand ID enables you to represent your Brand suitable for the system using the same CHIP account.', 'chip-for-fluent-forms' ),
+					'check_status' => 'yes',
+				),
+				array(
+					'settings_key' => 'secret_key',
+					'type'         => 'input-text',
+					'data_type'    => 'password',
+					'label'        => __( 'Secret Key', 'chip-for-fluent-forms' ),
+					'info_help'    => __( 'Secret key is used to identify your account with CHIP. You are recommended to create a dedicated secret key for each website.', 'chip-for-fluent-forms' ),
+					'check_status' => 'yes',
+				),
+				array(
+					'settings_key' => 'payment_title',
+					'type'         => 'input-text',
+					'label'        => __( 'Payment Title', 'chip-for-fluent-forms' ),
+					'info_help'    => __( 'This allows you to customize the payment title shown to the user.', 'chip-for-fluent-forms' ),
+					'check_status' => 'yes',
+				),
+				array(
+					'settings_key'   => 'due_strict',
+					'type'           => 'yes-no-checkbox',
+					'label'          => __( 'Due Strict', 'chip-for-fluent-forms' ),
+					'checkbox_label' => __( 'Enable strict-due timing', 'chip-for-fluent-forms' ),
+					'info_help'      => __( 'When on, the purchase expires after the strict-due timing instead of becoming overdue.', 'chip-for-fluent-forms' ),
+					'check_status'   => 'yes',
+				),
+				array(
+					'settings_key' => 'due_strict_timing',
+					'type'         => 'input-text',
+					'label'        => __( 'Due Strict Timing (minutes)', 'chip-for-fluent-forms' ),
+					'info_help'    => __( 'How many minutes a strict-due purchase stays open. Defaults to 60.', 'chip-for-fluent-forms' ),
+					'check_status' => 'yes',
+				),
+				array(
+					'settings_key' => 'payment_method_whitelist',
+					'type'         => 'input-checkboxes',
+					'label'        => __( 'Payment Method Whitelist', 'chip-for-fluent-forms' ),
+					'options'      => $whitelist_options,
+					'info_help'    => __( 'Pick which payment methods to allow at checkout. Leave empty to let CHIP decide.', 'chip-for-fluent-forms' ),
+					'check_status' => 'yes',
+				),
 			),
 		);
 	}

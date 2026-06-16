@@ -70,6 +70,17 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 		$this->form_settings = new Chip_Fluent_Forms_Form_Settings();
 
 		add_action( 'plugins_loaded', array( $this, 'boot_processor' ), 30 );
+
+		// Bridge the FF Pro save flow into our canonical option. FF Pro's
+		// savePaymentMethodSettings() writes the settings array to
+		// `fluentform_payment_settings_chip` after running
+		// `fluentform/payment_method_settings_save_chip`; we mirror the
+		// same payload into `fluent_form_chip_settings` so the purchase
+		// processor (which reads from our option) sees the latest values.
+		// Default save still runs in parallel; nothing in FF Pro consumes
+		// `fluentform_payment_settings_chip` for our method, so the
+		// duplicate write is harmless.
+		add_filter( 'fluentform/payment_method_settings_save_chip', array( $this, 'mirror_settings_to_canonical_option' ), 10, 1 );
 	}
 
 	/**
@@ -165,5 +176,28 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 	public function is_enabled() {
 		$settings = Chip_Fluent_Forms_Settings::global();
 		return isset( $settings['is_active'] ) && 'yes' === $settings['is_active'];
+	}
+
+	/**
+	 * Mirror FF Pro's save payload into our canonical settings option.
+	 *
+	 * FF Pro's savePaymentMethodSettings() persists the settings to
+	 * `fluentform_payment_settings_chip`. The purchase processor reads
+	 * from `fluent_form_chip_settings`. Without this mirror, values the
+	 * merchant enters through the new Payment Methods tab never reach
+	 * the runtime.
+	 *
+	 * Filtered on `fluentform/payment_method_settings_save_chip` so it
+	 * runs once per save, after FF Pro's sanitize map has been applied.
+	 *
+	 * @param array $settings The settings array FF Pro is about to persist.
+	 * @return array Unchanged; the default save still runs in parallel.
+	 */
+	public function mirror_settings_to_canonical_option( $settings ) {
+		if ( ! is_array( $settings ) ) {
+			return $settings;
+		}
+		update_option( 'fluent_form_chip_settings', $settings );
+		return $settings;
 	}
 }

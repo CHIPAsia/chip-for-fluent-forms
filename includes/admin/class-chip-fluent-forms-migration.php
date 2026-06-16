@@ -158,6 +158,12 @@ class Chip_Fluent_Forms_Migration {
 				}
 			}
 		}
+
+		// Ensure chip is enabled in every form's `payment_method` field
+		// so the upgrade is transparent — no per-form admin action
+		// required. Skips fields where the merchant has explicitly set
+		// enabled='no' on chip (preserves their choice).
+		self::migrate_per_form_payment_methods();
 	}
 
 	/**
@@ -212,7 +218,62 @@ class Chip_Fluent_Forms_Migration {
 			}
 		}
 
+		// Spot-check: at least one form with a payment_method field should
+		// have chip enabled (the per-form payment_methods walker ran).
+		// This catches a silent failure of the per-form migration.
+		if ( function_exists( 'wpFluent' ) ) {
+			try {
+				$rows = wpFluent()->table( 'fluentform_forms' )
+					->select( array( 'form_fields' ) )
+					->get();
+
+				if ( is_array( $rows ) ) {
+					foreach ( $rows as $row ) {
+						$decoded = json_decode( (string) $row->form_fields, true );
+						if ( ! is_array( $decoded ) ) {
+							continue;
+						}
+						if ( self::fields_have_payment_method( $decoded )
+							&& ! self::any_payment_method_has_chip_enabled( $decoded )
+						) {
+							return false;
+						}
+					}
+				}
+			} catch ( \Exception $e ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- see phase-1 catch above.
+				error_log( '[chip-for-fluent-forms] per-form payment_methods verify failed: ' . $e->getMessage() );
+				return false;
+			}
+		}
+
 		return true;
+	}
+
+	/**
+	 * True if any `payment_method` field in the form has `chip` with
+	 * `enabled='yes'`. Used by the per-form migration spot-check.
+	 *
+	 * @param array $fields A form's `form_fields` decoded array.
+	 * @return bool
+	 */
+	private static function any_payment_method_has_chip_enabled( array $fields ) {
+		foreach ( $fields as $field ) {
+			if ( ! is_array( $field ) ) {
+				continue;
+			}
+			if ( ( $field['element'] ?? '' ) === 'payment_method' ) {
+				$methods = $field['settings']['payment_methods'] ?? array();
+				if ( isset( $methods['chip']['enabled'] ) && 'yes' === $methods['chip']['enabled'] ) {
+					return true;
+				}
+			}
+			$children = $field['fields'] ?? null;
+			if ( is_array( $children ) && self::any_payment_method_has_chip_enabled( $children ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -249,7 +310,10 @@ class Chip_Fluent_Forms_Migration {
 	/**
 	 * The legacy schema did not have an is_active toggle at the global level
 	 * (CHIP was effectively always active when the option was present). Treat
-	 * the presence of any global setting as is_active=yes.
+	 * the presence of any non-empty legacy value as is_active=yes so an
+	 * upgrading user does not have to manually re-check the Enable toggle
+	 * under Fluent Forms -> Settings -> Payment Methods after the Codestar
+	 * drop.
 	 *
 	 * @param array $legacy The legacy fluent_form_chip option array.
 	 * @return string 'yes' or 'no'.
@@ -258,7 +322,9 @@ class Chip_Fluent_Forms_Migration {
 		if ( isset( $legacy['is_active'] ) ) {
 			return 'yes' === $legacy['is_active'] ? 'yes' : 'no';
 		}
-		return ! empty( $legacy['secret-key'] ) ? 'yes' : 'no';
+		// 1.x had no master enable toggle. The option existing at all meant
+		// the merchant was running CHIP — preserve that on upgrade.
+		return ! empty( $legacy ) ? 'yes' : 'no';
 	}
 
 	/**
@@ -289,6 +355,154 @@ class Chip_Fluent_Forms_Migration {
 		}
 
 		return $out;
+	}
+
+	/**
+	 * Ensure `chip` is enabled in every form's `payment_method` field.
+	 *
+	 * In 1.x the chip method was always present in
+	 * `fluentform/available_payment_methods` (the legacy
+	 * `Chip_Fluent_Forms_Register::push` registered it unconditionally), so
+	 * the form editor's `recheckEditorComponent` would seed a `chip` entry
+	 * into each form's per-form `payment_methods` array on first open.
+	 * Forms whose owners then enabled chip in the editor had it persisted
+	 * with `enabled='yes'` in the form's `form_fields` JSON.
+	 *
+	 * Forms that were created in 1.x but never re-saved through the form
+	 * editor in 2.0 may have a `payment_method` field whose
+	 * `settings.payment_methods` array either omits `chip` entirely or
+	 * has it with `enabled='no'`. This walker makes the upgrade
+	 * transparent: any such field gets a `chip` entry with
+	 * `enabled='yes'`. Explicit `enabled='no'` choices are preserved.
+	 *
+	 * Idempotent: re-running on a form that already has `chip` with
+	 * `enabled='yes'` is a no-op (early return before the JSON write).
+	 *
+	 * @return void
+	 */
+	private static function migrate_per_form_payment_methods() {
+		if ( ! function_exists( 'wpFluent' ) ) {
+			return;
+		}
+
+		try {
+			$forms = wpFluent()->table( 'fluentform_forms' )
+				->select( array( 'id', 'form_fields' ) )
+				->get();
+		} catch ( \Exception $e ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- see phase-1 catch above.
+			error_log( '[chip-for-fluent-forms] per-form payment_methods migration read failed: ' . $e->getMessage() );
+			return;
+		}
+
+		if ( ! is_array( $forms ) ) {
+			return;
+		}
+
+		foreach ( $forms as $form ) {
+			$form_id    = (int) $form->id;
+			$raw_fields = json_decode( (string) $form->form_fields, true );
+
+			if ( ! is_array( $raw_fields ) || ! self::fields_have_payment_method( $raw_fields ) ) {
+				continue;
+			}
+
+			$updated = self::ensure_chip_enabled_in_fields( $raw_fields );
+			if ( $updated === $raw_fields ) {
+				continue;
+			}
+
+			try {
+				wpFluent()->table( 'fluentform_forms' )
+					->where( 'id', $form_id )
+					->update( array( 'form_fields' => wp_json_encode( $updated ) ) );
+			} catch ( \Exception $e ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- see phase-1 catch above.
+				error_log( '[chip-for-fluent-forms] per-form payment_methods migration write failed for form ' . $form_id . ': ' . $e->getMessage() );
+			}
+		}
+	}
+
+	/**
+	 * Walk a form-field tree looking for a `payment_method` element.
+	 *
+	 * FF Pro nests child fields under a `fields` key on container
+	 * elements (e.g. multi-column layouts), so the search recurses.
+	 *
+	 * @param array $fields A form's `form_fields` decoded array.
+	 * @return bool True if any field in the tree is a `payment_method`.
+	 */
+	private static function fields_have_payment_method( array $fields ) {
+		foreach ( $fields as $field ) {
+			if ( ! is_array( $field ) ) {
+				continue;
+			}
+			if ( ( $field['element'] ?? '' ) === 'payment_method' ) {
+				return true;
+			}
+			$children = $field['fields'] ?? null;
+			if ( is_array( $children ) && self::fields_have_payment_method( $children ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Set `chip` to `enabled='yes'` in every `payment_method` field of a
+	 * form-field tree unless the merchant has explicitly set it to `'no'`.
+	 *
+	 * Returns the same array reference (and a structural `===` match)
+	 * when no changes were needed so the caller can skip the JSON write.
+	 *
+	 * @param array $fields A form's `form_fields` decoded array.
+	 * @return array The (possibly) updated array.
+	 */
+	private static function ensure_chip_enabled_in_fields( array $fields ) {
+		$changed = false;
+
+		foreach ( $fields as $i => $field ) {
+			if ( ! is_array( $field ) ) {
+				continue;
+			}
+
+			if ( ( $field['element'] ?? '' ) === 'payment_method' ) {
+				$settings = isset( $field['settings'] ) && is_array( $field['settings'] )
+					? $field['settings']
+					: array();
+				$methods  = isset( $settings['payment_methods'] ) && is_array( $settings['payment_methods'] )
+					? $settings['payment_methods']
+					: array();
+
+				$current = isset( $methods['chip']['enabled'] ) ? (string) $methods['chip']['enabled'] : null;
+
+				if ( 'no' === $current ) {
+					// Merchant explicitly disabled chip on this form. Leave it alone.
+				} elseif ( 'yes' !== $current ) {
+					// Missing or set to something else: enable it with a default method object.
+					$methods['chip'] = array(
+						'title'        => 'CHIP',
+						'enabled'      => 'yes',
+						'method_value' => 'chip',
+						'settings'     => array(),
+					);
+					$settings['payment_methods'] = $methods;
+					$fields[ $i ]['settings']    = $settings;
+					$changed                     = true;
+				}
+			}
+
+			$children = $field['fields'] ?? null;
+			if ( is_array( $children ) ) {
+				$new_children = self::ensure_chip_enabled_in_fields( $children );
+				if ( $new_children !== $children ) {
+					$fields[ $i ]['fields'] = $new_children;
+					$changed                = true;
+				}
+			}
+		}
+
+		return $changed ? $fields : $fields;
 	}
 }
 

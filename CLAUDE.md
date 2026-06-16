@@ -11,11 +11,11 @@ CHIP for Fluent Forms is a WordPress plugin that integrates the [CHIP Digital Fi
 - **Hard dependency**: Fluent Forms Pro Add On Pack ≥ 4.3.21 — the plugin's bootstrap short-circuits if `FluentFormPro\Payments\PaymentHelper` or `FluentFormPro\Payments\PaymentMethods\BaseProcessor` are missing.
 - **API base**: `https://gate.chip-in.asia/api/v1` (defined as `CHIP_FF_API_ROOT_URL`).
 - **Text domain**: `chip-for-fluent-forms`.
-- **Option keys**: `fluent_form_chip_settings` (global), per-form `fluentform_form_meta` rows with `meta_key = '_chip_payment_settings'`.
+- **Option keys**: `fluent_form_chip_settings` (global, the canonical store; mirrored to FF Pro's `fluentform_payment_settings_chip` on save), per-form `fluentform_form_meta` rows with `meta_key = '_chip_payment_settings'`. The form's `payment_method` field's `settings.payment_methods[chip]` sub-array (lives in `fluentform_forms.form_fields` JSON) is what the form editor / render consults.
 
 ## High-Level Architecture
 
-The plugin is intentionally small — a single bootstrap class plus four handler classes and the bundled [Codestar Framework](https://github.com/Codestar/codestar-framework) used purely as an admin settings UI.
+The plugin is intentionally small — a single bootstrap class plus a handful of handler classes that integrate with Fluent Forms Pro's native Payment Methods tab via the `BasePaymentMethod` contract.
 
 ### Bootstrap — `chip-for-fluent-forms.php`
 - `Chip_Fluent_Forms` is a singleton instantiated on the `init` hook at priority 0, gated by the Fluent Forms Pro class check in `load_chip_for_fluent_forms()`.
@@ -24,13 +24,14 @@ The plugin is intentionally small — a single bootstrap class plus four handler
 
 ### Runtime classes — `includes/`
 - **`class-api.php` — `Chip_Fluent_Forms_API`** — thin wrapper around `wp_remote_request` for the CHIP REST API. Singleton keyed by `md5(secret_key . brand_id)`. Cache-busts GETs with `?time=` suffix. Endpoints used: `POST /purchases/`, `GET /purchases/{id}/`, `POST /purchases/{id}/refund/`, `GET /payment_methods/`. Returns `WP_Error` on transport / JSON / API-level errors; callers use `is_wp_error()`.
-- **`class-chip-fluent-forms-handler.php` — `Chip_Fluent_Forms_Handler`** — extends `FluentFormPro\Payments\PaymentMethods\BasePaymentMethod`. Owns the per-method push into Fluent Forms Pro's Payment Methods tab. Registers `fluentform/available_payment_methods` + `fluentform/payment_methods_global_settings` + `fluentform/payment_settings_chip` filters (via the parent) and `fluentform/payment_methods_global_settings` (locally) so the global settings show up in FF Pro's Payment Methods panel.
+- **`class-chip-fluent-forms-handler.php` — `Chip_Fluent_Forms_Handler`** — extends `FluentFormPro\Payments\PaymentMethods\BasePaymentMethod`. Owns the per-method push into Fluent Forms Pro's Payment Methods tab. Registers `fluentform/available_payment_methods` + `fluentform/payment_methods_global_settings` + `fluentform/payment_settings_chip` filters (via the parent) and a `fluentform/payment_method_settings_save_chip` filter that mirrors FF Pro's save payload into our canonical option. The `push_payment_method` callback adds `chip` to `fluentform/available_payment_methods` so the form editor / renderer see the method.
 - **`class-purchase.php` — `Chip_Fluent_Forms_Purchase`** — extends `FluentFormPro\Payments\PaymentMethods\BaseProcessor`. This is the core of the plugin. Registers three action hooks: `fluentform/process_payment_chip`, `fluentform/payment_frameless_chip` (user redirect back from CHIP), and `fluentform/ipn_endpoint_chip` (server-to-server callback). Currency support is hard-coded to `MYR` (`$supported_currencies`); subscriptions are rejected with HTTP 423.
 
 ### Admin — `includes/admin/`
 All admin files only execute under `is_admin()`. They register fields and panels through Fluent Forms Pro's native `BasePaymentMethod` contract — see `class-chip-fluent-forms-handler.php` for the entry point.
-- **`class-chip-fluent-forms-settings-page.php`** — Renders the standalone settings page (used only when FF Pro's native Payment Methods tab is unavailable). Registers WP Settings API sections + fields via `register_setting()` / `add_settings_section()` / `add_settings_field()`.
+- **`class-chip-fluent-forms-settings-page.php`** — Provides the field schema (`get_fields()`) consumed by `BasePaymentMethod::getGlobalFields()` for FF Pro's native Payment Methods tab. The schema uses the FF Pro shape: `{ label, fields: [{ settings_key, type, ... }] }` with `type` values like `yes-no-checkbox`, `input-radio`, `input-text`, `input-checkboxes`. The "standalone page" rendering path (`render_standalone_page`, `register_settings`, etc.) is legacy code kept for sites on very old FF Pro without `BasePaymentMethod` — the live UI is FF Pro's Payment Methods tab.
 - **`class-chip-fluent-forms-form-settings.php`** — Per-form "Customize" panel. Hooked on `fluentform/form_payment_settings` and `fluentform/after_save_form_settings` to add a per-form payment-mode override and a per-form payment-method whitelist.
+- **`class-chip-fluent-forms-migration.php`** — Two-phase upgrade from the legacy `fluent_form_chip` option (1.x) to the new schema. Phase 1 writes the new global option and per-form `_chip_payment_settings` rows, and also walks every form with a `payment_method` field to ensure `settings.payment_methods[chip].enabled === 'yes'` (preserves explicit `'no'`). Phase 2 verifies the writes; on success it deletes the legacy option. Loosened `resolve_legacy_is_active()` so any non-empty legacy option flips `is_active='yes'` for an upgrading user — the 1.x plugin had no master enable toggle, so the option existing is the signal the merchant was running CHIP.
 
 ### Settings resolution — `Chip_Fluent_Forms_Purchase::get_settings()`
 Builds the runtime config by reading `get_option( CHIP_FF_FSLUG )` and applying a `-{form_id}` postfix to every key when the form's `form-customize-{id}` toggle is on. The form's option key is detected by `array_key_exists( 'form-customize-' . $form_id, $options )`.
