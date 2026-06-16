@@ -25,17 +25,17 @@ delete_option( 'fluent_form_chip_migrated_phase1' );
 // recognize it as a CRUD helper, hence the targeted phpcs:ignore below)
 // and then call the FF Pro helper for each.
 if ( class_exists( 'FluentForm\App\Helpers\Helper' ) ) {
-	$form_ids = wpFluent()->table( 'fluentform_form_meta' ) // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	$chip_ff_form_ids = wpFluent()->table( 'fluentform_form_meta' ) // phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		->select( 'form_id' )
 		->where( 'meta_key', '_chip_payment_settings' )
 		->groupBy( 'form_id' )
 		->get();
 
-	if ( is_array( $form_ids ) ) {
-		foreach ( $form_ids as $row ) {
-			$form_id = is_object( $row ) ? (int) $row->form_id : (int) $row['form_id'];
-			if ( $form_id > 0 ) {
-				\FluentForm\App\Helpers\Helper::deleteFormMeta( $form_id, '_chip_payment_settings' );
+	if ( is_array( $chip_ff_form_ids ) ) {
+		foreach ( $chip_ff_form_ids as $chip_ff_row ) {
+			$chip_ff_form_id = is_object( $chip_ff_row ) ? (int) $chip_ff_row->form_id : (int) $chip_ff_row['form_id'];
+			if ( $chip_ff_form_id > 0 ) {
+				\FluentForm\App\Helpers\Helper::deleteFormMeta( $chip_ff_form_id, '_chip_payment_settings' );
 			}
 		}
 	}

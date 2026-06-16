@@ -35,23 +35,17 @@ define( 'FF_CHIP_FILE', __FILE__ );
 require_once __DIR__ . '/includes/class-chip-fluent-forms.php';
 
 /**
- * Register the text-domain loader and the gated plugin entry point.
+ * Register the gated plugin entry point.
  *
- * Both run on `plugins_loaded` so the plugin is fully bootstrapped
+ * Runs on `plugins_loaded` so the plugin is fully bootstrapped
  * (constants + class autoloaded + helper bootstraps included) before
- * any Fluent Forms Pro hook fires.
- *
- * The text-domain path is derived from `FF_CHIP_FILE` (defined above)
- * rather than `FF_CHIP_BASENAME` because the latter is only set when
- * `Chip_Fluent_Forms::define()` runs, which is gated below by the
- * Fluent Forms Pro class check. Referencing it here on PHP 8 raised
- * a fatal `Undefined constant` Error before the class is instantiated.
+ * any Fluent Forms Pro hook fires. WordPress 4.6+ handles loading
+ * translations under the plugin slug automatically, so no explicit
+ * `load_plugin_textdomain()` call is needed here.
  */
 add_action(
 	'plugins_loaded',
 	static function (): void {
-		load_plugin_textdomain( 'chip-for-fluent-forms', false, dirname( plugin_basename( FF_CHIP_FILE ) ) . '/languages/' );
-
 		if ( ! class_exists( 'FluentFormPro\Payments\PaymentHelper' ) && ! class_exists( 'FluentFormPro\Payments\PaymentMethods\BaseProcessor' ) ) {
 			return;
 		}

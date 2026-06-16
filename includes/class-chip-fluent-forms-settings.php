@@ -119,7 +119,7 @@ class Chip_Fluent_Forms_Settings {
 
 		if ( ! is_array( $stored ) || empty( $stored ) ) {
 			// Pre-migration fallback: read the legacy option and re-shape on the fly.
-			$stored = self::migrate_legacy_to_global( get_option( FF_CHIP_FSLUG, array() ) );
+			$stored = self::migrate_legacy_to_global( get_option( CHIP_FF_FSLUG, array() ) );
 		}
 
 		return wp_parse_args( $stored, self::global_defaults() );
@@ -155,7 +155,7 @@ class Chip_Fluent_Forms_Settings {
 
 		if ( empty( $stored ) ) {
 			// Pre-migration fallback: read the legacy per-form postfix keys.
-			$legacy = get_option( FF_CHIP_FSLUG, array() );
+			$legacy = get_option( CHIP_FF_FSLUG, array() );
 			if ( ! empty( $legacy[ 'form-customize-' . $form_id ] ) ) {
 				$stored = self::migrate_legacy_to_form( $legacy, $form_id );
 			}

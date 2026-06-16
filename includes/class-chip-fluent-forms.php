@@ -67,8 +67,8 @@ class Chip_Fluent_Forms {
 		if ( ! defined( 'FF_CHIP_FILE' ) ) {
 			define( 'FF_CHIP_FILE', __FILE__ );
 		}
-		define( 'FF_CHIP_BASENAME', plugin_basename( FF_CHIP_FILE ) );
-		define( 'FF_CHIP_FSLUG', 'fluent_form_chip' );
+		define( 'CHIP_FF_BASENAME', plugin_basename( FF_CHIP_FILE ) );
+		define( 'CHIP_FF_FSLUG', 'fluent_form_chip' );
 	}
 
 	/**
@@ -108,7 +108,7 @@ class Chip_Fluent_Forms {
 	 * @return void
 	 */
 	public function add_filters() {
-		add_filter( 'plugin_action_links_' . FF_CHIP_BASENAME, array( $this, 'setting_link' ) );
+		add_filter( 'plugin_action_links_' . CHIP_FF_BASENAME, array( $this, 'setting_link' ) );
 	}
 
 	/**

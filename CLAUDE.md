@@ -9,7 +9,7 @@ CHIP for Fluent Forms is a WordPress plugin that integrates the [CHIP Digital Fi
 - **WordPress**: ≥ 6.1
 - **PHP**: ≥ 7.4 (8.0+ recommended)
 - **Hard dependency**: Fluent Forms Pro Add On Pack ≥ 4.3.21 — the plugin's bootstrap short-circuits if `FluentFormPro\Payments\PaymentHelper` or `FluentFormPro\Payments\PaymentMethods\BaseProcessor` are missing.
-- **API base**: `https://gate.chip-in.asia/api/v1` (defined as `FLUENT_FORMS_CHIP_ROOT_URL`).
+- **API base**: `https://gate.chip-in.asia/api/v1` (defined as `CHIP_FF_API_ROOT_URL`).
 - **Text domain**: `chip-for-fluent-forms`.
 - **Option keys**: `fluent_form_chip_settings` (global), per-form `fluentform_form_meta` rows with `meta_key = '_chip_payment_settings'`.
 
@@ -19,7 +19,7 @@ The plugin is intentionally small — a single bootstrap class plus four handler
 
 ### Bootstrap — `chip-for-fluent-forms.php`
 - `Chip_Fluent_Forms` is a singleton instantiated on the `init` hook at priority 0, gated by the Fluent Forms Pro class check in `load_chip_for_fluent_forms()`.
-- Defines constants: `FF_CHIP_FILE`, `FF_CHIP_BASENAME`, `FF_CHIP_FSLUG` (`'fluent_form_chip'`), `FF_CHIP_MODULE_VERSION`.
+- Defines constants: `FF_CHIP_FILE`, `CHIP_FF_BASENAME`, `CHIP_FF_FSLUG` (`'fluent_form_chip'`), `FF_CHIP_MODULE_VERSION`.
 - Loads includes in two phases — admin-only files are only included when `is_admin()` is true; runtime classes are always loaded.
 
 ### Runtime classes — `includes/`
@@ -33,7 +33,7 @@ All admin files only execute under `is_admin()`. They register fields and panels
 - **`class-chip-fluent-forms-form-settings.php`** — Per-form "Customize" panel. Hooked on `fluentform/form_payment_settings` and `fluentform/after_save_form_settings` to add a per-form payment-mode override and a per-form payment-method whitelist.
 
 ### Settings resolution — `Chip_Fluent_Forms_Purchase::get_settings()`
-Builds the runtime config by reading `get_option( FF_CHIP_FSLUG )` and applying a `-{form_id}` postfix to every key when the form's `form-customize-{id}` toggle is on. The form's option key is detected by `array_key_exists( 'form-customize-' . $form_id, $options )`.
+Builds the runtime config by reading `get_option( CHIP_FF_FSLUG )` and applying a `-{form_id}` postfix to every key when the form's `form-customize-{id}` toggle is on. The form's option key is detected by `array_key_exists( 'form-customize-' . $form_id, $options )`.
 
 ### Payment flow
 1. Fluent Forms Pro fires `fluentform/process_payment_chip` → `handlePaymentAction()` → `create_purchase()`.

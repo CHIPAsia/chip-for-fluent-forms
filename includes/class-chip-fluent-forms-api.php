@@ -5,11 +5,15 @@
  * @package CHIPForFluentForms
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /*
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  */
-define( 'FLUENT_FORMS_CHIP_ROOT_URL', 'https://gate.chip-in.asia' ); // This is the CHIP API URL endpoint, as documented in: https://docs.chip-in.asia/api.
+define( 'CHIP_FF_API_ROOT_URL', 'https://gate.chip-in.asia' ); // This is the CHIP API URL endpoint, as documented in: https://docs.chip-in.asia/api.
 
 /**
  * Chip_Fluent_Forms_API — REST client for the CHIP payment gateway API.
@@ -166,7 +170,7 @@ class Chip_Fluent_Forms_API {
 
 		$request = $this->request(
 			$method,
-			sprintf( '%s/api/v1%s', FLUENT_FORMS_CHIP_ROOT_URL, $route ),
+			sprintf( '%s/api/v1%s', CHIP_FF_API_ROOT_URL, $route ),
 			$params,
 			array(
 				'Content-type'  => 'application/json',

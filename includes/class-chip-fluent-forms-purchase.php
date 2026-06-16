@@ -5,6 +5,10 @@
  * @package CHIPForFluentForms
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 use FluentForm\App\Services\Form\SubmissionHandlerService;
 use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentForm\App\Services\FormBuilder\ShortCodeParser;

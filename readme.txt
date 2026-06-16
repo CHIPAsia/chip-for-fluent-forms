@@ -96,7 +96,7 @@ You can visit our [API documentation](https://docs.chip-in.asia/) for your refer
 
 = What CHIP API services used in this plugin? =
 
-This plugin rely on CHIP API ([FLUENT_FORMS_CHIP_ROOT_URL](https://gate.chip-in.asia)) as follows:
+This plugin rely on CHIP API ([CHIP_FF_API_ROOT_URL](https://gate.chip-in.asia)) as follows:
 
   - **/purchases/**
     - This is for accepting payment
