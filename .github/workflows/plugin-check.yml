@@ -111,8 +111,10 @@ jobs:
         run: phpcs --standard=phpcs.xml .
         continue-on-error: false
 
-  # Tier 3: Plugin Check (needs build artifact)
-  # Manual wp-env approach — upstream plugin-check-action is broken (#579).
+  # Tier 3: Plugin Check (needs build artifact).
+  # Uses the official wordpress/plugin-check-action which handles wp-env
+  # setup, plugin-check install + activation, dependency resolution, and
+  # PR annotations internally.
 
   plugin-check:
     name: Plugin Check
@@ -129,82 +131,19 @@ jobs:
           name: chip-for-fluent-forms-build
           path: ./build
 
-      # Node 24+ breaks @wordpress/env ("Environment not initialized").
-      # Node 22 is the latest version confirmed working.
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '22'
-
-      - name: Install @wordpress/env
-        run: npm install -g @wordpress/env
-
-      - name: Create wp-env override for CI
-        run: |
-          cat > .wp-env.override.json <<'JSONEOF'
-          {
-            "core": null,
-            "plugins": [
-              "https://downloads.wordpress.org/plugin/fluentform.zip",
-              "https://downloads.wordpress.org/plugin/plugin-check.zip"
-            ],
-            "mappings": {
-              "wp-content/plugins/chip-for-fluent-forms": "./build/chip-for-fluent-forms"
-            }
-          }
-          JSONEOF
-          cat .wp-env.override.json
-
-      - name: Start WordPress environment
-        run: |
-          npx wp-env start --update
-          # Give containers time to stabilize
-          sleep 10
-
-      - name: Activate Plugin Check
-        run: |
-          npx wp-env run cli wp plugin activate plugin-check
-
       - name: Run Plugin Check
-        run: |
-          # Run plugin check and output JSON for parsing.
-          # Ignore trademarked_term: the plugin name "CHIP for Fluent Forms" and slug
-          # "chip-for-fluent-forms" cannot be changed (WordPress.org branding rules).
+        uses: wordpress/plugin-check-action@v1
+        with:
+          # build/ comes from the `build` job above, which produces
+          # ci-build/chip-for-fluent-forms via `git archive`.
+          build-dir: ./build/chip-for-fluent-forms
+          # Ignore trademarked_term: the plugin name "CHIP for Fluent Forms"
+          # and slug "chip-for-fluent-forms" cannot be changed (WordPress.org
+          # branding rules).
           # Ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-          # for hooks inherited from Fluent Forms Pro's documented public surface
-          # (fluentform/process_payment_chip, fluentform/payment_frameless_chip,
-          #  fluentform/ipn_endpoint_chip, fluentform/validate_payment_items_chip, etc.).
-          # wp-env run cli prepends status text to stdout; filter only JSON lines.
-          # WP CLI may return exit code 1 even with --ignore-codes; use || true and rely on jq parsing.
-          npx wp-env run cli wp plugin check chip-for-fluent-forms \
-            --format=json \
-            --ignore-codes=trademarked_term,WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound \
-            2>/dev/null | grep -E '^\[|^\{' > /tmp/plugin-check-results.json || true
-
-          # Display results in a readable table format.
-          npx wp-env run cli wp plugin check chip-for-fluent-forms \
-            --ignore-codes=trademarked_term,WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-
-          # Parse JSON to count errors and warnings.
-          ERRORS=$(jq '[.[] | select(.type == "ERROR")] | length' /tmp/plugin-check-results.json)
-          WARNINGS=$(jq '[.[] | select(.type == "WARNING")] | length' /tmp/plugin-check-results.json)
-
-          echo ""
-          echo "═══════════════════════════════════════"
-          echo "  Plugin Check Summary"
-          echo "═══════════════════════════════════════"
-          echo "  Errors:   ${ERRORS}"
-          echo "  Warnings: ${WARNINGS}"
-
-          if [ "${ERRORS}" -gt 0 ] || [ "${WARNINGS}" -gt 0 ]; then
-            echo ""
-            echo "❌ Plugin Check failed with ${ERRORS} error(s) and ${WARNINGS} warning(s)"
-            exit 1
-          fi
-
-          echo ""
-          echo "✅ Plugin Check passed (no errors or warnings)"
-
-      - name: Stop WordPress environment
-        if: always()
-        run: npx wp-env stop
+          # for hooks inherited from Fluent Forms Pro's documented public
+          # surface (fluentform/process_payment_chip,
+          # fluentform/payment_frameless_chip, fluentform/ipn_endpoint_chip,
+          # fluentform/validate_payment_items_chip, etc.).
+          # Warnings fail the run (ignore-warnings defaults to false).
+          ignore-codes: trademarked_term,WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
