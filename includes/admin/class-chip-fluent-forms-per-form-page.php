@@ -106,7 +106,7 @@ class Chip_Fluent_Forms_Per_Form_Page {
 					<tbody>
 						<?php foreach ( $forms as $form ) : ?>
 							<?php
-							$form_id      = (int) $form->id;
+							$form_id       = (int) $form->id;
 							$is_customized = $this->is_form_customized( $form_id );
 							$edit_url      = admin_url( 'admin.php?page=' . self::MENU_SLUG . '&form_id=' . $form_id );
 							?>
