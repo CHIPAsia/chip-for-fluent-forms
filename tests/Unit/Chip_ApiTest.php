@@ -35,36 +35,22 @@ class Chip_ApiTest extends TestCase {
 	}
 
 	/**
-	 * get_public_key returns the string body when the API responds 200 with a JSON string.
+	 * get_instance() returns the same instance for the same (secret, brand) pair.
 	 */
-	public function test_get_public_key_returns_string_from_json_body(): void {
-		$response_body = json_encode( 'simple-key-string' );
+	public function test_get_instance_returns_singleton(): void {
+		$api1 = Chip_Fluent_Forms_API::get_instance( 'same_secret', 'same_brand' );
+		$api2 = Chip_Fluent_Forms_API::get_instance( 'same_secret', 'same_brand' );
 
-		WP_Mock::userFunction( 'wp_remote_request' )
-			->once()
-			->andReturn( array(
-				'body'     => $response_body,
-				'response' => array( 'code' => 200 ),
-			) );
+		$this->assertSame( $api1, $api2 );
+	}
 
-		WP_Mock::userFunction( 'wp_remote_retrieve_body' )
-			->andReturnUsing( function ( $response ) {
-				return is_array( $response ) && array_key_exists( 'body', $response ) ? $response['body'] : '';
-			} );
+	/**
+	 * get_instance() returns different instances for different (secret, brand) pairs.
+	 */
+	public function test_get_instance_returns_distinct_instances_for_distinct_credentials(): void {
+		$api_a = Chip_Fluent_Forms_API::get_instance( 'secret_a', 'brand_a' );
+		$api_b = Chip_Fluent_Forms_API::get_instance( 'secret_b', 'brand_b' );
 
-		WP_Mock::userFunction( 'wp_remote_retrieve_response_code' )
-			->andReturnUsing( function ( $response ) {
-				return isset( $response['response']['code'] ) ? (int) $response['response']['code'] : 200;
-			} );
-
-		WP_Mock::userFunction( 'apply_filters' )
-			->with( 'ff_chip_sslverify', true )
-			->andReturn( true );
-
-		$api = Chip_Fluent_Forms_API::get_instance( 'test_secret', 'test_brand' );
-		$key = $api->get_public_key();
-
-		$this->assertIsString( $key );
-		$this->assertSame( 'simple-key-string', $key );
+		$this->assertNotSame( $api_a, $api_b );
 	}
 }

@@ -41,6 +41,5 @@ if ( class_exists( 'FluentForm\App\Helpers\Helper' ) ) {
 	}
 }
 
-// Legacy options (defensive — for sites that never went through the migration).
+// Legacy option (defensive — for sites that never went through the migration).
 delete_option( 'fluent_form_chip' );
-delete_option( 'fluent_form_chip_public_key' );

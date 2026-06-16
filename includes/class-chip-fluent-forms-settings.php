@@ -85,7 +85,6 @@ class Chip_Fluent_Forms_Settings {
 			'due_strict'               => '1',
 			'due_strict_timing'        => '60',
 			'payment_method_whitelist' => array(),
-			'public_key'               => '',
 		);
 	}
 
@@ -107,7 +106,6 @@ class Chip_Fluent_Forms_Settings {
 			'due_strict'               => '1',
 			'due_strict_timing'        => '60',
 			'payment_method_whitelist' => array(),
-			'public_key'               => '',
 		);
 	}
 
@@ -177,7 +175,6 @@ class Chip_Fluent_Forms_Settings {
 					'due_strict'               => $global['due_strict'],
 					'due_strict_timing'        => $global['due_strict_timing'],
 					'payment_method_whitelist' => $global['payment_method_whitelist'],
-					'public_key'               => $global['public_key'],
 				)
 			);
 		}
@@ -278,8 +275,6 @@ class Chip_Fluent_Forms_Settings {
 	 * @return array
 	 */
 	public static function sanitize_global( $settings ) {
-		$defaults = self::global_defaults();
-
 		$is_active  = ! empty( $settings['is_active'] ) && 'yes' === $settings['is_active'] ? 'yes' : 'no';
 		$mode       = isset( $settings['payment_mode'] ) && 'live' === $settings['payment_mode'] ? 'live' : 'test';
 		$due_strict = ! empty( $settings['due_strict'] ) ? '1' : '0';
@@ -308,7 +303,6 @@ class Chip_Fluent_Forms_Settings {
 			'due_strict'               => $due_strict,
 			'due_strict_timing'        => (string) $timing,
 			'payment_method_whitelist' => $whitelist,
-			'public_key'               => isset( $settings['public_key'] ) ? (string) $settings['public_key'] : '',
 		);
 	}
 
@@ -319,8 +313,6 @@ class Chip_Fluent_Forms_Settings {
 	 * @return array
 	 */
 	public static function sanitize_form( $settings ) {
-		$defaults = self::form_defaults();
-
 		$is_active  = ! empty( $settings['is_active'] ) && 'yes' === $settings['is_active'] ? 'yes' : 'no';
 		$mode       = isset( $settings['payment_mode'] ) && 'live' === $settings['payment_mode'] ? 'live' : 'test';
 		$due_strict = ! empty( $settings['due_strict'] ) ? '1' : '0';
@@ -348,7 +340,6 @@ class Chip_Fluent_Forms_Settings {
 			'due_strict'               => $due_strict,
 			'due_strict_timing'        => (string) $timing,
 			'payment_method_whitelist' => $whitelist,
-			'public_key'               => isset( $settings['public_key'] ) ? (string) $settings['public_key'] : '',
 		);
 	}
 
@@ -391,7 +382,6 @@ class Chip_Fluent_Forms_Settings {
 			'due_strict'               => ! empty( $legacy['due-strict'] ) ? '1' : '0',
 			'due_strict_timing'        => isset( $legacy['due-strict-timing'] ) ? (string) $legacy['due-strict-timing'] : '60',
 			'payment_method_whitelist' => $whitelist,
-			'public_key'               => '',
 		);
 	}
 
@@ -429,7 +419,6 @@ class Chip_Fluent_Forms_Settings {
 			'due_strict'               => ! empty( $legacy[ 'due-strict' . $postfix ] ) ? '1' : '0',
 			'due_strict_timing'        => isset( $legacy[ 'due-strict-timing' . $postfix ] ) ? (string) $legacy[ 'due-strict-timing' . $postfix ] : '60',
 			'payment_method_whitelist' => $whitelist,
-			'public_key'               => '',
 		);
 	}
 }

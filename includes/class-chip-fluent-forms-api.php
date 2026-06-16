@@ -128,15 +128,6 @@ class Chip_Fluent_Forms_API {
 	}
 
 	/**
-	 * GET /public_key/ — fetch CHIP's signing public key.
-	 *
-	 * @return mixed Decoded JSON response, or WP_Error.
-	 */
-	public function get_public_key() {
-		return $this->call( 'GET', '/public_key/' );
-	}
-
-	/**
 	 * GET /webhooks/ — list webhooks registered for the brand.
 	 *
 	 * @return mixed Decoded JSON response, or WP_Error.

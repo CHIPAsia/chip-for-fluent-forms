@@ -3,7 +3,7 @@
  * Two-phase migration from the legacy option schema to the new one.
  *
  * Phase 1 (one request):
- *   1. Read the legacy `fluent_form_chip` option (and `fluent_form_chip_public_key`).
+ *   1. Read the legacy `fluent_form_chip` option.
  *   2. Write the new `fluent_form_chip_settings` global option and per-form
  *      fluentform_form_meta rows.
  *   3. Set `fluent_form_chip_migrated_phase1` to '1' so the next request can
@@ -123,12 +123,6 @@ class Chip_Fluent_Forms_Migration {
 			)
 		);
 
-		// Migrate global public key.
-		$public_key_legacy = get_option( 'fluent_form_chip_public_key', array() );
-		if ( is_array( $public_key_legacy ) && ! empty( $public_key_legacy['public-key'] ) ) {
-			$global['public_key'] = (string) $public_key_legacy['public-key'];
-		}
-
 		update_option( 'fluent_form_chip_settings', $global );
 
 		// Migrate per-form entries.
@@ -159,13 +153,6 @@ class Chip_Fluent_Forms_Migration {
 							'payment_method_whitelist' => self::resolve_legacy_whitelist( $legacy, $postfix ),
 						)
 					);
-
-					$per_form_public_key = isset( $public_key_legacy[ 'public-key' . $postfix ] )
-						? (string) $public_key_legacy[ 'public-key' . $postfix ]
-						: '';
-					if ( '' !== $per_form_public_key ) {
-						$per_form['public_key'] = $per_form_public_key;
-					}
 
 					Chip_Fluent_Forms_Settings::save_form( $form_id, $per_form );
 				}
@@ -235,7 +222,6 @@ class Chip_Fluent_Forms_Migration {
 	 */
 	private static function phase2_delete() {
 		delete_option( 'fluent_form_chip' );
-		delete_option( 'fluent_form_chip_public_key' );
 	}
 
 	/**
