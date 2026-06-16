@@ -3,7 +3,7 @@ Contributors: chipasia, wanzulnet
 Tags: chip
 Requires at least: 6.1
 Tested up to: 7.0
-Stable tag: 2.1.0
+Stable tag: 2.0.0
 Requires PHP: 7.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -31,13 +31,10 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 
 == Changelog ==
 
-= 2.1.0 2026-06-15 =
-* Removed `send_receipt` and `synchronize_refund` settings (global and per-form). The CHIP `send_receipt` parameter is now always `false`; receipt emails and refund webhooks are managed via the CHIP merchant dashboard. The entire `Chip_Fluent_Forms_Webhook_Setup` class has been deleted. Refund webhooks received on `fluentform/ipn_endpoint_chip` now log a one-time deprecation notice instead of verifying signatures.
-
 = 2.0.0 2026-06-15 =
 * Major rewrite: dropped bundled Codestar Framework (2.4M) in favour of Fluent Forms Pro's native Payment Methods tab via `BasePaymentMethod`.
 * Added 10 new payment-method whitelist keys (crypto_coin, dnqr, mpgs_apple_pay, mpgs_google_pay, razer_atome, razer_grabpay, razer_maybankqr, razer_shopeepay, razer_tng, shopee_pay). The `cards` shortcut still expands to visa+mastercard+maestro at send-time.
-* Per-form "Customize" panel (per-form credentials, payment-mode override, payment-method whitelist, refund-sync toggle) wired through FF Pro's per-form payment settings.
+* Per-form "Customize" panel (per-form credentials, payment-mode override, payment-method whitelist) wired through FF Pro's per-form payment settings.
 * Form-level "Notes" field on the payment method (merged from add/notes_parameter), with `{inputs.<Name Attribute>}` substitution.
 * `ff_chip_payment_paid_chip` action hook fired after a submission is marked as paid (replaces the undocumented `_ff_chip_on_payment_success` meta flag).
 * `ff_chip_ipn_domain` filter and `FF_CHIP_IPN_DOMAIN` constant for reverse-proxy / custom-hostname sites.
@@ -51,6 +48,8 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 * Fixed per-form refund signature verification (was reading the global public key instead of the per-form one).
 * Logs when the CHIP public key is missing for a refund.
 * Removed dead email-notification code; replaced with a documented `do_action`.
+* Removed `send_receipt` setting. The CHIP `send_receipt` parameter is now always sent as `false`; receipt emails are managed via the CHIP merchant dashboard.
+* Removed `synchronize_refund` setting (global and per-form) and the entire `Chip_Fluent_Forms_Webhook_Setup` class. The plugin no longer manages the CHIP refund webhook. Merchants configure refund webhooks directly in the CHIP merchant dashboard, and the `fluentform/ipn_endpoint_chip` handler now logs a one-time deprecation notice instead of verifying signatures. `Chip_Fluent_Forms_Purchase::handleRefund()` is kept as a no-op override of `BaseProcessor::refund()` for forward-compatibility.
 * Removed standalone `CHIP Settings` admin submenu page.
 * Updated inline API documentation URL to https://docs.chip-in.asia.
 * WordPress 7.0 readiness; PHPCS (WordPress coding standards) clean across all PHP files.
