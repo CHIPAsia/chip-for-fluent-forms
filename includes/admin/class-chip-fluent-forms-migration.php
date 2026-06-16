@@ -479,7 +479,7 @@ class Chip_Fluent_Forms_Migration {
 				// Skip fields where the merchant has explicitly disabled chip.
 				if ( 'no' !== $current && 'yes' !== $current ) {
 					// Missing or set to something else: enable it with a default method object.
-					$methods['chip']            = array(
+					$methods['chip']             = array(
 						'title'        => 'CHIP',
 						'enabled'      => 'yes',
 						'method_value' => 'chip',
