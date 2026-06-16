@@ -31,10 +31,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Chip_Fluent_Forms_Per_Form_Page {
 
-	const MENU_SLUG          = 'chip-form-settings';
-	const SAVE_ACTION         = 'chip_save_per_form_settings';
-	const NONCE_ACTION        = 'chip_save_per_form_settings';
-	const SETTINGS_GROUP      = 'chip_per_form_settings_group';
+	const MENU_SLUG      = 'chip-form-settings';
+	const SAVE_ACTION    = 'chip_save_per_form_settings';
+	const NONCE_ACTION   = 'chip_save_per_form_settings';
+	const SETTINGS_GROUP = 'chip_per_form_settings_group';
 
 	/**
 	 * Register the submenu + save handler.
@@ -108,7 +108,7 @@ class Chip_Fluent_Forms_Per_Form_Page {
 							<?php
 							$form_id      = (int) $form->id;
 							$is_customized = $this->is_form_customized( $form_id );
-							$edit_url     = admin_url( 'admin.php?page=' . self::MENU_SLUG . '&form_id=' . $form_id );
+							$edit_url      = admin_url( 'admin.php?page=' . self::MENU_SLUG . '&form_id=' . $form_id );
 							?>
 							<tr>
 								<td>
@@ -315,9 +315,9 @@ class Chip_Fluent_Forms_Per_Form_Page {
 
 		$redirect = add_query_arg(
 			array(
-				'page'     => self::MENU_SLUG,
-				'form_id'  => $form_id,
-				'saved'    => '1',
+				'page'    => self::MENU_SLUG,
+				'form_id' => $form_id,
+				'saved'   => '1',
 			),
 			admin_url( 'admin.php' )
 		);
@@ -349,7 +349,7 @@ class Chip_Fluent_Forms_Per_Form_Page {
 		$form = wpFluent()->table( 'fluentform_forms' )
 			->where( 'id', (int) $form_id )
 			->first();
-		return $form ?: null;
+		return $form ? $form : null;
 	}
 
 	/**
