@@ -428,15 +428,15 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			? ( $methodSettings['settings'] ?? array() )
 			: array();
 
-		$pfm_value = function ( $key, $default = '' ) use ( $pfm ) {
+		$pfm_value = function ( $key, $fallback = '' ) use ( $pfm ) {
 			if ( ! is_array( $pfm ) || ! isset( $pfm[ $key ] ) || ! is_array( $pfm[ $key ] ) ) {
-				return $default;
+				return $fallback;
 			}
-			$v = $pfm[ $key ]['value'] ?? $default;
+			$v = $pfm[ $key ]['value'] ?? $fallback;
 			if ( is_string( $v ) ) {
 				$v = trim( $v );
 			}
-			return '' === $v || null === $v ? $default : $v;
+			return '' === $v || null === $v ? $fallback : $v;
 		};
 
 		// Per-form method field's override toggle. Defaults to 'no' so
