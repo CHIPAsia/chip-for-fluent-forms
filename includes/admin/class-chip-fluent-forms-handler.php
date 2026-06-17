@@ -204,14 +204,14 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 				// $methodSettings['settings'] in create_purchase(); when
 				// empty, it falls back to for_form() / global() so the
 				// global values are still used by default.
-				'customize'               => array(
+				'customize'                 => array(
 					'settings_key'   => 'is_active',
 					'type'           => 'yes-no-checkbox',
 					'label'          => __( 'Customize for this form', 'chip-for-fluent-forms' ),
 					'checkbox_label' => __( 'Enable per-form override. When off, the global CHIP settings are used.', 'chip-for-fluent-forms' ),
 					'value'          => 'no',
 				),
-				'brand_id'                => array(
+				'brand_id'                  => array(
 					'settings_key' => 'brand_id',
 					'type'         => 'input-text',
 					'label'        => __( 'Brand ID', 'chip-for-fluent-forms' ),
@@ -219,7 +219,7 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					'info_help'    => __( 'Brand ID enables you to represent your Brand suitable for the system using the same CHIP account.', 'chip-for-fluent-forms' ),
 					'value'        => '',
 				),
-				'secret_key'              => array(
+				'secret_key'                => array(
 					'settings_key' => 'secret_key',
 					'type'         => 'input-text',
 					'data_type'    => 'password',
@@ -228,7 +228,7 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					'info_help'    => __( 'Secret key is used to identify your account with CHIP. You are recommended to create a dedicated secret key for each website.', 'chip-for-fluent-forms' ),
 					'value'        => '',
 				),
-				'payment_mode'            => array(
+				'payment_mode'              => array(
 					'settings_key' => 'payment_mode',
 					'type'         => 'input-radio',
 					'label'        => __( 'Payment Mode', 'chip-for-fluent-forms' ),
@@ -239,7 +239,7 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					'info_help'    => __( 'Test purchases do not charge real cards and use the CHIP sandbox.', 'chip-for-fluent-forms' ),
 					'value'        => 'test',
 				),
-				'due_strict'              => array(
+				'due_strict'                => array(
 					'settings_key'   => 'due_strict',
 					'type'           => 'yes-no-checkbox',
 					'label'          => __( 'Due Strict', 'chip-for-fluent-forms' ),
@@ -247,7 +247,7 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					'info_help'      => __( 'When on, the purchase expires after the strict-due timing instead of becoming overdue.', 'chip-for-fluent-forms' ),
 					'value'          => '1',
 				),
-				'due_strict_timing'       => array(
+				'due_strict_timing'         => array(
 					'settings_key' => 'due_strict_timing',
 					'type'         => 'input-text',
 					'label'        => __( 'Due Strict Timing (minutes)', 'chip-for-fluent-forms' ),
