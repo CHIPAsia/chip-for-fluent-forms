@@ -184,7 +184,7 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 				// Per-method display fields. Rendered by FF Pro's React
 				// form-settings UI on the per-form payment_method field
 				// (alongside Method Label and Notes).
-				'option_label'            => array(
+				'option_label'             => array(
 					'type'     => 'text',
 					'template' => 'inputText',
 					'value'    => 'Pay with CHIP',
