@@ -45,13 +45,22 @@ class Chip_Fluent_Forms_Per_Form_Page {
 	 * @return void
 	 */
 	public function register() {
-		add_submenu_page(
-			'fluent_forms',
+		// Register as a top-level menu under its own slug rather than a
+		// submenu of `fluent_forms`. The FF Pro parent menu gates access
+		// on the `fluentform_dashboard_access` cap, which the administrator
+		// role does not automatically have — so a submenu there would
+		// always return "Sorry, you are not allowed to access this page"
+		// for stock admin users. A top-level menu gives us a clean cap
+		// gate (`manage_options`) and the URL pattern the merchant
+		// expects: /wp-admin/admin.php?page=chip-form-settings.
+		add_menu_page(
 			__( 'CHIP Per-Form Settings', 'chip-for-fluent-forms' ),
 			__( 'CHIP Per-Form', 'chip-for-fluent-forms' ),
 			'manage_options',
 			self::MENU_SLUG,
-			array( $this, 'render' )
+			array( $this, 'render' ),
+			'dashicons-admin-generic',
+			81 // Just under Fluent Forms (which is typically at 80.x).
 		);
 
 		add_action( 'admin_post_' . self::SAVE_ACTION, array( $this, 'handle_save' ) );
