@@ -130,15 +130,6 @@ class Chip_Fluent_Forms_Settings_Page {
 				submit_button();
 				?>
 			</form>
-			<?php
-			if ( current_user_can( 'manage_options' ) ) {
-				printf(
-					'<p><a class="button" href="%1$s">%2$s</a></p>',
-					esc_url( admin_url( 'admin.php?page=chip-form-settings' ) ),
-					esc_html__( 'Manage per-form CHIP settings', 'chip-for-fluent-forms' )
-				);
-			}
-			?>
 		</div>
 		<?php
 	}

@@ -2,12 +2,21 @@
 /**
  * Per-form CHIP payment settings.
  *
- * Stored as a fluentform_form_meta row with meta_key = '_chip_payment_settings'.
- * UI: a single Customize toggle that, when on, exposes per-form credentials,
- * a per-form payment-mode override, and a per-form payment-method whitelist.
+ * Adds a custom `chip` sub-panel to FF Pro's per-form payment settings
+ * filter. FF Pro's React form-settings UI does not currently surface
+ * these server-side fields, so the panel is invisible in the form
+ * editor.
  *
- * Also exposes a per-form sanitize hook (`ff_chip_form_settings_saved`) as a
- * public extension point for downstream integrations.
+ * **Per-form credential overrides are now edited directly on the
+ * per-form `payment_method` field**, alongside Method Label and Notes
+ * (see `Chip_Fluent_Forms_Handler::push_payment_method()`). The
+ * render filter here is kept for downstream integrations and as a
+ * future extension point.
+ *
+ * Backward compat: for 1.x → 2.0 upgrades, the migration
+ * (`class-chip-fluent-forms-migration.php`) creates per-form
+ * `_chip_payment_settings` rows. The runtime falls back to these
+ * rows when the per-form `payment_method` field has no override.
  *
  * @package CHIPForFluentForms
  */
@@ -30,23 +39,16 @@ class Chip_Fluent_Forms_Form_Settings {
 	 * settings pipeline. Falls back gracefully when FF Pro doesn't expose
 	 * the per-form settings pipeline (very old Pro).
 	 *
+	 * Per-form credentials are now edited directly on the per-form
+	 * `payment_method` field (see `Chip_Fluent_Forms_Handler::push_payment_method`).
+	 * The render-only filter here stays for downstream integrations
+	 * that read FF Pro's per-form settings payload and may want to
+	 * surface our own customize panel.
+	 *
 	 * @return void
 	 */
 	public function __construct() {
-		// Render side: a server-side filter that returns a `$settings['chip']`
-		// panel. Note that the FF Pro React UI does not currently render these
-		// server-side fields, so the display is a no-op until FF Pro's React
-		// form-settings UI grows a way to surface per-method subkeys. The
-		// save side (below) is what actually wires up per-form persistence.
 		add_filter( 'fluentform/form_payment_settings', array( $this, 'register_per_form_settings' ), 10, 2 );
-
-		// Save side: FF Pro's saveFormSettings() runs over the entire
-		// fluentform_form_meta `_payment_settings` row and then fires
-		// fluentform/after_save_form_settings with the full payload. We
-		// pick the `chip` subkey, sanitize it, and persist as our own
-		// `_chip_payment_settings` row so reads via Chip_Fluent_Forms_Settings::for_form()
-		// stay consistent.
-		add_action( 'fluentform/after_save_form_settings', array( $this, 'save_per_form_settings' ), 10, 2 );
 	}
 
 	/**
@@ -145,39 +147,5 @@ class Chip_Fluent_Forms_Form_Settings {
 		}
 
 		return $settings;
-	}
-
-	/**
-	 * Persist the per-form `chip` subkey from the FF Pro payment settings save
-	 * payload into our own `_chip_payment_settings` meta row.
-	 *
-	 * Hooked on fluentform/after_save_form_settings. Receives the full per-form
-	 * payment settings array; we extract the `chip` subkey, sanitize, and save.
-	 *
-	 * @param int   $form_id      Fluent Forms form id.
-	 * @param array $all_settings The full per-form payment settings payload.
-	 * @return void
-	 */
-	public function save_per_form_settings( $form_id, $all_settings ) {
-		if ( ! is_array( $all_settings ) || empty( $all_settings['chip'] ) || ! is_array( $all_settings['chip'] ) ) {
-			return;
-		}
-
-		$chip_settings = $all_settings['chip'];
-
-		// Normalize: the React form-settings UI sends booleans for switchers
-		// ('true'/'false' strings, not '1'/'0' as our schema expects). Coerce.
-		$normalized = array();
-		foreach ( $chip_settings as $key => $value ) {
-			if ( is_string( $value ) && 'true' === $value ) {
-				$normalized[ $key ] = '1';
-			} elseif ( is_string( $value ) && 'false' === $value ) {
-				$normalized[ $key ] = '0';
-			} else {
-				$normalized[ $key ] = $value;
-			}
-		}
-
-		Chip_Fluent_Forms_Settings::save_form( (int) $form_id, $normalized );
 	}
 }

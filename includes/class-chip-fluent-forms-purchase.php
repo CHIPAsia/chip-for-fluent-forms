@@ -138,7 +138,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * @return void
 	 */
 	private function create_purchase( $transaction, $submission, $form, $methodSettings ) {
-		$option = Chip_Fluent_Forms_Settings::for_form( (int) $form->id );
+		$option = $this->resolve_effective_config( (int) $form->id, $methodSettings );
 
 		$ipn_domain = defined( 'FF_CHIP_IPN_DOMAIN' ) && FF_CHIP_IPN_DOMAIN
 			? FF_CHIP_IPN_DOMAIN
@@ -389,6 +389,101 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		// have called this directly. Returns the new schema from
 		// Chip_Fluent_Forms_Settings::for_form() unchanged.
 		return Chip_Fluent_Forms_Settings::for_form( (int) $form_id );
+	}
+
+	/**
+	 * Compute the effective CHIP config for a form at purchase time.
+	 *
+	 * Precedence (highest first):
+	 *   1. Per-form method field settings, read from `$methodSettings['settings']`.
+	 *      These are the values the merchant set in the form editor's
+	 *      per-form payment_method field (Method Label, Notes, plus the
+	 *      credential override fields added by push_payment_method()).
+	 *   2. `_chip_payment_settings` row via `for_form()` — the migration
+	 *      creates these for upgraded 1.x users, and earlier 2.x code
+	 *      wrote them via the per-form customize hook.
+	 *   3. Global `fluent_form_chip_settings` option, when neither of
+	 *      the above has a value for a key.
+	 *
+	 * The per-form method field's `is_active` toggle gates the override:
+	 * when it is `'no'` (or missing) the credential keys fall back to
+	 * the lower layers. `option_label` and `notes` always use the
+	 * per-form method field's value (they have no global equivalent).
+	 *
+	 * @param int   $form_id        Fluent Forms form id.
+	 * @param array $methodSettings Per-method settings from FF Pro (the
+	 *                              `payment_method` field's chip entry).
+	 * @return array Effective settings (same shape as for_form()).
+	 */
+	private function resolve_effective_config( $form_id, $methodSettings ) {
+		$form_id  = (int) $form_id;
+		$per_form = Chip_Fluent_Forms_Settings::for_form( $form_id );
+		$global   = Chip_Fluent_Forms_Settings::global();
+		$defaults = Chip_Fluent_Forms_Settings::form_defaults();
+
+		// Read the per-form method field's per-key values. FF Pro wraps
+		// each input in a { type, value, ... } envelope; the actual
+		// value lives at $key.value.
+		$pfm = ( isset( $methodSettings ) && is_array( $methodSettings ) )
+			? ( $methodSettings['settings'] ?? array() )
+			: array();
+
+		$pfm_value = function ( $key, $default = '' ) use ( $pfm ) {
+			if ( ! is_array( $pfm ) || ! isset( $pfm[ $key ] ) || ! is_array( $pfm[ $key ] ) ) {
+				return $default;
+			}
+			$v = $pfm[ $key ]['value'] ?? $default;
+			if ( is_string( $v ) ) {
+				$v = trim( $v );
+			}
+			return '' === $v || null === $v ? $default : $v;
+		};
+
+		// Per-form method field's override toggle. Defaults to 'no' so
+		// the per-form credential UI is opt-in; the field in the editor
+		// flips it to 'yes' when the merchant wants to override.
+		$is_active = 'yes' === $pfm_value( 'is_active', 'no' );
+
+		// Credential keys that respect the per-form method field's
+		// override toggle. When the merchant hasn't enabled the toggle
+		// (or hasn't set values), we use the lower layers unchanged.
+		$cred_keys = array(
+			'brand_id',
+			'secret_key',
+			'payment_mode',
+			'due_strict',
+			'due_strict_timing',
+			'payment_method_whitelist',
+		);
+
+		$effective = $defaults;
+
+		// Layer 3: global (the lowest layer).
+		foreach ( $cred_keys as $key ) {
+			$effective[ $key ] = $global[ $key ] ?? $defaults[ $key ];
+		}
+
+		// Layer 2: per-form customize row (the migration's _chip_payment_settings
+		// data, which already has the right shape after for_form()).
+		foreach ( $cred_keys as $key ) {
+			if ( isset( $per_form[ $key ] ) && '' !== $per_form[ $key ] ) {
+				$effective[ $key ] = $per_form[ $key ];
+			}
+		}
+
+		// Layer 1: per-form method field, only when the override toggle is
+		// on AND a non-empty value is set.
+		if ( $is_active ) {
+			foreach ( $cred_keys as $key ) {
+				$raw = $pfm_value( $key, null );
+				if ( null === $raw ) {
+					continue;
+				}
+				$effective[ $key ] = $raw;
+			}
+		}
+
+		return $effective;
 	}
 
 	/**
