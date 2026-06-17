@@ -158,7 +158,8 @@ class Chip_Fluent_Forms {
 			return;
 		}
 		// And only on the Payment Methods tab (hash route).
-		if ( ! isset( $_SERVER['REQUEST_URI'] ) || false === strpos( $_SERVER['REQUEST_URI'], '#/payment' ) ) {
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput -- read-only display.
+		if ( '' === $request_uri || false === strpos( $request_uri, '#/payment' ) ) {
 			return;
 		}
 
