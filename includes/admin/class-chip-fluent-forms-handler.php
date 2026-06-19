@@ -177,15 +177,12 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 		$title    = ! empty( $settings['payment_title'] ) ? $settings['payment_title'] : 'CHIP';
 
 		// Per-form payment_method field schema. FF Pro's React form
-		// editor only renders two templates here:
-		//   - inputText     (type: 'text')     for text inputs
-		//   - inputYesNoCheckbox (type: 'checkbox')  for yes/no toggles
-		// It does NOT understand the global-settings schema
-		// (settings_key / type: yes-no-checkbox / input-text / etc.).
-		// The `dependency` array shows/hides a field based on another
-		// field's value (see Stripe's require_billing_info in
+		// editor only renders two templates here: inputText (type:
+		// 'text') for text inputs and inputYesNoCheckbox (type:
+		// 'checkbox') for yes/no toggles. The `dependency` array
+		// shows/hides a field based on another field's value (see
+		// Stripe's require_billing_info in
 		// StripeHandler::pushPaymentMethodToForm).
-
 		$depends_on_customize = array(
 			'depends_on' => 'is_active/value',
 			'value'      => 'yes',
@@ -197,14 +194,14 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 			'method_value' => self::KEY,
 			'settings'     => array(
 				// Per-method display fields.
-				'option_label' => array(
+				'option_label'             => array(
 					'type'     => 'text',
 					'template' => 'inputText',
 					'value'    => 'Pay with CHIP',
 					/* translators: %s: payment method title (e.g. "CHIP") */
 					'label'    => __( 'Method Label', 'chip-for-fluent-forms' ),
 				),
-				'notes'        => array(
+				'notes'                    => array(
 					'type'      => 'text',
 					'template'  => 'inputText',
 					'value'     => '',
@@ -212,17 +209,14 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					/* translators: %s: payment method title */
 					'help_text' => __( 'Add payment notes. You can use {inputs.<Name Attribute>} for dynamic values from form fields.', 'chip-for-fluent-forms' ),
 				),
-				// Per-form credential override fields. When is_active
-				// is 'yes', the runtime uses these values instead of the
-				// global settings. When 'no' (default), the global
-				// settings apply.
-				'is_active'     => array(
+				// Per-form credential override fields.
+				'is_active'                => array(
 					'type'     => 'checkbox',
 					'template' => 'inputYesNoCheckbox',
 					'value'    => 'no',
 					'label'    => __( 'Customize for this form', 'chip-for-fluent-forms' ),
 				),
-				'brand_id'      => array(
+				'brand_id'                 => array(
 					'type'       => 'text',
 					'template'   => 'inputText',
 					'value'      => '',
@@ -230,7 +224,7 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					'help_text'  => __( 'Leave empty to use the global Brand ID.', 'chip-for-fluent-forms' ),
 					'dependency' => $depends_on_customize,
 				),
-				'secret_key'    => array(
+				'secret_key'               => array(
 					'type'       => 'text',
 					'template'   => 'inputText',
 					'value'      => '',
@@ -238,7 +232,7 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					'help_text'  => __( 'Leave empty to use the global Secret Key.', 'chip-for-fluent-forms' ),
 					'dependency' => $depends_on_customize,
 				),
-				'payment_mode'  => array(
+				'payment_mode'             => array(
 					'type'       => 'text',
 					'template'   => 'inputText',
 					'value'      => '',
@@ -246,14 +240,14 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					'help_text'  => __( 'Type "test" or "live". Leave empty to use the global setting.', 'chip-for-fluent-forms' ),
 					'dependency' => $depends_on_customize,
 				),
-				'due_strict'    => array(
+				'due_strict'               => array(
 					'type'       => 'checkbox',
 					'template'   => 'inputYesNoCheckbox',
 					'value'      => 'no',
 					'label'      => __( 'Due Strict', 'chip-for-fluent-forms' ),
 					'dependency' => $depends_on_customize,
 				),
-				'due_strict_timing' => array(
+				'due_strict_timing'        => array(
 					'type'       => 'text',
 					'template'   => 'inputText',
 					'value'      => '',

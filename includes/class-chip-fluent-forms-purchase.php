@@ -478,23 +478,25 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		// Convert to the internal format so the rest of the code sees a
 		// consistent shape.
 		if ( $is_active ) {
-			// due_strict: 'yes' -> '1', 'no' -> '0'.
+			// Map checkbox 'yes'/'no' to the internal '1'/'0' for due_strict.
 			$ds = $pfm_value( 'due_strict', null );
 			if ( null !== $ds ) {
 				$effective['due_strict'] = ( 'yes' === $ds ) ? '1' : '0';
 			}
 
-			// payment_mode: only accept 'test' or 'live'.
+			// Only accept 'test' or 'live' for payment_mode.
 			$pm = $pfm_value( 'payment_mode', null );
 			if ( null !== $pm ) {
 				$effective['payment_mode'] = ( 'live' === $pm ) ? 'live' : 'test';
 			}
 
-			// due_strict_timing: coerce to a positive integer.
+			// Coerce due_strict_timing to a positive integer string.
 			$dst = $pfm_value( 'due_strict_timing', null );
 			if ( null !== $dst ) {
-				$timing = absint( $dst );
-				$effective['due_strict_timing'] = $timing > 0 ? (string) $timing : $effective['due_strict_timing'];
+				$timing_val = absint( $dst );
+				if ( $timing_val > 0 ) {
+					$effective['due_strict_timing'] = (string) $timing_val;
+				}
 			}
 
 			// brand_id and secret_key: text fields, use as-is.
@@ -505,11 +507,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 				}
 			}
 
-			// payment_method_whitelist: comma-separated string -> array map.
+			// Convert comma-separated whitelist string to an array map.
 			$wl = $pfm_value( 'payment_method_whitelist', null );
 			if ( null !== $wl ) {
-				$valid     = array_keys( Chip_Fluent_Forms_Settings::payment_methods() );
-				$wl_array  = array();
+				$valid    = array_keys( Chip_Fluent_Forms_Settings::payment_methods() );
+				$wl_array = array();
 				foreach ( explode( ',', $wl ) as $key ) {
 					$key = trim( $key );
 					if ( in_array( $key, $valid, true ) ) {
