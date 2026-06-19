@@ -8,11 +8,12 @@
  * had in 1.x under codestar, now built on the native WP Settings
  * API / admin pages (no codestar).
  *
- * The page registers as a top-level menu (`add_menu_page`) rather
- * than a submenu of `fluent_forms` — the FF Pro parent menu gates
- * access on `fluentform_dashboard_access`, which stock admins
- * don't have, so a submenu there would always return "Sorry, you
- * are not allowed to access this page."
+ * The page registers as a submenu under `fluent_forms` (the FF
+ * parent admin menu), gated on `fluentform_dashboard_access` so
+ * it inherits the parent menu's visibility — admins who can see
+ * FF Forms can also see CHIP Per-Form. (Earlier revisions tried
+ * a top-level menu; reverted to match the 1.x codestar UX where
+ * the page lived under the FF sidebar.)
  *
  * URL:
  *   - List view:  wp-admin/admin.php?page=chip-form-settings
@@ -49,22 +50,17 @@ class Chip_Fluent_Forms_Per_Form_Page {
 	 * @return void
 	 */
 	public function register() {
-		// Register as a top-level menu under its own slug rather than a
-		// submenu of `fluent_forms`. The FF Pro parent menu gates access
-		// on the `fluentform_dashboard_access` cap, which the administrator
-		// role does not automatically have — so a submenu there would
-		// always return "Sorry, you are not allowed to access this page"
-		// for stock admin users. A top-level menu gives us a clean cap
-		// gate (`manage_options`) and the URL pattern the merchant
-		// expects: /wp-admin/admin.php?page=chip-form-settings.
-		add_menu_page(
+		// Submenu under Fluent Forms so the page lives alongside the
+		// other FF admin items (same UX as 1.x codestar). Cap matches
+		// the parent menu's gate (`fluentform_dashboard_access`) so
+		// admins who can see FF Forms also see CHIP Per-Form.
+		add_submenu_page(
+			'fluent_forms',
 			__( 'CHIP Per-Form Settings', 'chip-for-fluent-forms' ),
 			__( 'CHIP Per-Form', 'chip-for-fluent-forms' ),
-			'manage_options',
+			'fluentform_dashboard_access',
 			self::MENU_SLUG,
-			array( $this, 'render' ),
-			'dashicons-admin-generic',
-			81 // Just under Fluent Forms (which is typically at 80.x).
+			array( $this, 'render' )
 		);
 
 		add_action( 'admin_post_' . self::SAVE_ACTION, array( $this, 'handle_save' ) );
@@ -76,7 +72,7 @@ class Chip_Fluent_Forms_Per_Form_Page {
 	 * @return void
 	 */
 	public function render() {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'fluentform_dashboard_access' ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'chip-for-fluent-forms' ) );
 		}
 
@@ -95,7 +91,8 @@ class Chip_Fluent_Forms_Per_Form_Page {
 	 * @return void
 	 */
 	private function render_list() {
-		$forms = $this->get_forms();
+		$result = $this->get_forms();
+		$forms  = $result['forms'];
 
 		?>
 		<div class="wrap">
@@ -107,6 +104,20 @@ class Chip_Fluent_Forms_Per_Form_Page {
 			</p>
 			<?php if ( empty( $forms ) ) : ?>
 				<p><?php esc_html_e( 'No Fluent Forms forms found. Create a form first.', 'chip-for-fluent-forms' ); ?></p>
+				<?php if ( current_user_can( 'manage_options' ) ) : ?>
+					<div class="notice notice-warning inline" style="max-width: 880px;">
+						<p><strong><?php esc_html_e( 'Diagnostic (visible to admins only):', 'chip-for-fluent-forms' ); ?></strong></p>
+						<ul style="list-style:disc;margin-left:1.5em;">
+							<li><?php esc_html_e( 'wpFluent() available:', 'chip-for-fluent-forms' ); ?> <code><?php echo $result['wpf'] ? 'yes' : 'no'; ?></code></li>
+							<li><?php esc_html_e( 'Queried table:', 'chip-for-fluent-forms' ); ?> <code><?php echo esc_html( $result['table'] ); ?></code> (<?php esc_html_e( 'with WP table prefix prepended at runtime', 'chip-for-fluent-forms' ); ?>)</li>
+							<li><?php esc_html_e( 'Rows returned:', 'chip-for-fluent-forms' ); ?> <code><?php echo (int) $result['count']; ?></code></li>
+							<?php if ( ! empty( $result['error'] ) ) : ?>
+								<li><?php esc_html_e( 'Error:', 'chip-for-fluent-forms' ); ?> <code><?php echo esc_html( $result['error'] ); ?></code></li>
+							<?php endif; ?>
+						</ul>
+						<p class="description"><?php esc_html_e( 'Check wp-content/debug.log for a [chip-for-fluent-forms] line with the same info. Most likely: the Fluent Forms forms table does not exist or has a non-default prefix.', 'chip-for-fluent-forms' ); ?></p>
+					</div>
+				<?php endif; ?>
 			<?php else : ?>
 				<table class="widefat striped" style="max-width: 880px;">
 					<thead>
@@ -286,7 +297,7 @@ class Chip_Fluent_Forms_Per_Form_Page {
 	 * @return void
 	 */
 	public function handle_save() {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'fluentform_dashboard_access' ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to perform this action.', 'chip-for-fluent-forms' ) );
 		}
 
@@ -368,16 +379,63 @@ class Chip_Fluent_Forms_Per_Form_Page {
 	/**
 	 * Get all FF forms, ordered by id.
 	 *
-	 * @return array Array of {id, title} objects (empty on error).
+	 * Defensive wrapper around `wpFluent()`: returns `array( 'forms' => array(),
+	 * 'error' => string|null, 'wpf' => bool )` so the caller can both
+	 * render the list AND surface diagnostics when the query returns
+	 * empty (e.g. table-prefix mismatch, wpFluent not loaded, query
+	 * threw). The `error_log()` lines help debug the same problem from
+	 * the WP debug log when the admin UI is hidden.
+	 *
+	 * @return array{forms: array, error: ?string, wpf: bool, table: string, count: int}
 	 */
 	private function get_forms() {
+		$table = 'fluentform_forms';
+
 		if ( ! function_exists( 'wpFluent' ) ) {
-			return array();
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- diagnostic only, fires when the empty list view renders.
+			error_log( '[chip-for-fluent-forms] get_forms: wpFluent() is not defined (Fluent Forms Pro not loaded?)' );
+			return array(
+				'forms' => array(),
+				'error' => 'wpFluent() function is not defined. Fluent Forms Pro is required.',
+				'wpf'   => false,
+				'table' => $table,
+				'count' => 0,
+			);
 		}
-		$forms = wpFluent()->table( 'fluentform_forms' )
-			->select( array( 'id', 'title' ) )
-			->orderBy( 'id', 'DESC' )
-			->get();
-		return is_array( $forms ) ? $forms : array();
+
+		try {
+			$forms = wpFluent()->table( $table )
+				->select( array( 'id', 'title' ) )
+				->orderBy( 'id', 'DESC' )
+				->get();
+		} catch ( \Throwable $e ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- diagnostic only, fires when the empty list view renders.
+			error_log( '[chip-for-fluent-forms] get_forms: wpFluent() threw: ' . $e->getMessage() );
+			return array(
+				'forms' => array(),
+				'error' => $e->getMessage(),
+				'wpf'   => true,
+				'table' => $table,
+				'count' => 0,
+			);
+		}
+
+		if ( ! is_array( $forms ) ) {
+			$forms = array();
+		}
+
+		$count = count( $forms );
+		if ( 0 === $count ) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- diagnostic only, fires when the empty list view renders.
+			error_log( '[chip-for-fluent-forms] get_forms: wpFluent()->table(fluentform_forms) returned 0 rows. Check the table exists and uses the WP table prefix.' );
+		}
+
+		return array(
+			'forms' => $forms,
+			'error' => null,
+			'wpf'   => true,
+			'table' => $table,
+			'count' => $count,
+		);
 	}
 }
