@@ -472,14 +472,51 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		}
 
 		// Layer 1: per-form method field, only when the override toggle is
-		// on AND a non-empty value is set.
+		// on AND a non-empty value is set. The per-form payment_method
+		// field stores checkbox values as 'yes'/'no' (not '1'/'0') and
+		// the whitelist as a comma-separated string (not an array map).
+		// Convert to the internal format so the rest of the code sees a
+		// consistent shape.
 		if ( $is_active ) {
-			foreach ( $cred_keys as $key ) {
+			// due_strict: 'yes' -> '1', 'no' -> '0'.
+			$ds = $pfm_value( 'due_strict', null );
+			if ( null !== $ds ) {
+				$effective['due_strict'] = ( 'yes' === $ds ) ? '1' : '0';
+			}
+
+			// payment_mode: only accept 'test' or 'live'.
+			$pm = $pfm_value( 'payment_mode', null );
+			if ( null !== $pm ) {
+				$effective['payment_mode'] = ( 'live' === $pm ) ? 'live' : 'test';
+			}
+
+			// due_strict_timing: coerce to a positive integer.
+			$dst = $pfm_value( 'due_strict_timing', null );
+			if ( null !== $dst ) {
+				$timing = absint( $dst );
+				$effective['due_strict_timing'] = $timing > 0 ? (string) $timing : $effective['due_strict_timing'];
+			}
+
+			// brand_id and secret_key: text fields, use as-is.
+			foreach ( array( 'brand_id', 'secret_key' ) as $key ) {
 				$raw = $pfm_value( $key, null );
-				if ( null === $raw ) {
-					continue;
+				if ( null !== $raw ) {
+					$effective[ $key ] = $raw;
 				}
-				$effective[ $key ] = $raw;
+			}
+
+			// payment_method_whitelist: comma-separated string -> array map.
+			$wl = $pfm_value( 'payment_method_whitelist', null );
+			if ( null !== $wl ) {
+				$valid     = array_keys( Chip_Fluent_Forms_Settings::payment_methods() );
+				$wl_array  = array();
+				foreach ( explode( ',', $wl ) as $key ) {
+					$key = trim( $key );
+					if ( in_array( $key, $valid, true ) ) {
+						$wl_array[ $key ] = '1';
+					}
+				}
+				$effective['payment_method_whitelist'] = $wl_array;
 			}
 		}
 

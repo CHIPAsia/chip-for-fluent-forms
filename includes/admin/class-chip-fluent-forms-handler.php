@@ -176,22 +176,35 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 		$settings = Chip_Fluent_Forms_Settings::global();
 		$title    = ! empty( $settings['payment_title'] ) ? $settings['payment_title'] : 'CHIP';
 
+		// Per-form payment_method field schema. FF Pro's React form
+		// editor only renders two templates here:
+		//   - inputText     (type: 'text')     for text inputs
+		//   - inputYesNoCheckbox (type: 'checkbox')  for yes/no toggles
+		// It does NOT understand the global-settings schema
+		// (settings_key / type: yes-no-checkbox / input-text / etc.).
+		// The `dependency` array shows/hides a field based on another
+		// field's value (see Stripe's require_billing_info in
+		// StripeHandler::pushPaymentMethodToForm).
+
+		$depends_on_customize = array(
+			'depends_on' => 'is_active/value',
+			'value'      => 'yes',
+		);
+
 		$methods[ self::KEY ] = array(
 			'title'        => $title,
 			'enabled'      => 'yes',
 			'method_value' => self::KEY,
 			'settings'     => array(
-				// Per-method display fields. Rendered by FF Pro's React
-				// form-settings UI on the per-form payment_method field
-				// (alongside Method Label and Notes).
-				'option_label'             => array(
+				// Per-method display fields.
+				'option_label' => array(
 					'type'     => 'text',
 					'template' => 'inputText',
 					'value'    => 'Pay with CHIP',
 					/* translators: %s: payment method title (e.g. "CHIP") */
 					'label'    => __( 'Method Label', 'chip-for-fluent-forms' ),
 				),
-				'notes'                    => array(
+				'notes'        => array(
 					'type'      => 'text',
 					'template'  => 'inputText',
 					'value'     => '',
@@ -199,68 +212,62 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 					/* translators: %s: payment method title */
 					'help_text' => __( 'Add payment notes. You can use {inputs.<Name Attribute>} for dynamic values from form fields.', 'chip-for-fluent-forms' ),
 				),
-				// Per-form credential override fields. Mirrors the global
-				// settings page schema. The runtime reads these from
-				// $methodSettings['settings'] in create_purchase(); when
-				// empty, it falls back to for_form() / global() so the
-				// global values are still used by default.
-				'customize'                => array(
-					'settings_key'   => 'is_active',
-					'type'           => 'yes-no-checkbox',
-					'label'          => __( 'Customize for this form', 'chip-for-fluent-forms' ),
-					'checkbox_label' => __( 'Enable per-form override. When off, the global CHIP settings are used.', 'chip-for-fluent-forms' ),
-					'value'          => 'no',
+				// Per-form credential override fields. When is_active
+				// is 'yes', the runtime uses these values instead of the
+				// global settings. When 'no' (default), the global
+				// settings apply.
+				'is_active'     => array(
+					'type'     => 'checkbox',
+					'template' => 'inputYesNoCheckbox',
+					'value'    => 'no',
+					'label'    => __( 'Customize for this form', 'chip-for-fluent-forms' ),
 				),
-				'brand_id'                 => array(
-					'settings_key' => 'brand_id',
-					'type'         => 'input-text',
-					'label'        => __( 'Brand ID', 'chip-for-fluent-forms' ),
-					'placeholder'  => __( 'Leave empty to use the global Brand ID', 'chip-for-fluent-forms' ),
-					'info_help'    => __( 'Brand ID enables you to represent your Brand suitable for the system using the same CHIP account.', 'chip-for-fluent-forms' ),
-					'value'        => '',
+				'brand_id'      => array(
+					'type'       => 'text',
+					'template'   => 'inputText',
+					'value'      => '',
+					'label'      => __( 'Brand ID', 'chip-for-fluent-forms' ),
+					'help_text'  => __( 'Leave empty to use the global Brand ID.', 'chip-for-fluent-forms' ),
+					'dependency' => $depends_on_customize,
 				),
-				'secret_key'               => array(
-					'settings_key' => 'secret_key',
-					'type'         => 'input-text',
-					'data_type'    => 'password',
-					'label'        => __( 'Secret Key', 'chip-for-fluent-forms' ),
-					'placeholder'  => __( 'Leave empty to use the global Secret Key', 'chip-for-fluent-forms' ),
-					'info_help'    => __( 'Secret key is used to identify your account with CHIP. You are recommended to create a dedicated secret key for each website.', 'chip-for-fluent-forms' ),
-					'value'        => '',
+				'secret_key'    => array(
+					'type'       => 'text',
+					'template'   => 'inputText',
+					'value'      => '',
+					'label'      => __( 'Secret Key', 'chip-for-fluent-forms' ),
+					'help_text'  => __( 'Leave empty to use the global Secret Key.', 'chip-for-fluent-forms' ),
+					'dependency' => $depends_on_customize,
 				),
-				'payment_mode'             => array(
-					'settings_key' => 'payment_mode',
-					'type'         => 'input-radio',
-					'label'        => __( 'Payment Mode', 'chip-for-fluent-forms' ),
-					'options'      => array(
-						'test' => __( 'Test Mode', 'chip-for-fluent-forms' ),
-						'live' => __( 'Live Mode', 'chip-for-fluent-forms' ),
-					),
-					'info_help'    => __( 'Test purchases do not charge real cards and use the CHIP sandbox.', 'chip-for-fluent-forms' ),
-					'value'        => 'test',
+				'payment_mode'  => array(
+					'type'       => 'text',
+					'template'   => 'inputText',
+					'value'      => '',
+					'label'      => __( 'Payment Mode (test or live)', 'chip-for-fluent-forms' ),
+					'help_text'  => __( 'Type "test" or "live". Leave empty to use the global setting.', 'chip-for-fluent-forms' ),
+					'dependency' => $depends_on_customize,
 				),
-				'due_strict'               => array(
-					'settings_key'   => 'due_strict',
-					'type'           => 'yes-no-checkbox',
-					'label'          => __( 'Due Strict', 'chip-for-fluent-forms' ),
-					'checkbox_label' => __( 'Enable strict-due timing for this form', 'chip-for-fluent-forms' ),
-					'info_help'      => __( 'When on, the purchase expires after the strict-due timing instead of becoming overdue.', 'chip-for-fluent-forms' ),
-					'value'          => '1',
+				'due_strict'    => array(
+					'type'       => 'checkbox',
+					'template'   => 'inputYesNoCheckbox',
+					'value'      => 'no',
+					'label'      => __( 'Due Strict', 'chip-for-fluent-forms' ),
+					'dependency' => $depends_on_customize,
 				),
-				'due_strict_timing'        => array(
-					'settings_key' => 'due_strict_timing',
-					'type'         => 'input-text',
-					'label'        => __( 'Due Strict Timing (minutes)', 'chip-for-fluent-forms' ),
-					'info_help'    => __( 'How many minutes a strict-due purchase stays open. Defaults to 60.', 'chip-for-fluent-forms' ),
-					'value'        => '60',
+				'due_strict_timing' => array(
+					'type'       => 'text',
+					'template'   => 'inputText',
+					'value'      => '',
+					'label'      => __( 'Due Strict Timing (minutes)', 'chip-for-fluent-forms' ),
+					'help_text'  => __( 'How many minutes a strict-due purchase stays open. Leave empty for global setting.', 'chip-for-fluent-forms' ),
+					'dependency' => $depends_on_customize,
 				),
 				'payment_method_whitelist' => array(
-					'settings_key' => 'payment_method_whitelist',
-					'type'         => 'input-checkboxes',
-					'label'        => __( 'Payment Method Whitelist', 'chip-for-fluent-forms' ),
-					'options'      => Chip_Fluent_Forms_Settings::payment_methods(),
-					'info_help'    => __( 'Pick which payment methods to allow at checkout. Leave empty to let CHIP decide.', 'chip-for-fluent-forms' ),
-					'value'        => array(),
+					'type'       => 'text',
+					'template'   => 'inputText',
+					'value'      => '',
+					'label'      => __( 'Payment Method Whitelist', 'chip-for-fluent-forms' ),
+					'help_text'  => __( 'Comma-separated method keys (e.g. fpx,cards,dnqr). Leave empty to let CHIP decide or use the global setting.', 'chip-for-fluent-forms' ),
+					'dependency' => $depends_on_customize,
 				),
 			),
 		);
