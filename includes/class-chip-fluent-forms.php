@@ -51,6 +51,7 @@ class Chip_Fluent_Forms {
 		$this->define();
 		$this->includes();
 		$this->add_filters();
+		$this->add_admin_hooks();
 	}
 
 	/**
@@ -97,7 +98,22 @@ class Chip_Fluent_Forms {
 
 		if ( is_admin() ) {
 			include $includes_dir . 'admin/class-chip-fluent-forms-settings-page.php';
-			include $includes_dir . 'admin/class-chip-fluent-forms-form-settings.php';
+			include $includes_dir . 'admin/class-chip-fluent-forms-per-form-page.php';
+		}
+	}
+
+	/**
+	 * Register admin-only WP hooks.
+	 *
+	 * Called from __construct() — the page classes are admin-only and
+	 * are only loaded when is_admin() is true, so instantiating them
+	 * here is safe.
+	 *
+	 * @return void
+	 */
+	public function add_admin_hooks() {
+		if ( class_exists( 'Chip_Fluent_Forms_Per_Form_Page' ) ) {
+			( new Chip_Fluent_Forms_Per_Form_Page() )->register();
 		}
 	}
 

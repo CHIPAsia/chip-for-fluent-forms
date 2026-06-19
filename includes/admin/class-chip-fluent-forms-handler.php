@@ -42,16 +42,6 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 	private $settings_page;
 
 	/**
-	 * Per-form settings instance.
-	 *
-	 * Lazily instantiated in get_form_settings() for the same reason as
-	 * `$settings_page`.
-	 *
-	 * @var Chip_Fluent_Forms_Form_Settings|null
-	 */
-	private $form_settings;
-
-	/**
 	 * Processor instance.
 	 *
 	 * @var Chip_Fluent_Forms_Purchase
@@ -60,9 +50,9 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 
 	/**
 	 * Constructor wires the FF Pro settings filters and schedules the
-	 * processor boot on plugins_loaded. Settings page and per-form
-	 * settings objects are deferred to first use — both are admin-only
-	 * and would fatal on non-admin requests if instantiated here.
+	 * processor boot on plugins_loaded. Settings page object is
+	 * deferred to first use — it's admin-only and would fatal on
+	 * non-admin requests if instantiated here.
 	 *
 	 * @return void
 	 */
@@ -102,18 +92,6 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 			$this->settings_page = new Chip_Fluent_Forms_Settings_Page();
 		}
 		return $this->settings_page;
-	}
-
-	/**
-	 * Lazy-instantiate and return the per-form settings object.
-	 *
-	 * @return Chip_Fluent_Forms_Form_Settings|null
-	 */
-	private function get_form_settings() {
-		if ( null === $this->form_settings && class_exists( 'Chip_Fluent_Forms_Form_Settings' ) ) {
-			$this->form_settings = new Chip_Fluent_Forms_Form_Settings();
-		}
-		return $this->form_settings;
 	}
 
 	/**
@@ -176,92 +154,25 @@ class Chip_Fluent_Forms_Handler extends BasePaymentMethod {
 		$settings = Chip_Fluent_Forms_Settings::global();
 		$title    = ! empty( $settings['payment_title'] ) ? $settings['payment_title'] : 'CHIP';
 
-		// Per-form payment_method field schema. FF Pro's React form
-		// editor only renders two templates here: inputText (type:
-		// 'text') for text inputs and inputYesNoCheckbox (type:
-		// 'checkbox') for yes/no toggles. The `dependency` array
-		// shows/hides a field based on another field's value (see
-		// Stripe's require_billing_info in
-		// StripeHandler::pushPaymentMethodToForm).
-		$depends_on_customize = array(
-			'depends_on' => 'is_active/value',
-			'value'      => 'yes',
-		);
-
 		$methods[ self::KEY ] = array(
 			'title'        => $title,
 			'enabled'      => 'yes',
 			'method_value' => self::KEY,
 			'settings'     => array(
-				// Per-method display fields.
-				'option_label'             => array(
+				'option_label' => array(
 					'type'     => 'text',
 					'template' => 'inputText',
 					'value'    => 'Pay with CHIP',
 					/* translators: %s: payment method title (e.g. "CHIP") */
 					'label'    => __( 'Method Label', 'chip-for-fluent-forms' ),
 				),
-				'notes'                    => array(
+				'notes'        => array(
 					'type'      => 'text',
 					'template'  => 'inputText',
 					'value'     => '',
 					'label'     => __( 'Notes', 'chip-for-fluent-forms' ),
 					/* translators: %s: payment method title */
 					'help_text' => __( 'Add payment notes. You can use {inputs.<Name Attribute>} for dynamic values from form fields.', 'chip-for-fluent-forms' ),
-				),
-				// Per-form credential override fields.
-				'is_active'                => array(
-					'type'     => 'checkbox',
-					'template' => 'inputYesNoCheckbox',
-					'value'    => 'no',
-					'label'    => __( 'Customize for this form', 'chip-for-fluent-forms' ),
-				),
-				'brand_id'                 => array(
-					'type'       => 'text',
-					'template'   => 'inputText',
-					'value'      => '',
-					'label'      => __( 'Brand ID', 'chip-for-fluent-forms' ),
-					'help_text'  => __( 'Leave empty to use the global Brand ID.', 'chip-for-fluent-forms' ),
-					'dependency' => $depends_on_customize,
-				),
-				'secret_key'               => array(
-					'type'       => 'text',
-					'template'   => 'inputText',
-					'value'      => '',
-					'label'      => __( 'Secret Key', 'chip-for-fluent-forms' ),
-					'help_text'  => __( 'Leave empty to use the global Secret Key.', 'chip-for-fluent-forms' ),
-					'dependency' => $depends_on_customize,
-				),
-				'payment_mode'             => array(
-					'type'       => 'text',
-					'template'   => 'inputText',
-					'value'      => '',
-					'label'      => __( 'Payment Mode (test or live)', 'chip-for-fluent-forms' ),
-					'help_text'  => __( 'Type "test" or "live". Leave empty to use the global setting.', 'chip-for-fluent-forms' ),
-					'dependency' => $depends_on_customize,
-				),
-				'due_strict'               => array(
-					'type'       => 'checkbox',
-					'template'   => 'inputYesNoCheckbox',
-					'value'      => 'no',
-					'label'      => __( 'Due Strict', 'chip-for-fluent-forms' ),
-					'dependency' => $depends_on_customize,
-				),
-				'due_strict_timing'        => array(
-					'type'       => 'text',
-					'template'   => 'inputText',
-					'value'      => '',
-					'label'      => __( 'Due Strict Timing (minutes)', 'chip-for-fluent-forms' ),
-					'help_text'  => __( 'How many minutes a strict-due purchase stays open. Leave empty for global setting.', 'chip-for-fluent-forms' ),
-					'dependency' => $depends_on_customize,
-				),
-				'payment_method_whitelist' => array(
-					'type'       => 'text',
-					'template'   => 'inputText',
-					'value'      => '',
-					'label'      => __( 'Payment Method Whitelist', 'chip-for-fluent-forms' ),
-					'help_text'  => __( 'Comma-separated method keys (e.g. fpx,cards,dnqr). Leave empty to let CHIP decide or use the global setting.', 'chip-for-fluent-forms' ),
-					'dependency' => $depends_on_customize,
 				),
 			),
 		);

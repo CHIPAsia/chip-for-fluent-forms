@@ -395,134 +395,33 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * Compute the effective CHIP config for a form at purchase time.
 	 *
 	 * Precedence (highest first):
-	 *   1. Per-form method field settings, read from `$methodSettings['settings']`.
-	 *      These are the values the merchant set in the form editor's
-	 *      per-form payment_method field (Method Label, Notes, plus the
-	 *      credential override fields added by push_payment_method()).
-	 *   2. `_chip_payment_settings` row via `for_form()` — the migration
-	 *      creates these for upgraded 1.x users, and earlier 2.x code
-	 *      wrote them via the per-form customize hook.
-	 *   3. Global `fluent_form_chip_settings` option, when neither of
-	 *      the above has a value for a key.
-	 *
-	 * The per-form method field's `is_active` toggle gates the override:
-	 * when it is `'no'` (or missing) the credential keys fall back to
-	 * the lower layers. `option_label` and `notes` always use the
-	 * per-form method field's value (they have no global equivalent).
+	 *   1. Per-form customize row (`_chip_payment_settings` in
+	 *      `fluentform_form_meta`), read via
+	 *      `Chip_Fluent_Forms_Settings::for_form()`. The dedicated
+	 *      per-form admin page (see
+	 *      `Chip_Fluent_Forms_Per_Form_Page`) writes to this row.
+	 *      The migration also creates these rows for 1.x → 2.0
+	 *      upgraded users.
+	 *   2. Global `fluent_form_chip_settings` option, when the
+	 *      per-form row is missing or has `is_active !== 'yes'`.
+	 *      The form's per-form method field's `option_label` and
+	 *      `notes` are read separately from
+	 *      `$methodSettings['settings.notes.value']` (line ~186) and
+	 *      are not affected by this merge.
 	 *
 	 * @param int   $form_id        Fluent Forms form id.
 	 * @param array $methodSettings Per-method settings from FF Pro (the
 	 *                              `payment_method` field's chip entry).
+	 *                              Unused for credential resolution —
+	 *                              kept for call-site compatibility.
 	 * @return array Effective settings (same shape as for_form()).
 	 */
 	private function resolve_effective_config( $form_id, $methodSettings ) {
 		$form_id  = (int) $form_id;
 		$per_form = Chip_Fluent_Forms_Settings::for_form( $form_id );
 		$global   = Chip_Fluent_Forms_Settings::global();
-		$defaults = Chip_Fluent_Forms_Settings::form_defaults();
 
-		// Read the per-form method field's per-key values. FF Pro wraps
-		// each input in a { type, value, ... } envelope; the actual
-		// value lives at $key.value.
-		$pfm = ( isset( $methodSettings ) && is_array( $methodSettings ) )
-			? ( $methodSettings['settings'] ?? array() )
-			: array();
-
-		$pfm_value = function ( $key, $fallback = '' ) use ( $pfm ) {
-			if ( ! is_array( $pfm ) || ! isset( $pfm[ $key ] ) || ! is_array( $pfm[ $key ] ) ) {
-				return $fallback;
-			}
-			$v = $pfm[ $key ]['value'] ?? $fallback;
-			if ( is_string( $v ) ) {
-				$v = trim( $v );
-			}
-			return '' === $v || null === $v ? $fallback : $v;
-		};
-
-		// Per-form method field's override toggle. Defaults to 'no' so
-		// the per-form credential UI is opt-in; the field in the editor
-		// flips it to 'yes' when the merchant wants to override.
-		$is_active = 'yes' === $pfm_value( 'is_active', 'no' );
-
-		// Credential keys that respect the per-form method field's
-		// override toggle. When the merchant hasn't enabled the toggle
-		// (or hasn't set values), we use the lower layers unchanged.
-		$cred_keys = array(
-			'brand_id',
-			'secret_key',
-			'payment_mode',
-			'due_strict',
-			'due_strict_timing',
-			'payment_method_whitelist',
-		);
-
-		$effective = $defaults;
-
-		// Layer 3: global (the lowest layer).
-		foreach ( $cred_keys as $key ) {
-			$effective[ $key ] = $global[ $key ] ?? $defaults[ $key ];
-		}
-
-		// Layer 2: per-form customize row (the migration's _chip_payment_settings
-		// data, which already has the right shape after for_form()).
-		foreach ( $cred_keys as $key ) {
-			if ( isset( $per_form[ $key ] ) && '' !== $per_form[ $key ] ) {
-				$effective[ $key ] = $per_form[ $key ];
-			}
-		}
-
-		// Layer 1: per-form method field, only when the override toggle is
-		// on AND a non-empty value is set. The per-form payment_method
-		// field stores checkbox values as 'yes'/'no' (not '1'/'0') and
-		// the whitelist as a comma-separated string (not an array map).
-		// Convert to the internal format so the rest of the code sees a
-		// consistent shape.
-		if ( $is_active ) {
-			// Map checkbox 'yes'/'no' to the internal '1'/'0' for due_strict.
-			$ds = $pfm_value( 'due_strict', null );
-			if ( null !== $ds ) {
-				$effective['due_strict'] = ( 'yes' === $ds ) ? '1' : '0';
-			}
-
-			// Only accept 'test' or 'live' for payment_mode.
-			$pm = $pfm_value( 'payment_mode', null );
-			if ( null !== $pm ) {
-				$effective['payment_mode'] = ( 'live' === $pm ) ? 'live' : 'test';
-			}
-
-			// Coerce due_strict_timing to a positive integer string.
-			$dst = $pfm_value( 'due_strict_timing', null );
-			if ( null !== $dst ) {
-				$timing_val = absint( $dst );
-				if ( $timing_val > 0 ) {
-					$effective['due_strict_timing'] = (string) $timing_val;
-				}
-			}
-
-			// brand_id and secret_key: text fields, use as-is.
-			foreach ( array( 'brand_id', 'secret_key' ) as $key ) {
-				$raw = $pfm_value( $key, null );
-				if ( null !== $raw ) {
-					$effective[ $key ] = $raw;
-				}
-			}
-
-			// Convert comma-separated whitelist string to an array map.
-			$wl = $pfm_value( 'payment_method_whitelist', null );
-			if ( null !== $wl ) {
-				$valid    = array_keys( Chip_Fluent_Forms_Settings::payment_methods() );
-				$wl_array = array();
-				foreach ( explode( ',', $wl ) as $key ) {
-					$key = trim( $key );
-					if ( in_array( $key, $valid, true ) ) {
-						$wl_array[ $key ] = '1';
-					}
-				}
-				$effective['payment_method_whitelist'] = $wl_array;
-			}
-		}
-
-		return $effective;
+		return wp_parse_args( $per_form, $global );
 	}
 
 	/**
