@@ -50,6 +50,21 @@
 	</rule>
 
 	<!--
+		Register Fluent Forms' custom caps so PHPCS doesn't flag our
+		add_submenu_page() / current_user_can() calls against them.
+		FF defines these caps at runtime when its menu registers; they
+		are not part of stock WP. See FluentForm\App\Modules\Registerer\Menu.
+	-->
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities" type="array">
+				<element value="fluentform_dashboard_access"/>
+				<element value="fluentform_settings_manager"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
 		The processor class extends FluentFormPro\Payments\PaymentMethods\BaseProcessor
 		and overrides its methods. BaseProcessor's public method signatures use
 		camelCase parameter names (e.g. handlePaymentAction($submissionId,
