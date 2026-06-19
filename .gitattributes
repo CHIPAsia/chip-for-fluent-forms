@@ -1,16 +1,54 @@
-/.vscode export-ignore
-/.github        export-ignore
-/.wordpress-org export-ignore
-/.wp-env.json   export-ignore
-/.wp-env.override.json export-ignore
-*.md export-ignore
-.gitignore export-ignore
-/.gitattributes export-ignore
-/composer.json  export-ignore
-/composer.lock  export-ignore
-/package.json export-ignore
-/package-lock.json export-ignore
-/phpcs.xml      export-ignore
-/phpunit.xml    export-ignore
-/tests          export-ignore
-/scripts        export-ignore
+# .gitattributes — controls what `git archive HEAD` (used by the release
+# zip workflow and the deploy-to-WordPress.org workflow) includes in
+# the plugin zip. Lines marked `export-ignore` are dropped from the
+# archive. Use `export-keep` to force-include; use `export-subst` to
+# run git's keyword-expansion (we don't use that here — the deploy
+# workflow rewrites the `Stable tag:` line in readme.txt via sed
+# after the archive step).
+
+# --- Self-references and version-control metadata -----------------------
+/.gitattributes          export-ignore
+/.gitignore              export-ignore
+/.git/                   export-ignore
+
+# --- CI, dev tooling, and editor config ------------------------------
+/.github                 export-ignore
+/.vscode                 export-ignore
+/.wordpress-org          export-ignore
+/.wp-env.json            export-ignore
+
+# --- Build, cache, and OS artifacts ---------------------------------
+/.claude                 export-ignore
+/build/                  export-ignore
+/ci-build/               export-ignore
+/dist/                   export-ignore
+/node_modules/           export-ignore
+/vendor/                 export-ignore
+.DS_Store                export-ignore
+*.bak                    export-ignore
+*.cache                  export-ignore
+*.log                    export-ignore
+*.map                    export-ignore
+*.swp                    export-ignore
+*.tmp                    export-ignore
+
+# --- Lint, test, and dependency configs ------------------------------
+/composer.json           export-ignore
+/composer.lock           export-ignore
+/package.json            export-ignore
+/package-lock.json       export-ignore
+/phpcs.xml               export-ignore
+/phpunit.xml             export-ignore
+
+# --- Source tests, helpers, and tooling scripts ---------------------
+/scripts                 export-ignore
+/tests                   export-ignore
+
+# --- Documentation --------------------------------------------------
+*.md                     export-ignore
+README.md                export-ignore
+CLAUDE.md                export-ignore
+
+# --- Top-level YAML config files (CI runners) -----------------------
+*.yml                    export-ignore
+*.yaml                   export-ignore
