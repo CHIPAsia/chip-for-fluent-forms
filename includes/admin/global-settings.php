@@ -1,4 +1,21 @@
 <?php
+/**
+ * Global CHIP settings page.
+ *
+ * Renders the codestar framework page for the global CHIP
+ * configuration (Credentials, Miscellaneous, Refund).
+ * Lives under Fluent Forms as a submenu (menu_slug
+ * `chip-for-fluent-forms`). Settings are persisted by codestar
+ * into the `fluent_form_chip` WordPress option.
+ *
+ * Restored verbatim from the 1.x plugin (commit 2435b25^).
+ *
+ * @package CHIPForFluentForms
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 $slug = FF_CHIP_FSLUG;
 
@@ -13,7 +30,11 @@ CSF_Setup::createOptions(
 		'menu_slug'       => 'chip-for-fluent-forms',
 		'menu_type'       => 'submenu',
 		'menu_parent'     => 'fluent_forms',
-		'footer_text'     => sprintf( __( 'CHIP for Fluent Forms %s', 'chip-for-fluent-forms' ), FF_CHIP_MODULE_VERSION ),
+		'footer_text'     => sprintf(
+			/* translators: %s: plugin version string */
+			__( 'CHIP for Fluent Forms %s', 'chip-for-fluent-forms' ),
+			FF_CHIP_MODULE_VERSION
+		),
 		'theme'           => 'light',
 	)
 );
@@ -22,7 +43,12 @@ $credentials_global_fields = array(
 	array(
 		'type'    => 'notice',
 		'style'   => 'danger',
-		'content' => sprintf( __( 'The default currency is set to non compatible currencies! %1$sClick here%2$s to update currency configuration.', 'chip-for-fluent-forms' ), '<a target=_blank href=' . admin_url( 'admin.php?page=fluent_forms_settings&component=payment_settings#/' ) . ' >', '</a>' ),
+		'content' => sprintf(
+			/* translators: 1: opening <a> tag, 2: closing </a> tag */
+			__( 'The default currency is set to non compatible currencies! %1$sClick here%2$s to update currency configuration.', 'chip-for-fluent-forms' ),
+			'<a target=_blank href=' . admin_url( 'admin.php?page=fluent_forms_settings&component=payment_settings#/' ) . ' >',
+			'</a>'
+		),
 		'class'   => $ff_module_settings['currency'] == 'MYR' ? 'hidden' : '',
 	),
 	array(

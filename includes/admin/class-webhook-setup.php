@@ -1,4 +1,22 @@
 <?php
+/**
+ * Webhook admin UI.
+ *
+ * Handles the Fluent Forms Pro "refund synchronization" workflow:
+ * stores the CHIP public key in a separate option
+ * `fluent_form_chip_public_key`, registers the IPN callback,
+ * and verifies the webhook signature when a refund notification
+ * arrives. The public key is per-form (suffixed with
+ * `-{form_id}`) so different forms can have different keys.
+ *
+ * Restored verbatim from the 1.x plugin (commit 2435b25^).
+ *
+ * @package CHIPForFluentForms
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Chip_Fluent_Forms_Webhook_Setup {
 

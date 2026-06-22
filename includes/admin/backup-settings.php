@@ -1,4 +1,19 @@
 <?php
+/**
+ * Codestar backup/restore sub-page.
+ *
+ * Renders the codestar framework's built-in backup section for
+ * the `fluent_form_chip` option. Imports and exports the full
+ * settings payload as a base64-encoded JSON blob.
+ *
+ * Restored verbatim from the 1.x plugin (commit 2435b25^).
+ *
+ * @package CHIPForFluentForms
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 $slug = FF_CHIP_FSLUG;
 
