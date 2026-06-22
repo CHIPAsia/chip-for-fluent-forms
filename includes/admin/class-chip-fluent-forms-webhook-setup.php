@@ -18,6 +18,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/**
+ * Handles the CHIP refund-webhook public key storage and the
+ * signature verification callback. Singleton — auto-instantiated
+ * at the bottom of this file.
+ */
 class Chip_Fluent_Forms_Webhook_Setup {
 
 	/**

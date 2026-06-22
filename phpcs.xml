@@ -98,5 +98,7 @@
 
 	<rule ref="WordPress.PHP.YodaConditions">
 		<exclude-pattern>includes/class-chip-fluent-forms-purchase.php</exclude-pattern>
+		<exclude-pattern>includes/admin/class-chip-fluent-forms-webhook-setup.php</exclude-pattern>
+		<exclude-pattern>includes/admin/global-settings.php</exclude-pattern>
 	</rule>
 </ruleset>

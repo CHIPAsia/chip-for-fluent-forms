@@ -76,10 +76,10 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	public function add_action() {
 		add_action( 'fluentform/process_payment_chip', array( $this, 'handlePaymentAction' ), 10, 6 );
 
-		// this is redirect
+		// This is the redirect callback (user returns from CHIP).
 		add_action( 'fluentform/payment_frameless_chip', array( $this, 'redirect' ) );
 
-		// this is callback
+		// This is the IPN callback (CHIP server-to-server).
 		add_action( 'fluentform/ipn_endpoint_chip', array( $this, 'callback' ) );
 	}
 
@@ -172,7 +172,6 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			'failure_redirect' => $failure_redirect,
 			'creator_agent'    => 'FluentForms: ' . FF_CHIP_MODULE_VERSION,
 			// Reference value shall be using unique.
-			// 'reference'        => substr($form->title, 0, 128),
 			'platform'         => 'fluentforms',
 			'send_receipt'     => $option['send_rcpt'],
 			'due'              => time() + ( absint( $option['due_time'] ) * 60 ),
@@ -314,7 +313,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
 		if ( ! in_array( $currency, $this->supported_currencies, true ) ) {
 			/* translators: %s: configured form currency code */
-			wp_die( sprintf( __( 'Error! Currency not supported. The only supported currency is MYR and the current currency is %s.', 'chip-for-fluent-forms' ), esc_html( $currency ) ) );
+			wp_die( esc_html( sprintf( __( 'Error! Currency not supported. The only supported currency is MYR and the current currency is %s.', 'chip-for-fluent-forms' ), $currency ) ) );
 		}
 	}
 
@@ -334,7 +333,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$postfix  = '';
 		$form_cid = 'form-customize-' . $form_id;
 
-		if ( array_key_exists( $form_cid, $options ) and $options[ $form_cid ] ) {
+		if ( array_key_exists( $form_cid, $options ) && $options[ $form_cid ] ) {
 			$postfix = "-$form_id";
 		}
 
@@ -529,7 +528,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 */
 	public function callback() {
 
-		if ( ! isset( $_GET['payment_method'] ) or $_GET['payment_method'] != 'chip' ) {
+		if ( ! isset( $_GET['payment_method'] ) || $_GET['payment_method'] !== 'chip' ) {
 			return;
 		}
 
@@ -588,21 +587,23 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 * Handle the refund webhook: verify signature, dispatch refund.
 	 */
 	private function refund_callback() {
-		$content     = file_get_contents( 'php://input' );
-		$x_signature = sanitize_text_field( $_SERVER['HTTP_X_SIGNATURE'] );
+		$content = file_get_contents( 'php://input' );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- signature header from CHIP, verified below.
+		$x_signature = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_SIGNATURE'] ?? '' ) );
 
-		if ( empty( $content ) or ! isset( $x_signature ) ) {
+		if ( empty( $content ) || ! isset( $x_signature ) ) {
 			return;
 		}
 
 		$payment    = json_decode( $content, true );
 		$payment_id = sanitize_text_field( $payment['related_to']['id'] );
 
-		if ( $payment['event_type'] != 'payment.refunded' ) {
+		if ( $payment['event_type'] !== 'payment.refunded' ) {
 			return;
 		}
 
-		if ( is_null( $transaction   = $this->getTransaction( $payment_id, 'charge_id' ) ) ) {
+		$transaction = $this->getTransaction( $payment_id, 'charge_id' );
+		if ( is_null( $transaction ) ) {
 			return;
 		}
 
@@ -640,7 +641,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			"SELECT GET_LOCK('ff_chip_payment_$submission_id', 15);"
 		);
 
-		// get transaction once for thread safe
+		// Get transaction once for thread safety.
 		$transaction = $this->getTransaction( $submission_id, 'submission_id' );
 
 		$transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id' );
