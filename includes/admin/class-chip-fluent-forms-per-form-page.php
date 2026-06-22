@@ -104,6 +104,43 @@ class Chip_Fluent_Forms_Per_Form_Page {
 		);
 
 		add_action( 'admin_post_' . self::SAVE_ACTION, array( $this, 'handle_save' ) );
+
+		// Backward-compat redirect. The page used to be a top-level
+		// menu (commit 0093ced) — old bookmarks, browser history, and
+		// stale LS cache entries still resolve /wp-admin/chip-form-settings
+		// to a 404. Forward them to the new submenu URL.
+		add_action( 'admin_init', array( $this, 'maybe_redirect_legacy_url' ) );
+	}
+
+	/**
+	 * Redirect requests to the legacy top-level URL to the submenu URL.
+	 *
+	 * In commit 0093ced the page was a top-level menu, so the URL was
+	 * /wp-admin/chip-form-settings. In subsequent commits it moved
+	 * under Fluent Forms as a submenu, so the URL became
+	 * /wp-admin/admin.php?page=chip-form-settings. This redirect
+	 * handles any leftover references to the old URL (bookmarks,
+	 * browser history, LiteSpeed cache, or anything else).
+	 *
+	 * @return void
+	 */
+	public function maybe_redirect_legacy_url() {
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- compare against a known constant; only path/query used.
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+		if ( '' === $request_uri ) {
+			return;
+		}
+
+		// Match the exact legacy URL (/wp-admin/chip-form-settings) and
+		// any subpaths under it (/wp-admin/chip-form-settings/...). The
+		// new submenu URL has ?page= in it and never matches this.
+		if ( ! preg_match( '#/wp-admin/' . preg_quote( self::MENU_SLUG, '#' ) . '(?:[/?#]|$)#', $request_uri ) ) {
+			return;
+		}
+
+		$target = add_query_arg( 'page', self::MENU_SLUG, admin_url( 'admin.php' ) );
+		wp_safe_redirect( $target, 301 );
+		exit;
 	}
 
 	/**
