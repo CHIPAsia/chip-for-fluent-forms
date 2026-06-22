@@ -1,9 +1,10 @@
 <?php
 /**
+ *
  * Plugin Name: CHIP for Fluent Forms
  * Plugin URI: https://wordpress.org/plugins/chip-for-fluent-forms/
  * Description: CHIP - Digital Finance Platform
- * Version: 2.0.0
+ * Version: 1.1.2
  * Author: Chip In Sdn Bhd
  * Author URI: http://www.chip-in.asia
  * Requires PHP: 7.4
@@ -23,14 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'FF_CHIP_MODULE_VERSION', 'v2.0.0' );
-
-/**
- * `FF_CHIP_FILE` must point to the entry-point file (not the class
- * file) so that `plugin_dir_path( FF_CHIP_FILE )` resolves to the
- * plugin root. We set it before requiring the class so the class's
- * own `define()` method sees it and skips its own __FILE__ fallback.
- */
-define( 'FF_CHIP_FILE', __FILE__ );
 
 require_once __DIR__ . '/includes/class-chip-fluent-forms.php';
 

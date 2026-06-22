@@ -2,9 +2,20 @@
 /**
  * Main plugin bootstrap class.
  *
- * Singleton that defines the plugin constants, includes the runtime
- * classes, registers WP action/filter hooks, and provides the
- * `setting_link` row action on the Plugins list table.
+ * Singleton that defines the plugin constants, includes the
+ * codestar framework + the runtime classes, and registers WP
+ * hooks for the plugin action link.
+ *
+ * Storage layer:
+ *   - The codestar framework is the single source of truth for
+ *     both global and per-form settings. It writes to a single
+ *     WordPress option `fluent_form_chip` keyed by field id
+ *     (`secret-key`, `brand-id`, `payment-title`, `due-strict`,
+ *     etc., with `-{form_id}` suffix for per-form fields).
+ *   - The runtime read path (see
+ *     `Chip_Fluent_Forms_Purchase::get_settings()`) reads
+ *     `get_option('fluent_form_chip')` directly and layers
+ *     per-form overrides on top of global values.
  *
  * @package CHIPForFluentForms
  */
@@ -16,9 +27,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Chip_Fluent_Forms — main plugin bootstrap.
  *
- * Singleton that defines the plugin constants, includes the runtime
- * classes, registers WP action/filter hooks, and provides the
- * `setting_link` row action on the Plugins list table.
+ * Singleton that defines the plugin constants, includes the
+ * codestar framework + runtime + admin classes, and registers
+ * the `setting_link` row action on the Plugins list table.
  */
 class Chip_Fluent_Forms {
 
@@ -51,16 +62,15 @@ class Chip_Fluent_Forms {
 		$this->define();
 		$this->includes();
 		$this->add_filters();
-		$this->add_admin_hooks();
 	}
 
 	/**
 	 * Define plugin constants.
 	 *
-	 * `FF_CHIP_FILE` is expected to be defined by the plugin entry point
-	 * before this class is loaded (so the constant resolves to the
-	 * entry-point path, not to this class file's path). The other
-	 * constants are derived from it.
+	 * `FF_CHIP_FILE` is expected to be defined by the plugin entry
+	 * point before this class is loaded (so the constant resolves
+	 * to the entry-point path, not to this class file's path). The
+	 * other constants are derived from it.
 	 *
 	 * @return void
 	 */
@@ -68,72 +78,43 @@ class Chip_Fluent_Forms {
 		if ( ! defined( 'FF_CHIP_FILE' ) ) {
 			define( 'FF_CHIP_FILE', __FILE__ );
 		}
-		define( 'CHIP_FF_BASENAME', plugin_basename( FF_CHIP_FILE ) );
-		define( 'CHIP_FF_FSLUG', 'fluent_form_chip' );
+		define( 'FF_CHIP_BASENAME', plugin_basename( FF_CHIP_FILE ) );
+		define( 'FF_CHIP_FSLUG', 'fluent_form_chip' );
 	}
 
 	/**
-	 * Include all runtime, admin, and migration classes.
+	 * Include the codestar framework, the runtime classes, and
+	 * the admin files.
+	 *
+	 * The codestar framework is required at the top of every
+	 * request because CSF_Setup::createOptions() registers
+	 * admin pages on every load. The admin pages themselves
+	 * are gated behind is_admin() since they should not be
+	 * loaded on public requests.
 	 *
 	 * @return void
 	 */
 	public function includes() {
 		$includes_dir = plugin_dir_path( FF_CHIP_FILE ) . 'includes/';
 
-		// Core runtime.
+		// Core runtime: API client and purchase handler.
 		include $includes_dir . 'class-chip-fluent-forms-api.php';
-		include $includes_dir . 'class-chip-fluent-forms-settings.php';
-		include $includes_dir . 'class-chip-fluent-forms-purchase.php';
 
-		// One-time migration from the legacy fluent_form_chip option.
-		include $includes_dir . 'admin/class-chip-fluent-forms-migration.php';
+		// Codestar framework (CSF_Setup class + assets).
+		include $includes_dir . 'codestar-framework/classes/setup.class.php';
 
-		// Handler class is loaded unconditionally so its plugins_loaded hook can
-		// register before the priority-30 tick fires. The class itself is a no-op
-		// when Fluent Forms Pro is not active.
-		include $includes_dir . 'admin/class-chip-fluent-forms-handler.php';
-
-		// Helper-function bootstrap is in its own file so each file declares only one kind of symbol (PSR1.Files.SideEffects).
-		include $includes_dir . 'admin/chip-for-fluent-forms-handler-bootstrap.php';
-
+		// Admin-only: codestar settings pages + webhook setup.
 		if ( is_admin() ) {
-			include $includes_dir . 'admin/class-chip-fluent-forms-settings-page.php';
-			include $includes_dir . 'admin/class-chip-fluent-forms-per-form-page.php';
+			include $includes_dir . 'admin/global-settings.php';
+			include $includes_dir . 'admin/form-settings.php';
+			include $includes_dir . 'admin/backup-settings.php';
+			include $includes_dir . 'admin/class-webhook-setup.php';
 		}
-	}
 
-	/**
-	 * Register admin-only WP hooks.
-	 *
-	 * The per-form page registers itself on `admin_menu` priority 20
-	 * (later than FF's default priority 10) so that Fluent Forms Pro
-	 * has already populated `$admin_page_hooks['fluent_forms']` with
-	 * `'toplevel_page_fluent_forms'` before we call add_submenu_page.
-	 * Without this ordering, WP computes the submenu hookname as
-	 * `'admin_page_chip-form-settings'` at registration time but
-	 * `'toplevel_page_chip-form-settings'` at render time, and the
-	 * render-time hookname check returns null — the menu link falls
-	 * back to the raw slug (`chip-form-settings` instead of
-	 * `admin.php?page=chip-form-settings`).
-	 *
-	 * @return void
-	 */
-	public function add_admin_hooks() {
-		if ( class_exists( 'Chip_Fluent_Forms_Per_Form_Page' ) ) {
-			add_action( 'admin_menu', array( $this, 'register_per_form_page' ), 20 );
-		}
-	}
-
-	/**
-	 * Deferred per-form page registration. Runs on admin_menu priority
-	 * 20, after FF's parent menu has been registered.
-	 *
-	 * @return void
-	 */
-	public function register_per_form_page() {
-		if ( class_exists( 'Chip_Fluent_Forms_Per_Form_Page' ) ) {
-			( new Chip_Fluent_Forms_Per_Form_Page() )->register();
-		}
+		// Runtime: register the chip method with FF, handle
+		// purchase creation.
+		include $includes_dir . 'class-register.php';
+		include $includes_dir . 'class-purchase.php';
 	}
 
 	/**
@@ -142,7 +123,7 @@ class Chip_Fluent_Forms {
 	 * @return void
 	 */
 	public function add_filters() {
-		add_filter( 'plugin_action_links_' . CHIP_FF_BASENAME, array( $this, 'setting_link' ) );
+		add_filter( 'plugin_action_links_' . FF_CHIP_BASENAME, array( $this, 'setting_link' ) );
 	}
 
 	/**
@@ -155,7 +136,7 @@ class Chip_Fluent_Forms {
 		$new_links = array(
 			'settings' => sprintf(
 				'<a href="%1$s">%2$s</a>',
-				admin_url( 'admin.php?page=fluent_forms_settings#/payment_methods' ),
+				admin_url( 'admin.php?page=chip-for-fluent-forms' ),
 				esc_html__( 'Settings', 'chip-for-fluent-forms' )
 			),
 		);
