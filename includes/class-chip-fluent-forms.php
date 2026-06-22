@@ -105,13 +105,32 @@ class Chip_Fluent_Forms {
 	/**
 	 * Register admin-only WP hooks.
 	 *
-	 * Called from __construct() — the page classes are admin-only and
-	 * are only loaded when is_admin() is true, so instantiating them
-	 * here is safe.
+	 * The per-form page registers itself on `admin_menu` priority 20
+	 * (later than FF's default priority 10) so that Fluent Forms Pro
+	 * has already populated `$admin_page_hooks['fluent_forms']` with
+	 * `'toplevel_page_fluent_forms'` before we call add_submenu_page.
+	 * Without this ordering, WP computes the submenu hookname as
+	 * `'admin_page_chip-form-settings'` at registration time but
+	 * `'toplevel_page_chip-form-settings'` at render time, and the
+	 * render-time hookname check returns null — the menu link falls
+	 * back to the raw slug (`chip-form-settings` instead of
+	 * `admin.php?page=chip-form-settings`).
 	 *
 	 * @return void
 	 */
 	public function add_admin_hooks() {
+		if ( class_exists( 'Chip_Fluent_Forms_Per_Form_Page' ) ) {
+			add_action( 'admin_menu', array( $this, 'register_per_form_page' ), 20 );
+		}
+	}
+
+	/**
+	 * Deferred per-form page registration. Runs on admin_menu priority
+	 * 20, after FF's parent menu has been registered.
+	 *
+	 * @return void
+	 */
+	public function register_per_form_page() {
 		if ( class_exists( 'Chip_Fluent_Forms_Per_Form_Page' ) ) {
 			( new Chip_Fluent_Forms_Per_Form_Page() )->register();
 		}
