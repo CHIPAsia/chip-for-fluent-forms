@@ -134,7 +134,10 @@ class Chip_Fluent_Forms_Per_Form_Page {
 		// Match the exact legacy URL (/wp-admin/chip-form-settings) and
 		// any subpaths under it (/wp-admin/chip-form-settings/...). The
 		// new submenu URL has ?page= in it and never matches this.
-		if ( ! preg_match( '#/wp-admin/' . preg_quote( self::MENU_SLUG, '#' ) . '(?:[/?#]|$)#', $request_uri ) ) {
+		// Use '~' as the delimiter so the '#' inside the pattern is
+		// not misinterpreted as the closing delimiter.
+		$pattern = '~/wp-admin/' . preg_quote( self::MENU_SLUG, '~' ) . '(?:[/?#]|$)~';
+		if ( ! preg_match( $pattern, $request_uri ) ) {
 			return;
 		}
 
@@ -188,11 +191,14 @@ class Chip_Fluent_Forms_Per_Form_Page {
 							<li><?php esc_html_e( 'wpFluent() available:', 'chip-for-fluent-forms' ); ?> <code><?php echo $result['wpf'] ? 'yes' : 'no'; ?></code></li>
 							<li><?php esc_html_e( 'Queried table:', 'chip-for-fluent-forms' ); ?> <code><?php echo esc_html( $result['table'] ); ?></code> (<?php esc_html_e( 'with WP table prefix prepended at runtime', 'chip-for-fluent-forms' ); ?>)</li>
 							<li><?php esc_html_e( 'Rows returned:', 'chip-for-fluent-forms' ); ?> <code><?php echo (int) $result['count']; ?></code></li>
+							<?php if ( ! empty( $result['table_status'] ) ) : ?>
+								<li><?php esc_html_e( 'Table existence check:', 'chip-for-fluent-forms' ); ?> <code><?php echo esc_html( $result['table_status'] ); ?></code></li>
+							<?php endif; ?>
 							<?php if ( ! empty( $result['error'] ) ) : ?>
 								<li><?php esc_html_e( 'Error:', 'chip-for-fluent-forms' ); ?> <code><?php echo esc_html( $result['error'] ); ?></code></li>
 							<?php endif; ?>
 						</ul>
-						<p class="description"><?php esc_html_e( 'Check wp-content/debug.log for a [chip-for-fluent-forms] line with the same info. Most likely: the Fluent Forms forms table does not exist or has a non-default prefix.', 'chip-for-fluent-forms' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Check wp-content/debug.log for a [chip-for-fluent-forms] line with the same info.', 'chip-for-fluent-forms' ); ?></p>
 					</div>
 				<?php endif; ?>
 			<?php else : ?>
@@ -463,7 +469,7 @@ class Chip_Fluent_Forms_Per_Form_Page {
 	 * threw). The `error_log()` lines help debug the same problem from
 	 * the WP debug log when the admin UI is hidden.
 	 *
-	 * @return array{forms: array, error: ?string, wpf: bool, table: string, count: int}
+	 * @return array{forms: array, error: ?string, wpf: bool, table: string, count: int, table_status: ?string}
 	 */
 	private function get_forms() {
 		$table = 'fluentform_forms';
@@ -472,11 +478,12 @@ class Chip_Fluent_Forms_Per_Form_Page {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- diagnostic only, fires when the empty list view renders.
 			error_log( '[chip-for-fluent-forms] get_forms: wpFluent() is not defined (Fluent Forms Pro not loaded?)' );
 			return array(
-				'forms' => array(),
-				'error' => 'wpFluent() function is not defined. Fluent Forms Pro is required.',
-				'wpf'   => false,
-				'table' => $table,
-				'count' => 0,
+				'forms'        => array(),
+				'error'        => 'wpFluent() function is not defined. Fluent Forms Pro is required.',
+				'wpf'          => false,
+				'table'        => $table,
+				'count'        => 0,
+				'table_status' => null,
 			);
 		}
 
@@ -489,11 +496,12 @@ class Chip_Fluent_Forms_Per_Form_Page {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- diagnostic only, fires when the empty list view renders.
 			error_log( '[chip-for-fluent-forms] get_forms: wpFluent() threw: ' . $e->getMessage() );
 			return array(
-				'forms' => array(),
-				'error' => $e->getMessage(),
-				'wpf'   => true,
-				'table' => $table,
-				'count' => 0,
+				'forms'        => array(),
+				'error'        => $e->getMessage(),
+				'wpf'          => true,
+				'table'        => $table,
+				'count'        => 0,
+				'table_status' => null,
 			);
 		}
 
@@ -502,17 +510,30 @@ class Chip_Fluent_Forms_Per_Form_Page {
 		}
 
 		$count = count( $forms );
+
+		// When the table is empty, also try to detect whether the table
+		// actually exists with the expected prefix. This helps the
+		// diagnostic distinguish between "no forms created yet" and
+		// "table prefix is non-default so the query targeted the wrong
+		// table". We use a global \$wpdb query (raw SQL) since the
+		// wpFluent API abstracts the prefix and we want to inspect it.
+		$table_status = null;
 		if ( 0 === $count ) {
-			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- diagnostic only, fires when the empty list view renders.
-			error_log( '[chip-for-fluent-forms] get_forms: wpFluent()->table(fluentform_forms) returned 0 rows. Check the table exists and uses the WP table prefix.' );
+			global $wpdb;
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- diagnostic only, fires when the empty list view renders; result is read once and shown inline.
+			$found_table = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $wpdb->prefix . 'fluentform_forms' ) );
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- diagnostic only.
+			error_log( '[chip-for-fluent-forms] get_forms: wpFluent()->table(fluentform_forms) returned 0 rows. SHOW TABLES LIKE "' . $wpdb->prefix . 'fluentform_forms" returned: ' . ( $found_table ? $found_table : 'NOT FOUND' ) );
+			$table_status = $found_table ? 'found: ' . $found_table : 'not found under prefix "' . $wpdb->prefix . '"';
 		}
 
 		return array(
-			'forms' => $forms,
-			'error' => null,
-			'wpf'   => true,
-			'table' => $table,
-			'count' => $count,
+			'forms'        => $forms,
+			'error'        => null,
+			'wpf'          => true,
+			'table'        => $table,
+			'count'        => $count,
+			'table_status' => $table_status,
 		);
 	}
 }
