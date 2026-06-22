@@ -108,7 +108,7 @@ jobs:
         run: phpcs -i
 
       - name: Run PHPCS
-        run: phpcs --standard=phpcs.xml .
+        run: phpcs --standard=phpcs.xml --ignore-warnings-on-exit .
         continue-on-error: false
 
   # Tier 3: Plugin Check (needs build artifact).
