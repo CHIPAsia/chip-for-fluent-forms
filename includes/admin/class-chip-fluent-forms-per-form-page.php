@@ -42,6 +42,46 @@ class Chip_Fluent_Forms_Per_Form_Page {
 	const SETTINGS_GROUP = 'chip_per_form_settings_group';
 
 	/**
+	 * Capability the page is registered with.
+	 *
+	 * Cached at first access in resolve_page_cap() so render() and
+	 * handle_save() use the same cap that add_submenu_page() used.
+	 *
+	 * @var string|null
+	 */
+	private $page_cap;
+
+	/**
+	 * Resolve the capability this page uses for menu registration and
+	 * in-page access checks.
+	 *
+	 * We support two roles:
+	 *   - Stock WP administrators: they have `manage_options` (and all
+	 *     other caps). We use that — it's a stock WP cap, well-known
+	 *     to WordPress core.
+	 *   - Custom FF roles (e.g. "Forms Manager") set up via FF's
+	 *     permission UI: they have `fluentform_dashboard_access`
+	 *     directly but NOT `manage_options`. We fall back to that
+	 *     FF cap so they can still reach the page.
+	 *
+	 * The fallback chain is computed in `register()` and stored as a
+	 * class property, then re-used in `render()` and `handle_save()`
+	 * so the in-page `wp_die()` matches the cap the menu was
+	 * registered with.
+	 *
+	 * @return string Capability name.
+	 */
+	private function resolve_page_cap() {
+		if ( null !== $this->page_cap ) {
+			return $this->page_cap;
+		}
+		$this->page_cap = current_user_can( 'manage_options' )
+			? 'manage_options'
+			: 'fluentform_dashboard_access';
+		return $this->page_cap;
+	}
+
+	/**
 	 * Register the submenu + save handler.
 	 *
 	 * Hooked from Chip_Fluent_Forms::includes() under the is_admin()
@@ -51,14 +91,14 @@ class Chip_Fluent_Forms_Per_Form_Page {
 	 */
 	public function register() {
 		// Submenu under Fluent Forms so the page lives alongside the
-		// other FF admin items (same UX as 1.x codestar). Cap matches
-		// the parent menu's gate (`fluentform_dashboard_access`) so
-		// admins who can see FF Forms also see CHIP Per-Form.
+		// other FF admin items (same UX as 1.x codestar). The cap is
+		// resolved at registration time from the fallback chain in
+		// resolve_page_cap() — see that method for why this matters.
 		add_submenu_page(
 			'fluent_forms',
 			__( 'CHIP Per-Form Settings', 'chip-for-fluent-forms' ),
 			__( 'CHIP Per-Form', 'chip-for-fluent-forms' ),
-			'fluentform_dashboard_access',
+			$this->resolve_page_cap(),
 			self::MENU_SLUG,
 			array( $this, 'render' )
 		);
@@ -72,7 +112,7 @@ class Chip_Fluent_Forms_Per_Form_Page {
 	 * @return void
 	 */
 	public function render() {
-		if ( ! current_user_can( 'fluentform_dashboard_access' ) ) {
+		if ( ! current_user_can( $this->resolve_page_cap() ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'chip-for-fluent-forms' ) );
 		}
 
@@ -297,7 +337,7 @@ class Chip_Fluent_Forms_Per_Form_Page {
 	 * @return void
 	 */
 	public function handle_save() {
-		if ( ! current_user_can( 'fluentform_dashboard_access' ) ) {
+		if ( ! current_user_can( $this->resolve_page_cap() ) ) {
 			wp_die( esc_html__( 'You do not have sufficient permissions to perform this action.', 'chip-for-fluent-forms' ) );
 		}
 
