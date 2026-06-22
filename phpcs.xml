@@ -92,7 +92,11 @@
 		is relaxed for these files only.
 	-->
 	<rule ref="WordPress.NamingConventions.ValidVariableName">
-		<exclude-pattern>includes/class-purchase.php</exclude-pattern>
-		<exclude-pattern>includes/class-register.php</exclude-pattern>
+		<exclude-pattern>includes/class-chip-fluent-forms-purchase.php</exclude-pattern>
+		<exclude-pattern>includes/class-chip-fluent-forms-register.php</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.PHP.YodaConditions">
+		<exclude-pattern>includes/class-chip-fluent-forms-purchase.php</exclude-pattern>
 	</rule>
 </ruleset>
