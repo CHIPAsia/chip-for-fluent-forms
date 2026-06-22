@@ -4,7 +4,7 @@
  * Plugin Name: CHIP for Fluent Forms
  * Plugin URI: https://wordpress.org/plugins/chip-for-fluent-forms/
  * Description: CHIP - Digital Finance Platform
- * Version: 1.1.2
+ * Version: 2.0.0
  * Author: Chip In Sdn Bhd
  * Author URI: http://www.chip-in.asia
  * Requires PHP: 7.4
