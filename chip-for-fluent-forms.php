@@ -1,94 +1,49 @@
 <?php
-
 /**
  *
  * Plugin Name: CHIP for Fluent Forms
  * Plugin URI: https://wordpress.org/plugins/chip-for-fluent-forms/
  * Description: CHIP - Digital Finance Platform
- * Version: 1.1.2
+ * Version: 2.0.0
  * Author: Chip In Sdn Bhd
  * Author URI: http://www.chip-in.asia
  * Requires PHP: 7.4
  * Requires at least: 6.1
  *
- * Copyright: © 2025 CHIP
+ * Copyright: © 2026 CHIP
  * License: GNU General Public License v3.0
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * @package CHIPForFluentForms
  */
 
+// phpcs:disable PSR1.Files.SideEffects.FoundNonConditionalLogic -- the plugin entry-point file intentionally combines the ABSPATH guard, the FF_CHIP_* constants, the class require, and the bootstrap action registration into one side-effect block.
+
 if ( ! defined( 'ABSPATH' ) ) {
-	die; } // Cannot access directly.
-
-define( 'FF_CHIP_MODULE_VERSION', 'v1.1.2' );
-
-class Chip_Fluent_Forms {
-
-	private static $_instance;
-
-	public static function get_instance() {
-		if ( self::$_instance == null ) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
-	}
-
-	public function __construct() {
-		$this->define();
-		$this->includes();
-		$this->add_filters();
-		$this->add_actions();
-	}
-
-	public function define() {
-		define( 'FF_CHIP_FILE', __FILE__ );
-		define( 'FF_CHIP_BASENAME', plugin_basename( FF_CHIP_FILE ) );
-		define( 'FF_CHIP_FSLUG', 'fluent_form_chip' );
-	}
-
-	public function includes() {
-		$includes_dir = plugin_dir_path( FF_CHIP_FILE ) . 'includes/';
-		include $includes_dir . 'class-api.php';
-		include $includes_dir . 'codestar-framework/classes/setup.class.php';
-
-		if ( is_admin() ) {
-			include $includes_dir . 'admin/global-settings.php';
-			include $includes_dir . 'admin/form-settings.php';
-			include $includes_dir . 'admin/backup-settings.php';
-			include $includes_dir . 'admin/class-webhook-setup.php';
-		}
-
-		include $includes_dir . 'class-register.php';
-		include $includes_dir . 'class-purchase.php';
-	}
-
-	public function add_filters() {
-		add_filter( 'plugin_action_links_' . FF_CHIP_BASENAME, array( $this, 'setting_link' ) );
-	}
-
-	public function add_actions() {
-	}
-
-	public function setting_link( $links ) {
-		$new_links = array(
-			'settings' => sprintf(
-				'<a href="%1$s">%2$s</a>',
-				admin_url( 'admin.php?page=chip-for-fluent-forms' ),
-				esc_html__( 'Settings', 'chip-for-fluent-forms' )
-			),
-		);
-
-		return array_merge( $new_links, $links );
-	}
+	exit;
 }
 
-add_action( 'init', 'load_chip_for_fluent_forms', 0 );
+define( 'FF_CHIP_MODULE_VERSION', 'v2.0.0' );
 
-function load_chip_for_fluent_forms() {
+require_once __DIR__ . '/includes/class-chip-fluent-forms.php';
 
-	if ( ! class_exists( 'FluentFormPro\Payments\PaymentHelper' ) && ! class_exists( 'FluentFormPro\Payments\PaymentMethods\BaseProcessor' ) ) {
-		return;
+/**
+ * Register the gated plugin entry point.
+ *
+ * Runs on `plugins_loaded` so the plugin is fully bootstrapped
+ * (constants + class autoloaded + helper bootstraps included) before
+ * any Fluent Forms Pro hook fires. WordPress 4.6+ handles loading
+ * translations under the plugin slug automatically, so no explicit
+ * `load_plugin_textdomain()` call is needed here.
+ */
+add_action(
+	'plugins_loaded',
+	static function (): void {
+		if ( ! class_exists( 'FluentFormPro\Payments\PaymentHelper' ) && ! class_exists( 'FluentFormPro\Payments\PaymentMethods\BaseProcessor' ) ) {
+			return;
+		}
+
+		Chip_Fluent_Forms::get_instance();
 	}
-
-	Chip_Fluent_Forms::get_instance();
-}
+);
+// phpcs:enable

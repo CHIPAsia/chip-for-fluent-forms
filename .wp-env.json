@@ -1,0 +1,11 @@
+{
+	"core": null,
+	"port": 8880,
+	"plugins": [
+		"https://downloads.wordpress.org/plugin/fluentform.zip",
+		"https://downloads.wordpress.org/plugin/plugin-check.zip"
+	],
+	"mappings": {
+		"wp-content/plugins/chip-for-fluent-forms": "."
+	}
+}

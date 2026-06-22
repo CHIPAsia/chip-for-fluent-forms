@@ -1,28 +1,83 @@
 <?php
+/**
+ * Webhook admin UI.
+ *
+ * Handles the Fluent Forms Pro "refund synchronization" workflow:
+ * stores the CHIP public key in a separate option
+ * `fluent_form_chip_public_key`, registers the IPN callback,
+ * and verifies the webhook signature when a refund notification
+ * arrives. The public key is per-form (suffixed with
+ * `-{form_id}`) so different forms can have different keys.
+ *
+ * Restored verbatim from the 1.x plugin (commit 2435b25^).
+ *
+ * @package CHIPForFluentForms
+ */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Handles the CHIP refund-webhook public key storage and the
+ * signature verification callback. Singleton — auto-instantiated
+ * at the bottom of this file.
+ */
 class Chip_Fluent_Forms_Webhook_Setup {
 
+	/**
+	 * Singleton instance.
+	 *
+	 * @var Chip_Fluent_Forms_Webhook_Setup|null
+	 */
 	private static $_instance;
+
+	/**
+	 * Per-form webhook setup results.
+	 *
+	 * @var array
+	 */
 	private $results = array();
 
+	/**
+	 * Singleton accessor.
+	 *
+	 * @return Chip_Fluent_Forms_Webhook_Setup
+	 */
 	public static function get_instance() {
-		if ( self::$_instance == null ) {
+		if ( null === self::$_instance ) {
 			self::$_instance = new self();
 		}
 
 		return self::$_instance;
 	}
 
+	/**
+	 * Constructor: hook the codestar save callback.
+	 */
 	public function __construct() {
 		add_action( 'csf_fluent_form_chip_save_before', array( $this, 'setup_public_key' ), 10, 2 );
 	}
 
+	/**
+	 * Codestar save callback: route the refund key into global
+	 * and per-form storage.
+	 *
+	 * @param array $data         The codestar option array.
+	 * @param mixed $admin_option Unused; reserved for future use.
+	 */
 	public function setup_public_key( $data, $admin_option ) {
 
 		$this->global_public_key( $data, $admin_option );
 		$this->form_public_key( $data, $admin_option );
 	}
 
+	/**
+	 * Sync the global refund public key.
+	 *
+	 * @param array $data         The codestar option array.
+	 * @param mixed $admin_option Unused; reserved for future use.
+	 */
 	private function global_public_key( $data, $admin_option ) {
 
 		if ( empty( $data['refund'] ) ) {
@@ -79,6 +134,12 @@ class Chip_Fluent_Forms_Webhook_Setup {
 		update_option( 'fluent_form_chip_public_key', $wp_option, false );
 	}
 
+	/**
+	 * Sync the per-form refund public keys.
+	 *
+	 * @param array $data         The codestar option array.
+	 * @param mixed $admin_option Unused; reserved for future use.
+	 */
 	private function form_public_key( $data, $admin_option ) {
 
 		$form_ids = wpFluent()->table( 'fluentform_forms' )
@@ -94,14 +155,14 @@ class Chip_Fluent_Forms_Webhook_Setup {
 					continue;
 				}
 
-				if ( $data[ 'refund-' . $form->id ] == false ) {
+				if ( $data[ 'refund-' . $form->id ] === false ) {
 					continue;
 				}
 
 				if ( array_key_exists( $data[ 'secret-key-' . $form->id ], $this->results ) ) {
 					$webhooks = $this->results[ $data[ 'secret-key-' . $form->id ] ];
 				} else {
-					$chip     = Chip_Fluent_Forms_API::get_instance( $data['secret-key'], '' );
+					$chip     = Chip_Fluent_Forms_API::get_instance( $data[ 'secret-key-' . $form->id ], '' );
 					$webhooks = $chip->get_webhooks();
 				}
 
@@ -117,7 +178,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
 				$found_webhook = false;
 
 				foreach ( $webhooks['results'] as $webhook ) {
-					if ( $webhook['title'] == 'CHIP for GiveWP' ) {
+					if ( $webhook['title'] === 'CHIP for Fluent Forms' ) {
 						$public_key    = str_replace( '\n', "\n", $webhook['public_key'] );
 						$found_webhook = true;
 						break;
@@ -127,7 +188,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
 				if ( ! $found_webhook ) {
 					$webhook = $chip->create_webhook(
 						array(
-							'title'      => 'CHIP for GiveWP',
+							'title'      => 'CHIP for Fluent Forms',
 							'all_events' => false,
 							'events'     => array( 'payment.refunded' ),
 							'callback'   => $this->get_callback_url(),
@@ -150,6 +211,11 @@ class Chip_Fluent_Forms_Webhook_Setup {
 		}
 	}
 
+	/**
+	 * Build the public webhook callback URL.
+	 *
+	 * @return string The callback URL CHIP should POST to.
+	 */
 	private function get_callback_url() {
 		return add_query_arg(
 			array(

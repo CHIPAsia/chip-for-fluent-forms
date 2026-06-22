@@ -1,6 +1,34 @@
 <?php
+/**
+ * Per-form CHIP settings fields.
+ *
+ * Hooks into the Fluent Forms form editor's
+ * `fluentform/form_settings_component` filter to add a per-form
+ * CHIP section. The field ids are suffixed with `-{form_id}`
+ * so the values land at distinct keys in the codestar option.
+ *
+ * Restored verbatim from the 1.x plugin (commit 2435b25^).
+ *
+ * @package CHIPForFluentForms
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 $slug = FF_CHIP_FSLUG;
+
+/**
+ * Build the per-form CSF field schema for a single form.
+ *
+ * Returns the array of CSF field definitions used by the
+ * per-form settings section. Field ids are suffixed with
+ * `-{form_id}` so the codestar option stores per-form values
+ * at distinct keys.
+ *
+ * @param object $form Fluent Forms form object (must have ->id and ->title).
+ * @return array CSF field definitions.
+ */
 function ff_chip_form_fields( $form ) {
 
 	$form_fields = array(
@@ -8,8 +36,17 @@ function ff_chip_form_fields( $form ) {
 			'id'    => 'form-customize-' . $form->id,
 			'type'  => 'switcher',
 			'title' => sprintf( __( 'Customization', 'chip-for-fluent-forms' ) ),
-			'desc'  => sprintf( __( 'Form ID: <strong>#%1$s</strong>. Form Title: <strong>%2$s</strong>', 'chip-for-fluent-forms' ), $form->id, $form->title ),
-			'help'  => sprintf( __( 'This to enable customization per form-basis for form: #%s', 'chip-for-fluent-forms' ), $form->id ),
+			'desc'  => sprintf(
+				/* translators: 1: form id, 2: form title */
+				__( 'Form ID: <strong>#%1$s</strong>. Form Title: <strong>%2$s</strong>', 'chip-for-fluent-forms' ),
+				$form->id,
+				$form->title
+			),
+			'help'  => sprintf(
+				/* translators: %s: form id */
+				__( 'This to enable customization per form-basis for form: #%s', 'chip-for-fluent-forms' ),
+				$form->id
+			),
 		),
 		array(
 			'type'       => 'subheading',
@@ -156,8 +193,18 @@ foreach ( $all_forms_query as $form ) {
 		array(
 			'parent'      => 'form-configuration',
 			'id'          => 'form-id-' . $form->id,
-			'title'       => sprintf( __( 'Form #%1$s - %2$s', 'chip-for-fluent-forms' ), $form->id, substr( $form->title, 0, 15 ) ),
-			'description' => sprintf( __( 'Configuration for Form #%1$s - %2$s', 'chip-for-fluent-forms' ), $form->id, $form->title ),
+			'title'       => sprintf(
+				/* translators: 1: form id, 2: form title (truncated to 15 chars) */
+				__( 'Form #%1$s - %2$s', 'chip-for-fluent-forms' ),
+				$form->id,
+				substr( $form->title, 0, 15 )
+			),
+			'description' => sprintf(
+				/* translators: 1: form id, 2: form title */
+				__( 'Configuration for Form #%1$s - %2$s', 'chip-for-fluent-forms' ),
+				$form->id,
+				$form->title
+			),
 			'fields'      => ff_chip_form_fields( $form ),
 		)
 	);

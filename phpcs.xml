@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<ruleset name="CHIP for Fluent Forms">
+	<description>PHPCS ruleset for CHIP for Fluent Forms plugin.</description>
+
+	<!-- What to scan -->
+	<file>.</file>
+
+	<!-- Only scan PHP files -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Exclude paths -->
+	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/assets/*</exclude-pattern>
+	<exclude-pattern>/build/*</exclude-pattern>
+	<exclude-pattern>/ci-build/*</exclude-pattern>
+	<exclude-pattern>/dist/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
+	<!--
+		Vendored Codestar Framework — third-party code shipped as-is
+		from the 1.x plugin. We do not modify these files; their
+		upstream coding style is intentionally different from ours
+		and we should not be asked to maintain it. Excluded from
+		all sniff rules below.
+	-->
+	<exclude-pattern>/includes/codestar-framework/*</exclude-pattern>
+
+	<!-- Use WordPress coding standards -->
+	<rule ref="WordPress"/>
+
+	<!-- Set minimum supported PHP version -->
+	<config name="minimum_supported_wp_version" value="6.1"/>
+	<config name="testVersion" value="7.4-8.5"/>
+
+	<!-- Text domain -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="chip-for-fluent-forms"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Plugin entry point and uninstall script are not class files, so
+		they have no class-name-vs-filename relationship to enforce.
+		Everything else follows the WordPress naming convention:
+		class-Chip_Fluent_Forms.php contains class Chip_Fluent_Forms, etc.
+	-->
+	<rule ref="WordPress.Files.FileName">
+		<exclude-pattern>chip-for-fluent-forms.php</exclude-pattern>
+		<exclude-pattern>uninstall.php</exclude-pattern>
+	</rule>
+
+	<!-- WordPress pseudo-singleton pattern uses $instance (not $_instance). -->
+	<rule ref="PSR2.Classes.PropertyDeclaration">
+		<exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
+	</rule>
+
+	<!--
+		Register Fluent Forms' custom caps so PHPCS doesn't flag our
+		add_submenu_page() / current_user_can() calls against them.
+		FF defines these caps at runtime when its menu registers; they
+		are not part of stock WP. See FluentForm\App\Modules\Registerer\Menu.
+	-->
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities" type="array">
+				<element value="fluentform_dashboard_access"/>
+				<element value="fluentform_settings_manager"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		The processor class extends FluentFormPro\Payments\PaymentMethods\BaseProcessor
+		and overrides its methods. BaseProcessor's public method signatures use
+		camelCase parameter names (e.g. handlePaymentAction($submissionId,
+		$submissionData, $form, $methodSettings, $hasSubscriptions, $totalPayable))
+		that the parent class calls us with, and Fluent Forms Pro's own
+		callback-style invocations (the action handlers we register on
+		fluentform/process_payment_chip and friends) also pass camelCase params.
+		We cannot rename these without breaking the contract with BaseProcessor
+		and the public FF Pro action signature. The exclude below scopes the
+		relaxation to the processor file only.
+	-->
+	<!--
+		Three classes inherit the FF Pro public surface (BasePaymentMethod /
+		BaseProcessor) which uses camelCase property names (settingsKey) and
+		method-parameter names (handlePaymentAction, getSubmission, etc.).
+		We cannot rename these without breaking the contract, so the rule
+		is relaxed for these files only.
+	-->
+	<rule ref="WordPress.NamingConventions.ValidVariableName">
+		<exclude-pattern>includes/class-chip-fluent-forms-purchase.php</exclude-pattern>
+		<exclude-pattern>includes/class-chip-fluent-forms-register.php</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.PHP.YodaConditions">
+		<exclude-pattern>includes/class-chip-fluent-forms-purchase.php</exclude-pattern>
+		<exclude-pattern>includes/admin/class-chip-fluent-forms-webhook-setup.php</exclude-pattern>
+		<exclude-pattern>includes/admin/global-settings.php</exclude-pattern>
+	</rule>
+</ruleset>
