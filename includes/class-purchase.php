@@ -11,6 +11,15 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
 	private static $_instance;
 
+	/**
+	 * DuitNow QR group. duitnow_qr is the legacy identifier, dnqr the modern
+	 * one. They are interchangeable at runtime; dnqr is preferred when both are
+	 * available. Exposed to the merchant as a single group checkbox (duitnow_qr).
+	 *
+	 * @var array
+	 */
+	const DUITNOW_GROUP = array( 'duitnow_qr', 'dnqr' );
+
 	private $supported_currencies = array( 'MYR' );
 	protected $method             = 'chip'; // used by BaseProcessor->insertRefund($data)
 
@@ -143,6 +152,15 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 				$params['payment_method_whitelist'][] = 'duitnow_qr';
 			}
 
+			// Resolve the DuitNow QR group (duitnow_qr legacy + dnqr modern) against
+			// the merchant's actual /payment_methods/ availability, prioritizing dnqr.
+			// Short-circuits (no API call) when the group is not configured.
+			$params['payment_method_whitelist'] = $this->resolve_duitnow_methods(
+				$params['payment_method_whitelist'],
+				strtoupper( $submission->currency ),
+				intval( $transaction->payment_total )
+			);
+
 			if ( empty( $params['payment_method_whitelist'] ) ) {
 				unset( $params['payment_method_whitelist'] );
 			}
@@ -227,6 +245,68 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			),
 			200
 		);
+	}
+
+	/**
+	 * Resolve the configured payment_method_whitelist against the merchant's
+	 * actual /payment_methods/ response, with dnqr-priority for the DuitNow QR group.
+	 *
+	 * Steps:
+	 *   1. Group expansion: any dnqr-group member in the whitelist expands to the full group.
+	 *   2. Cache key: brand + currency + amount-bucket (round to 100-sen steps).
+	 *   3. Try cache. On miss, call /payment_methods/.
+	 *   4. Fallback: return expanded whitelist unchanged if the API fails.
+	 *   5. Intersect with available methods.
+	 *   6. Priority: dnqr wins when both are present.
+	 *   7. Build the final whitelist (original non-group entries + resolved group).
+	 *
+	 * @param array  $whitelist Configured payment_method_whitelist.
+	 * @param string $currency  Order currency code (e.g. 'MYR').
+	 * @param int    $amount    Order total in sen (e.g. 12345 = RM 123.45).
+	 * @return array            Final whitelist to send to CHIP.
+	 */
+	private function resolve_duitnow_methods( array $whitelist, string $currency, int $amount ): array {
+		// 1. Group expansion.
+		$has_group_member = count( array_intersect( $whitelist, self::DUITNOW_GROUP ) ) > 0;
+
+		// Short-circuit: a whitelist that does not intersect the dnqr group must be
+		// returned untouched (no API call, no group injection).
+		if ( ! $has_group_member ) {
+			return $whitelist;
+		}
+
+		$expanded = array_values( array_unique( array_merge( $whitelist, self::DUITNOW_GROUP ) ) );
+
+		// 2. Cache key: brand + currency + amount-bucket (round to 100-sen steps).
+		$option    = $this->get_settings( $this->form->id );
+		$cache_key = 'ff_chip_pm_' . md5( $option['brand_id'] . '|' . $currency . '|' . intval( $amount / 100 ) );
+
+		// 3. Try cache. If hit, use it. If miss, call /payment_methods/.
+		$available = get_transient( $cache_key );
+		if ( false === $available ) {
+			$chip     = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], $option['brand_id'] );
+			$response = $chip->payment_methods( $currency, '', $amount ); // No language param.
+			if ( ! is_array( $response ) || ! isset( $response['available_payment_methods'] ) ) {
+				// 4. Fallback: return expanded whitelist unchanged.
+				return $expanded;
+			}
+			$available = $response['available_payment_methods'];
+			set_transient( $cache_key, $available, 30 * MINUTE_IN_SECONDS );
+		}
+
+		// 5. Intersect: keep only group members the merchant actually has.
+		$resolved_group = array_values( array_intersect( self::DUITNOW_GROUP, $available ) );
+
+		// 6. Priority: dnqr wins when both are present.
+		if ( in_array( 'dnqr', $resolved_group, true ) ) {
+			$resolved_group = array_values( array_diff( $resolved_group, array( 'duitnow_qr' ) ) );
+		}
+
+		// 7. Build final whitelist: original entries (with group members stripped) + resolved group.
+		$final = array_values( array_diff( $expanded, self::DUITNOW_GROUP ) );
+		$final = array_merge( $final, $resolved_group );
+
+		return $final;
 	}
 
 	private function is_form_currency_supported( $currency ) {

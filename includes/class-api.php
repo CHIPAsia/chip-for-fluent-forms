@@ -36,10 +36,10 @@ class Chip_Fluent_Forms_API {
 		return $this->call( 'POST', '/webhooks/?time=' . time(), $params );
 	}
 
-	public function payment_methods( $currency, $language ) {
+	public function payment_methods( $currency, $language, $amount ) {
 		return $this->call(
 			'GET',
-			"/payment_methods/?brand_id={$this->brand_id}&currency={$currency}&language={$language}"
+			"/payment_methods/?brand_id={$this->brand_id}&currency={$currency}&language={$language}&amount={$amount}"
 		);
 	}
 
