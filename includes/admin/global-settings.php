@@ -118,6 +118,14 @@ $miscellaneous_global_fields = array(
 		'dependency' => array( array( 'payment-method-whitelist', '==', 'true' ) ),
 	),
 	array(
+		'id'         => 'payment-method-shopee',
+		'type'       => 'switcher',
+		'title'      => __( 'Enable Shopee Pay', 'chip-for-fluent-forms' ),
+		'desc'       => __( 'To enable Shopee Pay payment method.', 'chip-for-fluent-forms' ),
+		'help'       => __( 'Whether to enable Shopee Pay payment method.', 'chip-for-fluent-forms' ),
+		'dependency' => array( array( 'payment-method-whitelist', '==', 'true' ) ),
+	),
+	array(
 		'id'         => 'payment-method-card',
 		'type'       => 'switcher',
 		'title'      => __( 'Enable Card', 'chip-for-fluent-forms' ),
