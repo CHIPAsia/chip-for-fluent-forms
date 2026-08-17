@@ -11,6 +11,24 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
 	private static $_instance;
 
+	/**
+	 * DuitNow QR group. duitnow_qr is the legacy identifier, dnqr the modern
+	 * one. They are interchangeable at runtime; dnqr is preferred when both are
+	 * available. Exposed to the merchant as a single group checkbox (duitnow_qr).
+	 *
+	 * @var array
+	 */
+	const DUITNOW_GROUP = array( 'duitnow_qr', 'dnqr' );
+
+	/**
+	 * Shopee Pay group. razer_shopeepay is the legacy identifier, shopee_pay the
+	 * modern one (whitelist-only, never returned in the /payment_methods/ schema).
+	 * shopee_pay is preferred when both are available. Mirrors the WHMCS gateway.
+	 *
+	 * @var array
+	 */
+	const SHOPEE_GROUP = array( 'razer_shopeepay', 'shopee_pay' );
+
 	private $supported_currencies = array( 'MYR' );
 	protected $method             = 'chip'; // used by BaseProcessor->insertRefund($data)
 
@@ -143,6 +161,33 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 				$params['payment_method_whitelist'][] = 'duitnow_qr';
 			}
 
+			if ( $option['payment_method_shopee'] ) {
+				$params['payment_method_whitelist'][] = 'shopee_pay';
+			}
+
+			if ( $option['payment_method_crypto'] ) {
+				$params['payment_method_whitelist'][] = 'crypto_coin';
+			}
+
+			// In-memory migration: treat any stored legacy 'razer_shopeepay' entry
+			// as the modern 'shopee_pay' so existing configs keep working without
+			// a DB write. The resolver's SHOPEE_GROUP still accepts both.
+			$params['payment_method_whitelist'] = array_map(
+				static function ( $method ) {
+					return 'razer_shopeepay' === $method ? 'shopee_pay' : $method;
+				},
+				$params['payment_method_whitelist']
+			);
+
+			// Resolve the DuitNow QR group (duitnow_qr legacy + dnqr modern) against
+			// the merchant's actual /payment_methods/ availability, prioritizing dnqr.
+			// Short-circuits (no API call) when the group is not configured.
+			$params['payment_method_whitelist'] = $this->resolve_duitnow_methods(
+				$params['payment_method_whitelist'],
+				strtoupper( $submission->currency ),
+				intval( $transaction->payment_total )
+			);
+
 			if ( empty( $params['payment_method_whitelist'] ) ) {
 				unset( $params['payment_method_whitelist'] );
 			}
@@ -229,6 +274,91 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		);
 	}
 
+	/**
+	 * Resolve the configured payment_method_whitelist against the merchant's
+	 * actual /payment_methods/ response, with preferred-identifier priority for
+	 * the DuitNow QR and Shopee Pay groups.
+	 *
+	 * Groups are resolved with a single /payment_methods/ call and a single
+	 * transient, shared across both groups.
+	 *
+	 * Steps:
+	 *   1. Short-circuit: if the whitelist intersects neither group, return unchanged.
+	 *   2. Group expansion: any group member in the whitelist expands to the full group.
+	 *   3. Cache key: brand + currency + amount-bucket (round to 100-sen steps).
+	 *   4. Try cache. On miss, call /payment_methods/ once.
+	 *   5. Fallback: return expanded whitelist unchanged if the API fails.
+	 *   6. Resolve each configured group against available methods.
+	 *   7. Priority: dnqr wins over duitnow_qr; shopee_pay wins over razer_shopeepay.
+	 *   8. Build the final whitelist (original non-group entries + resolved groups).
+	 *
+	 * @param array  $whitelist Configured payment_method_whitelist.
+	 * @param string $currency  Order currency code (e.g. 'MYR').
+	 * @param int    $amount    Order total in sen (e.g. 12345 = RM 123.45).
+	 * @return array            Final whitelist to send to CHIP.
+	 */
+	private function resolve_duitnow_methods( array $whitelist, string $currency, int $amount ): array {
+		// 1. Short-circuit: no group configured => no API call, no group injection.
+		$groups = array();
+		foreach ( array( self::DUITNOW_GROUP, self::SHOPEE_GROUP ) as $group ) {
+			if ( count( array_intersect( $whitelist, $group ) ) > 0 ) {
+				$groups[] = $group;
+			}
+		}
+
+		if ( empty( $groups ) ) {
+			return $whitelist;
+		}
+
+		// 2. Group expansion: configured groups expand to their full member sets.
+		$expanded = $whitelist;
+		foreach ( $groups as $group ) {
+			$expanded = array_merge( $expanded, $group );
+		}
+		$expanded = array_values( array_unique( $expanded ) );
+
+		// 3. Cache key: brand + currency + amount-bucket (round to 100-sen steps).
+		$option    = $this->get_settings( $this->form->id );
+		$cache_key = 'ff_chip_pm_' . md5( $option['brand_id'] . '|' . $currency . '|' . intval( $amount / 100 ) );
+
+		// 4. Try cache. If hit, use it. If miss, call /payment_methods/ once.
+		$available = get_transient( $cache_key );
+		if ( false === $available ) {
+			$chip     = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], $option['brand_id'] );
+			$response = $chip->payment_methods( $currency, '', $amount ); // No language param.
+			if ( ! is_array( $response ) || ! isset( $response['available_payment_methods'] ) ) {
+				// 5. Fallback: return expanded whitelist unchanged.
+				return $expanded;
+			}
+			$available = $response['available_payment_methods'];
+			set_transient( $cache_key, $available, 30 * MINUTE_IN_SECONDS );
+		}
+
+		// 6. Resolve each configured group against the merchant's available methods.
+		$resolved = array();
+		foreach ( $groups as $group ) {
+			$members = array_values( array_intersect( $group, $available ) );
+
+			// 7. Priority: dnqr wins over duitnow_qr; shopee_pay wins over razer_shopeepay.
+			if ( in_array( 'dnqr', $members, true ) ) {
+				$members = array_values( array_diff( $members, array( 'duitnow_qr' ) ) );
+			}
+			if ( in_array( 'shopee_pay', $members, true ) ) {
+				$members = array_values( array_diff( $members, array( 'razer_shopeepay' ) ) );
+			}
+
+			$resolved = array_merge( $resolved, $members );
+		}
+		$resolved = array_values( array_unique( $resolved ) );
+
+		// 8. Build final whitelist: original entries (with group members stripped) + resolved groups.
+		$all_group_members = array_merge( self::DUITNOW_GROUP, self::SHOPEE_GROUP );
+		$final             = array_values( array_diff( $expanded, $all_group_members ) );
+		$final             = array_merge( $final, $resolved );
+
+		return $final;
+	}
+
 	private function is_form_currency_supported( $currency ) {
 
 		if ( ! in_array( $currency, $this->supported_currencies ) ) {
@@ -259,6 +389,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			'payment_method_fpx'     => empty( $options[ 'payment-method-fpx' . $postfix ] ) ? false : $options[ 'payment-method-fpx' . $postfix ],
 			'payment_method_fpxb2b1' => empty( $options[ 'payment-method-fpxb2b1' . $postfix ] ) ? false : $options[ 'payment-method-fpxb2b1' . $postfix ],
 			'payment_method_duitnow' => empty( $options[ 'payment-method-duitnow' . $postfix ] ) ? false : $options[ 'payment-method-duitnow' . $postfix ],
+			'payment_method_shopee'  => empty( $options[ 'payment-method-shopee' . $postfix ] ) ? false : $options[ 'payment-method-shopee' . $postfix ],
+			'payment_method_crypto'  => empty( $options[ 'payment-method-crypto' . $postfix ] ) ? false : $options[ 'payment-method-crypto' . $postfix ],
 			'payment_method_card'    => empty( $options[ 'payment-method-card' . $postfix ] ) ? false : $options[ 'payment-method-card' . $postfix ],
 		);
 	}
