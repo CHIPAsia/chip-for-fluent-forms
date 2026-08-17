@@ -165,6 +165,10 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 				$params['payment_method_whitelist'][] = 'shopee_pay';
 			}
 
+			if ( $option['payment_method_crypto'] ) {
+				$params['payment_method_whitelist'][] = 'crypto_coin';
+			}
+
 			// In-memory migration: treat any stored legacy 'razer_shopeepay' entry
 			// as the modern 'shopee_pay' so existing configs keep working without
 			// a DB write. The resolver's SHOPEE_GROUP still accepts both.
@@ -386,6 +390,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			'payment_method_fpxb2b1' => empty( $options[ 'payment-method-fpxb2b1' . $postfix ] ) ? false : $options[ 'payment-method-fpxb2b1' . $postfix ],
 			'payment_method_duitnow' => empty( $options[ 'payment-method-duitnow' . $postfix ] ) ? false : $options[ 'payment-method-duitnow' . $postfix ],
 			'payment_method_shopee'  => empty( $options[ 'payment-method-shopee' . $postfix ] ) ? false : $options[ 'payment-method-shopee' . $postfix ],
+			'payment_method_crypto'  => empty( $options[ 'payment-method-crypto' . $postfix ] ) ? false : $options[ 'payment-method-crypto' . $postfix ],
 			'payment_method_card'    => empty( $options[ 'payment-method-card' . $postfix ] ) ? false : $options[ 'payment-method-card' . $postfix ],
 		);
 	}

@@ -111,6 +111,14 @@ function ff_chip_form_fields( $form ) {
 			'dependency' => array( array( 'payment-method-whitelist-' . $form->id, '==', 'true' ) ),
 		),
 		array(
+			'id'         => 'payment-method-crypto-' . $form->id,
+			'type'       => 'switcher',
+			'title'      => __( 'Enable Crypto Coin', 'chip-for-fluent-forms' ),
+			'desc'       => __( 'To enable Crypto Coin payment method.', 'chip-for-fluent-forms' ),
+			'help'       => __( 'Whether to enable Crypto Coin payment method.', 'chip-for-fluent-forms' ),
+			'dependency' => array( array( 'payment-method-whitelist-' . $form->id, '==', 'true' ) ),
+		),
+		array(
 			'id'         => 'payment-method-card-' . $form->id,
 			'type'       => 'switcher',
 			'title'      => __( 'Enable Card', 'chip-for-fluent-forms' ),

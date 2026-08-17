@@ -126,6 +126,14 @@ $miscellaneous_global_fields = array(
 		'dependency' => array( array( 'payment-method-whitelist', '==', 'true' ) ),
 	),
 	array(
+		'id'         => 'payment-method-crypto',
+		'type'       => 'switcher',
+		'title'      => __( 'Enable Crypto Coin', 'chip-for-fluent-forms' ),
+		'desc'       => __( 'To enable Crypto Coin payment method.', 'chip-for-fluent-forms' ),
+		'help'       => __( 'Whether to enable Crypto Coin payment method.', 'chip-for-fluent-forms' ),
+		'dependency' => array( array( 'payment-method-whitelist', '==', 'true' ) ),
+	),
+	array(
 		'id'         => 'payment-method-card',
 		'type'       => 'switcher',
 		'title'      => __( 'Enable Card', 'chip-for-fluent-forms' ),
