@@ -5,6 +5,10 @@
  * @package CHIPForFluentForms
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 $slug = FF_CHIP_FSLUG;
 
 $ff_module_settings = get_option( '__fluentform_payment_module_settings' );

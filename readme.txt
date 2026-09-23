@@ -2,7 +2,7 @@
 Contributors: chipasia, wanzulnet
 Tags: chip
 Requires at least: 6.1
-Tested up to: 6.9
+Tested up to: 7.1
 Stable tag: 1.1.3
 Requires PHP: 7.4
 License: GPLv3
@@ -36,8 +36,12 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 * Added   - ShopeePay is stored as shopee_pay, with an existing razer_shopeepay value migrated automatically.
 * Added   - Crypto Coin payment method option.
 * Added   - Payment method availability is now looked up with the order amount, so methods with a minimum amount are no longer hidden.
+* Added   - Payment Notes setting, so a note from the form can be attached to the purchase in the CHIP dashboard.
 * Fixed   - Purchases were rejected by CHIP with "due cannot be in the past" whenever the Timing setting was left empty, so the form could not be paid. The due limit is now omitted when it is not configured.
 * Fixed   - A failed CHIP API call during payment surfaced as a fatal error instead of a message the payer could act on. Every API response is now checked before it is read.
+* Fixed   - A form with its own Brand ID and Secret Key used the account configured first, so payments for that form could be created on the wrong account.
+* Fixed   - Refund synchronization registered its webhook on the global account even when the form had its own credentials, so refunds on those forms were never verified.
+* Fixed   - Saving settings could drop the webhook registered for the global account, and a form without a public key stopped every remaining form from being processed.
 
 [See changelog for all versions](https://raw.githubusercontent.com/CHIPAsia/chip-for-fluent-forms/main/changelog.txt).
 
