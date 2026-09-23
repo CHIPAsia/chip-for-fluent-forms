@@ -55,13 +55,17 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          tools: phpunit
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
 
+      # Run the PHPUnit that composer.json pins (^9.6), not a globally
+      # installed one. setup-php's `tools: phpunit` installs the latest
+      # release, which is PHPUnit 12 - a major version that dropped the
+      # docblock @dataProvider annotation these tests use, so the suite
+      # errored instead of running.
       - name: Run PHPUnit
-        run: phpunit
+        run: vendor/bin/phpunit
 
   # ─── Tier 2: PHPCS (depends on nothing, runs in parallel) ───
 
