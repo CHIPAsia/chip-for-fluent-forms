@@ -37,24 +37,31 @@ class Chip_Fluent_Forms_ProductionReadinessTest extends TestCase {
 	 * that charges the wrong brand.
 	 */
 	public function test_api_client_is_keyed_by_credentials() {
-		$source = $this->source( 'includes/class-chip-fluent-forms-api.php' );
+		$alpha = Chip_Fluent_Forms_API::get_instance( 'secret-alpha', 'brand-alpha' );
+		$beta  = Chip_Fluent_Forms_API::get_instance( 'secret-beta', 'brand-beta' );
 
-		$this->assertStringContainsString(
-			'private static $instances = array();',
-			$source,
-			'The API client must store instances in a keyed array, not one shared instance.'
+		$this->assertNotSame(
+			$alpha,
+			$beta,
+			'Two different credential pairs must not share one instance.'
 		);
 
-		$this->assertStringContainsString(
-			'$key = md5( $secret_key . \'|\' . $brand_id );',
-			$source,
-			'The instance cache key must include both credentials.'
+		$this->assertSame(
+			$alpha,
+			Chip_Fluent_Forms_API::get_instance( 'secret-alpha', 'brand-alpha' ),
+			'The same credential pair must reuse its instance.'
 		);
 
-		$this->assertStringNotContainsString(
-			'private static $_instance;',
-			$source,
-			'A single static $_instance reuses the first credentials for every call.'
+		$this->assertNotSame(
+			$alpha,
+			Chip_Fluent_Forms_API::get_instance( 'secret-alpha', 'brand-other' ),
+			'The brand id must be part of the cache key.'
+		);
+
+		$this->assertNotSame(
+			$alpha,
+			Chip_Fluent_Forms_API::get_instance( 'secret-other', 'brand-alpha' ),
+			'The secret key must be part of the cache key.'
 		);
 	}
 
