@@ -1,4 +1,9 @@
 <?php
+/**
+ * Registers the backup and restore settings section.
+ *
+ * @package CHIPForFluentForms
+ */
 
 $slug = FF_CHIP_FSLUG;
 

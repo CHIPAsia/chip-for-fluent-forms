@@ -1,4 +1,9 @@
 <?php
+/**
+ * Global CHIP settings fields.
+ *
+ * @package CHIPForFluentForms
+ */
 
 $slug = FF_CHIP_FSLUG;
 
@@ -13,6 +18,7 @@ CSF_Setup::createOptions(
 		'menu_slug'       => 'chip-for-fluent-forms',
 		'menu_type'       => 'submenu',
 		'menu_parent'     => 'fluent_forms',
+		/* translators: %s: plugin version */
 		'footer_text'     => sprintf( __( 'CHIP for Fluent Forms %s', 'chip-for-fluent-forms' ), FF_CHIP_MODULE_VERSION ),
 		'theme'           => 'light',
 	)
@@ -22,8 +28,9 @@ $credentials_global_fields = array(
 	array(
 		'type'    => 'notice',
 		'style'   => 'danger',
+		/* translators: 1: opening link tag, 2: closing link tag */
 		'content' => sprintf( __( 'The default currency is set to non compatible currencies! %1$sClick here%2$s to update currency configuration.', 'chip-for-fluent-forms' ), '<a target=_blank href=' . admin_url( 'admin.php?page=fluent_forms_settings&component=payment_settings#/' ) . ' >', '</a>' ),
-		'class'   => $ff_module_settings['currency'] == 'MYR' ? 'hidden' : '',
+		'class'   => 'MYR' === $ff_module_settings['currency'] ? 'hidden' : '',
 	),
 	array(
 		'type'    => 'subheading',

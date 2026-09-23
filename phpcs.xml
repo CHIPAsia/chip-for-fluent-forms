@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<ruleset name="CHIP for Fluent Forms">
+	<description>PHPCS ruleset for CHIP for Fluent Forms plugin.</description>
+
+	<!-- What to scan -->
+	<file>.</file>
+
+	<!-- Only scan PHP files -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Exclude paths -->
+	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+	<exclude-pattern>/assets/*</exclude-pattern>
+	<exclude-pattern>/resources/*</exclude-pattern>
+	<exclude-pattern>/build/*</exclude-pattern>
+	<exclude-pattern>/dist/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
+
+	<!--
+		Codestar Framework is a bundled third-party library (CSF 2.3.1, 2.4M). It
+		is not our code and is not on Packagist, so linting it would mean
+		maintaining a permanent diff against upstream. Excluded for the same
+		reason chip-for-woocommerce excludes its vendor/ directory.
+	-->
+	<exclude-pattern>/includes/codestar-framework/*</exclude-pattern>
+
+	<!-- Use WordPress coding standards -->
+	<rule ref="WordPress">
+	</rule>
+
+	<!-- Set minimum supported PHP version -->
+	<config name="minimum_supported_wp_version" value="6.1"/>
+	<config name="testVersion" value="7.4-"/>
+
+	<!-- Text domain -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="chip-for-fluent-forms"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Fluent Forms Pro fires handlePaymentAction with six parameters that the
+		callback receives positionally, so their camelCase names cannot be
+		renamed without changing which value Fluent Forms passes. That method
+		forces the file to keep camelCase locals alongside them, so this sniff is
+		off for the purchase class file as a whole. The other plugin files
+		are linted normally.
+	-->
+	<rule ref="WordPress.NamingConventions.ValidVariableName">
+		<exclude-pattern>*/includes/class-chip-fluent-forms-purchase.php</exclude-pattern>
+	</rule>
+
+	<!--
+		PSR2_Classes_PropertyDeclaration: the WordPress pseudo-singleton pattern
+		uses $_instance. Renaming it would change the established pattern used
+		across this plugin. Same exclusion as chip-for-givewp/phpcs.xml.
+	-->
+	<rule ref="PSR2.Classes.PropertyDeclaration">
+		<exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
+	</rule>
+
+	<!--
+		The main plugin file intentionally holds both the Chip_Fluent_Forms class
+		and the standalone load_chip_for_fluent_forms() bootstrapping function
+		(hooked to 'init'). Splitting them would change the plugin entry point.
+	-->
+	<rule ref="Universal.Files.SeparateFunctionsFromOO">
+		<exclude-pattern>chip-for-fluent-forms.php</exclude-pattern>
+	</rule>
+
+	<!--
+		WordPress resolves the plugin from this exact file name, so it cannot be
+		renamed to class-chip-fluent-forms.php. Same single exclusion as
+		chip-for-givewp/phpcs.xml. Every other plugin file now derives its name
+		from its class and passes the sniff natively.
+	-->
+	<rule ref="WordPress.Files.FileName">
+		<exclude-pattern>chip-for-fluent-forms.php</exclude-pattern>
+	</rule>
+
+	<!--
+		Codestar Framework fires csf_fluent_form_chip_save_before with two
+		positional arguments: the submitted settings and the option instance.
+		global_public_key() and form_public_key() must keep $admin_option in their
+		signatures to stay call-compatible with that hook even though neither
+		reads it.
+	-->
+	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed">
+		<exclude-pattern>includes/admin/class-chip-fluent-forms-webhook-setup.php</exclude-pattern>
+	</rule>
+</ruleset>

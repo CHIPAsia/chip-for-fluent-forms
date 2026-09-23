@@ -1,22 +1,50 @@
 <?php
+/**
+ * Adds CHIP to the Fluent Forms payment methods.
+ *
+ * @package CHIPForFluentForms
+ */
+
 use FluentForm\Framework\Helpers\ArrayHelper;
 
+/**
+ * Registers CHIP as an available Fluent Forms payment method.
+ */
 class Chip_Fluent_Forms_Register {
 
+	/**
+	 * Single instance of the class.
+	 *
+	 * @var Chip_Fluent_Forms_Register|null
+	 */
 	private static $_instance;
 
+	/**
+	 * Gets the single instance of the class.
+	 *
+	 * @return Chip_Fluent_Forms_Register
+	 */
 	public static function get_instance() {
-		if ( self::$_instance == null ) {
+		if ( null === self::$_instance ) {
 			self::$_instance = new self();
 		}
 
 		return self::$_instance;
 	}
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		add_filter( 'fluentform/available_payment_methods', array( $this, 'push' ) );
 	}
 
+	/**
+	 * Adds the CHIP payment method to the available payment methods list.
+	 *
+	 * @param array $methods Registered payment methods.
+	 * @return array
+	 */
 	public function push( $methods ) {
 		$options       = get_option( FF_CHIP_FSLUG );
 		$payment_title = ArrayHelper::get( $options, 'payment-title', 'CHIP' );

@@ -87,5 +87,5 @@ if ( ! class_exists( 'FluentFormPro\Payments\PaymentHelper' ) ) {
 // Load the code under test.
 // ---------------------------------------------------------------------------
 
-require_once FF_CHIP_PLUGIN_PATH . 'includes/class-api.php';
-require_once FF_CHIP_PLUGIN_PATH . 'includes/class-purchase.php';
+require_once FF_CHIP_PLUGIN_PATH . 'includes/class-chip-fluent-forms-api.php';
+require_once FF_CHIP_PLUGIN_PATH . 'includes/class-chip-fluent-forms-purchase.php';

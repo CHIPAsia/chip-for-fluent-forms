@@ -1,4 +1,10 @@
 <?php
+/**
+ * CHIP purchase creation, redirect handling and callback processing.
+ *
+ * @package CHIPForFluentForms
+ */
+
 use FluentForm\App\Services\Form\SubmissionHandlerService;
 use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentForm\App\Helpers\Helper;
@@ -7,8 +13,17 @@ use FluentForm\App\Services\FormBuilder\ShortCodeParser;
 use FluentFormPro\Payments\PaymentMethods\BaseProcessor;
 use FluentFormPro\Payments\PaymentHelper;
 
+/**
+ * Creates CHIP purchases for Fluent Forms payment submissions and settles them
+ * from the CHIP callback and refund webhook.
+ */
 class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
+	/**
+	 * Single instance of the class.
+	 *
+	 * @var Chip_Fluent_Forms_Purchase|null
+	 */
 	private static $_instance;
 
 	/**
@@ -29,11 +44,27 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 	 */
 	const SHOPEE_GROUP = array( 'razer_shopeepay', 'shopee_pay' );
 
+	/**
+	 * Currencies this gateway accepts.
+	 *
+	 * @var string[]
+	 */
 	private $supported_currencies = array( 'MYR' );
-	protected $method             = 'chip'; // used by BaseProcessor->insertRefund($data)
 
+	/**
+	 * Payment method slug, as used by BaseProcessor::insertRefund().
+	 *
+	 * @var string
+	 */
+	protected $method = 'chip';
+
+	/**
+	 * Gets the single instance of the class.
+	 *
+	 * @return Chip_Fluent_Forms_Purchase
+	 */
 	public static function get_instance() {
-		if ( self::$_instance == null ) {
+		if ( null === self::$_instance ) {
 			self::$_instance = new self();
 		}
 
@@ -100,20 +131,43 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		return time() + ( $minutes * 60 );
 	}
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		$this->add_action();
 	}
 
+	/**
+	 * Registers the CHIP hooks with Fluent Forms.
+	 *
+	 * @return void
+	 */
 	public function add_action() {
 		add_action( 'fluentform/process_payment_chip', array( $this, 'handlePaymentAction' ), 10, 6 );
 
-		// this is redirect
+		// This is redirect.
 		add_action( 'fluentform/payment_frameless_chip', array( $this, 'redirect' ) );
 
-		// this is callback
+		// This is callback.
 		add_action( 'fluentform/ipn_endpoint_chip', array( $this, 'callback' ) );
 	}
 
+	/**
+	 * Creates the pending transaction for a submitted CHIP payment.
+	 *
+	 * Fluent Forms Pro fires this as the 'fluentform/process_payment_chip'
+	 * callback with six positional arguments, so the parameter names and their
+	 * order are part of that contract.
+	 *
+	 * @param int    $submissionId     Submission ID.
+	 * @param array  $submissionData   Submitted form data.
+	 * @param object $form             Fluent Forms form.
+	 * @param array  $methodSettings   CHIP payment method settings.
+	 * @param bool   $hasSubscriptions Whether the form has subscriptions.
+	 * @param float  $totalPayable     Total amount payable.
+	 * @return void
+	 */
 	public function handlePaymentAction( $submissionId, $submissionData, $form, $methodSettings, $hasSubscriptions, $totalPayable ) {
 
 		$this->validate_if_subscription( $hasSubscriptions );
@@ -138,6 +192,15 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$this->create_purchase( $transaction, $submission, $form, $methodSettings );
 	}
 
+	/**
+	 * Builds the CHIP create_payment request and hands the redirect URL back.
+	 *
+	 * @param object $transaction    Pending transaction row.
+	 * @param object $submission     Fluent Forms submission.
+	 * @param object $form           Fluent Forms form.
+	 * @param array  $methodSettings CHIP payment method settings.
+	 * @return void
+	 */
 	private function create_purchase( $transaction, $submission, $form, $methodSettings ) {
 		$option = $this->get_settings( $form->id );
 
@@ -175,8 +238,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			'success_redirect' => $success_redirect,
 			'failure_redirect' => $failure_redirect,
 			'creator_agent'    => 'FluentForms: ' . FF_CHIP_MODULE_VERSION,
-			// reference value shall be using unique
-			// 'reference'        => substr($form->title, 0, 128),
+			// Reference value shall be using unique.
+			// 'reference' => substr( $form->title, 0, 128 ), left disabled.
 			'platform'         => 'fluentforms',
 			'send_receipt'     => $option['send_rcpt'],
 			'brand_id'         => $option['brand_id'],
@@ -276,12 +339,18 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 					'component'        => 'Payment',
 					'status'           => 'error',
 					'title'            => __( 'Failure to create purchase', 'chip-for-fluent-forms' ),
-					'description'      => sprintf( __( 'User is not redirected to CHIP since failure to create purchase: %s', 'chip-for-fluent-forms' ), print_r( $payment, true ) ),
+					'description'      => sprintf(
+						/* translators: %s: Response returned by the CHIP create_payment API call. */
+						__( 'User is not redirected to CHIP since failure to create purchase: %s', 'chip-for-fluent-forms' ),
+						// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Diagnostic dump of the CHIP API error payload written to the Fluent Forms payment log; intentional log content.
+						print_r( $payment, true )
+					),
 				)
 			);
 
 			wp_send_json_success(
 				array(
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r -- Diagnostic dump of the CHIP API error payload returned to the Fluent Forms AJAX caller; existing response shape preserved.
 					'message' => print_r( $payment, true ),
 				),
 				500
@@ -309,11 +378,15 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 				'component'        => 'Payment',
 				'status'           => 'info',
 				'title'            => __( 'Redirect to CHIP', 'chip-for-fluent-forms' ),
-				'description'      => sprintf( __( 'User redirect to CHIP for completing the payment: %s', 'chip-for-fluent-forms' ), esc_url( $payment['checkout_url'] ) ),
+				'description'      => sprintf(
+					/* translators: %s: CHIP checkout URL the customer is redirected to. */
+					__( 'User redirect to CHIP for completing the payment: %s', 'chip-for-fluent-forms' ),
+					esc_url( $payment['checkout_url'] )
+				),
 			)
 		);
 
-		if ( $payment['is_test'] == true ) {
+		if ( $payment['is_test'] ) {
 			do_action(
 				'ff_log_data',
 				array(
@@ -427,21 +500,34 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		return $final;
 	}
 
+	/**
+	 * Stops the request when the submission currency is not supported.
+	 *
+	 * @param string $currency Submission currency code.
+	 * @return void
+	 */
 	private function is_form_currency_supported( $currency ) {
 
-		if ( ! in_array( $currency, $this->supported_currencies ) ) {
-			printf( __( 'Error! Currency not supported. The only supported currency is MYR and the current currency is %s.', 'chip-for-fluent-forms' ), esc_html( $currency ) );
+		if ( ! in_array( $currency, $this->supported_currencies, true ) ) {
+			/* translators: %s: Unsupported currency code. */
+			printf( esc_html__( 'Error! Currency not supported. The only supported currency is MYR and the current currency is %s.', 'chip-for-fluent-forms' ), esc_html( $currency ) );
 			exit( 200 );
 		}
 	}
 
+	/**
+	 * Reads the CHIP settings for a form, honouring per-form overrides.
+	 *
+	 * @param int $form_id Form ID.
+	 * @return array
+	 */
 	private function get_settings( $form_id ) {
 
 		$options  = get_option( FF_CHIP_FSLUG );
 		$postfix  = '';
 		$form_cid = 'form-customize-' . $form_id;
 
-		if ( array_key_exists( $form_cid, $options ) and $options[ $form_cid ] ) {
+		if ( array_key_exists( $form_cid, $options ) && $options[ $form_cid ] ) {
 			$postfix = "-$form_id";
 		}
 
@@ -463,6 +549,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		);
 	}
 
+	/**
+	 * Gets the site timezone, or UTC when it is not a valid CHIP identifier.
+	 *
+	 * @return string
+	 */
 	private function get_timezone() {
 
 		if ( preg_match( '/^[A-z]+\/[A-z\_\/\-]+$/', wp_timezone_string() ) ) {
@@ -472,12 +563,18 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		return 'UTC';
 	}
 
+	/**
+	 * Handles the customer coming back from the CHIP checkout page.
+	 *
+	 * @param array $data Fluent Forms payment redirect data.
+	 * @return void
+	 */
 	public function redirect( $data ) {
 
 		$submission_id    = absint( $data['fluentform_payment'] );
 		$transaction_hash = sanitize_text_field( $data['transaction_hash'] );
 
-		if ( $data['payment_method'] != 'chip' ) {
+		if ( 'chip' !== $data['payment_method'] ) {
 			return;
 		}
 
@@ -498,7 +595,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
 		$transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id' );
 
-		if ( $transaction->id != $transaction_by_charge_id->id ) {
+		if ( $transaction->id !== $transaction_by_charge_id->id ) {
 			return;
 		}
 
@@ -516,11 +613,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			return;
 		}
 
-		if ( $transaction->status != 'paid' && $payment_status == 'paid' ) {
+		if ( 'paid' !== $transaction->status && 'paid' === $payment_status ) {
 			$this->handlePaid( $submission, $transaction, $payment );
 		}
 
-		if ( $transaction->status != 'failed' && $payment_status != 'paid' ) {
+		if ( 'failed' !== $transaction->status && 'paid' !== $payment_status ) {
 			$this->handleFailed( $submission, $transaction, $payment );
 		}
 
@@ -531,7 +628,14 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$this->handleSessionRedirectBack( $data );
 	}
 
-	// copy pasted from BaseProcessor for minor tweak
+	/**
+	 * Shows the payment result view to the returned customer.
+	 *
+	 * Copy of BaseProcessor::handleSessionRedirectBack() with a minor tweak.
+	 *
+	 * @param array $data Fluent Forms payment redirect data.
+	 * @return void
+	 */
 	public function handleSessionRedirectBack( $data ) {
 		$submissionId = intval( $data['fluentform_payment'] );
 		$this->setSubmissionId( $submissionId );
@@ -548,7 +652,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$type = $transaction->status;
 		$this->getForm();
 
-		if ( $type == 'paid' ) {
+		if ( 'paid' === $type ) {
 			$returnData = $this->getReturnData();
 		} else {
 			$returnData = array(
@@ -565,11 +669,20 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$this->showPaymentView( $returnData );
 	}
 
+	/**
+	 * Marks a submission as paid and runs the post-payment flow.
+	 *
+	 * @param object $submission        Fluent Forms submission.
+	 * @param object $transaction       Pending transaction row.
+	 * @param array  $vendorTransaction CHIP payment payload.
+	 * @return mixed The result of completePaymentSubmission() when the form
+	 *               action had already fired, otherwise null.
+	 */
 	public function handlePaid( $submission, $transaction, $vendorTransaction ) {
 
 		$this->setSubmissionId( $submission->id );
 
-		if ( $this->getMetaData( 'is_form_action_fired' ) == 'yes' ) {
+		if ( 'yes' === $this->getMetaData( 'is_form_action_fired' ) ) {
 			return $this->completePaymentSubmission( false );
 		}
 
@@ -618,7 +731,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$after_success_email_feeds = array_filter(
 			$active_email_feeds,
 			function ( $feed ) {
-				return 'payment_success' == ArrayHelper::get( $feed, 'settings.feed_trigger_event' );
+				return 'payment_success' === ArrayHelper::get( $feed, 'settings.feed_trigger_event' );
 			}
 		);
 
@@ -644,12 +757,21 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			);
 			$feed['processedValues'] = $processedValues;
 
+			// phpcs:ignore Squiz.PHP.CommentedOutCode.Found -- Kept as the upstream reference: the notification call is deliberately disabled for this gateway.
 			// $ena->notify( $feed, $form_data, $entry, $this->getForm() );
 		}
 
 		Helper::setSubmissionMeta( $submission->id, '_ff_chip_on_payment_success', 'yes', $this->getForm()->id );
 	}
 
+	/**
+	 * Marks a submission and its transaction as failed.
+	 *
+	 * @param object $submission        Fluent Forms submission.
+	 * @param object $transaction       Pending transaction row.
+	 * @param array  $vendorTransaction CHIP payment payload.
+	 * @return void
+	 */
 	public function handleFailed( $submission, $transaction, $vendorTransaction ) {
 		$this->setSubmissionId( $submission->id );
 
@@ -664,14 +786,26 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$this->changeTransactionStatus( $transaction->id, $status );
 	}
 
+	/**
+	 * Handles the CHIP callback (IPN) endpoint request.
+	 *
+	 * CHIP calls this endpoint directly, so there is no form nonce to verify.
+	 * A refund notification authenticates itself with the RSA signature check
+	 * in refund_callback(); the reads below only route the request.
+	 *
+	 * @return void
+	 */
 	public function callback() {
 
-		if ( ! isset( $_GET['payment_method'] ) or $_GET['payment_method'] != 'chip' ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- CHIP calls this endpoint directly; there is no nonce to send or verify.
+		if ( ! isset( $_GET['payment_method'] ) || 'chip' !== $_GET['payment_method'] ) {
 			return;
 		}
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- CHIP calls this endpoint directly; there is no nonce to send or verify.
 		if ( isset( $_GET['submission_id'] ) ) {
 
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- CHIP calls this endpoint directly; there is no nonce to send or verify.
 			$this->success_callback( absint( $_GET['submission_id'] ) );
 		} else {
 
@@ -679,6 +813,12 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		}
 	}
 
+	/**
+	 * Settles a purchase from the CHIP callback for a given submission.
+	 *
+	 * @param int $submission_id Submission ID.
+	 * @return void
+	 */
 	private function success_callback( $submission_id ) {
 
 		$this->setSubmissionId( $submission_id );
@@ -698,7 +838,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
 		$transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id' );
 
-		if ( $transaction->id != $transaction_by_charge_id->id ) {
+		if ( $transaction->id !== $transaction_by_charge_id->id ) {
 			return;
 		}
 
@@ -714,11 +854,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			return;
 		}
 
-		if ( $transaction->status != 'paid' && $payment_status == 'paid' ) {
+		if ( 'paid' !== $transaction->status && 'paid' === $payment_status ) {
 			$this->handlePaid( $submission, $transaction, $payment );
 		}
 
-		if ( $transaction->status != 'failed' && $payment_status != 'paid' ) {
+		if ( 'failed' !== $transaction->status && 'paid' !== $payment_status ) {
 			$this->handleFailed( $submission, $transaction, $payment );
 		}
 
@@ -727,15 +867,25 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		);
 	}
 
+	/**
+	 * Handles the signed CHIP refund webhook.
+	 *
+	 * The payload is authenticated by verifying the X-Signature header against
+	 * the merchant's CHIP public key, not by a WordPress nonce.
+	 *
+	 * @return void
+	 */
 	private function refund_callback() {
 		$content     = file_get_contents( 'php://input' );
-		$x_signature = sanitize_text_field( $_SERVER['HTTP_X_SIGNATURE'] );
+		$x_signature = isset( $_SERVER['HTTP_X_SIGNATURE'] )
+			? sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_SIGNATURE'] ) )
+			: '';
 
-		if ( empty( $content ) or ! isset( $x_signature ) ) {
+		if ( empty( $content ) || ! isset( $x_signature ) ) {
 			return;
 		}
 
-		$payment    = json_decode( $content, true );
+		$payment = json_decode( $content, true );
 
 		// json_decode() returns null on malformed JSON, which makes every read
 		// below a fatal error rather than a handled no-op.
@@ -746,11 +896,12 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$payment_id = self::get_response_value( $payment['related_to'] ?? null, 'id' );
 		$payment_id = null === $payment_id ? '' : sanitize_text_field( $payment_id );
 
-		if ( self::get_response_value( $payment, 'event_type' ) != 'payment.refunded' ) {
+		if ( 'payment.refunded' !== self::get_response_value( $payment, 'event_type' ) ) {
 			return;
 		}
 
-		if ( is_null( $transaction   = $this->getTransaction( $payment_id, 'charge_id' ) ) ) {
+		$transaction = $this->getTransaction( $payment_id, 'charge_id' );
+		if ( is_null( $transaction ) ) {
 			return;
 		}
 
@@ -767,7 +918,8 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$option     = get_option( 'fluent_form_chip_public_key', array() );
 		$public_key = $option[ 'public-key' . $postfix ] ?? '';
 
-		if ( openssl_verify( $content, base64_decode( $x_signature ), $public_key, 'sha256WithRSAEncryption' ) != 1 ) {
+		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode -- The X-Signature header is base64-encoded by CHIP by design; decoding it here is what the RSA signature verification in the next line requires.
+		if ( 1 !== openssl_verify( $content, base64_decode( $x_signature ), $public_key, 'sha256WithRSAEncryption' ) ) {
 			do_action(
 				'ff_log_data',
 				array(
@@ -788,16 +940,16 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			"SELECT GET_LOCK('ff_chip_payment_$submission_id', 15);"
 		);
 
-		// get transaction once for thread safe
+		// Get the transaction once, for thread safety.
 		$transaction = $this->getTransaction( $submission_id, 'submission_id' );
 
 		$transaction_by_charge_id = $this->getTransaction( $payment_id, 'charge_id' );
 
-		if ( $transaction->id != $transaction_by_charge_id->id ) {
+		if ( $transaction->id !== $transaction_by_charge_id->id ) {
 			return;
 		}
 
-		if ( $transaction->status != 'refunded' && $payment['status'] == 'success' && $payment['payment']['payment_type'] == 'refund' ) {
+		if ( 'refunded' !== $transaction->status && 'success' === $payment['status'] && 'refund' === $payment['payment']['payment_type'] ) {
 			$this->handleRefund( absint( $payment['payment']['amount'] ), $transaction->id, $submission_id, sanitize_text_field( $payment['id'] ) );
 		}
 
@@ -806,6 +958,15 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		);
 	}
 
+	/**
+	 * Records a refund against the transaction that CHIP refunded.
+	 *
+	 * @param int    $refund_amount  Refunded amount.
+	 * @param int    $transaction_id Transaction ID.
+	 * @param int    $submission_id  Submission ID.
+	 * @param string $refund_id      CHIP refund ID.
+	 * @return void
+	 */
 	public function handleRefund( $refund_amount, $transaction_id, $submission_id, $refund_id ) {
 		$this->setSubmissionId( $submission_id );
 		$transaction = $this->getTransaction( $transaction_id );
@@ -817,6 +978,12 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$this->refund( $refund_amount, $transaction, $this->getSubmission(), 'chip', $refund_id, 'Refunded from CHIP. ID: ' . $refund_id );
 	}
 
+	/**
+	 * Rejects a submission that contains a subscription.
+	 *
+	 * @param bool $has_subscription Whether the form has subscriptions.
+	 * @return void
+	 */
 	private function validate_if_subscription( $has_subscription ) {
 		if ( $has_subscription ) {
 			wp_send_json(
