@@ -1,4 +1,14 @@
 **/.DS_Store
 composer.lock
 /vendor
+
+# PHPUnit cache
 .phpunit.result.cache
+
+# CI / release staging directories (created by the workflows)
+ci-build/
+dist/
+
+# Release workflow temporary files
+diff.txt
+changelog_entry.md

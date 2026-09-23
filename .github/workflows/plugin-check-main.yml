@@ -1,0 +1,46 @@
+name: WordPress Plugin Check (Main)
+
+on:
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plugin-check:
+    name: Plugin Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Build plugin folder for CI
+        run: |
+          mkdir -p ci-build/chip-for-fluent-forms
+          # Copy source files (.gitattributes export-ignore keeps the dev files out)
+          git archive HEAD | tar -x -C ci-build/chip-for-fluent-forms
+          if [ -f .wp-env.json ]; then
+            cp .wp-env.json ci-build/chip-for-fluent-forms/
+          fi
+          echo "✅ Build artifacts prepared"
+          ls -la ci-build/chip-for-fluent-forms/
+
+      - name: Run Plugin Check
+        uses: wordpress/plugin-check-action@v1
+        with:
+          build-dir: './ci-build/chip-for-fluent-forms'
+          exclude-directories: 'vendor,node_modules'
+          # Plugin name "CHIP for Fluent Forms" and slug "chip-for-fluent-forms"
+          # contain "wp", which is trademarked on WordPress.org and cannot be
+          # changed, so trademarked_term is a known false positive.
+          # NonPrefixedHooknameFound is unavoidable for a third-party gateway:
+          # the plugin listens to Fluent Forms' fluentform/* hooks and registers
+          # the framework's own csf_fluent_form_chip_save_before hook, which are
+          # owned by those plugins, not by us. Our own hooks are ff_chip_*.
+          # newline-separated per the action's input contract.
+          ignore-codes: |
+            trademarked_term
+            WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound

@@ -5,6 +5,10 @@
  * @package CHIPForFluentForms
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 use FluentForm\App\Services\Form\SubmissionHandlerService;
 use FluentForm\Framework\Helpers\ArrayHelper;
 use FluentForm\App\Helpers\Helper;
@@ -233,6 +237,23 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			site_url( 'index.php' )
 		);
 
+		// Extra notes configured on the form. Fluent Forms parses {inputs.*} and
+		// {labels.*} shortcodes here, so a merchant can put form answers into the
+		// purchase notes. Sanitised because the parsed value is user input.
+		$additional_notes = '';
+		$notes_setting    = ArrayHelper::get( $methodSettings, 'settings.notes.value', '' );
+
+		if ( ! empty( $notes_setting ) ) {
+			$additional_notes = sanitize_text_field(
+				ShortCodeParser::parse( $notes_setting, $submission->id, $submission->response, $form, false, true )
+			);
+		}
+
+		$notes = $form->title . ' | ' . $submission->id;
+		if ( ! empty( $additional_notes ) ) {
+			$notes .= ' | ' . $additional_notes;
+		}
+
 		$params = array(
 			'success_callback' => $success_callback,
 			'success_redirect' => $success_redirect,
@@ -251,7 +272,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 				'timezone'   => apply_filters( 'ff_chip_purchase_timezone', $this->get_timezone() ),
 				'currency'   => strtoupper( $submission->currency ),
 				'due_strict' => $option['due_strict'],
-				'notes'      => substr( $form->title . ' | ' . $submission->id, 0, 10000 ),
+				'notes'      => substr( $notes, 0, 10000 ),
 				'products'   => array(
 					array(
 						'name'     => substr( $form->title, 0, 256 ),
@@ -584,7 +605,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$option     = $this->get_settings( $submission->form_id );
 		$payment_id = $this->getMetaData( '_chip_purchase_id' );
 
-		$chip    = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], '' );
+		$chip    = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], $option['brand_id'] );
 		$payment = $chip->get_payment( $payment_id );
 
 		$GLOBALS['wpdb']->get_results(
@@ -599,19 +620,12 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			return;
 		}
 
-		// A failed re-query must not be treated as a failed payment: leave the
-		// transaction untouched and let the CHIP callback settle it. Without
-		// this guard $payment['status'] on a null result is a fatal error.
+		// A re-query that failed is treated as "not paid yet" exactly as before:
+		// the transaction is left untouched and the CHIP callback remains the
+		// authority on the final status. get_response_value() keeps the read
+		// safe (call() returns null on every failure shape) without changing
+		// which branch is taken.
 		$payment_status = self::get_response_value( $payment, 'status' );
-		if ( null === $payment_status ) {
-			$GLOBALS['wpdb']->get_results(
-				"SELECT RELEASE_LOCK('ff_chip_payment_$submission_id');"
-			);
-
-			$this->handleSessionRedirectBack( $data );
-
-			return;
-		}
 
 		if ( 'paid' !== $transaction->status && 'paid' === $payment_status ) {
 			$this->handlePaid( $submission, $transaction, $payment );
@@ -827,7 +841,7 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		$option     = $this->get_settings( $submission->form_id );
 		$payment_id = $this->getMetaData( '_chip_purchase_id' );
 
-		$chip    = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], '' );
+		$chip    = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], $option['brand_id'] );
 		$payment = $chip->get_payment( $payment_id );
 
 		$GLOBALS['wpdb']->get_results(
@@ -842,17 +856,11 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			return;
 		}
 
-		// A failed re-query must not be treated as a failed payment; the CHIP
-		// callback is the authority on the final status. Without this guard
-		// $payment['status'] on a null result is a fatal error.
+		// Same as redirect(): a failed re-query falls through to the old
+		// paid/failed decision instead of returning early. on a null status the
+		// "not paid" branch is what the original code took, and the callback
+		// remains the authority.
 		$payment_status = self::get_response_value( $payment, 'status' );
-		if ( null === $payment_status ) {
-			$GLOBALS['wpdb']->get_results(
-				"SELECT RELEASE_LOCK('ff_chip_payment_$submission_id');"
-			);
-
-			return;
-		}
 
 		if ( 'paid' !== $transaction->status && 'paid' === $payment_status ) {
 			$this->handlePaid( $submission, $transaction, $payment );

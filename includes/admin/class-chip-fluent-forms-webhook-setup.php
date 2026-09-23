@@ -5,6 +5,10 @@
  * @package CHIPForFluentForms
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Registers the CHIP webhooks used for refund notifications and stores their public keys.
  */
@@ -77,7 +81,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
 			return;
 		}
 
-		$chip     = Chip_Fluent_Forms_API::get_instance( $data['secret-key'], '' );
+		$chip     = Chip_Fluent_Forms_API::get_instance( $data['secret-key'], $data['brand-id'] ?? '' );
 		$webhooks = $chip->get_webhooks();
 
 		// get_webhooks() returns null when the call fails, and
@@ -86,9 +90,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
 			return;
 		}
 
-		$this->results = array(
-			$data['secret-key'] => $webhooks,
-		);
+		$this->results[ $data['secret-key'] ] = $webhooks;
 
 		$public_key    = '';
 		$found_webhook = false;
@@ -141,65 +143,75 @@ class Chip_Fluent_Forms_Webhook_Setup {
 		->get();
 
 		foreach ( $form_ids as $form ) {
-			if ( $data[ 'form-customize-' . $form->id ] ) {
+			if ( empty( $data[ 'form-customize-' . $form->id ] ) ) {
+				continue;
+			}
 
-				if ( empty( $data[ 'refund-' . $form->id ] ) ) {
-					continue;
+			if ( empty( $data[ 'refund-' . $form->id ] ) ) {
+				continue;
+			}
+
+			if ( false === $data[ 'refund-' . $form->id ] ) {
+				continue;
+			}
+
+			// A per-form block may carry its own credentials; fall back to the
+			// global ones only when it does not. Reading $data['secret-key']
+			// unconditionally registered the webhook on the wrong account, and
+			// left $chip undefined whenever the webhook list came from the cache.
+			$form_secret_key = empty( $data[ 'secret-key-' . $form->id ] )
+				? $data['secret-key']
+				: $data[ 'secret-key-' . $form->id ];
+
+			$form_brand_id = empty( $data[ 'brand-id-' . $form->id ] )
+				? $data['brand-id']
+				: $data[ 'brand-id-' . $form->id ];
+
+			if ( array_key_exists( $form_secret_key, $this->results ) ) {
+				$webhooks = $this->results[ $form_secret_key ];
+			} else {
+				$webhooks = Chip_Fluent_Forms_API::get_instance( $form_secret_key, $form_brand_id )->get_webhooks();
+			}
+
+			if ( ! is_array( $webhooks ) || ! array_key_exists( 'results', $webhooks ) ) {
+				continue;
+			}
+
+			$this->results[ $form_secret_key ] = $webhooks;
+
+			$public_key    = '';
+			$found_webhook = false;
+
+			foreach ( $webhooks['results'] as $webhook ) {
+				if ( 'CHIP for Fluent Forms' === $webhook['title'] ) {
+					$public_key    = str_replace( '\\n', "\n", $webhook['public_key'] );
+					$found_webhook = true;
+					break;
 				}
+			}
 
-				if ( false === $data[ 'refund-' . $form->id ] ) {
-					continue;
-				}
-
-				if ( array_key_exists( $data[ 'secret-key-' . $form->id ], $this->results ) ) {
-					$webhooks = $this->results[ $data[ 'secret-key-' . $form->id ] ];
-				} else {
-					$chip     = Chip_Fluent_Forms_API::get_instance( $data['secret-key'], '' );
-					$webhooks = $chip->get_webhooks();
-				}
-
-				if ( ! is_array( $webhooks ) || ! array_key_exists( 'results', $webhooks ) ) {
-					continue;
-				}
-
-				$this->results = array(
-					$data[ 'secret-key-' . $form->id ] => $webhooks,
+			if ( ! $found_webhook ) {
+				$webhook = Chip_Fluent_Forms_API::get_instance( $form_secret_key, $form_brand_id )->create_webhook(
+					array(
+						'title'      => 'CHIP for Fluent Forms',
+						'all_events' => false,
+						'events'     => array( 'payment.refunded' ),
+						'callback'   => $this->get_callback_url(),
+					)
 				);
 
-				$public_key    = '';
-				$found_webhook = false;
-
-				foreach ( $webhooks['results'] as $webhook ) {
-					if ( 'CHIP for GiveWP' === $webhook['title'] ) {
-						$public_key    = str_replace( '\n', "\n", $webhook['public_key'] );
-						$found_webhook = true;
-						break;
-					}
-				}
-
-				if ( ! $found_webhook ) {
-					$webhook = $chip->create_webhook(
-						array(
-							'title'      => 'CHIP for GiveWP',
-							'all_events' => false,
-							'events'     => array( 'payment.refunded' ),
-							'callback'   => $this->get_callback_url(),
-						)
-					);
-
-					$public_key = str_replace( '\n', "\n", $webhook['public_key'] );
-				}
-
-				if ( empty( $public_key ) ) {
-					return;
-				}
-
-				$wp_option = get_option( 'fluent_form_chip_public_key', array() );
-
-				$wp_option[ 'public-key-' . $form->id ] = $public_key;
-
-				update_option( 'fluent_form_chip_public_key', $wp_option, false );
+				$public_key = str_replace( '\\n', "\n", $webhook['public_key'] );
 			}
+
+			if ( empty( $public_key ) ) {
+				continue;
+			}
+
+			$wp_option = get_option( 'fluent_form_chip_public_key', array() );
+
+			$wp_option[ 'public-key-' . $form->id ] = $public_key;
+
+			update_option( 'fluent_form_chip_public_key', $wp_option, false );
 		}
 	}
 

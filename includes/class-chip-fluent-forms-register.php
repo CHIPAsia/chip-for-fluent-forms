@@ -5,6 +5,10 @@
  * @package CHIPForFluentForms
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 use FluentForm\Framework\Helpers\ArrayHelper;
 
 /**
@@ -59,6 +63,13 @@ class Chip_Fluent_Forms_Register {
 					'template' => 'inputText',
 					'value'    => 'Pay with CHIP',
 					'label'    => 'Method Label',
+				),
+				'notes'        => array(
+					'type'      => 'text',
+					'template'  => 'inputText',
+					'value'     => '',
+					'label'     => 'Notes',
+					'help_text' => 'Additional notes attached to the CHIP purchase. You can use {inputs.<Field Name>} to pull a value from a form field.',
 				),
 			),
 		);

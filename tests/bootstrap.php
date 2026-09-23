@@ -10,6 +10,12 @@
  * @package CHIPForFluentForms
  */
 
+// The plugin files exit when ABSPATH is undefined; the test harness is not
+// WordPress, so define it to let the code under test load.
+if ( ! defined( 'ABSPATH' ) ) {
+	define( 'ABSPATH', dirname( __DIR__ ) . '/' );
+}
+
 define( 'FF_CHIP_PLUGIN_PATH', dirname( __DIR__ ) . '/' );
 define( 'FF_CHIP_MODULE_VERSION', 'v1.1.3' );
 

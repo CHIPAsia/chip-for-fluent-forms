@@ -5,6 +5,10 @@
  * @package CHIPForFluentForms
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 // This is the CHIP API URL endpoint as documented at https://developer.chip-in.asia/api.
 define( 'FLUENT_FORMS_CHIP_ROOT_URL', 'https://gate.chip-in.asia' );
 
@@ -14,11 +18,16 @@ define( 'FLUENT_FORMS_CHIP_ROOT_URL', 'https://gate.chip-in.asia' );
 class Chip_Fluent_Forms_API {
 
 	/**
-	 * Single instance of this class.
+	 * Instances of this class, keyed by credentials.
 	 *
-	 * @var Chip_Fluent_Forms_API|null
+	 * The plugin supports a different secret key and brand id per form, so a
+	 * single shared instance is wrong: whichever credentials were used first
+	 * would be reused for every later call, silently charging the wrong brand.
+	 * Keying by credentials keeps one instance per account.
+	 *
+	 * @var array<string, Chip_Fluent_Forms_API>
 	 */
-	private static $_instance;
+	private static $instances = array();
 
 	/**
 	 * Secret key for API auth.
@@ -35,18 +44,20 @@ class Chip_Fluent_Forms_API {
 	private $brand_id;
 
 	/**
-	 * Gets the shared instance, creating it on the first call.
+	 * Gets the instance for a credential pair, creating it on first use.
 	 *
 	 * @param string $secret_key Secret key.
 	 * @param string $brand_id   Brand ID.
 	 * @return Chip_Fluent_Forms_API
 	 */
 	public static function get_instance( $secret_key, $brand_id ) {
-		if ( null === self::$_instance ) {
-			self::$_instance = new self( $secret_key, $brand_id );
+		$key = md5( $secret_key . '|' . $brand_id );
+
+		if ( ! isset( self::$instances[ $key ] ) ) {
+			self::$instances[ $key ] = new self( $secret_key, $brand_id );
 		}
 
-		return self::$_instance;
+		return self::$instances[ $key ];
 	}
 
 	/**
