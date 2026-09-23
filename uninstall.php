@@ -1,4 +1,9 @@
 <?php
+/**
+ * Uninstall routine for CHIP for Fluent Forms.
+ *
+ * @package CHIPForFluentForms
+ */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	die;

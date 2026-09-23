@@ -39,8 +39,8 @@ class Chip_Fluent_Forms_Purchase_ResponseGuardTest extends TestCase {
 	 */
 	public static function provide_plugin_files() {
 		return array(
-			'purchase class' => array( 'includes/class-purchase.php' ),
-			'webhook setup'  => array( 'includes/admin/class-webhook-setup.php' ),
+			'purchase class' => array( 'includes/class-chip-fluent-forms-purchase.php' ),
+			'webhook setup'  => array( 'includes/admin/class-chip-fluent-forms-webhook-setup.php' ),
 		);
 	}
 
@@ -212,7 +212,7 @@ class Chip_Fluent_Forms_Purchase_ResponseGuardTest extends TestCase {
 	 * it drove the refund path with garbage instead of returning.
 	 */
 	public function test_refund_callback_guards_a_non_array_payload() {
-		$source = file_get_contents( FF_CHIP_PLUGIN_PATH . 'includes/class-purchase.php' );
+		$source = file_get_contents( FF_CHIP_PLUGIN_PATH . 'includes/class-chip-fluent-forms-purchase.php' );
 		$this->assertNotFalse( $source );
 
 		$start = strpos( $source, 'private function refund_callback()' );

@@ -26,8 +26,8 @@ class Chip_Fluent_Forms_Purchase_CallSiteTest extends TestCase {
 	 * @return string
 	 */
 	private function source() {
-		$source = file_get_contents( FF_CHIP_PLUGIN_PATH . 'includes/class-purchase.php' );
-		$this->assertNotFalse( $source, 'Could not read class-purchase.php' );
+		$source = file_get_contents( FF_CHIP_PLUGIN_PATH . 'includes/class-chip-fluent-forms-purchase.php' );
+		$this->assertNotFalse( $source, 'Could not read the purchase class file' );
 
 		return $source;
 	}
@@ -91,7 +91,7 @@ class Chip_Fluent_Forms_Purchase_CallSiteTest extends TestCase {
 			}
 
 			if ( preg_match( "/\[?'due'\]?\s*(=>|=)/", $line ) ) {
-				$bad[] = 'includes/class-purchase.php:' . ( $number + 1 ) . ': ' . $trimmed;
+				$bad[] = 'includes/class-chip-fluent-forms-purchase.php:' . ( $number + 1 ) . ': ' . $trimmed;
 			}
 		}
 

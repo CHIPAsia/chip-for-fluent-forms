@@ -1,6 +1,18 @@
 <?php
+/**
+ * Per-form CHIP settings fields.
+ *
+ * @package CHIPForFluentForms
+ */
 
 $slug = FF_CHIP_FSLUG;
+
+/**
+ * Builds the CHIP settings fields for a single Fluent Forms form.
+ *
+ * @param object $form The Fluent Forms form row.
+ * @return array
+ */
 function ff_chip_form_fields( $form ) {
 
 	$form_fields = array(
@@ -8,7 +20,9 @@ function ff_chip_form_fields( $form ) {
 			'id'    => 'form-customize-' . $form->id,
 			'type'  => 'switcher',
 			'title' => sprintf( __( 'Customization', 'chip-for-fluent-forms' ) ),
+			/* translators: 1: Form ID, 2: Form Title. */
 			'desc'  => sprintf( __( 'Form ID: <strong>#%1$s</strong>. Form Title: <strong>%2$s</strong>', 'chip-for-fluent-forms' ), $form->id, $form->title ),
+			/* translators: %s: Form ID. */
 			'help'  => sprintf( __( 'This to enable customization per form-basis for form: #%s', 'chip-for-fluent-forms' ), $form->id ),
 		),
 		array(
@@ -172,7 +186,9 @@ foreach ( $all_forms_query as $form ) {
 		array(
 			'parent'      => 'form-configuration',
 			'id'          => 'form-id-' . $form->id,
+			/* translators: 1: Form ID, 2: Form Title. */
 			'title'       => sprintf( __( 'Form #%1$s - %2$s', 'chip-for-fluent-forms' ), $form->id, substr( $form->title, 0, 15 ) ),
+			/* translators: 1: Form ID, 2: Form Title. */
 			'description' => sprintf( __( 'Configuration for Form #%1$s - %2$s', 'chip-for-fluent-forms' ), $form->id, $form->title ),
 			'fields'      => ff_chip_form_fields( $form ),
 		)
