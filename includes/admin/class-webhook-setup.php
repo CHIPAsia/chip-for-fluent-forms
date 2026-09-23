@@ -36,7 +36,9 @@ class Chip_Fluent_Forms_Webhook_Setup {
 		$chip     = Chip_Fluent_Forms_API::get_instance( $data['secret-key'], '' );
 		$webhooks = $chip->get_webhooks();
 
-		if ( ! array_key_exists( 'results', $webhooks ) ) {
+		// get_webhooks() returns null when the call fails, and
+		// array_key_exists() on that null is a TypeError (not an Exception).
+		if ( ! is_array( $webhooks ) || ! array_key_exists( 'results', $webhooks ) ) {
 			return;
 		}
 
@@ -105,7 +107,7 @@ class Chip_Fluent_Forms_Webhook_Setup {
 					$webhooks = $chip->get_webhooks();
 				}
 
-				if ( ! array_key_exists( 'results', $webhooks ) ) {
+				if ( ! is_array( $webhooks ) || ! array_key_exists( 'results', $webhooks ) ) {
 					continue;
 				}
 
