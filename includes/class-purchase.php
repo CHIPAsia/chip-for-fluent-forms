@@ -40,6 +40,66 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		return self::$_instance;
 	}
 
+	/**
+	 * Read one key from a CHIP API response.
+	 *
+	 * Chip_Fluent_Forms_API::call() returns null for every failure shape
+	 * (transport error, non-2xx, unparseable JSON, error payload), so callers
+	 * cannot assume the result is an array.
+	 *
+	 * Only array_key_exists() is fatal here: on PHP 8 passing that null as its
+	 * second argument raises a TypeError, which is not an Exception, so it
+	 * escapes every catch block and the plugin has none anyway. A bare
+	 * $payment['status'] on the same null is merely a warning that evaluates to
+	 * null, but it silently mis-drives the paid/failed branches, so it is
+	 * routed through this helper as well.
+	 *
+	 * @param mixed  $response API result, or null on failure.
+	 * @param string $key      Key to read.
+	 * @return mixed Value, or null when the response is not a usable array.
+	 */
+	private static function get_response_value( $response, $key ) {
+		if ( ! is_array( $response ) || ! array_key_exists( $key, $response ) ) {
+			return null;
+		}
+
+		return $response[ $key ];
+	}
+
+	/**
+	 * Whether an API call produced a usable response.
+	 *
+	 * @param mixed $response API result, or null on failure.
+	 * @return bool
+	 */
+	public static function is_usable_response( $response ) {
+		return is_array( $response );
+	}
+
+	/**
+	 * Build the purchase `due` timestamp.
+	 *
+	 * Mirrors chip-for-woocommerce's get_due_timestamp(): an empty or zero
+	 * timing means "no due limit", not "due now". Returning null lets the
+	 * caller omit the parameter entirely, because CHIP rejects a `due` in the
+	 * past with HTTP 400 due_not_greater_than_now.
+	 *
+	 * @param mixed $due_time Configured timing in minutes.
+	 * @return int|null Unix timestamp, or null when no due limit is configured.
+	 */
+	public static function resolve_due_timestamp( $due_time ) {
+		if ( '' === $due_time || null === $due_time || false === $due_time ) {
+			return null;
+		}
+
+		$minutes = absint( $due_time );
+		if ( 0 === $minutes ) {
+			return null;
+		}
+
+		return time() + ( $minutes * 60 );
+	}
+
 	public function __construct() {
 		$this->add_action();
 	}
@@ -119,7 +179,6 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			// 'reference'        => substr($form->title, 0, 128),
 			'platform'         => 'fluentforms',
 			'send_receipt'     => $option['send_rcpt'],
-			'due'              => time() + ( absint( $option['due_time'] ) * 60 ),
 			'brand_id'         => $option['brand_id'],
 			'client'           => array(
 				'email'     => PaymentHelper::getCustomerEmail( $submission, $form ),
@@ -195,10 +254,19 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 
 		$params = apply_filters( 'ff_chip_create_purchase_params', $params, $transaction, $submission, $form );
 
+		// Only send `due` when a timing is actually configured. An empty timing
+		// means "no due limit"; sending time() there is a timestamp in the past
+		// by the time CHIP reads it, and CHIP rejects the whole purchase with
+		// HTTP 400 due_not_greater_than_now.
+		$due_timestamp = self::resolve_due_timestamp( $option['due_time'] );
+		if ( null !== $due_timestamp ) {
+			$params['due'] = $due_timestamp;
+		}
+
 		$chip    = Chip_Fluent_Forms_API::get_instance( $option['secret_key'], $option['brand_id'] );
 		$payment = $chip->create_payment( $params );
 
-		if ( ! array_key_exists( 'id', $payment ) ) {
+		if ( ! self::is_usable_response( $payment ) || ! array_key_exists( 'id', $payment ) ) {
 			do_action(
 				'ff_log_data',
 				array(
@@ -434,11 +502,25 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			return;
 		}
 
-		if ( $transaction->status != 'paid' && $payment['status'] == 'paid' ) {
+		// A failed re-query must not be treated as a failed payment: leave the
+		// transaction untouched and let the CHIP callback settle it. Without
+		// this guard $payment['status'] on a null result is a fatal error.
+		$payment_status = self::get_response_value( $payment, 'status' );
+		if ( null === $payment_status ) {
+			$GLOBALS['wpdb']->get_results(
+				"SELECT RELEASE_LOCK('ff_chip_payment_$submission_id');"
+			);
+
+			$this->handleSessionRedirectBack( $data );
+
+			return;
+		}
+
+		if ( $transaction->status != 'paid' && $payment_status == 'paid' ) {
 			$this->handlePaid( $submission, $transaction, $payment );
 		}
 
-		if ( $transaction->status != 'failed' && $payment['status'] != 'paid' ) {
+		if ( $transaction->status != 'failed' && $payment_status != 'paid' ) {
 			$this->handleFailed( $submission, $transaction, $payment );
 		}
 
@@ -620,11 +702,23 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 			return;
 		}
 
-		if ( $transaction->status != 'paid' && $payment['status'] == 'paid' ) {
+		// A failed re-query must not be treated as a failed payment; the CHIP
+		// callback is the authority on the final status. Without this guard
+		// $payment['status'] on a null result is a fatal error.
+		$payment_status = self::get_response_value( $payment, 'status' );
+		if ( null === $payment_status ) {
+			$GLOBALS['wpdb']->get_results(
+				"SELECT RELEASE_LOCK('ff_chip_payment_$submission_id');"
+			);
+
+			return;
+		}
+
+		if ( $transaction->status != 'paid' && $payment_status == 'paid' ) {
 			$this->handlePaid( $submission, $transaction, $payment );
 		}
 
-		if ( $transaction->status != 'failed' && $payment['status'] != 'paid' ) {
+		if ( $transaction->status != 'failed' && $payment_status != 'paid' ) {
 			$this->handleFailed( $submission, $transaction, $payment );
 		}
 
@@ -642,9 +736,17 @@ class Chip_Fluent_Forms_Purchase extends BaseProcessor {
 		}
 
 		$payment    = json_decode( $content, true );
-		$payment_id = sanitize_text_field( $payment['related_to']['id'] );
 
-		if ( $payment['event_type'] != 'payment.refunded' ) {
+		// json_decode() returns null on malformed JSON, which makes every read
+		// below a fatal error rather than a handled no-op.
+		if ( ! is_array( $payment ) ) {
+			return;
+		}
+
+		$payment_id = self::get_response_value( $payment['related_to'] ?? null, 'id' );
+		$payment_id = null === $payment_id ? '' : sanitize_text_field( $payment_id );
+
+		if ( self::get_response_value( $payment, 'event_type' ) != 'payment.refunded' ) {
 			return;
 		}
 
