@@ -45,13 +45,13 @@ class Chip_Fluent_Forms_Webhook_Setup {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'csf_fluent_form_chip_save_before', array( $this, 'setup_public_key' ), 10, 2 );
+		add_action( 'chip_ff_fluent_form_chip_save_before', array( $this, 'setup_public_key' ), 10, 2 );
 	}
 
 	/**
 	 * Stores the CHIP webhook public keys when the plugin settings are saved.
 	 *
-	 * Hooked to `csf_fluent_form_chip_save_before`, which passes the submitted
+	 * Hooked to `chip_ff_fluent_form_chip_save_before`, which passes the submitted
 	 * settings and the Codestar Framework option instance positionally.
 	 *
 	 * @param array  $data         Submitted plugin settings.

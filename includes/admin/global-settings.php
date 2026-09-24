@@ -13,7 +13,7 @@ $slug = FF_CHIP_FSLUG;
 
 $ff_module_settings = get_option( '__fluentform_payment_module_settings' );
 
-CSF_Setup::createOptions(
+CHIP_FF_Settings::createOptions(
 	$slug,
 	array(
 		'framework_title' => __( 'CHIP for Fluent Forms', 'chip-for-fluent-forms' ),
@@ -95,7 +95,7 @@ $miscellaneous_global_fields = array(
 		'default'     => '60',
 		'placeholder' => '60',
 		'dependency'  => array( array( 'due-strict', '==', 'true' ) ),
-		'validate'    => 'csf_validate_numeric',
+		'validate'    => 'chip_ff_validate_numeric',
 	),
 	array(
 		'id'    => 'payment-method-whitelist',
@@ -168,7 +168,7 @@ $refund_global_fields = array(
 	),
 );
 
-CSF_Setup::createSection(
+CHIP_FF_Settings::createSection(
 	$slug,
 	array(
 		'id'    => 'global-configuration',
@@ -177,7 +177,7 @@ CSF_Setup::createSection(
 	)
 );
 
-CSF_Setup::createSection(
+CHIP_FF_Settings::createSection(
 	$slug,
 	array(
 		'parent'      => 'global-configuration',
@@ -188,7 +188,7 @@ CSF_Setup::createSection(
 	)
 );
 
-CSF_Setup::createSection(
+CHIP_FF_Settings::createSection(
 	$slug,
 	array(
 		'parent'      => 'global-configuration',
@@ -199,7 +199,7 @@ CSF_Setup::createSection(
 	)
 );
 
-CSF_Setup::createSection(
+CHIP_FF_Settings::createSection(
 	$slug,
 	array(
 		'parent'      => 'global-configuration',

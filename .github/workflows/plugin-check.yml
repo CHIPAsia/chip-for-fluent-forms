@@ -41,7 +41,7 @@ jobs:
 
       - name: Check PHP ${{ matrix.php-version }} Compatibility
         run: |
-          phpcs --standard=PHPCompatibilityWP --runtime-set testVersion ${{ matrix.php-version }} --extensions=php --ignore=vendor,node_modules,assets,includes/codestar-framework .
+          phpcs --standard=PHPCompatibilityWP --runtime-set testVersion ${{ matrix.php-version }} --extensions=php --ignore=vendor,node_modules,assets .
 
   phpunit:
     name: PHPUnit Tests

@@ -19,6 +19,6 @@
 		"test-coverage": "phpunit --coverage-text",
 		"lint": "phpcs --standard=phpcs.xml",
 		"lint-fix": "phpcbf --standard=phpcs.xml",
-		"compat": "phpcs --standard=PHPCompatibilityWP --runtime-set testVersion 7.4- --extensions=php --ignore=vendor/*,includes/codestar-framework/* ."
+		"compat": "phpcs --standard=PHPCompatibilityWP --runtime-set testVersion 7.4- --extensions=php --ignore=vendor/* ."
 	}
 }

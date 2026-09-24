@@ -86,7 +86,7 @@ function ff_chip_form_fields( $form ) {
 			'default'     => '60',
 			'placeholder' => '60',
 			'dependency'  => array( array( 'due-strict-' . $form->id, '==', 'true' ), array( 'form-customize-' . $form->id, '==', 'true' ) ),
-			'validate'    => 'csf_validate_numeric',
+			'validate'    => 'chip_ff_validate_numeric',
 		),
 		array(
 			'id'         => 'payment-method-whitelist-' . $form->id,
@@ -164,7 +164,7 @@ function ff_chip_form_fields( $form ) {
 	return $form_fields;
 }
 
-CSF_Setup::createSection(
+CHIP_FF_Settings::createSection(
 	$slug,
 	array(
 		'id'    => 'form-configuration',
@@ -185,7 +185,7 @@ if ( function_exists( 'wpFluent' ) ) {
 
 foreach ( $all_forms_query as $form ) {
 
-	CSF_Setup::createSection(
+	CHIP_FF_Settings::createSection(
 		$slug,
 		array(
 			'parent'      => 'form-configuration',

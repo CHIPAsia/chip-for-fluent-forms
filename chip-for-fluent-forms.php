@@ -74,8 +74,10 @@ class Chip_Fluent_Forms {
 	 */
 	public function includes() {
 		$includes_dir = plugin_dir_path( FF_CHIP_FILE ) . 'includes/';
+		include $includes_dir . 'chip-ff-functions.php';
 		include $includes_dir . 'class-chip-fluent-forms-api.php';
-		include $includes_dir . 'codestar-framework/classes/setup.class.php';
+		include $includes_dir . 'class-chip-ff-settings.php';
+		include $includes_dir . 'class-chip-ff-settings-page.php';
 
 		if ( is_admin() ) {
 			include $includes_dir . 'admin/global-settings.php';
@@ -125,6 +127,7 @@ class Chip_Fluent_Forms {
 }
 
 add_action( 'init', 'load_chip_for_fluent_forms', 0 );
+add_action( 'init', array( 'CHIP_FF_Settings', 'init_pages' ), 100 );
 
 /**
  * Boots the plugin once Fluent Forms Pro is available.
