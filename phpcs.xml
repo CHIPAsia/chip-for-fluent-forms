@@ -23,7 +23,6 @@
 		maintaining a permanent diff against upstream. Excluded for the same
 		reason chip-for-woocommerce excludes its vendor/ directory.
 	-->
-	<exclude-pattern>/includes/codestar-framework/*</exclude-pattern>
 
 	<!-- Use WordPress coding standards -->
 	<rule ref="WordPress">
@@ -83,11 +82,22 @@
 	</rule>
 
 	<!--
-		Codestar Framework fires csf_fluent_form_chip_save_before with two
-		positional arguments: the submitted settings and the option instance.
-		global_public_key() and form_public_key() must keep $admin_option in their
-		signatures to stay call-compatible with that hook even though neither
-		reads it.
+		The settings framework keeps the createOptions()/createSection() method
+		names it inherited from the Codestar Framework it replaced. Those names
+		are the call site contract in global-settings.php, form-settings.php and
+		backup-settings.php, so renaming them would be churn across every
+		settings file for no behavioural gain.
+	-->
+	<rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
+		<exclude-pattern>includes/class-chip-ff-settings.php</exclude-pattern>
+	</rule>
+
+	<!--
+		The webhook setup fires on chip_ff_fluent_form_chip_save_before, which
+		passes two positional arguments: the submitted settings and the option
+		instance. global_public_key() and form_public_key() must keep
+		$admin_option in their signatures to stay call-compatible with that
+		hook even though neither reads it.
 	-->
 	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed">
 		<exclude-pattern>includes/admin/class-chip-fluent-forms-webhook-setup.php</exclude-pattern>

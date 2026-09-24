@@ -32,22 +32,15 @@ jobs:
         uses: wordpress/plugin-check-action@v1
         with:
           build-dir: './ci-build/chip-for-fluent-forms'
-          # includes/codestar-framework is vendored, third-party code that we do
-          # not own and must not edit (see AGENTS.md). It is excluded from
-          # phpcs.xml for the same reason. Without it here, its ~500 findings
-          # (text domain 'csf', unescaped output in the framework's own field
-          # renderers) fail this job while our own code is clean.
           exclude-directories: |-
             vendor
             node_modules
-            includes/codestar-framework
           # Plugin name "CHIP for Fluent Forms" and slug "chip-for-fluent-forms"
           # contain "wp", which is trademarked on WordPress.org and cannot be
           # changed, so trademarked_term is a known false positive.
           # NonPrefixedHooknameFound is unavoidable for a third-party gateway:
-          # the plugin listens to Fluent Forms' fluentform/* hooks and registers
-          # the framework's own csf_fluent_form_chip_save_before hook, which are
-          # owned by those plugins, not by us. Our own hooks are ff_chip_*.
+          # the plugin listens to Fluent Forms' fluentform/* hooks, which are
+          # owned by that plugin, not by us. Our own hooks are ff_chip_*.
           # newline-separated per the action's input contract.
           ignore-codes: |
             trademarked_term

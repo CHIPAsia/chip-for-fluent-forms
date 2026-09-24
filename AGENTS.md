@@ -46,8 +46,11 @@ includes/
     form-settings.php                           Per-form CHIP settings
     global-settings.php                         Global CHIP settings
     backup-settings.php                         Settings backup
-  codestar-framework/                           Vendored settings framework - NOT ours, do not edit
-```
+  class-chip-ff-settings.php                    Settings framework - page/section registry
+  class-chip-ff-settings-page.php               Settings page renderer and save handler
+  assets/css/chip-ff-settings.css               Settings page styles
+  assets/js/chip-ff-settings.js                 Switcher, tabs and field dependencies
+  ```
 
 The file name of a class file must match its class name, lowercased and
 hyphenated. That is why the classes above are named `class-chip-fluent-forms-*`
@@ -82,6 +85,14 @@ external contracts - **never rename or reorder the parameters**:
   loaded during uninstall. Write option names literally.
 - **`readme.txt` carries only the current release.** `changelog.txt` keeps the
   full history.
+- **The settings framework is ours.** `includes/class-chip-ff-settings*.php`
+  replaced the vendored Codestar Framework, whose maintainer stopped
+  maintaining it. Never reintroduce it: keep the stored option name and the
+  flat `field id => value` shape, because `uninstall.php` and every settings
+  read depend on it.
+- **Settings are written through the framework, not around it.** A save
+  requires the page nonce *and* `menu_capability`; validation failures keep
+  the previously stored value rather than blanking the field.
 - **Never tag or release without an explicit OK.**
 
 ## Tests

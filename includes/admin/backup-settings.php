@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $slug = FF_CHIP_FSLUG;
 
-CSF_Setup::createSection(
+CHIP_FF_Settings::createSection(
 	$slug,
 	array(
 		'id'          => 'backup-restore',
