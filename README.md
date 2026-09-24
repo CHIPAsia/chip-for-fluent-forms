@@ -1,8 +1,6 @@
 <img src="./assets/logo.svg" alt="drawing" width="50"/>
 
 # CHIP for Fluent Forms
-[![WP compatibility](https://plugintests.com/plugins/wporg/chip-for-fluent-forms/wp-badge.svg)](https://plugintests.com/plugins/wporg/chip-for-fluent-forms/latest)
-[![PHP compatibility](https://plugintests.com/plugins/wporg/chip-for-fluent-forms/php-badge.svg)](https://plugintests.com/plugins/wporg/chip-for-fluent-forms/latest)
 
 This module adds CHIP payment method option to your Fluent Forms.
 
