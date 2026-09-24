@@ -31,7 +31,7 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 
 == Changelog ==
 
-= 1.1.3 2026-09-23 =
+= 1.1.3 2026-09-24 =
 * Added   - DuitNow QR (dnqr) support alongside the legacy duitnow_qr, exposed as a single DuitNow QR option that resolves to whichever identifier your brand supports.
 * Added   - ShopeePay is stored as shopee_pay, with an existing razer_shopeepay value migrated automatically.
 * Added   - Crypto Coin payment method option.
@@ -42,6 +42,8 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 * Fixed   - A form with its own Brand ID and Secret Key used the account configured first, so payments for that form could be created on the wrong account.
 * Fixed   - Refund synchronization registered its webhook on the global account even when the form had its own credentials, so refunds on those forms were never verified.
 * Fixed   - Saving settings could drop the webhook registered for the global account, and a form without a public key stopped every remaining form from being processed.
+* Changed - The bundled settings framework was replaced with our own. Your saved settings are kept exactly as they were, so nothing needs to be reconfigured.
+* Fixed   - Changing settings from a crafted link is no longer possible, and saving settings now also checks that the user is allowed to manage the site.
 
 [See changelog for all versions](https://raw.githubusercontent.com/CHIPAsia/chip-for-fluent-forms/main/changelog.txt).
 
