@@ -130,6 +130,19 @@ add_action( 'init', 'load_chip_for_fluent_forms', 0 );
 add_action( 'init', array( 'CHIP_FF_Settings', 'init_pages' ), 100 );
 
 /**
+ * Publishes the plugin version to the settings framework.
+ *
+ * Used only to version the settings assets for cache busting.
+ *
+ * @return void
+ */
+function chip_ff_set_settings_asset_version() {
+	CHIP_FF_Settings::$version = FF_CHIP_MODULE_VERSION;
+}
+
+add_action( 'init', 'chip_ff_set_settings_asset_version', 1 );
+
+/**
  * Boots the plugin once Fluent Forms Pro is available.
  *
  * @return void

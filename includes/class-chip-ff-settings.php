@@ -8,7 +8,7 @@
  * (text, number, switcher, subheading, notice, backup).
  *
  * Compatibility contract - these must never change:
- * - The option name is the slug, so `get_option( FF_CHIP_FSLUG )` keeps working.
+ * - The option name is the slug, so `get_option( <slug> )` keeps working.
  * - The stored option is a flat map of field id => value.
  * - Defaults are persisted on first load when the option is empty.
  * - Values are sanitised with wp_kses_post()/wp_kses_post_deep() and validated
@@ -50,6 +50,13 @@ if ( ! class_exists( 'CHIP_FF_Settings' ) ) {
 		 * @var array
 		 */
 		private static $pages = array();
+
+		/**
+		 * Asset version, published by the plugin bootstrap for cache busting.
+		 *
+		 * @var string
+		 */
+		public static $version = '';
 
 		/**
 		 * Registers an options page.

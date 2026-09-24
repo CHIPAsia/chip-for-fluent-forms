@@ -272,10 +272,12 @@ if ( ! class_exists( 'CHIP_FF_Settings_Page' ) ) {
 				return;
 			}
 
-			$base = plugin_dir_url( FF_CHIP_FILE ) . 'includes/';
+			// Derived from this file's own location so the framework does not
+			// depend on any plugin-specific constant.
+			$base = plugin_dir_url( __FILE__ );
 
-			wp_enqueue_style( 'chip-ff-settings', $base . 'assets/css/chip-ff-settings.css', array(), FF_CHIP_MODULE_VERSION );
-			wp_enqueue_script( 'chip-ff-settings', $base . 'assets/js/chip-ff-settings.js', array( 'jquery' ), FF_CHIP_MODULE_VERSION, true );
+			wp_enqueue_style( 'chip-ff-settings', $base . 'assets/css/chip-ff-settings.css', array(), CHIP_FF_Settings::$version );
+			wp_enqueue_script( 'chip-ff-settings', $base . 'assets/js/chip-ff-settings.js', array( 'jquery' ), CHIP_FF_Settings::$version, true );
 		}
 
 		/**
