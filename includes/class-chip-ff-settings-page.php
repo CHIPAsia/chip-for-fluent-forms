@@ -92,11 +92,20 @@ if ( ! class_exists( 'CHIP_FF_Settings_Page' ) ) {
 
 			$this->unique   = $slug;
 			$this->args     = CHIP_FF_Settings::$args[ $slug ];
-			$this->sections = CHIP_FF_Settings::$sections[ $slug ];
+			$this->sections = isset( CHIP_FF_Settings::$sections[ $slug ] ) && is_array( CHIP_FF_Settings::$sections[ $slug ] )
+				? CHIP_FF_Settings::$sections[ $slug ]
+				: array();
 			$this->options  = get_option( $slug, array() );
 
 			if ( ! is_array( $this->options ) ) {
 				$this->options = array();
+			}
+
+			// With no sections there is no page to draw and nothing to save.
+			// Returning early keeps a mis-timed construction from emitting
+			// warnings or overwriting the option with an empty array.
+			if ( empty( $this->sections ) ) {
+				return;
 			}
 
 			$this->build_tabs();
