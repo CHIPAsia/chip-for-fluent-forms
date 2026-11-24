@@ -127,7 +127,26 @@ class Chip_Fluent_Forms {
 }
 
 add_action( 'init', 'load_chip_for_fluent_forms', 0 );
-add_action( 'init', array( 'CHIP_FF_Settings', 'init_pages' ), 100 );
+add_action( 'init', 'chip_ff_init_settings_pages', 100 );
+
+/**
+ * Starts the settings framework's pages.
+ *
+ * The framework is loaded by the plugin bootstrap, which only runs when the
+ * Fluent Forms payment module is available. On a site without it the class
+ * does not exist, and calling into it here was a fatal error on every
+ * request.
+ *
+ * @return void
+ */
+function chip_ff_init_settings_pages() {
+
+	if ( ! class_exists( 'CHIP_FF_Settings' ) ) {
+		return;
+	}
+
+	CHIP_FF_Settings::init_pages();
+}
 
 /**
  * Publishes the plugin version to the settings framework.
@@ -137,6 +156,11 @@ add_action( 'init', array( 'CHIP_FF_Settings', 'init_pages' ), 100 );
  * @return void
  */
 function chip_ff_set_settings_asset_version() {
+
+	if ( ! class_exists( 'CHIP_FF_Settings' ) ) {
+		return;
+	}
+
 	CHIP_FF_Settings::$version = FF_CHIP_MODULE_VERSION;
 }
 
