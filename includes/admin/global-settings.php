@@ -11,7 +11,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $slug = FF_CHIP_FSLUG;
 
+// Fluent Forms keeps the currency inside this payment module option. It is
+// absent on a site whose payment settings were never saved, and indexing it
+// unguarded raises a warning on PHP 8, so fall back to Fluent Forms' own
+// default of USD.
 $ff_module_settings = get_option( '__fluentform_payment_module_settings' );
+$ff_currency        = ( is_array( $ff_module_settings ) && ! empty( $ff_module_settings['currency'] ) )
+	? $ff_module_settings['currency']
+	: 'USD';
 
 CHIP_FF_Settings::createOptions(
 	$slug,
@@ -34,7 +41,7 @@ $credentials_global_fields = array(
 		'style'   => 'danger',
 		/* translators: 1: opening link tag, 2: closing link tag */
 		'content' => sprintf( __( 'The default currency is set to non compatible currencies! %1$sClick here%2$s to update currency configuration.', 'chip-for-fluent-forms' ), '<a target=_blank href=' . admin_url( 'admin.php?page=fluent_forms_settings&component=payment_settings#/' ) . ' >', '</a>' ),
-		'class'   => 'MYR' === $ff_module_settings['currency'] ? 'hidden' : '',
+		'class'   => 'MYR' === $ff_currency ? 'hidden' : '',
 	),
 	array(
 		'type'    => 'subheading',
