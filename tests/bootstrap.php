@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'FF_CHIP_PLUGIN_PATH', dirname( __DIR__ ) . '/' );
-define( 'FF_CHIP_MODULE_VERSION', 'v1.1.3' );
+define( 'FF_CHIP_MODULE_VERSION', 'v1.1.4' );
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

@@ -3,7 +3,7 @@ Contributors: chipasia, wanzulnet
 Tags: chip
 Requires at least: 6.1
 Tested up to: 7.1
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 Requires PHP: 7.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -30,6 +30,11 @@ This plugin will enable your Fluent Forms Pro to be integrated with CHIP as per 
 * Confirmation page after successful payment.
 
 == Changelog ==
+
+= 1.1.4 2026-11-24 =
+* Fixed   - The settings page no longer warns that the default currency is not supported while MYR is selected and saved. The warning is hidden again when the currency is MYR, and still shown for every other currency.
+* Fixed   - A site with the plugin active but the Fluent Forms payment module unavailable (Fluent Forms Pro not installed or deactivated) no longer fails on every request with a "Class CHIP_FF_Settings not found" error.
+* Changed - Tested against PHP 8.6, and verified with Fluent Forms 6.2.17 and Fluent Forms Pro 6.2.17.
 
 = 1.1.3 2026-09-24 =
 * Added   - DuitNow QR (dnqr) support alongside the legacy duitnow_qr, exposed as a single DuitNow QR option that resolves to whichever identifier your brand supports.
