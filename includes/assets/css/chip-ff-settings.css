@@ -198,6 +198,16 @@
 	display: block;
 }
 
+/*
+ * A field can be flagged hidden by its own definition - the currency notice is
+ * hidden once the shop currency is supported. That flag has to win over the
+ * layout display above, otherwise the field stays visible whatever the
+ * setting says.
+ */
+.chip-ff-settings .chip-ff-field.hidden {
+	display: none !important;
+}
+
 .chip-ff-settings .chip-ff-title {
 	flex: 0 0 200px;
 	padding-right: 20px;
